@@ -1,0 +1,161 @@
+---
+title: Numerical Analysis
+author: Kexing Ying
+date: May 15, 2020
+output: 
+  pdf_document:
+    toc: false
+    toc_depth: 2
+    number_sections: true
+geometry: margin = 1.5in
+urlcolor: red
+header-includes:
+  - \usepackage{tikz}
+  - \usepackage{amsthm}
+  - \usepackage{mathtools}
+  - \usepackage{lipsum}
+  - \usepackage[ruled,vlined]{algorithm2e}
+  - \newtheorem{theorem}{Theorem}
+  - \newtheorem{corollary}{Corollary}[theorem]
+  - \newtheorem*{remark}{Remark}
+
+  - \theoremstyle{definition}
+  - \newtheorem{definition}{Definition}[section]
+---
+
+# Numerical Linear Algebra
+
+## Linear System of Equations
+
+The simplest problem we can consider in linear algebra is to solve an equation 
+that's in the form 
+\begin{equation} \label{linear_eq}
+A\mathbf{x} = \mathbf{b},
+\end{equation}
+where \(A \in \mathbb{R}^{n \times n}\), and \(\mathbf{x, b} \in \mathbb{R}^n\).
+
+Trivially, we know how the solve such a problem in general, to find the inverse 
+of \(A\) (if \(A\) is not singular). But this is inefficient and requires heavy 
+computing power, so we will seek better algorithms for solving such problems. 
+
+### Triangular Matrices
+
+Triangular matrices are nicer to work with than general matrices. One example of 
+this is that the determinant of a triangular matrix is just the product of its 
+diagonal, i.e. given an triangular matrix \(A \in \mathbb{R}^{n \times n}\) 
+(no matter upper of lower triangular), 
+\[\det A = \prod_{i = 1}^n A_{i, i}.\]
+Immediately, we can deduce that an triangular matrix is non-singular if and only 
+if it has no zero entries in its diagonal.
+
+Let us consider equation \ref{linear_eq} where \(A\) is an upper triangular 
+matrix.
+\begin{equation}
+  \begin{bmatrix}
+    A_{1, 1} & A_{1, 2} & \cdots & A_{1, n} \\
+    0        & A_{2, 2} & \cdots & A_{2, n} \\
+    \vdots   & \vdots   & \ddots & \vdots   \\
+    0        & 0        & \cdots & A_{n, n}
+  \end{bmatrix}
+  \begin{bmatrix}
+    x_1 \\ x_2 \\ \vdots \\ x_n
+  \end{bmatrix}
+  =
+  \begin{bmatrix}
+    b_1 \\ b_2 \\ \vdots \\ b_n
+  \end{bmatrix}.
+\end{equation}
+We can immediately see that \(x_n = b_n / A_{n, n}\), and 
+\(x_{n - 1} = (b_{n - 1} - A_{n - 1, n} x_n) / A_{n - 1, n - 1}\). Indeed, 
+\[x_i = \frac{1}{A_{i, i}}\left(b_i - \sum_{j = 1 + i}^n A_{i, j} x_j\right),\]
+and similarly, for \(A\), a lower triangular matrix,
+\[x_i = \frac{1}{A_{i, i}}\left(b_i - \sum_{j = 1}^{i - 1} A_{i, j} x_j\right).\]
+
+This method can be used to find the inverse of matrices by considering 
+\(A \mathbf{x} = e_k\) gives us the \(k\)-th column of \(A^{-1}\).
+By considering that to calculate each \(x_i\), there is \(i - 1\) steps, we find 
+that to calculate \(\mathbf{x} \in \mathbb{R}^n\), there is \((n^2 - n) / 2\) 
+steps, so a complexity of \(O(n^2)\).
+
+### LU Factorisation
+
+Let \(A \in \mathbb{R}^{n \times n}\) (not necessarily triangular), 
+\(\mathbf{x, b} \in \mathbb{R}^n\) such that equation \ref{linear_eq} is 
+satisfied. If we can find lower and upper triangular matrices \(L, U\) such that 
+\(A = LU\), then 
+\[A \mathbf{x} = LU \mathbf{x} = \mathbf{b},\]
+which is easily solvable using the previous algorithm.
+
+However, such an Factorisation is not unique, so we impose the restriction that 
+\(L\) is unit, that is to say the diagonals of \(L\) are all ones.
+
+Suppose \(A = LU\) where 
+\[L = 
+  \begin{bmatrix}
+    \mathbf{l}_1 & \mathbf{l}_2 & \cdots & \mathbf{l}_n
+  \end{bmatrix}, 
+  \hspace{4mm}
+  U = 
+  \begin{bmatrix}
+    \mathbf{u}_1^T \\
+    \mathbf{u}_2^T \\
+    \vdots         \\
+    \mathbf{u}_n^T
+  \end{bmatrix}, \]
+so \(A = \sum_{i = 1}^n \mathbf{l}_i \mathbf{u}_i^T\), where 
+\(\mathbf{l}_i \mathbf{u}_i^T = 
+  \begin{bmatrix}
+    (\mathbf{l}_i)_1 \mathbf{u}_i^T & 
+    (\mathbf{l}_i)_2 \mathbf{u}_i^T & 
+    \cdots                          &
+    (\mathbf{l}_i)_n \mathbf{u}_i^T
+  \end{bmatrix}^T\). 
+As \(L\) is unit, \((\mathbf{l}_1)_1 = 1\), and as for all \(j > 1\), 
+\((\mathbf{l}_j)_1 = 0\) (since \(L\) is lower triangular), the first row of \(A\) 
+is \(\sum_{i = 1}^n (\mathbf{l}_i)_1 \mathbf{u}_i^T = 1 \times \mathbf{u}_1^T + 
+0 \times \mathbf{u}_2^T + \cdots + 0 \times \mathbf{u}_n^T = \mathbf{u}_1^T\). 
+Similarly, by considering the first column of \(A\) equals 
+\((\mathbf{u}_1^T)_1 \times \mathbf{l}_1\), we can find \(\mathbf{l}_1\).
+
+In general, we find the following algorithm for finding the LU factorisation,
+\begin{align*}
+  U_{k, j} & = A_{k, j}^{k - 1}    \\
+  L_{i, k} & = A_{i, k} / A_{k, k} \\
+  A_{i, j}^k & = A_{i, j}^{k - 1} - L_{i, k} U_{k, j}
+\end{align*}
+for \(k \in \{1, \cdots, n\}\) and \(i, j \ge k\) with \(A^0 = A\). From this, 
+we can easily see the algorithm breaks down whenever there is some \(k\) such 
+that \(A_{k, k} = 0\).
+
+\begin{definition}{(Positive definite matrix).}
+  A matrix \(A \in \mathbb{R}^{n \times n}\) is \textit{positive-definite} if 
+  and only if 
+  \[\mathbf{x}^T A \mathbf{x} > 0\]
+  for \(\mathbb{R}^n \ni \mathbf{x} \neq \mathbf{0}\).
+\end{definition}
+
+\begin{theorem}
+  Given a positive definite matrix \(A \in \mathbb{R}^{n \times n}\), its upper 
+  left \(k \times k\) sub-matrix is non-singular, i.e. 
+  \[\det(A_k) \neq 0\]
+  for all \(k \in \{1, \cdots, n\}\).
+\end{theorem}
+\proof
+  Let \(k \in {1, \cdots, n}\) and \(\mathbf{x} \in \mathbb{R}^k\) such that 
+  \(A_k \mathbf{x} = 0\). Now, as \(A_k\) is singular if and only if 
+  \(A_k \mathbf{x} = 0 \implies \mathbf{x} = 0\), it suffices to prove 
+  \(\mathbf{x} = 0\). We can construct \(\mathbf{y} \in \mathbb{R}^n\) by 
+  letting \(\mathbf{y}_i = \mathbf{x}_i\) for \(i \in \{1, \cdots, k\}\) and 
+  \(\mathbf{y}_i = 0\) for \(i \in \{k + 1, \cdots, n\}\) so 
+  \(A \mathbf{y} = 0\) and thus \(\mathbf{y}^T A \mathbf{y} = 0\). But \(A\) is 
+  positive definite, so \(\mathbf{y} = \mathbf{0}\) and hence 
+  \(\mathbf{x} = \mathbf{0}\).
+\qed
+
+\begin{theorem}
+  A symmetric matrix \(A \in \mathbb{R}^{n \times n}\) is positive definite if 
+  and only if
+  \[A = L D L^T\]
+  for some \(L, D \in \mathbb{R}^{n \times n}\) where \(L\) is unit lower 
+  triangular and \(D\) diagonal with \(D_{k, k} > 0\) for all \(k\).
+\end{theorem}
