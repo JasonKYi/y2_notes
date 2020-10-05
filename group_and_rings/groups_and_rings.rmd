@@ -4,7 +4,7 @@ author: Kexing Ying
 date: May 15, 2020
 output: 
   pdf_document:
-    toc: false
+    toc: true
     toc_depth: 2
     number_sections: true
 geometry: margin = 1.5in

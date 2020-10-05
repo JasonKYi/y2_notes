@@ -1,0 +1,789 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames*,x11names*}{xcolor}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Groups and Rings},
+  pdfauthor={Kexing Ying},
+  colorlinks=true,
+  linkcolor=Maroon,
+  filecolor=Maroon,
+  citecolor=Blue,
+  urlcolor=red,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin = 1.5in]{geometry}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{tikz}
+\usepackage[all]{xy}
+\usepackage{amsthm}
+\usepackage{mathtools}
+\usepackage{lipsum}
+\usepackage[ruled,vlined]{algorithm2e}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem*{remark}{Remark}
+\newtheorem{definition}{Definition}[theorem]
+\newtheorem{proposition}{Proposition}[theorem]
+
+\title{Groups and Rings}
+\author{Kexing Ying}
+\date{May 15, 2020}
+
+\begin{document}
+\maketitle
+
+{
+\hypersetup{linkcolor=}
+\setcounter{tocdepth}{2}
+\tableofcontents
+}
+\hypertarget{rings}{%
+\section{Rings}\label{rings}}
+
+\hypertarget{recap}{%
+\subsection{Recap}\label{recap}}
+
+We shall omit ring axioms but note that we will in general refer to
+rings without the multiplicative identity unless it is prefixed with
+\textbf{unital}. Simply put,
+
+\begin{definition}[Unital Ring]
+  An \textit{unital ring} is a triplet \((R, +, \times)\) such that \((R, +)\) 
+  forms an additive abelian group and \((R, \times)\) forms a multiplicative 
+  monoid such that \(\times\) distributes over \(+\).
+\end{definition}
+\begin{definition}[Ring]
+  A \textit{ring} is a unital ring without the necessary condition of the 
+  multiplicative identity. 
+\end{definition}
+
+Some obvious properties can be deduced right away.
+
+\begin{theorem}
+  Let \(R\) be a ring, 
+  \begin{itemize}
+    \item (Zero annihilates) \(0 x = x 0 = 0\);
+    \item (Negation distributes) \(-xy = (-x)y = x(-y)\).
+  \end{itemize}
+\end{theorem}
+\proof
+
+Omitted. \qed
+
+\begin{definition}[Unit]
+  Let \(R\) be a ring. We say \(x \in R\) is a unit if and only if it has an 
+  multiplicative inverse. We write 
+  \(U(R) := \{x \in R \mid \exists x^{-1} \in R, x x^{-1} = 1_R = x^{-1} x\}\).
+\end{definition}
+
+\begin{proposition}[Unit Group]
+  Let \(R\) be an unital ring, then \(U(R)\) is a multiplicative group and we 
+  call it the \textit{unit group}.
+\end{proposition}
+
+Furthermore, a lot of obvious definitions common to all algebraic
+structures are exactly what they sound like. These include
+\textbf{subring}, \textbf{ring homomorphism}, and \textbf{unital ring
+homomorphism}.
+
+\begin{theorem}
+  Let \(\phi : R \to S\) be an ring homomorphism. Then \(\phi(0_R) =0_S\) and 
+  \(\forall x \in R\), \(\phi(-x) = -\phi(x)\). Furthermore, if \(\phi\) is an 
+  unital ring homomorphism, then \(\forall x \in U(R)\),
+  \(\phi(x) \in U(S)\) and \(\phi(x^{-1}) = \phi(x)^{-1}\).
+\end{theorem}
+\proof
+
+First two property follows from \(R\) and \(S\) being additive groups
+while the last follows from the properties of the unit group. \qed
+
+From this theorem, we see that \(\phi(U(R)) \le U(S)\).
+
+Given an abelian group \((G, +)\), we can construct a trivial ring
+structure by extending it with the binary operation
+\(\times : G \to G \to G : a, b \mapsto 0_G\). We call this a
+\textbf{trivial multiplicative structure}. We call a ring
+\textbf{trivial} if it only contains one element, thus \(0 = 1\) if the
+ring is unital. In fact, the reverse is also true; an unital ring
+contains only one element (so trivial) if \(0 = 1\) as
+\(\forall x \in R, x = x \times 1_R = x \times 0_R = 0_R\).
+
+\hypertarget{integral-domains-polynomial-rings}{%
+\subsection{Integral Domains \& Polynomial
+Rings}\label{integral-domains-polynomial-rings}}
+
+\begin{definition} [Zero divisor]
+  Let \(R\) be a ring and \(x \in R\). We say \(x\) is a left zero divisor if 
+  there is some \(y \in = R^* = R \setminus\{0_R\}\) such that \(xy = 0_R\). 
+  Similar definition for the right zero divisor.
+\end{definition}
+
+The ring \(M_2(\mathbb{F})\) has zero divisors for any field
+\(\mathbb{F}\) while \(\mathbb{Z} / p\mathbb{Z}\) does not have any zero
+divisors for \(p\) a prime. We say a ring \(R\) is an integral domain if
+it is a non-trivial commutative unital ring with no zero divisors.
+
+\begin{theorem}
+  Let \(R\) be an integral domain. Then \(\forall x \in R^*\),\(y, z \in R\),
+  \(xy = xz \implies y = z\).
+\end{theorem}
+\proof
+
+Fix \(x, y, z\) and suppose \(y \neq z\), then \(y + (-z) \neq 0\) and
+so \(x (y + (-z)) \neq 0\) as \(x\) is not a zero divisor. \# \qed
+
+\begin{theorem}
+  If \(R\) is a finite integral domain, then it is a field.
+\end{theorem}
+\proof
+
+We need to show \(U(R) \supseteq R^*\). Let \(a \in R^*\), then by the
+previous theorem, the map \(x \mapsto ax\) is injective. As \(R\) is
+finite, the map is also surjective. \qed
+
+A similar argument can be used to show that given an integral domain
+\(R\) that is a finite vector space over some field \(F\), \(R\) is a
+field.
+
+Let \(R\) be a commutative unital ring, we define \[
+  R[X] := \left\{ \sum_{i = 0}^n a_i X^i \mid a_i \in R, n \in \mathbb{N} \right\},
+\] the set of \(R\)-polynomials. \(R[X]\) forms a commutative ring with
+the obvious operations.
+
+The following statements are equivalent:
+
+\begin{enumerate} 
+  \item \(R\) is an integral domain;
+  \item \(R[X]\) is a integral domain;
+  \item for every \(p, q \in R[X]^*\), \(\deg pq = \deg p + \deg q\);
+  \item for every \(p \in R[X]^*\), \(p\) has at most \(\deg p\) number of roots.
+\end{enumerate}
+
+where \(R\) is a non-trivial commutative unital ring. \proof
+\(2 \implies 1\) trivially and \(3 \implies 2\) by contrapositive. We
+will now show that \(1 \implies 3\), \(4 \implies 1\) and
+\(1 \implies 4\).
+
+Suppose \(R\) is an integral domain, \(p, q \in R[X]^*\) such that
+\(p(x) = a_n x^n + a_{n - 1} x^{n - 1} + \cdots + a_0\) and
+\(q(x) = b_m x^m + b_{m - 1} x^{m - 1} + \cdots + b_0\) where
+\(a_n \neq 0_R \neq b_m\) (so \(\deg p = n\) and \(\deg q = m\)).
+
+So, we have \[(pq)(x) = \left(\sum_{i = 0}^n a_i x^i\right) 
+              \left(\sum_{j = 0}^m b_j x^j\right)
+            = \sum_{i = 0}^n \sum_{j = 0}^m a_i b_j x^{i + j},\]
+i.e.~\(\deg pq \le n + m\). Now, as the coefficient of \(x^{n + m}\) is
+\(a_n b_m\), both of which are non-zero, as \(R\) is an integral domain,
+\(a_n b_m \neq 0_R\), thus, \(\deg pq = n + m\).
+
+We will prove \(4 \implies 1\) by contrapositive. Suppose \(R\) is not
+an integral domain, i.e.~there exist \(a, b \in R^*\) such that
+\(ab = 0_R\). Consider the polynomial \(R[X]^* \ni p = x \mapsto ax\).
+While \(\deg p = 1\), \(p\) has two roots, \(0_R\) and \(b\)
+respectively, contradicting 4.
+
+Lastly, we show \(1 \implies 4\) by induction on the degrees. Let
+\(p \in R[X]\), if \(\deg p = 0\) then there exists some \(a \in R^*\),
+\(p = x \mapsto a\) which does not have any roots since \(a \neq 0_R\).
+Now, suppose \(\deg p = n + 1\) and let \(\lambda\) be a root. Then \[
+    p(x) = p(x) - p(\lambda) = \sum_{i = 0}^{n + 1} a_i (x^i - \lambda ^ i)
+      = (x - \lambda) \sum_{i = 0}^{n + 1} a_i (x^{n - 1} + \cdots + \lambda x ^{n - 1})
+      = (x - \lambda) q(x),
+  \] for some \(q \in R[X]\) with degrees less than or equal to \(n\).
+Now, by the inductive hypothesis, \(q\) has at most \(n\) roots so let
+us define the set \[r := \{ x \mid x = \lambda \vee q(x) = 0_R \}. \] It
+is obvious that all elements of \(r\) are roots of \(p\) and
+\(\mid r \mid \leq n + 1\) so it suffices to show that these are the
+only roots. Let \(\mu \in R \setminus r\), then
+\(x - \mu \neq 0_R \neq q(\mu)\) and hence
+\(p(\mu) = (x - \mu) q(\mu)) \neq 0_R\) as by assumption, \(R\) is an
+integral domain. \qed
+
+A direct corollary of the above, specifically \(1 \iff 2\) means
+\(U(R[X]\) is the set of constant polynomials \(p = x \mapsto a \in R\)
+where \(a \in U(R)\). This means that \(U(R) \cong U(R[X])\) by the
+homomorphism \(i = a \mapsto (x \mapsto a)\).
+
+\begin{definition}[Nilpotent]
+  Given some ring \(R\), \(x \in R\), \(x\) is called nilpotent if and only if 
+  there exists some \(d \in \mathbb{N}\) such that \(x^d = 0_R\).
+\end{definition}
+
+Given some integral domain \(R\), we can construct a field
+\(\text{Frac}(R)\). Let \(\text{Frac}(R)\) be the equivalence classes of
+\(R \times R^*\) by the relation
+\((a, b) \sim (a', b') \iff ab' = a'b\). Then \(\text{Frac}(R)\) is a
+field by equipping it with
+\[+ = (a, b), (a', b') \mapsto (ab' + a'b, bb'),\] and
+\[\times = (a, b), (a', b') \mapsto (aa', bb').\]
+
+By checking using the definition above, with \(\iota\) being an
+injective unital homomorphism, we see that for all fields
+\(\mathbb{F}\), if there exist some \(\phi\) such that
+\(\phi : R \to \mathbb{F}\) is an injective unital ring homomorphism,
+then there exists an unique homomorphism \(\psi\) such that the
+following diagram commutes. \[
+\xymatrix @ R=1.2cm @ C=1.2cm {
+ R \ar[r]^{\iota} \ar[rd]_{\phi} & \text{Frac}(R) \ar[d]^{\psi} \\
+                                 & \mathbb{F} \\
+}
+\]
+
+\hypertarget{ideals-quotients}{%
+\subsection{Ideals \& Quotients}\label{ideals-quotients}}
+
+\begin{definition}[Ideal]
+  Given \(R\) a ring, we say \(I\) is an ideal if it is an additive subgroup of 
+  \(R\) and for all \(r \in R\), \(x \in I\), \(xr, rx \in I\). We denote this 
+  by \(I \triangleleft R\).
+\end{definition}
+
+The relation between a ring and its ideals is similar to that of normal
+subgroups and groups. A ring has two trivial ideals, the zero ideal and
+itself, so the only ring with less than two ideals is the trivial ring
+\(\{0\}\). Also, given some ring homomorphism \(\phi : R \to S\),
+\(\ker \phi \triangleleft R\).
+
+By some easy checking, we see that ideals are closed under finite sum
+and intersections, i.e.~if \((I_i)_{i = 1}^n\) is a sequence of ideals,
+so is \(\sum_{i = 1}^n I_i\), and if \(\mathcal{I}\) is a non-empty
+family of ideals, \(\bigcap \mathcal{I}\) is also an ideal. The second
+point is important as it allows us to talk about ideals generated by
+sets. We write \(\langle r_1, \cdots, r_n \rangle\) for the ideal
+generated by \((r_i)_{i = 1}^n \subseteq R\) and \(\langle S \rangle\)
+for the ideal generated by the set \(S \subseteq R\).
+
+It is easy to see that; given some ring \(R\), for all
+\(S \subseteq R\), \(I \triangleleft R\),
+\(S \subseteq I \implies \langle S \rangle \le_{Gp} I\) and
+\(1_R \in S \implies \langle S \rangle = R\).
+
+\begin{theorem}
+  Let \(R\) be a non-trivial unital commutative ring, then \(R\) is a field if 
+  and only if the only ideals in \(R\) are \(\{0_R\}\) and \(R\) itself.
+\end{theorem}
+\proof
+
+Forward direction follows as \(1_R\) is in any non-trivial ideals, while
+the backwards direction follows by considering \(xR = R\) for all
+\(x \in R\). \qed
+
+From this we see that that any ring homomorphisms from a field
+\(\mathbb{F}\) to a ring \(R\), \(\phi : \mathbb{F} \to R\) is either
+\(x \mapsto 0_R\) or injective. With this we can see that the sequence
+of rings \[
+  \mathbb{Z} \hookrightarrow \mathbb{Q} \hookrightarrow \mathbb{R} 
+  \hookrightarrow \mathbb{C},
+\] while has forward injective ring homomorphisms with the inclusion map
+has only the zero ring homomorphisms backwards.
+
+\begin{theorem}
+  Let \(R\) be a unital ring with ideal \(I \triangleleft R\), then 
+  \(R / I := \{r + I \mid r \in R\}\) is a ring with the operations 
+  \((a + I) \hat{+} (b + I) = (a + b) + I\) and \((a + I)(b + T) = ab + I\).
+\end{theorem}
+\begin{definition}[Quotient Map]
+  Given ring \(R\), and \(I \triangleleft R\), we define the quotient map 
+  \(q : R \to R / I : x \mapsto x + I\). \(q\) is a surjective unital ring 
+  homomorphism with the kernel \(I\).
+\end{definition}
+
+We again meet the first isomorphism theorem this time with regards to
+rings.
+
+\begin{theorem}
+  Let \(R, S\) be unital rings and \(\phi : R \to S\) a unital ring homomorphism,
+  then the map
+  \[
+    \psi : R / \ker \phi \to S : x + \ker \phi \mapsto \phi(x)
+  \]
+  is a well-defined injective unital ring homomorphism such that the following 
+  diagram commute.
+  \[
+    \xymatrix @ R=1.2cm @ C=1.2cm {
+    R \ar[r]^{q} \ar[rd]_{\phi} & R / \ker \phi \ar[d]^{\psi} \\
+    & S }
+  \]
+\end{theorem}
+
+Note that this is equivalent to \(R / \ker \phi \cong S\) whenever
+\(\phi\) is surjective.
+
+Similarly, we also meet the \emph{correspondence theorem} again.
+
+\begin{theorem}
+  Let \(R\) be a ring and \(I \triangleleft R\), then the map between the set of 
+  ideals greater than \(I\) is order isomorphic to the set of ideals of \(R / I\).
+\end{theorem}
+\proof
+
+Use the map \[
+    \mathcal{Q} : \{I' \triangleleft R \mid I \subseteq I'\} \to 
+    \{J \triangleleft R / I\} : I' \mapsto q(I').
+  \] \(\mathcal{Q}\) is well-defined as for \(I' \triangleleft R\),
+\(I \subseteq I'\), \(q(I') \triangleleft R / I\) since for all
+\(a, b \in I'\), \(a + b \in I'\) so
+\((a + I) \hat{+} (b + I) \in q(I')\) and for all
+\(r \in R, a \in I', ra, ar \in I'\) so
+\((r + I)(a + I) = ra + I \in q(I')\) and
+\((a + I)(r + I) = ar + I \in q(I')\). \qed
+
+Here is a funny exercise. Suppose there exists a proper non-trivial
+ideal \(I\) in \(\mathbb{Z}\) greater than \(\langle p \rangle\) for
+some prime \(p\), then, there is some
+\(x \in (I), x \notin \langle p \rangle\), so \(\gcd(x, p) = 1\). By
+Bezout's lemma, there is some \(a, b \in \mathbb{Z}\) such that
+\(1 = ax + bp \in I + \langle p \rangle \subseteq I\), so
+\(I = \mathbb{Z}\) \# So by the correspondence theorem,
+\(\mathbb{Z} / \langle p \rangle\) has no non-trivial proper ideal. In
+fact this can be seen by the fact that
+\(Z / \langle p \rangle = \mathbb{F}_p\) which is a field.
+
+\hypertarget{product-structure-on-rings}{%
+\subsection{Product Structure on
+Rings}\label{product-structure-on-rings}}
+
+Let \((R_i)_{i \in I}\) be a family of unital rings, then there is a
+natural product ring structure on the Cartesian product
+\(\prod_{i \in I} R_i\) such that
+\(U \left(\prod_{i \in I} R_i \right) = \prod_{i \in I} U(R_i)\) and the
+projection map \(\pi_j : \prod_{i \in I} R_i \to R_j : x \mapsto x_j\)
+is an unital ring homomorphism.
+
+Note that the inclusion map \(\iota_j : R_j \to \prod_{i \in I} R_i\) is
+a ring homomorphism not necessarily of an unital one. Also, the product
+ring does not preserve integral domain, i.e.~for all \(i \in I\),
+\(R_i\) is an integral domain does \textbf{not} imply
+\(\prod_{i \in I} R_i\) is also an integral domain.
+
+We call ideals \(I, J \triangleleft R\) \textbf{coprime} if
+\(I + J = R\). This terminology is used as
+\(\langle x \rangle + \langle y \rangle = \mathbb{Z}\) if and only if
+\(x, y\) are coprime in \(\mathbb{Z}\).
+
+\begin{lemma}
+  Let \(R\) be a ring and \(I_1, I_2 \triangleleft R\) such that \(I_1, I_2\) 
+  are coprime, then for all \(a, b \in R\), 
+  \[(a + I_1) + (b + I_2) = R.\]
+\end{lemma}
+\proof
+
+Let \(r \in R\), then, as \(I_1, I_2\) are coprime, there exists
+\(x \in I_1, y \in I_2\) such that \(x + y = r + (-a) + (-b)\) so
+\((a + x) + (b + y) = r\). \qed
+
+\begin{theorem}
+  Let \(R\) be ring and \(I_1, I_2 \triangleleft R\) such 
+  that \(I_1, I_2\) are coprime. Then 
+  \[
+    R / (I_1 \cap I_2) \cong R / I_1 \times R / I_2. 
+  \]
+\end{theorem}
+\proof
+
+Consider the mapping
+\(\psi : R \to R / I_1 \times R / I_2 : r \mapsto (r + I_1, r + I_2)\).
+By checking, we find \(\psi\) to be a ring homomorphism with kernel
+\(I_1 \cap I_2\). So, it suffices to prove that \(\psi\) is surjective
+by the first isomorphism theorem.
+
+Let \((a + I_1, b + I_2) \in R / I_1 \times R / I_2\), then by the
+previous lemma, \((a + I_1) + ((-b) + I_2) = R\), so there exist
+\(x \in a + I_1, y \in (-b) + I_2\) such that \(x + y = 0_R\),
+i.e.~\(x = -y\). Now, as \(x \in a + I_1, y \in (-b) + I_2\), we have
+\(x - a \in I_1\) and \(y + b \in I_2\). So, by considering
+\(\psi(x) = (x + I_1, x + I_2) = (x + I_1, -y + I_2) =  (a + (x - a) + I_1, b + -(y + b) + I_2) = (a + I_1, b + I_2)\)
+by the fact that \(\alpha + I_1 = I_1 \iff \alpha \in I_1\). \qed
+
+The theorem above is normally referred to as the \emph{Chinese remainder
+theorem} and we that, by induction, we can easily extend it to any
+finite number of ideals that are pairwise coprime, i.e.~
+
+\begin{theorem}
+  Let \(R\) be ring and \((I_i)_{i = 1}^n\) be a finite sequence of ideals in 
+  \(R\) such that \(I_i, I_j\) are pairwise coprime for \(i \neq j\). Then 
+  \[
+    \frac {R} {\left(\bigcap_{i = 1}^k I_i\right)} \cong 
+    \prod_{i = 0}^n R / I_i. 
+  \]
+\end{theorem}
+
+\hypertarget{the-ring-structure-of-the-integers}{%
+\subsection{The Ring Structure of the
+Integers}\label{the-ring-structure-of-the-integers}}
+
+The integers is the typical example that comes into mind when discussing
+rings and luckily it has many nice properties.
+
+\begin{definition}[Principle Ideal]
+  We call an ideal \(I \triangleleft R\) \textit{principle} if and only if it is 
+  generated by one element.
+\end{definition}
+
+\begin{theorem}
+  Every ideal in \(\mathbb{Z}\) is principle.
+\end{theorem}
+\proof
+
+It is easy to show that every ideal in \(\mathbb{Z}\) is of the form
+\(\langle n \rangle\). \qed
+
+\begin{theorem}
+  Suppose \(R\) is a unital ring. Then there is a unique unital ring 
+  homomorphism \(\phi : \mathbb{Z} \to R\) such that,
+  \[
+    \phi(k) = 
+      \begin{cases}
+        0_R,               & k = 0\\
+        \phi(k - 1) + 1_R, & k > 0\\
+        - \phi(-k),        & k < 0
+      \end{cases}.
+  \] 
+\end{theorem}
+
+By denoting the above unique ring homomorphism by \(\chi_R\) given any
+unital ring \(R\), we have by previous results
+\(\ker \chi_R \triangleleft \mathbb{Z}\). Now, as \(\mathbb{Z}\) is
+principle, there exists some \(n\), \(\langle n \rangle = \ker \chi_R\).
+If we restrict this \(n\) to be non-negative, we find that \(n\) to be
+unique as if \(\langle x \rangle = \langle y \rangle\) then \(x \mid y\)
+and \(y \mid x\), so \(x = \pm y\).
+
+\begin{definition}[Characteristic]
+  Given a unital ring \(R\), the characteristic of \(R\) is the unique 
+  \(n \in \mathbb{N}\) such that \(\langle n \rangle = \ker \chi_R\).
+\end{definition}
+
+By considering the inclusion map of \(\mathbb{Z}\) to \(\mathbb{Z}\),
+\(\mathbb{Q}\), \(\mathbb{R}\), and \(\mathbb{C}\), we find these rings
+all have characteristics \(0\).
+
+\begin{lemma}
+  Let \(\mathbb{F}\) be a field, \(R\) a ring and 
+  \(\phi : \mathbb{F} \to R\) an ring homomorphism. Then there is a induced 
+  vector space of \(R\) over \(\mathbb{F}\) using the scalar multiplication 
+  \(\times : \mathbb{F} \times R \to R : (f, r) \mapsto \phi(f) r\).
+\end{lemma}
+
+From this we can deduce,
+
+\begin{theorem}
+  Suppose \(R\) be an integral domain of non-zero characteristic, then \(R\) has 
+  prime characteristic \(p\) and is a vector space over \(\mathbb{F}_p\).
+\end{theorem}
+\proof
+
+The first part of the statement is trivial so it suffices to find some
+ring homomorphism from \(\mathbb{F}_p \to R\) which is provided by the
+first isomorphism theorem. \qed
+
+\hypertarget{prime-and-maximal-ideals}{%
+\subsection{Prime and Maximal Ideals}\label{prime-and-maximal-ideals}}
+
+\begin{definition}[Prime]
+  We call an ideal \(I \triangleleft R\) prime if and only if it is proper and 
+  for all \(a, b \in R\), \(ab \in I\) implies \(a \in I\) or \(b \in I\).
+\end{definition}
+
+Straight away, we see that \({0_R}\) is prime in \(R\) if and only if
+\(R\) is an integral domain. Another example of a prime ideal is that,
+if \(R\) is an integral domain, then \(\langle X \rangle\) is prime in
+\(R[X]\). This is true by considering
+\(p \in \langle X \rangle \iff p(0) = 0\), or alternatively, deduced
+straight away by the following theorem.
+
+\begin{theorem}
+  Let \(R\) be a commutative unital ring and \(I \triangleleft R\) be a proper 
+  ideal. Then \(I\) is prime if and only if \(R / I\) is an integral domain.
+\end{theorem}
+\proof
+
+Straightforward contrapositive both ways. \qed
+
+\begin{definition}[Maximal Ideal]
+  Let \(R\) be a ring and \(I \triangleleft R\) is proper, we say \(I\) is 
+  maximal if and only if for all \(J \triangleleft R\), 
+  \(I \subseteq J \implies I = J\) or \(J = R\).
+\end{definition}
+
+\begin{theorem}
+  Let \(R\) be a commutative unital ring and \(I \triangleleft R\) be a proper 
+  ideal. Then \(I\) is maximal if and only if \(R / I\) is a field.
+\end{theorem}
+\proof
+
+Follows directly from the fact that \(R / I\) is a field if and only if
+it has no proper non-trivial ideals. \qed
+
+Since a field is an integral domain, it follows that every maximal ideal
+is also prime.
+
+It is not at all obvious that all rings have a maximal ideal, but this
+nice property turns out to be true using \emph{Zorn's lemma}.
+
+\begin{theorem}
+  Let \((X, \le)\) be a non-empty poset. If each chain \(C\) in \(X\) has an 
+  upper bound in \(X\), then \(X\) has a maximal element.
+\end{theorem}
+
+\begin{theorem}
+  Every unital ring \(R \neq \{0_R\}\) has a maximal ideal.
+\end{theorem}
+\proof
+
+Let \(P\) to be the set of proper ideals. Then \(P, \subseteq\) is a
+poset by lifting the partial order from sets. Thus, by Zorn's lemma, it
+suffices to show that every chain in \(P\) has an upper bound in \(P\).
+Let \(C\) be a chain in \(P\), then by checking, we find \(\bigcup C\)
+is a element of \(P\) so an upper bound of \(C\) in \(P\). \qed
+
+\begin{definition}[Prime]
+  Let \(x \in R\), where \(R\) is a ring. We say \(x\) is \textit{prime} if and 
+  only if \(\langle x \rangle\) is a prime ideal in \(R\).
+\end{definition}
+
+In a commutative unital ring \(R\), we have
+\(\langle x \rangle = \{xr \mid r \in R\}\) for elements of \(x \in R\).
+We sometimes write \(xR\) for this ideal. It should be noted that the
+unital condition is significant as while \(2\mathbb{Z}\) is commutative,
+\(\langle 2 \in 2\mathbb{Z} \rangle \neq \{2r \mid r \in 2\mathbb{Z}\}\)
+as the latter does not contain \(2\).
+
+Commutative unital rings have a notion of divisibility. Given
+\(a, b \in R\), we say \(a \mid b\) if one of the following equivalent
+properties hold,
+
+\begin{itemize}
+  \item \(b \in \langle a \rangle\);
+  \item \(\langle b \rangle \subseteq \langle a \rangle\);
+  \item \(\exists x \in R, b = xa\).
+\end{itemize}
+
+\begin{definition}[Irreducible]
+  We say \(x \in R^*\) is irreducible if \(\langle x \rangle\) is maximal among 
+  the set of proper principle ideals.
+\end{definition}
+
+We immediately see that \(1_R\) is not irreducible as it generates the
+entire ring so \(\langle 1_R \rangle\) is not proper.
+
+\begin{theorem}
+  \(a \in R\) is irreducible if and only if whenever \(x \mid a\), 
+  \(\langle x \rangle = \langle a \rangle \veebar \langle x \rangle = R\).
+\end{theorem}
+
+\begin{theorem}\label{not_irreducible_iff}
+  \(a \in R\) is not irreducible if and only if there exists \(x, y \in R^*\) 
+  \(x, y \neq 1_R\) such that \(a = xy\).
+\end{theorem}
+
+\begin{lemma}
+  Let \(R\) be an integral domain, then
+  \begin{itemize}
+    \item \(\langle a \rangle = \langle b \rangle\) if and only if there is some 
+      \(x \in U(R)\) such that \(a = xb\);
+    \item \(a \in R^*\) is irreducible if and only if \(a = xy\) implies 
+      \(\langle x \rangle = R\) or \(\langle y \rangle = R\);
+    \item \(a \in R^*\) is irreducible if and only if \(a = xy\) implies 
+      \(\langle x \rangle = \langle a \rangle\) or 
+      \(\langle y \rangle = \langle a \rangle\);
+    \item if \(a \in R^*\) is prime, then it is irreducible.
+  \end{itemize}
+\end{lemma}
+\proof
+
+The first part is by following your nose while the rest follows directly
+from it. \qed
+
+One common question that is often asked is to show some number to be
+irreducible in \(\mathbb{Z}[\theta]\) for some algebraic number
+\(\theta\). This type of questions can be approached using a single
+method.
+
+Suppose we would like to show that \(2, 3, 1 + \sqrt{-5}\) are
+irreducible in \(\mathbb{Z}[\sqrt{-5}]\). We will first define the
+function
+\(\phi : \mathbb{Z}[\sqrt{-5}] \to \mathbb{Z} : a + b\sqrt{-5} \mapsto a^2 + 5b^2\).
+By checking, we find \(\phi\) preserves product and thus, divisibility.
+Furthermore, we see that \(\alpha \in \mathbb{Z}[\sqrt{-5}]\) is a unit
+if and only if \(\phi(\alpha) = 1\). Now, suppose for a contradiction
+\(1 + \sqrt{-5}\) is reducible. Then by theorem
+\ref{not_irreducible_iff}, there is some
+\(a, b \in \mathbb{Z}[\sqrt{-5}]\) such that \(1 + \sqrt{-5} = ab\), so
+Wlog. \(\phi(a) = 2\) and \(\phi(b) = 3\) which is not possible \#. The
+similar is true for showing 2 and 3 being irreducible.
+
+\begin{lemma}
+  Let \(R\) be a ring, then \(R\) is an integral domain if and only if 
+  \(\langle 0_R \rangle\) is prime in \(R\).
+\end{lemma}
+
+\begin{theorem}
+  Let \(R\) be a non-trivial commutative unital ring such that every proper 
+  ideal is prime, then \(R\) is a field.
+\end{theorem}
+\proof
+
+Let \(r \in R^*\), then Wlog. \(\langle r \rangle \neq R\) so
+\(\langle r \rangle\) is prime. Now, consider the ideal generated by
+\(r^2\). Trivially, by primeness, \(r \in \langle r^2 \rangle\) so there
+exists \(a \in R\), \(r = ar^2 \implies 0_R = ar^2 - r = r(ar - 1)\).
+Now, as \(\langle 0_R \rangle\) is prime, \(R\) is an integral domain,
+so \(ar = 1\). \qed
+
+\hypertarget{principle-ideal-domain}{%
+\subsection{Principle Ideal Domain}\label{principle-ideal-domain}}
+
+\begin{definition}[Principle Ideal Domain]
+  We call an integral domain \(R\) to be a \textit{principle ideal domain} if 
+  and only if for all \(I \triangleleft R\), \(I\) is principle. We sometimes 
+  write \(R\) is a \textit{PID}.
+\end{definition}
+
+As every ideals of \(\mathbb{Z}\) is of the form \(\langle k \rangle\)
+for some \(k \in \mathbb{Z}\), \(\mathbb{Z}\) is a PID.
+
+\begin{theorem}\label{quotient_principle_has_inv_iff}
+  Let \(R\) be a PID and \(x \in R^*\). Then \(x\) is irreducible if and only if 
+  \(R / \langle x \rangle\) is a field. Furthermore, any non-zero prime ideal is 
+  maximal.
+\end{theorem}
+\proof
+
+Follows directly from the fact that \(R / I\) is a field if and only if
+\(I\) is maximal for any \(I \triangleleft R\). \qed
+
+A powerful result of the above theorem is that we have just classified
+the finite fields \(\mathbb{F}_p\).
+\(\mathbb{F}_p = \mathbb{Z} / \langle p \rangle\) is a field if and only
+if \(p\) is prime (in the ideal sense as well as in the integer sense).
+
+\begin{theorem}
+  Let \(\mathbb{F}\) be a field. Then \(\mathbb{F}[X]\) is a principle ideal 
+  domain.
+\end{theorem}
+\proof
+
+Let \(I \triangleleft \mathbb{F}[X]\) and Wlog. suppose \(I\) is proper
+and non-trivial. Thus, by the well-ordering principle, there is some
+\(p \in I\) with minimal degree \(d_p\). For contradiction, suppose
+\(I \neq \langle p \rangle\), then there is some
+\(q \in I \setminus \langle p \rangle\) with minimal degree \(d_q\). By
+construction, we have \(d_p \le d_q\) so
+\(r(X) := q(X) - c p(X) X^{d_q - d_p} \in I\), where
+\(c = c_q c_p^{-1}\) and \(c_f\) is the coefficient of \(f\) of the term
+\(X^{\deg f}\). We see that, by construction, \(\deg r < \deg q\) so, by
+the minimum degree assumption of \(q\), \(r \in \langle p \rangle\)
+implying \(q \in \langle p \rangle\). \# \qed
+
+While the proof above is neat, it turns out that polynomial over fields
+forms what it's called a \emph{Euclidean Domain} which are principle
+ideal domains. We will come back to this definition later.
+
+The reverse of the above theorem is also true.
+
+\begin{theorem}
+  If \(R[X]\) is a PID, then \(R\) is a field.
+\end{theorem}
+\proof
+
+As \(\langle X \rangle\) is irreducible in \(R[X]\), we find that
+\(R[X] / \langle X \rangle\) is a field by theorem
+\ref{quotient_principle_has_inv_iff}. Now, as
+\(R[X] / \langle X \rangle \cong R\) by considering the first
+isomorphism theorem and the ring homomorphism that maps each polynomial
+to its constant coefficient, we find that \(R\) is a field. \qed
+
+\begin{theorem}
+  Let \(S\) denote the set of maximal ideals of some ring \(R\), then 
+  \[ \bigcup S = R \setminus U(R). \]
+\end{theorem}
+
+\hypertarget{fields-and-adjunction-of-elements}{%
+\subsection{Fields and Adjunction of
+Elements}\label{fields-and-adjunction-of-elements}}
+
+We say a field \(\mathbb{F}\) is a \emph{subfield} of a field
+\(\mathbb{K}\) or that \(\mathbb{K}\) is a \emph{field extension} of
+\(\mathbb{F}\) if and only if \(\mathbb{F}\) is a unital subring of
+\(\mathbb{K}\). If so, then \(\mathbb{K}\) forms a \(\mathbb{F}\)-vector
+space and we call its dimension the \emph{degree} of the field
+extension, this is denoted by
+\(\left| \mathbb{K} : \mathbb{F} \right|\).
+
+\emph{We will come back to this later.}
+
+\hypertarget{more-on-polynomial-rings.}{%
+\subsection{More on Polynomial Rings.}\label{more-on-polynomial-rings.}}
+
+Suppose \(\phi : R \to S\) is a unital ring homomorphism between two
+integral domains, then the mapping \[
+  \hat{\phi} : R[X] \to S[X] : \sum_{i = 0}^n r_i X^i 
+  \mapsto \sum_{i = 0}^n \phi(r_i) X^i
+\] is also a unital ring homomorphism. This can be used to examine
+irreducibility in \(S[X]\) and \(R[X]\) through each other.
+
+\begin{definition}[Primitive]
+  We call \(f \in \mathbb{Z}[X]\) \textit{primitive} if and only if there is no 
+  prime \(p\) dividing all of the coefficients of \(f\).
+\end{definition}
+
+\begin{theorem}
+  A non-constant polynomial \(f \in \mathbb{Z}[X]\) is irreducible in 
+  \(\mathbb{Z}[X]\) if and only if it is primitive and irreducible in 
+  \(\mathbb{Q}[X]\).
+\end{theorem}
+
+\end{document}
