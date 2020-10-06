@@ -1,0 +1,207 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames*,x11names*}{xcolor}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Further Analysis},
+  pdfauthor={Kexing Ying},
+  colorlinks=true,
+  linkcolor=Maroon,
+  filecolor=Maroon,
+  citecolor=Blue,
+  urlcolor=red,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin = 1.5in]{geometry}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{tikz}
+\usepackage{amsthm}
+\usepackage{mathtools}
+\usepackage{lipsum}
+\usepackage[ruled,vlined]{algorithm2e}
+\newtheorem{theorem}{Theorem}
+\newtheorem{prop}{Proposition}
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem*{remark}{Remark}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+
+\title{Further Analysis}
+\author{Kexing Ying}
+\date{May 15, 2020}
+
+\begin{document}
+\maketitle
+
+{
+\hypersetup{linkcolor=}
+\setcounter{tocdepth}{3}
+\tableofcontents
+}
+\hypertarget{real-analysis-in-higher-dimensions}{%
+\section{Real Analysis in Higher
+Dimensions}\label{real-analysis-in-higher-dimensions}}
+
+We continue on first-year analysis in higher dimensions.
+
+\hypertarget{euclidean-spaces}{%
+\subsection{Euclidean Spaces}\label{euclidean-spaces}}
+
+For \(n \ge 1\), the \(n\)-dimensional \emph{Euclidean space} denoted by
+\(\mathbb{R}^n\), is the set of ordered \(n\)-tuples
+\(\mathbf{x} = (x_1, x_2, \cdots, x_n)\) for \(x_i \in \mathbb{R}\).
+Recall that \(\mathbb{R}^n\) is a vector space over \(\mathbb{R}\), we
+can use the usual vector space operations, i.e.~vector addition and
+scalar multiplication. Furthermore, \(\mathbb{R}^n\) forms a inner
+product space with the operation, \[
+  \langle \cdot, \cdot \rangle : \mathbb{R}^n \times \mathbb{R}^n \to 
+  \mathbb{R} : (\mathbf{x}, \mathbf{y}) \mapsto \sum_{i = 1}^n x_i y_i.
+\] Thus, as a inner product space induces a normed vector space, we find
+a natural norm defined for \(\mathbb{R}^n\) by, \[
+  \| \cdot \| : \mathbb{R}^n \to \mathbb{R} : \mathbf{x} \mapsto 
+  \sqrt{\langle \mathbf{x}, \mathbf{x} \rangle} = \sqrt{\sum_{i = 1}^n x_i^2}.
+\] By manually checking, we find that this norm satisfy the norm axioms,
+i.e.~it satisfy the \emph{triangle inequality}, is \emph{absolutely
+scalable}, and \emph{positive definite} (In fact, we do not need the
+norm to be non-negative as it can deduced from the other axioms).
+
+\hypertarget{preliminary-concepts-in-mathbbrn}{%
+\subsubsection{\texorpdfstring{Preliminary Concepts in
+\(\mathbb{R}^n\)}{Preliminary Concepts in \textbackslash mathbb\{R\}\^{}n}}\label{preliminary-concepts-in-mathbbrn}}
+
+Sequences in \(\mathbb{R}^n\) can be defined similarly to that of
+\(\mathbb{R}\), and we carry over all notations in all suitable places.
+
+\begin{definition}[Convergence in \(\mathbb{R}^n\)]
+  We say a sequence \((\mathbf{x}_i)_{i = 1}^\infty \subseteq \mathbb{R}^n\) 
+  converges to \(\mathbf{x} \in \mathbb{R}^n\) if and only if for all 
+  \(\epsilon > 0\), there exists some \(N \in \mathbb{N}\) such that for all 
+  \(i \ge N\), \(\|\mathbf{x}_i - \mathbf{x}\| < \epsilon\).
+\end{definition}
+
+\begin{prop}
+  A sequence \((\mathbf{x}_i)_{i = 1}^\infty \in \mathbb{R}^n\) converges to 
+  \(\mathbf{x} \in \mathbb{R}^n\) if and only if each component of 
+  \(\mathbf{x}_i\) converges to the corresponding component of \(\mathbf{x}\).
+\end{prop}
+
+In the first dimension, we've considered the topology of \(\mathbb{R}\)
+including the examination of open and closed sets. We extend this idea
+for higher dimensions. The most basic examples we have of an open set
+(or closed set for that matter) in \(\mathbb{R}\) are the open and
+closed intervals respectively. This is extended in \(\mathbb{R}^n\) to
+be sets of the form \[
+  \prod_{i = 1}^n (a_i, b_i) := \{\mathbf{x} \mid a_i < \mathbf{x}_i < b_i, 
+  \forall 1 \le i \le n\},
+\] and similarly for closed intervals. However, while this is nice to
+look at, it is not very useful. So for this reason, we again will extend
+the notion of open and closed sets for \(\mathbb{R}^n\).
+
+\begin{definition} [Open Ball]
+  Let \(\mathbf{x} \in \mathbb{R}^n\) and \(r \in \mathbb{R}^+\), we define the 
+  open ball of radius \(r\) about \(\mathbf{x}\) as the set 
+  \[B_r(\mathbf{x}) := \{\mathbf{y} \in \mathbb{R}^n \mid 
+  \| \mathbf{x} - \mathbf{y}\| < r\}\].
+\end{definition}
+\begin{definition} [Open]
+  A set \(U \subseteq \mathbb{R}^n\) is open in \(\mathbb{R}^n\) if and only if 
+  for all \(\mathbf{x} \in U\), there is some \(r \in \mathbb{R}^+\) such that 
+  \(B_r(\mathbf{x}) \subseteq U\).
+\end{definition}
+\begin{definition}[Closed]
+  A set \(U \subseteq \mathbb{R}^n\) is closed if and only if its complement is 
+  open.
+\end{definition}
+
+Straight away from the definition, we can see that every open ball is
+open (see
+\href{https://github.com/JasonKYi/learn_mspaces/blob/master/src/metric_spaces/basic.lean\#L215}{here}).
+Furthermore, we find the union and intersection of two open sets is
+open. In fact, the union and any collection of open sets is also open,
+however, this is not necessarily true for closed sets.
+
+\begin{definition} [Continuity at a Point]
+  Let \(A \subseteq \mathbb{R}^n\) be an open set, and let 
+  \(f : A \to \mathbb{R}^m\). We say \(f\) is continuous at \(p \in A\) if and 
+  only if for all \(\epsilon > 0\) there exists \(\delta > 0\) such that for all 
+  \(x \in A \cap B_\delta(p)\), \(\| f(x) - f(p) \| < \epsilon\).
+\end{definition}
+
+If the function \(f\) is continuous at every point of \(A\), then we say
+\(f\) is continuous on \(A\).
+
+\begin{definition}
+  Let \(A \in \mathbb{R}^n\) be open in \(\mathbb{R}^n\) and let 
+  \(f : A \to \mathbb{R}^m\). For \(p \in A\), we say that the limit of \(f\) as 
+  \(\mathbf{x}\) tends to \(\mathbf{p}\) in \(A\) is equal to 
+  \(\mathbf{q} \in \mathbb{R}^m\) if and only if for all \(\epsilon > 0\), there 
+  exists \(\delta > 0\) such that for all \(x \in A \cap B_\delta(p), x \neq p\),
+  \(\|f(x) - \mathbf{q}\| < \epsilon\).
+\end{definition}
+
+This is the same notion we used for continuity in the first dimension to
+say that \(f\) is continuous at \(p\) if and only if
+\(\lim_{x \to p} f(x) = q\).
+
+\begin{prop}
+  Let \(f : \mathbb{R}^n \to \mathbb{R}^m\) be a function. Then \(f\) is 
+  continuous if and only if for all open subsets \(U\) of \(\mathbb{R}^m\), 
+  \(f^{-1}(U)\) is open in \(\mathbb{R}^n\).
+\end{prop}
+\proof
+
+See
+\href{https://github.com/JasonKYi/learn_mspaces/blob/master/src/metric_spaces/basic.lean\#L257}{here}
+for the proof. \qed
+
+\end{document}
