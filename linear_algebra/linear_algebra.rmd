@@ -22,3 +22,139 @@ header-includes:
   - \newtheorem{definition}{Definition}[section]
 ---
 
+# Introduction
+
+As we have learnt from last year, linear algebra is a important subject 
+regarding matrices, vector spaces, linear maps, and this year we will also take 
+a look at some geometrical interpretations of these concepts.
+
+## Matrices
+
+\begin{definition} [Similar matrices]
+  Let \(A, B \in \mathbb{F}^{n \times n}\) for some field \(\mathbb{F}\). 
+  We say \(A\) is similar to \(B\) if and only if there exists some 
+  \(P \in \mathbb{F}^{n \times n}\) such that, 
+  \[B = P^{-1} A P.\]
+\end{definition}
+
+We recall that *similar* is an equivalence relation and similar matrices shares 
+many useful properties such as 
+\begin{itemize}
+  \item same determinant
+  \item same characteristic polynomial
+  \item same Eigenvalues
+  \item same rank
+\end{itemize}
+and many more. As similar matrices share so many properties, one major aim in 
+linear algebra is to find a "nice" matrix \(B\) given any arbitrary square 
+matrix \(A\) such that \(A\) and \(B\) are similar. We first saw a version of 
+this question last year through the *diagonalisation* of matrices. However, 
+as we have seen, not all matrices are diagonalisable, therefore, in this course, 
+we will take a look at some *weaker* versions that are more general. 
+
+A version of our aim is the triangular theorem which states that; given 
+\(A \in \mathbb{C}^{n \times n}\) (note that this theorem is not true for 
+arbitrary field), there exists (and not uniquely) some upper triangular matrix 
+\(B \in \mathbb{C}^{n \times n}\) such that \(A\) is similar to \(B\).
+
+Another version of this aim is the *Jordan Canonical Form* theorem. 
+It turns out if \(A \in \mathbb{C}^{n \times n}\), then \(A\) is similar to a 
+*unique* matrix in the Jordan canonical form. This theorem is powerful due to 
+the canonical nature of this theorem. One immediate result of this theorem is 
+that we can check whether two matrices are similar to each other by checking 
+where or not they have the same *JCF* (which is computationally easy to do).
+
+However, we see that neither of the above version are theorems over arbitrary 
+fields. The *Rational Canonical Form* attempts to solve this. 
+
+\begin{definition} [Companion matrix]
+  Given an arbitrary field \(\mathbb{F}\), \(p \in \mathbb{F}[X]\) such that 
+  \(p\) is monic (i.e. the coefficient of the highest term of \(p\) is 1) and 
+  \(\deg p = k\), the companion matrix of \(p\) is the the \(k \times k\) matrix 
+  \[C(p) =
+    \begin{bmatrix}
+      0 & 0 & 0 & \cdots & 0 & -a_0 \\
+      1 & 0 & 0 & \cdots & 0 & -a_1 \\
+      0 & 1 & 0 & \cdots & 0 & -a_2 \\
+       &  & \ddots & \ddots & \vdots & \vdots \\
+      0 & 0 & 0 & \cdots & 1 & -a_{k - 1}
+    \end{bmatrix}  
+  \]
+  where \(a_i\) is the coefficient of \(p\) of the term \(X^i\) in 
+  \(\mathbb{F}\).
+\end{definition}
+
+The companion matrix is a nice matrix and it we can in fact show that the 
+characteristic polynomial of the companion matrix of some \(p\) is \(p\).
+
+\begin{theorem}
+  Let \(A \in \mathbb{F}^{n \times n}\) with characteristic polynomial \(p\). 
+  Then, there exists a polynomial factorisation such that 
+  \(p = \prod_{i = 1}^k p_i\) and
+  \[ A \sim
+    \begin{bmatrix}
+      C(p_1) & 0 & \cdots & 0 \\
+      0 & C(p_2) & \cdots & 0 \\
+      \vdots & \vdots & \ddots & \vdots \\
+      0 & 0 & \cdots & C(p_k)
+    \end{bmatrix}.
+  \]
+\end{theorem}
+Furthermore, it turns out this factorisation is unique under certain 
+assumptions which we will take a look at in the course.
+
+## Geometry
+
+Recall the dot product on \(\mathbb{R}^n\) where given 
+\(u, v \in \mathbb{R}^n\), \(\langle u, v \rangle = \sum_{i = 1}^n u_i v_i\).
+Furthermore, recall we also took a look at *orthogonal* and *symmetric* matrices 
+last year. All of these, of course, has geometric interpretations and we will in 
+this part of the course generalise and axiomatise these to the theory of 
+*inner product spaces* of \(V\) over \(\mathbb{R}\).
+We will also extend this theory to arbitrary fields \(\mathbb{F}\) - the 
+*Theory of Bilinear Forms*.
+
+\newpage
+# Algebraic & Geometric Multiplicities of Eigenvalues
+
+We recall some basic definitions and properties of Eigenvectors.
+
+\begin{definition}
+  Let \(V\) be some vector space, \(T : V \to V\) a linear map and \(\lambda\) 
+  an Eigenvalue of \(T\). Then the \(\lambda\)-Eigenspace of \(T\) is the 
+  subspace of \(V\),
+  \[E_\lambda := \{ v \in V \mid (\lambda I_V - T)v = \mathbf{0} \}.\]
+  We see that this is a subspace as it is the kernel of the linear map 
+  \(\lambda I_V - T\).
+\end{definition}
+
+\begin{theorem}
+  Let \(V\) be some vector space, \(T : V \to V\) a linear map. Suppose that 
+  \(\{v_1, \cdots, v_k\}\) are Eigenvectors corresponding to distinct 
+  Eigenvalues \(\lambda_1, \cdots, \lambda_k\), then it is linearly independent.
+\end{theorem}
+\proof
+  We will prove by contrapositive. Suppose that 
+  \(\{v_1, \cdots, v_k\}\) are Eigenvectors that are linearly independent. Then 
+  by definition, there exists a minimal set of \(\{\mu_i \mid i \in I\}\), 
+  such that \(\sum_{i \in I} \mu_i v_i = 0\) (we see that \(\mu_i \neq 0\) for 
+  all \(i\) as otherwise it is not minimal). Now, let \(j \in I\), then by 
+  rewriting, we have \(v_j = \sum_{i \neq j}\mu_i' v_i\). Thus,
+  \[
+    \lambda_j \sum_{i \neq j} \mu_i' v_i = \lambda_j v_j = T(v_j)
+      = T\left(\sum_{i \neq j} \mu_i' v_i\right) 
+      = \sum_{i \neq j} \mu_i' T(v_i) 
+      = \sum_{i \neq j} \mu_i' \lambda_i v_i.
+  \]
+  So, by rearranging, \(0 = \sum_{i \neq j}(\lambda_i - \lambda_j)\mu_i' v_i\). 
+  Now, if for all \(i \neq j\), \(\lambda_i \neq \lambda_j\), we have found a 
+  smaller subset of \(\{v_1, \cdots, v_k\}\) that is linearly dependent, 
+  contradicting our assumption, so there must be some \(i\) such that 
+  \(\lambda_i = \lambda_j\).
+\qed
+
+\begin{corollary}
+  Let \(V\) be a \(n\)-dimensional vector space. Then if the characteristic 
+  polynomial of the linear map \(T : V \to V\) has \(n\) distinct roots, then 
+  \(T\) is diagonalisable. 
+\end{corollary}
