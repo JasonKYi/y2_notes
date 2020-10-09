@@ -70,6 +70,7 @@
 \usepackage{lipsum}
 \usepackage[ruled,vlined]{algorithm2e}
 \newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
 \newtheorem{prop}{Proposition}[theorem]
 \newtheorem{corollary}{Corollary}[theorem]
 \newtheorem*{remark}{Remark}
@@ -136,6 +137,12 @@ If a graph is simple we can then model the edge set of the graph
 points \(v_1, v_2\) can be uniquely represented by \(e = v_1 v_2\)
 (commutative if and only if \(G\) is undirected).
 
+\begin{definition}[Complete Graph]
+  A graph \(G\) is complete if and only if \(G\) is simple and every vertex is 
+  adjacent to every other vertices, i.e. 
+  \(E(G) = \{v_i v_j \mid v_i, v_j \in V(G), i \neq j \}\).
+\end{definition}
+
 \begin{definition}[Adjacent]
   Let \(G := (V(G), E(G))\) be a graph and \(v_1, v_2 \in V(G)\), then \(v_1\) 
   and \(v_2\) are adjacent (or are neighbours) if and only if there exists some 
@@ -147,6 +154,29 @@ points \(v_1, v_2\) can be uniquely represented by \(e = v_1 v_2\)
   such that \(V(P)\) can be ordered in a list such that consecutive vertices are 
   adjacent. On top of this, if this ordering resulted in the first element to be 
   adjacent to the last, then we say \(P\) is a \textit{cycle}.
+\end{definition}
+
+Note that we said \emph{ordered}, so each element of \(V(P)\) can only
+appear once in the arrangement (so no infinite loops back and forth).
+This can be somewhat limiting as sometimes lists with duplicate
+naturally arises, so let us consider the path induced by such a list.
+
+\begin{lemma}\label{mk_path}
+  Let \(G\) be a graph, \(v_1, v_2 \in V(G)\), and \(L\) a finite list of 
+  vertices of \(G\) (possibly with repeats) such that consecutive vertices are 
+  adjacent. Then \(v_1, v_2\) are connected.
+\end{lemma}
+\proof
+
+We present an algorithm to find such a path. While \(L\) contains
+duplicates, find the first pair of duplicates and remove every vertex in
+the sequence between the two duplicates including the last duplicate.
+This algorithm will always terminate as \(L\) is finite. \qed
+
+\begin{definition}[Connected]
+  A graph \(G\) is connected if and only if for all \(u, v \in V(G)\), there 
+  exists a path \(P\) in \(G\) such that the rearrangement of \(P\) begins in 
+  \(u\) and ends in \(v\).
 \end{definition}
 
 \hypertarget{graph-as-models}{%
@@ -197,6 +227,215 @@ jobs respectively are called independent.
   union of two independent sets in \(G\). We call these two independent sets the 
   \textit{partite} sets of \(G\).
 \end{definition}
+
+\hypertarget{graph-isomorphism}{%
+\subsection{Graph Isomorphism}\label{graph-isomorphism}}
+
+Similar to all mathematical structures, there exists a notion of
+isomorphisms between two graphs that are essentially the
+same\footnote{By essentially the 
+same we mean that almost all properties of a graph commutes via an isomorphism.}
+
+\begin{definition}[Isomorphism]
+  An isomorphism from a simple graph \(G\) to a simple graph \(H\) is a 
+  bijection \(f : V(G) \to V(H)\) such that for all \(uv \in E(G)\), 
+  \(f(u)f(v) \in E(H)\). We write \(G \cong H\) as usual.
+\end{definition}
+
+\begin{theorem}
+  Graph isomorphisms is a equivalence relation.
+\end{theorem}
+
+As usual, theorems of the above kind is simply by checking each of the
+properties so we will omit it here. As an equivalence relation induces a
+partition, a set of graphs can be quotiented out by the isomorphism
+relation and we call each element of this quotient an \emph{isomorphism
+class}.
+
+As all graphs in a isomorphism class are pairwise isomorphic to one
+another, they all share graph structures. Therefore, when discussing
+graph structures, it makes sense to talk about a isomorphism class
+rather than a particular graph. When we do this, we will informally call
+it an \emph{unlabeled} graph.
+
+We will now introduce some notations. The unlabeled path and cycle of
+\(n\) vertices is denoted by \(P_n\) and \(C_n\) respectively while the
+complete graph of \(n\) vertices is denoted by \(K_n\). If \(G\) is a
+bipartite graph with \(n\) vertices such that two vertices are adjacent
+if and only if they are in different partite sets, then we call \(G\) a
+complete bipartite graph and denote it by \(K_{r, s}\) where \(r, s\)
+are the sizes of the partite sets.
+
+\hypertarget{trees}{%
+\section{Trees}\label{trees}}
+
+\hypertarget{basic-properties-of-trees}{%
+\subsection{Basic Properties of Trees}\label{basic-properties-of-trees}}
+
+\begin{definition}[Minimally Connected]
+  We say a graph \(G\) is minimally connected if and only if it is connected 
+  and for all \(e \in E(G)\), the graph \((V(G), E(G) \setminus \{e\})\) is not 
+  connected.
+\end{definition}
+
+\begin{definition}[Tree]
+  A tree is a minimally connected graph.
+\end{definition}
+
+\begin{lemma}
+  A tree does not have any cycles.
+\end{lemma}
+\proof
+
+Let \(G\) be a tree and for contradiction suppose \(C \le G\) is a
+cycle. Then by the definition of a cycle, there exists \(v \in V(C)\),
+such that elements of \(V(C)\) can be arranged into a circle of
+consecutively adjacent vertices. Let \(u, v\) be the first and last
+element of \(V(C)\) in the above arrangement, and \(x, y \in V(G')\)
+where \((G' := V(G), E(G) \setminus \{uv\})\). As the there path
+arranged above remains, it follows that \(u\) and \(v\) are connected.
+So, as \(x, y \in V(G') = V(G)\), there exists some path \(P\) from
+\(x\) to \(y\) in \(G\). Now, if \(uv \in E(P)\), we can simply replace
+that with path from \(u\) to \(v\) implying \(G'\) is also connected. \#
+\qed
+
+\begin{lemma}\label{tree_acyclic}
+  The graph \(G\) is a tree if and only if it is connected and acyclic.
+\end{lemma}
+\proof
+
+The forward direction follows directly from the above lemma so it
+suffices to show that \(G\) is minimally connected if it it connected
+and acyclic.
+
+Suppose that \(G\) is not minimally connected, then there exists
+\(uv \in E(G)\) such that \(G' := (V(G), E(G) \setminus \{uv\})\) is
+also connected, so there exists a path \(P\) in \(G'\) from \(u\) to
+\(v\). Now, as this sequence \(P\) by definition begins with \(u\) and
+end with \(v\), and \(u\), \(v\) are adjacent by \(uv\) in \(G\), this
+sequence is therefore a cycle in \(G\). \# \qed
+
+\begin{lemma}
+  Any two vertices on a tree is joined uniquely by a path.
+\end{lemma}
+\proof
+
+Existence is true by the connectedness of a tree so all that remains is
+to prove that the path is unique.
+
+Let \(T\) be a tree, \(x, y \in V(T)\), and \(P_1, P_2\) paths from
+\(x\) to \(y\) in \(T\). Suppose \(P_1 \neq P_2\) and let us denote
+\(p_1, p_2\) the path arrangement. Let
+\(S := \{ n \in \mathbb{N} \mid p_1[n] \neq p_2[n]\}\), then, as
+\(P_1 \neq P_2\), \(S\) is not empty; and the fact that paths are
+finite, \(S\) has a minimum and a maximum value \(i, j\) by the
+well-ordering principle. Now, by connecting \(p_1[i - 1 : j + 1]\) to
+\(p_2[i - 1 : j + 1]\) (both of which index makes sense as \(i > 1\) as
+\(p_1[1] = x = p_2[1]\) and similarly for \(j\)), and by considering
+lemma \ref{mk_path}, we have created a cycle in \(T\). \# \qed
+
+In nature, many trees have \emph{leaves} and therefore, so do our
+graph-theoretic trees (in fact our trees are stronger as \emph{all}
+trees with two or more vertices have at least two leaves).
+
+\begin{definition}[Leaf]
+  A vertex in a tree is a leaf if and only if it has degree one, i.e. it is only 
+  connected to one other vertex.
+\end{definition}
+
+\begin{lemma}\label{two_leaves}
+  A tree with two or more vertices has at least two leaves.
+\end{lemma}
+\proof
+
+Consider the longest path in this tree. It must have a leaf at either
+end of the path as otherwise it is not the longest path in this tree.
+\qed
+
+\begin{lemma}\label{sub_leaf_is_tree}
+  Let \(T\) be a tree and \(v \in V(T)\) a leaf. Then \(T - v\) is also a 
+  tree\footnote{We write \(T - v\) for the graph 
+  \((V(T)\setminus\{v\}, E(T)\setminus S)\) where \(S\) is the set of edges 
+  with \(v\) as an endpoint.}.
+\end{lemma}
+\proof
+
+\(T - v\) is connected as for all \(x, y \in V(T - v)\), \(x, y\) is
+connected in \(T\) by some path \(P\). Now, as \(v \notin V(P)\) since
+if otherwise \(v\) must be on the either end of the path implying either
+\(x\) or \(y\) equals \(v\). Also, as \(v \notin V(P)\), \(e_v\), the
+unique edge with endpoint \(v\) is also not in \(P\), so \(P \le T - v\)
+connecting \(x\), and \(y\).
+
+Thus, by lemma \ref{tree_acyclic}, it suffices to show that \(T - v\) is
+acyclic. This is trivial as if \(C \le T - v\) is a cycle, then it is
+also a cycle in \(T\), so we are done! \qed
+
+\begin{lemma}\label{tree_edges}
+  A tree of \(n\) vertices has \(n - 1\) edges.
+\end{lemma}
+\proof
+
+For convenience let us denote the trees of \(n\) vertices by \(T_n\).
+
+We apply natural number's induction on \(n\). If \(n = 1\) the result is
+trivial. Suppose for \(n = k\), for all \(T_k\),
+\(\left| E(T_k) \right| = k - 1\), and let us consider the case for the
+tree \(T\) with \(n = k + 1\) vertices.
+
+By lemma \ref{two_leaves}, \(T\) has at least two leaves and let \(l\)
+be one of the leaves. Then by lemma \ref{sub_leaf_is_tree}, \(T - l\) is
+a tree of \(n\) vertices, so it has \(k - 1\) number of edges. However,
+as \(l\) is a leaf, there is only one edge with endpoint \(l\), so
+\(\left| E(T) \right| = \left| E(T - v) \right| + 1 = k - 1 + 1 = k\).
+\qed
+
+\begin{lemma}
+  A connected graph \(G\) of \(n\) vertices has at least \(n - 1\) edges.
+\end{lemma}
+\proof
+
+We induct on the number of vertices. As the number of edges of a graph
+is a natural number, it is greater or equal to \(0 = 1 - 1\), so true
+for \(n = 1\).
+
+Suppose \(G\) has \(k + 1\) vertices, then by excluded middle, either
+\(G\) is minimally connected, or it is not. If it is, then it has
+\(n - 1\) edges by the previous lemma so suppose otherwise. Then there
+exists \(v \in V(G)\) such that \(G - v\) is still connected. As
+\(G - v\) has \(k\) vertices, it has at least \(k - 1\) number of edges
+by the inductive hypothesis. Now, as \(G\) is connected, \(v\) is at
+least connected to another vertex, thus, \(G\) has at least \(k\) edges.
+\qed
+
+\begin{lemma}
+  A connected graph \(G\) of \(n\) vertices is a tree if and only if it has 
+  \(n - 1\) edges.
+\end{lemma}
+\proof
+
+The forward direction of the proof is exact lemma \ref{tree_edges} so
+let us consider the reverse direction.
+
+As \(G\) is connected, by lemma \ref{tree_acyclic}, it suffices to show
+that \(G\) is not cyclic. In order to show this, we apply induction on
+the number of vertices of \(G\).
+
+If \(G\) has one vertex, then it is trivially acyclic. Now suppose for
+connected graphs \(G_k\) of \(k\) vertices and \(k - 1\) edges are
+trees, let us consider the connected graph of \(G\) with \(k + 1\)
+vertices and \(k\) edges. If \(G\) is minimally connected then \(G\) is
+acyclic by lemma \ref{tree_acyclic} so suppose that there exists
+\(v \in V(G)\) such that \(G - v\) is connected. Now as \(G\) is
+connected, there exists at least one edge who has endpoint \(v\), so
+\(G - v\) has at most \(k - 1\) edges. However, as \(G - v\) is
+connected, it has at least \(k - 1\) edges by the above lemma so it has
+exactly \(k - 1\) edges and \(v\) is a leaf. Therefore, as \(G - v\) is
+a tree by the inductive hypothesis, we have \(G\) is also a tree. \qed
+
+\hypertarget{minimum-cost-spanning-trees}{%
+\subsection{Minimum Cost Spanning
+Trees}\label{minimum-cost-spanning-trees}}
 
 \hypertarget{working-with-networks}{%
 \section{Working with Networks}\label{working-with-networks}}
