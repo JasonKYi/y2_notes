@@ -433,10 +433,6 @@ connected, it has at least \(k - 1\) edges by the above lemma so it has
 exactly \(k - 1\) edges and \(v\) is a leaf. Therefore, as \(G - v\) is
 a tree by the inductive hypothesis, we have \(G\) is also a tree. \qed
 
-\hypertarget{minimum-cost-spanning-trees}{%
-\subsection{Minimum Cost Spanning
-Trees}\label{minimum-cost-spanning-trees}}
-
 \hypertarget{working-with-networks}{%
 \section{Working with Networks}\label{working-with-networks}}
 
@@ -493,5 +489,131 @@ randomly selected vertex has \(k\) degree.
 Straight away, given some graph \((V(G), E(G))\), let
 \(S := \{ v \in V(G) \mid d(v) = k \}\), then
 \(p_k = \left| S \right| / \left| V(G) \right|\).
+
+\hypertarget{clustering-coefficient}{%
+\subsubsection{Clustering Coefficient}\label{clustering-coefficient}}
+
+The clustering coefficient of a graph attempts to capture the degree to
+which the adjacent nodes of a given node is connected to each other.
+
+\begin{definition}[Clustering Coefficent]
+  Let \(G\) be a graph and \(u \in V(G)\) is a node with degree \(d(u)\), then 
+  the clustering coefficient of \(u\) is 
+  \[
+    C_u = \frac{2 L(u)}{d(u)(d(u) - 1)},
+  \]
+  where \(L(u)\) is the number of edges in \(E(G)\) connecting two neighbours of 
+  \(u\).
+\end{definition}
+
+We note that the clustering coefficient \(C_u\) is a number between 0
+and 1 with \(C_u = 0\) representing none of the adjacent nodes of \(u\)
+is adjacent with each other which \(C_u = 1\) means every adjacent node
+of \(u\) is adjacent to every other adjacent node of \(u\).
+
+If the graph in question is \emph{simple}, then we see that the
+clustering coefficient of some node \(u\) represents the probability
+that two (unique) adjacent nodes of \(u\) are
+adjacent\footnote{This is because \(d(u)(d(u) - 1)\) 
+is the number of ordered combinations of choosing two nodes while for each 
+edge counted by \(L(u)\), it connects two unique parings \((u, v)\) and 
+\((v, u)\).}.
+
+\begin{theorem}
+  An acyclic graph has zero clustering coefficients everywhere.
+\end{theorem}
+\proof
+
+This follows directly from that if there exists some node with
+clustering coefficient greater than 0, it has at least two neighbouring
+nodes which are adjacent to each other. Then we can easily create a path
+starting and ending at this node creating a cycle. \# \qed
+
+\begin{corollary}
+  A tree has zero clustering coefficients everywhere.
+\end{corollary}
+
+By taking the average of the clustering coefficient of every node, we
+have the \emph{average clustering coefficient} which represents the
+degree of clustering over the whole network.
+
+\begin{definition}[Average Clustering Coefficien]
+  Let \(G\) be a graph and for all \(u \in V(G)\) we denoted the clustering 
+  coefficient of \(u\) by \(C_u\), then the average clustering coefficient of 
+  \(G\) is
+  \[\langle C \rangle = \frac{1}{\left| V(G) \right|} \sum_{u \in V(G)} C_u.\]
+\end{definition}
+
+\hypertarget{path-distance}{%
+\subsection{Path \& Distance}\label{path-distance}}
+
+Given a graph \(G\) and two nodes \(u, v \in V(G)\), we would often like
+to quantitatively construct an ordering on these paths. This can be
+achieved through creating a distance function on the set of paths.
+
+\begin{definition}[Distance of Unweighed Paths]
+  Let \(G\) be a graph with unweighed edges and \(u, v \in V(G)\). Suppose that 
+  \(P\) is a path between \(u\) and \(v\) in \(G\), then the distance of \(P\) is
+  \[\text{dist} P = \left| P \right| - 1, \] 
+  where \(\left| P \right|\) denoted the length of the sequence of nodes induced 
+  by \(P\).
+\end{definition}
+
+It is not hard to imagine why such an distance function is useful, and
+why often we might want to look for the shortest path between to nodes
+in a network.
+
+\begin{definition}[Shortest Path]
+  Let \(G\) be a graph and \(u, v \in V(G)\). Suppose we denote \(S\) as the set 
+  of paths between \(u\) and \(v\). Then, we call \(P \in S\) a shortest path 
+  if and only if 
+  \[ \text{dist} P = \min_{Q \in S} \text{dist} Q.\]
+  We denote this distance by \(d_{u, v}\).
+\end{definition}
+
+This definition makes sense as we are work with finite networks, and
+thus, the number of paths between two nodes is finite. We note that the
+shortest path between two nodes is not unique as many paths can have the
+same distance.
+
+We quickly introduce some more definitions. Given a graph \(G\), and a
+path \(P\) in \(G\),
+
+\begin{itemize}
+  \item the \textit{diameter} of \(G\) is \(\max \{d_{u, v} \mid u, v \in V(G)\}\);
+  \item the \textit{average path length} of \(G\) is 
+    \(\frac{1}{\left| S \right|} \sum_{d \in S} d\) 
+    where \(S = \{d_{u, v} \mid u, v \in V(G)\}\);
+  \item \(P\) is an \textit{Eulerian path} if and only if \(E(G) \subseteq P\);
+  \item \(P\) is a \textit{Hamiltonian path} if and only if for all 
+    \(u \in V(G)\), there exists \(e \in P\), \(u\) is an endpoint of \(e\).
+\end{itemize}
+
+\hypertarget{breadth-first-search-bfs-algorithm}{%
+\subsubsection{Breadth-First Search (BFS)
+Algorithm}\label{breadth-first-search-bfs-algorithm}}
+
+The BFS algorithm is an algorithm to determine the shortest distance
+between two nodes of a network.
+
+Let \(G\) be a network and \(u, v \in V(G)\), then
+
+\begin{enumerate}
+  \item For each adjacent nodes \(w\) of \(u\), construct a tuple 
+    \((w, d(w) = 1)\) and put them in a queue.
+  \item While the first element \(w\) of the queue is not equal to \(v\), 
+    for each adjacent node \(x\) of \(w\), construct a tuple 
+    \((x, d(x) = d(w) + 1)\) and remove \(w\) from the queue.
+  \item If the first element of the queue is \(v\), then the distance is simply 
+    \(d(v)\). However, if there is no element remain in the queue, we know that 
+    the two nodes are not connected.
+\end{enumerate}
+
+Note that we can optimize the algorithm by making sure that we do not go
+back to previously visited nodes but that's simply an implementation
+issue on how one can achieve this.
+
+We see that the complexity of this algorithm is \(O(\left|V\right|)\)
+since every node will be explored in the worst case.
 
 \end{document}

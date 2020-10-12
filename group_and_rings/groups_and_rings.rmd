@@ -24,6 +24,8 @@ header-includes:
   - \newtheorem{proposition}{Proposition}[theorem]
 ---
 
+# Groups
+
 # Rings
 
 ## Recap
