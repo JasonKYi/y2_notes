@@ -12,14 +12,18 @@ urlcolor: red
 header-includes:
   - \usepackage{tikz}
   - \usepackage{amsthm}
+  - \usepackage{amsmath}
+  - \usepackage{booktabs}
   - \usepackage{mathtools}
   - \usepackage{lipsum}
   - \usepackage[ruled,vlined]{algorithm2e}
   - \newtheorem{theorem}{Theorem}
+  - \newtheorem{prop}{Proposition}[section]
   - \newtheorem{corollary}{Corollary}[theorem]
   - \newtheorem*{remark}{Remark}
   - \theoremstyle{definition}
   - \newtheorem{definition}{Definition}[section]
+  - \newcommand{\diag}{\mathop{\mathrm{diag}}}
 ---
 
 # Introduction
@@ -115,7 +119,14 @@ We will also extend this theory to arbitrary fields \(\mathbb{F}\) - the
 *Theory of Bilinear Forms*.
 
 \newpage
-# Algebraic & Geometric Multiplicities of Eigenvalues
+
+# More on Linear Algebra
+
+From this point forward, we write \(\sum \mu S\) as a shorthand for 
+\(\sum_{s \in S} \mu_s s\) for some suitable set \(S\) and indexed value 
+\(\mu\).
+
+## Algebraic & Geometric Multiplicities of Eigenvalues
 
 We recall some basic definitions and properties of Eigenvectors.
 
@@ -128,7 +139,7 @@ We recall some basic definitions and properties of Eigenvectors.
   \(\lambda I_V - T\).
 \end{definition}
 
-\begin{theorem}
+\begin{theorem}\label{eigen_li}
   Let \(V\) be some vector space, \(T : V \to V\) a linear map. Suppose that 
   \(\{v_1, \cdots, v_k\}\) are Eigenvectors corresponding to distinct 
   Eigenvalues \(\lambda_1, \cdots, \lambda_k\), then it is linearly independent.
@@ -158,3 +169,323 @@ We recall some basic definitions and properties of Eigenvectors.
   polynomial of the linear map \(T : V \to V\) has \(n\) distinct roots, then 
   \(T\) is diagonalisable. 
 \end{corollary}
+
+We define *algebraic* and *geometric* multiplicity for Eigenvalues.
+
+\begin{definition}[Algebraic and Geometric Multiplicity]
+  Let \(T : V \to V\) be a linear map with characteristic polynomial \(\chi_T\),
+  such that \(\chi_T(\lambda) = 0\) (i.e. \(\lambda\) is an Eigenvalue of \(T\)).
+
+  The algebraic multiplicity of \(\lambda\) is the number \(a(\lambda)\) such 
+  that
+  \[\chi_T(x) = (x - \lambda)^{a(\lambda)} q(x),\]
+  for some polynomial \(q(x)\) where \(q(\lambda) \neq 0\).
+
+  The geometric multiplicity of \(\lambda\) is
+  \[g(\lambda) = \dim E_{\lambda}.\]
+\end{definition}
+
+\begin{prop}
+  Let \(T : V \to V\) be a linear map with an Eigenvalue \(\lambda\), then 
+  \(g(\lambda) \le a(\lambda)\).
+\end{prop}
+\proof
+  Let \(r = g(\lambda) = \dim E_{\lambda}\), then there exits linearly 
+  independent vectors \(v_1, \cdots, v_r\) which forms a basis of 
+  \(E_{\lambda}\). Suppose we extend this to a basis of \(V\), 
+  \[B = \{v_1, \cdots, v_r, w_1, \cdots, w_s\},\]
+  then by working out \(T(b)\) for all \(b \in B\), we find 
+  \(T(v_i) = \lambda v_i\), and \(T(w_i) = \sum \mu_i B\) so, 
+  \[ [T]_B =
+  \left[
+    \begin{array}{@{}c|c@{}}
+      \begin{matrix}
+        \lambda & 0 & \cdots & 0 \\
+        0 & \lambda & \cdots & 0 \\
+        \vdots & \vdots & \ddots & \vdots \\
+        0 & 0 & \cdots & \lambda \\
+      \end{matrix}
+          & 
+      \begin{matrix}
+        \mu_1(v_1) & \mu_2(v_1) & \cdots & \mu_s(v_3) \\
+        \mu_1(v_2) & \mu_2(v_2) & \cdots & \mu_s(v_2) \\
+        \vdots & \vdots & \ddots & \vdots\\
+        \mu_1(v_r) & \mu_2(v_r) & \cdots & \mu_s(v_r)\\
+      \end{matrix} \\
+      \cmidrule[0.4pt]{1-2}
+      \textbf{\text{\huge0}} & \hspace{2mm}
+      \begin{matrix}
+        \mu_1(w_1) & \mu_2(w_1) & \cdots & \mu_s(w_3)\\
+        \mu_1(w_2) & \mu_2(w_2) & \cdots & \mu_s(w_2)\\
+        \vdots & \vdots & \ddots & \vdots &\\
+        \mu_1(w_s) & \mu_2(w_s) & \cdots & \mu_s(w_s)\\
+      \end{matrix} \\
+    \end{array} 
+  \right]. \]
+  We will refer to the four quadrants as \([\lambda], A, \mathbf{0}\) and \(C\) 
+  respectively.
+
+  Thus, by considering the characteristic polynomial of this, we have 
+  \[\chi_{[T]_B} = \det(xI - [T]_B) =  (x - \lambda)^r \det(xI - C),\]
+  implying the algebraic multiplicity of \(\lambda\) is at least \(r\).
+\qed
+
+\begin{theorem}
+  Let \(\dim V = n\) and \(T : V \to V\) be a linear map with distinct 
+  Eigenvalues \(\lambda_1, \cdots, \lambda_r\). Suppose that the characteristic 
+  polynomial of \(T\) is 
+  \[\chi_T = \prod_i (x - \lambda_i)^{a(\lambda_i)},\]
+  (so, \(\sum_i a(\lambda_i) = n\)). Then the following are equivalent,
+  \begin{enumerate}
+    \item \(T\) is diagonalisable;
+    \item \(\sum_i g(\lambda_i) = n\);
+    \item for all \(i\), \(g(\lambda_i) = a(\lambda_i)\).
+  \end{enumerate}
+\end{theorem}
+\proof
+  \(2 \iff 3\) is trivial so let us consider the other cases.
+  
+  \(1 \implies 2\). Suppose \(T\) is diagonalisable, then there exists some 
+  \(B\), a basis of \(V\) consisting of Eigenvectors of \(T\). Then, we can 
+  partition \(B\) into \(F_{\lambda_i} := \{v \in B \mid T(v) = \lambda_i v\}\) 
+  for all Eigenvalues of \(T\). By noting that the subspace induced by 
+  \(F_{\lambda_i}\) is a subspace of the \(\lambda_i\) Eigenspace 
+  \(E_{\lambda_i}\), we have, 
+  \[\sum_i g(\lambda_i) = \sum_i \dim E_{\lambda_i} \ge \sum_i \dim F_{\lambda_i} = n.\]
+  Now, as \(\sum_i g(\lambda_i) \le \sum_i a(\lambda_i) = n\) by the previous 
+  proposition, it follows \(\sum_i g(\lambda_i) = n\).
+
+  \(2 \implies 1\). Suppose \(\sum_i g(\lambda_i) = n\). Let \(B_i\) be the 
+  basis of \(E_{\lambda_i}\) for all \(\lambda_i\) an Eigenvalue and let 
+  \(B = \bigcup B_i\). We can straight away see that \(\left| B \right| = n\) so 
+  it suffices to show that \(B\) is linearly independent. Suppose otherwise, 
+  then there exists an index set \(I \subseteq \{1, \cdots, r\}\),
+  \[\sum_{i \in I} \sum \mu_i B_i = 0\]
+  where \(\sum \mu_i B_i \neq 0\) for all \(i\). Now as 
+  \(\sum \mu_i B_i \in E_{\lambda_i}\), this is a sum of Eigenvectors with 
+  distinct Eigenvalues. However, by theorem \ref{eigen_li}, these Eigenvectors 
+  are there fore linearly independent, so they must be zero. \#
+\qed
+
+## Direct Sums
+
+Recall that we can add subspaces of a vector space together forming another 
+subspace, that is, given \(U_1, U_2 \le V\), 
+\(U_1 + U_2 = \{u_1 + u_2 \mid u_1 \in U_1, u_2 \in U_2\} \le V\). Direct sums 
+is a particular case of this and is closely linked to *block-diagonal* matrices.
+
+\begin{definition}[Direct Sum of Vector Space]
+  Let \(V\) be a vector space with subspaces \(U_1, \cdots, U_k\). We write 
+  \[V = \bigoplus_{i = 1}^k U_i\]
+  for the direct sum of subspaces if every \(v \in V\), there exists unique 
+  \(u_i \in U_i\) for all \(i\) such that \(v = \sum u_i\).
+\end{definition}
+
+\begin{prop}
+  Let \(V\) be a vector space with subspaces \(V_1, V_2\), then 
+  \(V = V_1 \oplus V_2\) if and only if \(V_1 \cap V_2 = \{0_v\}\) and 
+  \(\dim V_1 + \dim V_2 = \dim V\).
+\end{prop}
+\proof
+  Follow your nose.
+\qed
+
+\begin{prop}
+  Let \(V\) be a vector space with subspaces \(V_1, \cdots, V_k\), then 
+  \(V = \bigoplus_{i = 1}^k V_i\) if and only if 
+  \(\sum_{i = 1}^k \dim V_i = \dim V\) and if \(B_i\) is a basis of \(V_i\) then 
+  \(\bigcup_{i = 1}^k B_i\) is a basis of \(V\).
+\end{prop}
+\proof
+  \((\implies)\). Suppose \(V = \bigoplus_{i = 1}^k V_i\), then for all \(i, j\),
+  \(V_i \cap V_j = \{0_V\}\), thus \(B_i \cap B_j = \varnothing\) for all 
+  \(i \neq j\), implying \(\sum_{i = 1}^k \dim V_i = \dim V\) and 
+  \(\left| \bigcup B_i \right| = \dim V\) so it suffices to show that 
+  \(\bigcup B_i\) is linearly independent. However, this is trivial as if 
+  \(\bigcup B_i\) is linearly dependent, then there are two distinct ways of 
+  writing 0 as a sum of vectors in \(V_i\). \#
+
+  \((\impliedby)\). Suppose \(\sum_{i = 1}^k \dim V_i = \dim V\) and 
+  \(\bigcup_{i = 1}^k B_i\) is a basis of \(V\), then it follows,
+  \[V = V_1 + V_2 + \cdots V_k.\]
+  Suppose for contradiction there is two representations of \(v \in V\) where 
+  \(v = \sum v_i = \sum v_i'\). Then, \(v = \sum_i \sum \mu_i B_i = 
+  \sum_i \sum \mu_i' B_i\), and thus, \(0 = \sum_i \sum \mu_i B_i - 
+  \sum_i \sum \mu_i' B_i = \sum_i \sum (\mu_i - \mu_i') B_i\). By rewriting, 
+  \(0 = \sum (\mu_i - \mu_i') \bigcup B_i\), implying \(\bigcup B_i\) is 
+  linearly dependent. \#
+\qed
+
+\begin{definition}[Invariant Subspace]
+  Let \(V\) be a vector space with subspace \(W\) and let \(T : V \to V\) be 
+  a linear map. We say \(W\) is \(T\)-invariant if and only if 
+  \[T(W) \subseteq W.\]
+  We write \(T_W : W \to W\) as the restriction of \(T\) to \(W\).
+\end{definition}
+
+A example of an invariant subspace is the Eigenspace of a linear map since 
+\(T(E_\lambda) = \{ T(v) \mid v \in E_\lambda \} = \{\lambda v \} 
+\subseteq E_\lambda\).
+
+\begin{prop}
+  Let \(T : V \to V\) be a linear map and suppose \(V = \bigoplus V_i\) where 
+  for all \(i\), \(V_i\) is \(T\)-invariant. Let \(B_i\) be a basis of \(V_i\),
+  and \(A_i = [T_{V_i}]_{B_i}\), then 
+  \[[T]_{\bigcup B_i} = \diag (A_1, A_2, \cdots, A_k).\] 
+\end{prop}
+\proof
+  Follows directly from the \(T\)-invariant property of \(V_i\).
+\qed
+
+From the proposition above, we see the close link between direct sums and 
+block diagonal matrices. To further highlight the fact, from this point forward,
+we write \(\bigoplus_{i = 1}^k A_i = \diag (A_!, A_2, \cdots, A_k)\) where 
+\(A_i\) are block matrices.
+
+## Quotient Spaces
+
+Just like other algebraic graphs we have can construct a quotient structure on 
+vector spaces. 
+
+Let \(V\) be a vector space and \(W \le V\), then let
+\(\sim_W : V \to V \to \text{Prop}\) be the binary relation such that 
+\[v_1 \sim_W v_2 \iff v_1 + W = v_2 + W,\]
+where \(v + W = \{v + w \mid w \in W\}\) for all \(v \in V\).
+
+By manually checking, we find this is an equivalence relation and the 
+set \(V / \sim_W\) equipped with the natural addition and scalar multiplication 
+form a vector space. We will write \(V / W\) for this quotient space.
+
+\begin{definition}
+  Given a quotient space \(V / W\), there exists a linear map
+  \[q_W : V \to V / W : v \mapsto v + W.\]
+\end{definition}
+
+\begin{prop}\label{dim_sub}
+  Let \(V\) be a finite dimensional vector space with the subspace \(W\), 
+  then \(\dim V / W = \dim V - \dim W\).
+\end{prop}
+\proof
+  Let \(B_W\) be a basis of \(W\) and \(B_V\) the extension basis of \(V\) from 
+  \(B_W\). Then we easily see that 
+  \(V / W \subseteq \text{sp}(q_W(B_V \setminus B_W))\) as for all \(v \in V\),
+  \(v = \sum \mu B_V\), so \(v + W = q_W(v) = q_W(\sum \mu B_V) = 
+  \sum \mu q_W(B_W) + \sum \mu q_W(B_V \setminus B_W) = \sum 0_{V / W} + 
+  \sum \mu q_W(B_V \setminus B_W) \in \text{sp}(q_W(B_V \setminus B_W))\).
+
+  Now suppose \(q_W(B_V \setminus B_W)\) is not linearly independent in 
+  \(V / W\), then, there exists \(\mu\), \(0 = \sum \mu q_W(B_V \setminus B_W) = 
+  q_W (\sum \mu (B_V \setminus B_W)) \), so \(\sum \mu (B_V \setminus B_W) \in 
+  \ker q_W = W\). If \(\sum \mu (B_V \setminus B_W) = 0_V\), then 
+  \(B_V \setminus B_W\) is not linearly dependent, a contradiction so,
+  \(\sum \mu (B_V \setminus B_W) \neq 0_V\). Now, as 
+  \(\sum \mu (B_V \setminus B_W) \in W\), there is some \(\lambda\), 
+  \(\sum \mu (B_V \setminus B_W) = \sum \lambda B_W\), so 
+  \(\sum \mu (B_V \setminus B_W) - \sum \lambda B_W = 0\) implying \(B_V\) is 
+  not linearly independent. \# 
+\qed
+
+With the above proposition, we have found a method to find a basis of a quotient 
+space \(V / W\) by extending the basis of \(W\).
+
+Let us now consider quotient spaces' relation with linear maps.
+
+\begin{definition}[Quotient Map]
+  Let \(V\) be a vector space and \(W\) a subspace of \(V\). Suppose 
+  \(T : V \to V\) is a linear map and \(W\) is \(T\)-invariant. Then there 
+  is an induced quotient map 
+  \[\bar{T} : V / W \to V / W : q_W(v) \mapsto q_W(T(v)).\]
+\end{definition}
+
+To see that this is well defined, let \(u, v \in V\), \(q_W(u) = q_W(v)\), then 
+\(u - v \in W\) implying \(T(u - v) \in W\) as \(W\) is \(T\)-invariant. Thus, 
+\(0_{V / W} = q_W(T(u - v)) = q_W(T(u) - T(v)) = q_W(T(u)) - q_W(T(v))\) 
+implying \(\bar{T}(u) = \bar{T}(v)\).
+
+\begin{theorem}\label{blocks_quotient}
+  Let \(V\) be a vector space \(W\) a subspace that is \(T\)-invariant for some 
+  \(T : V \to V\) a linear map. Let \(B_W\) be a basis of \(W\), \(B\) the 
+  extended basis of \(V\) from \(B_W\), and \(\bar{B}\) the basis of \(V / W\) 
+  as constructed by proposition \ref{dim_sub}. Then 
+  \[[T]_B = 
+    \left[
+    \begin{array}{c|c}
+      [T_W]_{B_W} & A \\
+      \midrule
+      \mathbf{0} & [\bar{T}]_{\bar{B}}
+    \end{array}
+    \right],
+  \]
+  where \(A\) is some matrix.
+\end{theorem}
+\proof
+  Consider where \(T(v)\) lands whenever \(u \in B_w \subseteq W\), and where 
+  \(\bar{T}(v)\) lands for the rest of the basis vectors. 
+\qed
+
+\begin{corollary}\label{prod_char}
+  Let \(T : V \to V\) be a linear map and \(W \le V\) is \(T\)-invariant, 
+  then \(\chi_T = \chi_{T_W} \chi_{\bar{T}}\) where \(\chi_f\) denotes the 
+  characteristic polynomial of the linear map \(f\). 
+\end{corollary}
+
+## Triangularisation Theorem
+
+We have now arrived at the first major theorem of this course, that under 
+certain conditions we can always triangularise matrices. We will in general 
+work with upper triangular matrices when referring to triangular matrices.
+
+\begin{prop}
+  Let \(A = [a_{i, j}], B = [b_{i, j}] \in M_n(\mathbb{F})\) be triangular, then 
+  \begin{itemize}
+    \item \(\chi_A(x) = \prod_{i = 1}^n (x - a_{i, i})\);
+    \item \(\det A = \prod_{i = 1}^n a_{i, i}\);
+    \item \(AB\) is also triangular with diagonal \(a_{i, i}b_{i, i}\).
+  \end{itemize}
+\end{prop}
+
+The Triangularisation theorem states:
+\begin{theorem}
+  Let \(V\) be a finite dimensional vector space over some field \(\mathbb{F}\), 
+  and let \(T : V \to V\) be a linear map. Suppose the the characteristic 
+  polynomial of \(T\), \(\chi_T\) factorises into a product of linear factors, 
+  i.e. there exists \(\lambda_i \in \mathbb{F}\), 
+  \[\chi_T(x) = \prod (x - \lambda_i),\]
+  then, there exists a basis \(B\) of \(V\) such that \([T]_B\) is upper 
+  triangular.
+\end{theorem}
+
+Straight away, we see a version of this in terms of matrices instead of 
+linear maps in which the matrix is *similar* to a triangular matrix. We also 
+note that, for some fields, such as the complex numbers \(\mathbb{C}\), we can 
+always triangularise any matrix (by *FTA*). This might not be the case for other 
+fields such as the real numbers.
+
+\proof
+  We induct on the dimension of \(V\). The theorem is trivial when 
+  \(\dim V = 1\), so let us consider the case when \(\dim V = k + 1\) under 
+  the inductive hypothesis. 
+
+  As \(\chi_T\) factorises, \(T\) has an Eigenvalue \(\lambda\) and some 
+  Eigenvector \(v \in V\). Let \(W = \text{sp}(v)\) be a \(T\)-invariant 
+  subspace of \(V\). Then, by proposition \ref{dim_sub}, \(V / W\) has dimension 
+  \(k\) and we have the induced quotient map \(\bar{T} : V / W \to V / W\). 
+  Now, by corollary \ref{prod_char}, \(\prod (x - \lambda_i) = \chi_T(x) = 
+  \chi_{\bar{T}}(x) \chi_{T_W}(x) = \chi_{T_W}(x)(x - \lambda)\). So, 
+  \(\chi_{T_W}(x)\) is a polynomial of degree \(k\) which factorises. Then by 
+  our inductive hypothesis, there exists a basis \(\bar{B}\) such that 
+  \([\bar{T}]_{\bar{B}}\) is triangular. Then by theorem \ref{blocks_quotient},
+  we have found a basis \(B\), \([T]_B\) is triangular.
+\qed
+
+\begin{corollary}
+  Let \(A \in M_n(\mathbb{C})\) with Eigenvalues \(\lambda_i\). Then 
+  \(\sum g(\lambda_i)\lambda_i = \mathop{\mathrm{tr}}(A)\).
+\end{corollary}
+\proof
+  By the triangularisation theorem, \(A = PQP^{-1}\) where \(Q\) is triangular.
+  As \(A\) and \(Q\) have the same Eigenvectors, it suffices to show that 
+  \(\mathop{\mathrm{tr}}(A) = \mathop{\mathrm{tr}}(Q)\). But this follows as 
+  \(\mathop{\mathrm{tr}}(A) = \mathop{\mathrm{tr}}(PQP^{-1}) = 
+  \mathop{\mathrm{tr}}(P^{-1}PQ) = \mathop{\mathrm{tr}}(Q)\).
+\qed
