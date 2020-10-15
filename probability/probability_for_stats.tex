@@ -85,7 +85,7 @@
 
 {
 \hypersetup{linkcolor=}
-\setcounter{tocdepth}{2}
+\setcounter{tocdepth}{3}
 \tableofcontents
 }
 \hypertarget{introduction}{%
@@ -169,6 +169,106 @@ probability space. We will call \(\Omega\) the \emph{sample space},
 \(\mathcal{F}\) the \emph{events} and for all \(A \in \mathcal{F}\),
 \(\mathbb{P}(A)\) the \emph{probability} of the event \(A\).
 
+\hypertarget{some-properties-of-the-probability-measure}{%
+\subsubsection{Some Properties of the Probability
+Measure}\label{some-properties-of-the-probability-measure}}
+
+\begin{theorem}\label{cont_pmeasure}
+  Let \((\Omega, \mathcal{F}, \mathbb{P})\) be a probability space with 
+  \((A_i)_{i = 1}^\infty\) an increasing sequence in \(\mathcal{F}\), then 
+  \[\mathbb{P}\left(\bigcup_i A_i\right) = \lim_{i \to \infty} \mathbb{P}(A_i).\]
+\end{theorem}
+\proof
+
+Follows from additivity of the probability measure by writing
+\(\bigcup_i A_i\) as the disjoint union
+\(A_1 \sqcup \bigsqcup_i (A_{i + 1} \setminus A_i)\). \qed
+
+A corollary of the above is immediately deduced by considering the
+complement of a decreasing function.
+
+\begin{corollary}
+  Let \((\Omega, \mathcal{F}, \mathbb{P})\) be a probability space with 
+  \((A_i)_{i = 1}^\infty\) a decreasing sequence in \(\mathcal{F}\), then 
+  \[\mathbb{P}\left(\bigcap_i A_i\right) = \lim_{i \to \infty} \mathbb{P}(A_i).\]
+\end{corollary}
+
+In fact the two above propositions apply to general measures with
+identical proofs.
+
+\begin{theorem}
+  Suppose \((\Omega, \mathcal{F})\) is a measurable space with the finitely 
+  additive function \(\mathbb{P} : \mathcal{F} \to [0, 1]\) such that theorem 
+  \ref{cont_pmeasure} holds, then \(\mathbb{P}\) is a probability measure.
+\end{theorem}
+\proof
+
+Let \((A_i)_{i = 1}^\infty\) be a sequence of disjoint sequence in
+\(\mathcal{F}\), then, let us define \(B_n = \bigcup_{i = 1}^n A_i\). As
+\(\sigma\)-algebras are closed under unions, \(B_n \in \mathcal{F}\) for
+all \(n\). Now, by assumption, as \((B_n)\) is increasing,
+\(\mathbb{P}\left(\bigsqcup_i A_i \right)  = \mathbb{P}\left(\bigcup_n B_n\right) = \lim_{n \to \infty} \mathbb{P}(B_n)  = \lim_{n \to \infty} \mathbb{P}\left(\bigcup_{i = 1}^n A_i \right)  = \lim_{n \to \infty} \sum_{i = 1}^n \mathbb{P}(A_i)  = \sum_{i = 1}^\infty \mathbb{P}(A_i)\)
+where the second to last equality if true by finite additivity. \qed
+
+\hypertarget{the-lebesgue-measure}{%
+\subsubsection{The Lebesgue Measure}\label{the-lebesgue-measure}}
+
+As the point of measures in general is to assign sets (in the relevant
+\(\sigma\)-algebra) to some number, it might be useful to take a look at
+the most famous measure of them all -- the Lebesgue measure.
+
+In the easiest terms, the Lebesgue measure is a measure, that maps the
+interval \([a, b] \subseteq \mathbb{R}\) to the real number \(b - a\).
+In probability, we can think of this as \(\mathbb{P}([a, b])\), or the
+probability of \(X \in [a, b]\) where \(X\) is a random variable with
+uniform distribution, (we will talk more about what this means in the
+next section).
+
+In this course, we will assume the Lebesgue measure exists (and in fact,
+is unique which we shall prove from first principle in next term's
+measure theory course).
+
+It turns out that a lot of sets are Lebesgue measurable, in fact, the
+set of sets that are Lebesgue measurable is greater than the Borel
+\(\sigma\)-algebra. However, unfortunately, not all sets a Lebesgue
+measurable. We will give an example of a non-Lebesgue measurable set
+here called the Vitali set.
+
+\begin{definition}[The Vitali Set]\label{vitali}
+  Let \(\Omega := [0, 2\pi)\), then we can some probability measure \(\mathbb{P}\) 
+  such that \(\mathbb{P}(s) = \frac{\beta - \alpha}{2\pi}\) corresponding to 
+  the Lebesgue measure. Now, let \(\sim\) be the equivalence relation such that 
+  \(x \sim y\) if and only if \(x - y\) is a rational multiple of \(2\pi\). 
+  As \(\sim\), 
+  is an equivalence relation, it partitions \(\Omega\), so there is a set of 
+  equivalence classes \(\Omega / \sim\). Now, by using the axiom of choice,
+  the Vitali set is defined to be the set \(A\) choosing one element from 
+  each equivalence classes in \(\Omega / \sim\).
+\end{definition}
+
+\begin{theorem}
+  The Vitali Set is not measurable with respect to the measure in 
+  theorem \ref{vitali}.
+\end{theorem}
+\proof
+
+We suppose for contradiction that the Vitali set is measurable. As
+\(\mathbb{Q}\) is countable, let \(x_1, x_2, \cdots\) be the enumeration
+of all rational multiples of \(2\pi\) in \([0, 2\pi)\). Now, define
+\(A_i := A + x_i = \{a + x_i \mid a \in A\}\). We see that \(A_i, A_j\)
+are disjoint for all \(i \neq j\) since if there exists some
+\(a \in A + x_i \cap A + x_j\), so there exists \(\alpha, \beta \in A\),
+\(\alpha + x_i = a = \beta + x_j\), so \(\alpha \sim \beta\) implying
+\(\alpha = \beta\) by the construction of \(A\) and hence,
+\(x_i = x_j\). Now, as \(\Omega = \bigsqcup_{i = 1}^\infty A_i\), we
+have
+\(1  = \mathbb{P}(\Omega) = \mathbb{P}(\bigsqcup_{i = 1}^\infty A_i)  = \sum \mathbb{P}(A_i)\).
+However, as the Lebesgue measure is transitional invariant, for all
+\(i, j\), \(\mathbb{P}(A_i) = \mathbb{P}(A_j)\), so
+\(1 = \sum \mathbb{P}(A_i) = \lim_{i \to \infty} i \mathbb{P}(A_1)\)
+which results in a contradiction by applying excluded middle on
+\(\mathbb{P}(A_1) = 0\). \qed
+
 \hypertarget{random-variables}{%
 \subsection{Random variables}\label{random-variables}}
 
@@ -230,12 +330,14 @@ variables is also induced.
   generated by these functions is 
   \[
     \sigma(\{f_i \mid i \in I\}) := 
-    \sigma(\{f^{-1}(A) \mid A \in \mathcal{B}(\mathbb{R})\}).  
+    \sigma(\{f_i^{-1}(A) \mid A \in \mathcal{B}(\mathbb{R}), i \in I\}).  
   \]
 \end{definition}
 
 Note that with this definition, we created the smallest
-\(\sigma\)-algebra on \(E\) such that all \(f_i\) are measurable.
+\(\sigma\)-algebra on \(E\) such that all \(f_i\) are measurable and for
+a single function \(f\),
+\(\sigma(\{f \mid i \in I\}) = \{f^{-1}(A) \mid A \in \mathcal{B}(\mathbb{R})\}\).
 
 \begin{definition}[Independence of Random Variables]
   Let \((\Omega, \mathcal{F}, \mathbb{P})\) be a probability space and \((X_n)\) 

@@ -410,12 +410,12 @@ A example of an invariant subspace is the Eigenspace of a linear map
 since
 \(T(E_\lambda) = \{ T(v) \mid v \in E_\lambda \} = \{\lambda v \} \subseteq E_\lambda\).
 
-\begin{prop}
+\begin{theorem}
   Let \(T : V \to V\) be a linear map and suppose \(V = \bigoplus V_i\) where 
   for all \(i\), \(V_i\) is \(T\)-invariant. Let \(B_i\) be a basis of \(V_i\),
   and \(A_i = [T_{V_i}]_{B_i}\), then 
   \[[T]_{\bigcup B_i} = \mathop{\mathrm{diag}}(A_1, A_2, \cdots, A_k).\] 
-\end{prop}
+\end{theorem}
 \proof
 
 Follows directly from the \(T\)-invariant property of \(V_i\). \qed
@@ -425,6 +425,23 @@ and block diagonal matrices. To further highlight the fact, from this
 point forward, we write
 \(\bigoplus_{i = 1}^k A_i = \mathop{\mathrm{diag}}(A_!, A_2, \cdots, A_k)\)
 where \(A_i\) are block matrices.
+
+\begin{corollary}
+  Let \(A = \bigoplus_{i = 1}^r A_i\) and let \(\pi \in S_r\). Then 
+  \(A \sim A' := \bigoplus_{i = 1}^r A_{\pi(i)}\).
+\end{corollary}
+\proof
+
+Let the vector space \(V\) in the above theorem be the span of the
+columns of \(A\) and \(V_i\) the span of columns of \(A_i\) with the
+missing entries filled with zero. Then it is not hard to see
+\(V = \bigoplus V_i\). Now, by letting \(T : V \to V : v \mapsto A v\),
+we see that for all \(i\), \(V_i\) is \(T\)-invariant and
+\(T_{V_i} = v \mapsto A_i v\), so, by taking the basis \(B\) to be the
+standard basis, we have \(A = [T]_B\). Now, by permuting the standard
+basis by \(pi\), resulting in the basis \(B'\), we have
+\(A' = [T]_{B'}\), and so, by letting \(P\) be the change of basis
+matrix from \(B \to B'\), we have shown \(A \sim A'\). \qed
 
 \hypertarget{quotient-spaces}{%
 \subsection{Quotient Spaces}\label{quotient-spaces}}
