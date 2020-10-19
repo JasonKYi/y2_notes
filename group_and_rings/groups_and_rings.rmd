@@ -22,9 +22,35 @@ header-includes:
   - \newtheorem*{remark}{Remark}
   - \newtheorem{definition}{Definition}[theorem]
   - \newtheorem{proposition}{Proposition}[theorem]
+  - \newcommand{\image}{\mathop{\mathrm{Im}}}
 ---
 
 # Groups
+
+## On the First Isomorphism Theorem
+
+We recall that if \(G, H\) are groups and \(f : G \to H\) is a group homomorphism, 
+then the first isomorphism theorem states that \(G / \ker f \cong \image f\).
+This can be visualised with the following diagram where \(q\) is the surjective 
+map \(q : G \to G / \ker f : g \mapsto g \ker f\). 
+\[
+  \xymatrix @ R=1.2cm @ C=1.2cm {
+  G \ar[r]^{q} \ar[rd]_{f} & G / \ker f \ar[d]^{f'} \\
+  & \image f
+  }
+\]
+
+\begin{theorem}
+  Let \(G\) be a group and \(N \triangleleft G\), then there is a 1 to 1 
+  correspondence, that is a bijection, between the subgroups of \(G / N\) and 
+  the subgroups of \(G\) containing \(N\). The same is true for normal subgroups.
+\end{theorem}
+\proof
+  See [here](https://github.com/ImperialCollegeLondon/group-theory-game/blob/master/src/hom/isomorphism.lean#L391).
+\qed
+
+This theorem is commonly refereed to as the *correspondence theorem* or the 
+*fourth isomorphism theorem*.
 
 # Rings
 

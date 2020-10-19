@@ -76,6 +76,7 @@
 \newtheorem*{remark}{Remark}
 \newtheorem{definition}{Definition}[theorem]
 \newtheorem{proposition}{Proposition}[theorem]
+\newcommand{\image}{\mathop{\mathrm{Im}}}
 
 \title{Groups and Rings}
 \author{Kexing Ying}
@@ -91,6 +92,35 @@
 }
 \hypertarget{groups}{%
 \section{Groups}\label{groups}}
+
+\hypertarget{on-the-first-isomorphism-theorem}{%
+\subsection{On the First Isomorphism
+Theorem}\label{on-the-first-isomorphism-theorem}}
+
+We recall that if \(G, H\) are groups and \(f : G \to H\) is a group
+homomorphism, then the first isomorphism theorem states that
+\(G / \ker f \cong \mathop{\mathrm{Im}}f\). This can be visualised with
+the following diagram where \(q\) is the surjective map
+\(q : G \to G / \ker f : g \mapsto g \ker f\). \[
+  \xymatrix @ R=1.2cm @ C=1.2cm {
+  G \ar[r]^{q} \ar[rd]_{f} & G / \ker f \ar[d]^{f'} \\
+  & \mathop{\mathrm{Im}}f
+  }
+\]
+
+\begin{theorem}
+  Let \(G\) be a group and \(N \triangleleft G\), then there is a 1 to 1 
+  correspondence, that is a bijection, between the subgroups of \(G / N\) and 
+  the subgroups of \(G\) containing \(N\). The same is true for normal subgroups.
+\end{theorem}
+\proof
+
+See
+\href{https://github.com/ImperialCollegeLondon/group-theory-game/blob/master/src/hom/isomorphism.lean\#L391}{here}.
+\qed
+
+This theorem is commonly refereed to as the \emph{correspondence
+theorem} or the \emph{fourth isomorphism theorem}.
 
 \hypertarget{rings}{%
 \section{Rings}\label{rings}}

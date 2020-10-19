@@ -213,7 +213,7 @@ space, most commonly the real numbers equipped with \(\mathcal{B}(\mathbb{R})\).
 
 \begin{definition}[Random Variables]
   Let \((\Omega, \mathcal{F}, \mathbb{P})\) be a probability space and 
-  \(E, \mathcal{A}\) be a measurable space. Then an \(E\)-valued random variable 
+  \((E, \mathcal{A})\) be a measurable space. Then an \(E\)-valued random variable 
   is a measurable function \(X : \Omega \to E\).
 \end{definition}
 
@@ -225,6 +225,37 @@ ask questions such as "what is the probability that \(X \in A\)" for some
 \(A \subseteq \text{Im} X\). We now see that this question is asking for exactly 
 \(\mathbb{P}(X \in A) = \mathbb{P}(X^{-1}(A))\) (this makes sense as \(X\) is 
 measurable).
+
+\begin{theorem}
+  If \((\Omega, \mathcal{F}, \mathbb{P})\) is a probability space and 
+  \(X : \Omega \to \mathbb{R}\) is a function. Then \(X\) is a 
+  \(\mathbb{R}\)-valued random variable if and only if for all 
+  \(x \in \mathbb{R}\),
+  \[\{\omega \in \Omega \mid X(\omega) \le x\} \in \mathcal{F}.\]
+\end{theorem}
+\proof
+  The forward direction is trivial so let us consider the reverse. 
+  Suppose for all \(x \in \mathbb{R}\), 
+  \(\{\omega \in \Omega \mid X(\omega) \le x\} = X^{-1}((-\infty, x]) \in \mathcal{F}\). 
+  Then, for all \(a, b \in \mathbb{R}\), \(a < b\), 
+  \(X^{-1}((-\infty, a]), X^{-1}((-\infty, b]) \in \mathcal{F}\), so 
+  \(X^{-1}((-\infty, a])^c = X^{-1}((a, \infty)) \in \mathcal{F}\), and thus, 
+  \(X^{-1}((a, \infty)) \cap X^{-1}((-\infty, b]) = X^{-1}((a, b]) \in \mathcal{F}\).
+\qed
+
+Let us now consider some properties we can but on these random variables. 
+
+\begin{definition}[Identically Distributed Random Variables]
+  Let \(X, Y\) be two real valued random variables. We say \(X\) and \(Y\) are 
+  identically distributed if for all \(S \in \mathcal{B}(\mathbb{R})\), 
+  \[\mathbb{P}(X \in S) = \mathbb{P}(Y \in S).\]
+\end{definition}
+
+We note that two random variables are identically distributed does not imply 
+they are equal, that is they are not necessarily the same function. An easy 
+example of this if to let \(X, Y\) be the number of heads and tails of \(n\) coin 
+flips. We see that \(X, Y\) are identically distributed by symmetry but 
+definitely not equal.
 
 Another property that is useful for random variables is the notion of 
 independence. 

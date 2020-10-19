@@ -17,10 +17,12 @@ header-includes:
   - \usepackage[ruled,vlined]{algorithm2e}
   - \newtheorem{theorem}{Theorem}
   - \newtheorem{prop}{Proposition}
-  - \newtheorem{corollary}{Corollary}[theorem]
+  - \newtheorem{corollary}{Corollary}[section]
   - \newtheorem*{remark}{Remark}
   - \theoremstyle{definition}
   - \newtheorem{definition}{Definition}[section]
+  - \newtheorem{lemma}{Lemma}[section]
+  - \newcommand{\diag}{\mathop{\mathrm{diag}}}
 ---
 
 # Real Analysis in Higher Dimensions
@@ -90,7 +92,7 @@ and closed sets for \(\mathbb{R}^n\).
   \| \mathbf{x} - \mathbf{y}\| < r\}\].
 \end{definition}
 \begin{definition} [Open]
-  A set \(U \subseteq \mathbb{R}^n\) is open in \(\mathbb{R}^n\) if and only if 
+  A set \(U \subseteq \mathbb{  R}^n\) is open in \(\mathbb{R}^n\) if and only if 
   for all \(\mathbf{x} \in U\), there is some \(r \in \mathbb{R}^+\) such that 
   \(B_r(\mathbf{x}) \subseteq U\).
 \end{definition}
@@ -136,4 +138,145 @@ that \(f\) is continuous at \(p\) if and only if \(\lim_{x \to p} f(x) = q\).
 \proof
   See [here](https://github.com/JasonKYi/learn_mspaces/blob/master/src/metric_spaces/basic.lean#L257) 
   for the proof.
+\qed
+
+### Derivative of Maps in Euclidean Spaces
+
+Let \(\Omega\) be a open in \(\mathbb{R}^n\), and \(f : \Omega \to \mathbb{R}^m\) 
+be a "nice behaving map". We poses the question on how we should define the 
+notion of derivatives for this mapping at some point \(p \in \Omega\). We recall 
+that the derivative at a point \(p\) in the first dimension is defined to be 
+\[f'(p) = \lim_{x \to p}\frac{f(x) - f(p)}{x - p}.\]
+While we see that this equation makes no sense if we simply generalise this 
+equation to higher dimensions, we see the following result.
+
+\begin{lemma}
+  Let \(f : S \to \mathbb{R}\) where \(S \subseteq \mathbb{R}\), then \(f\) is 
+  differentiable at some \(p \in S\) if and only if there exists some 
+  \(\lambda \in \mathbb{R}\) such that 
+  \[\lim_{x \to p} \left|\frac{f(x) - A_\lambda(x)}{x - p}\right| = 0,\]
+  where \(A_\lambda(x) = \lambda(x - p) + f(p)\).
+\end{lemma}
+\proof
+  Follows from algebraic manipulation.
+\qed
+
+With this, we can conclude that \(f(x) - A_\lambda(x)\) tends to zero faster 
+than \(x - p\). We will generalise this result to higher dimensions.
+
+We may rewrite \(A_\lambda(x) = \lambda(x - p) + f(p) = 
+\lambda x + (f(p) + \lambda p)\), so, we see that \(\lambda\) is the translation 
+of a linear map \(\lambda x\), i.e. \(A_\lambda = 
+(x \mapsto x + (f(p) + \lambda p)) \circ (x \mapsto \lambda x)\). We can easily 
+generalise such maps to higher dimensions and we call such maps *affine maps*.
+
+\begin{definition}[Differentiable Functions in \(\mathbb{R}^n\)]
+  Recall the definition of linear maps for general vector spaces which we will 
+  use in the context of Euclidean spaces. Let \(L(\mathbb{R}^n; \mathbb{R}^m)\) 
+  denote the set of linear maps from \(\mathbb{R}^n\) to \(\mathbb{R}^m\), 
+  \(\Omega \subseteq \mathbb{R}^n\) be open, and \(f : \Omega \to \mathbb{R}^m\) 
+  be a function. Then we say \(f\) is differentiable at some point 
+  \(p \in \Omega\) if and only if there exists some 
+  \(\Lambda \in L(\mathbb{R}^n; \mathbb{R}^m)\), such that 
+  \[ \lim_{x \to p} \frac{\| f(x) - (\Lambda(x - p) + f(p))\|}{\|x - p\|} = 0.
+  \]
+  If this is true, we write \(Df(p) = \Lambda\) and call \(\Lambda\) the 
+  derivative of \(f\) at \(p\).
+\end{definition}
+\begin{remark}
+  Some book refers to \(Df(p)\) as the total derivative of \(f\) at \(p\).
+\end{remark}
+
+It is often useful to express the derivative criterion as 
+\[\lim_{h \to 0} \frac{\|f(p + h) - f(p) - \Lambda(h)\|}{\| h \|} = 0.\]
+
+\begin{prop}
+  Let \(f_i : (a, b) \to \mathbb{R}\) be differentiable for all \(i\), then the 
+  function, \(f : (a, b) \to \mathbb{R}^m : x \mapsto (f_i(x))_{i = 1}^m\) is 
+  differentiable for all \(p \in (a, b)\).
+\end{prop}
+\proof
+  Let the Jacobian \(\Lambda = \text{diag}(\lambda_i)\) where \(\lambda_i\) is 
+  the derivative of \(f_i\) at \(p\). Then I claim, \(Df(p) = \Lambda p\).
+
+  Consider 
+  \[\lim_{h \to 0} \frac{\|f(p + h) - f(p) - \Lambda h\|}{\| h \|} = 
+  \lim_{h \to 0} \frac{\sqrt{\sum_{i = 0}^m \left|f_i(p + h) - f_i(p) - \lambda_i h\right|}}
+  {\| h \|}.\]
+  However, for all \(i\), \(\| h \| \ge \left| h_i \right|\), so
+  \[ \lim_{h \to 0}
+  \frac{\sqrt{\sum_{i = 0}^m \left|f_i(p + h) - f_i(p) - \lambda_i h\right|}}
+  {\| h \|} \le \lim_{h \to 0} \sum_{i = 0}^m
+  \sqrt{\frac{\left|f_i(p + h) - f_i(p) - \lambda_i h\right|}
+  {\left| h_i \right|}} = 0\]
+\qed
+
+A lot of results from the first dimension generalises easily to higher dimensions.
+Similar to that of the first dimension, the chain rule in general Euclidean spaces states,
+
+\begin{theorem}
+  Let \(\Omega \subseteq \mathbb{R}^n\) and \(\Omega' \subseteq \mathbb{R}^m\) 
+  be open sets with \(g : \Omega \to \Omega'\) be differentiable at \(p \in \Omega\) 
+  and \(f : \Omega' \to \mathbb{R}^l\) be derivatives at \(g(p)\). Then 
+  \(h = f \circ g\) is differentiable at \(p\) with derivative 
+  \[Dh(p) = Df(g(p)) \circ Dg(p).\] 
+\end{theorem}
+\proof
+  Similar to the proof of the Chain rule in the first dimension using algebraic 
+  manipulation.
+\qed
+
+Omitted many examples here, check official lecture notes for these examples.
+
+### Directional Derivatives
+
+Although the definition of derivative in dimension one and higher is similar, 
+it is different in that we verify whether a linear map is the total derivative 
+at a point instead of computing the limit of some equation. This is difficult as 
+often times, it is not easy to guess what the derivative of a function is. Thus, 
+it is useful to somehow identify candidate linear maps for the derivative.
+
+Assume \(\Omega \subseteq \mathbb{R}^n\) is open and \(f : \Omega \to \mathbb{R}^m\) 
+is a differentiable function at some \(p \in \Omega\). Let \(v \in \mathbb{R}^n\) 
+be a unit vector. We would like to identify \(Df(p)[v] \in \mathbb{R}^m\).  
+
+By the definition of derivatives in higher dimensions, 
+\[\lim_{h \to 0} \frac{\|f(p + h) - f(p) - \Lambda h\|}{\| h \|} = 0. \]
+So, by letting \(t \in \mathbb{R}\), we have 
+\begin{align*}
+  0 & = \lim_{t \to 0} \frac{\|f(p + tv) - f(p) - \Lambda (tv)\|}{\| tv \|}\\
+    & = \lim_{t \to 0} \frac{\|f(p + tv) - f(p) - t\Lambda v\|}{\left| t \right|}\\
+    & = \lim_{t \to 0} \frac{\|f(p + tv) - f(p)\|}{\left|t\right|} - 
+        \Lambda v,\\
+\end{align*}
+So, \(\lim_{t \to 0} \|f(p + tv) - f(p)\| / \left|t\right| = \Lambda v\). Thus, 
+by finding the limits of the above equation for each basis vector \(v \in B\), 
+we find the Jacobian \([\Lambda]_B\).
+\begin{remark}
+  For notation, we denote the limit as 
+  \(\lim_{t \to 0} \|f(p + tv) - f(p)\| / \left|t\right|\) as 
+  \(\partial f / \partial v \mid_p\) and we call it the directional derivative 
+  of \(f\) in the direction of \(v\) at \(p\). We will normally consider the 
+  directional derivatives in the direction of the standard basis and we call 
+  them the partial derivatives of \(f\) at \(p\).
+\end{remark}
+
+\begin{theorem}
+  Let \(\Omega \subseteq \mathbb{R}^n\) be open, and 
+  \(f : \Omega \to \mathbb{R}^m : x \mapsto [f_i(x)]\) for 
+  \(i \in \{1, \cdots m\}\) is differentiable at some \(p \in \Omega\). Then 
+  the Jacobian of \(f\) at \(p\) is \([\partial f_i / \partial e_j \mid_p]_{i, j}\).
+\end{theorem} 
+\proof
+  We recall that the Jacobian is simply the matrix form of the linear map that 
+  is the derivative. So, for all \(v \in \mathbb{R}^n\), we have 
+  \(J v = Df(p)(v)\). As, \(v \in \mathbb{R}^n\), it can be represented as a sum 
+  of the standard basis, that is there exists \(v_i \in \mathbb{R}\), 
+  \(v = \sum_{i = 1}^n v_i e_i\), so, \(Df(p)(v) = Df(p)(\sum_{i = 1}^n v_i e_i)
+  = \sum_{i = 1}^n v_i Df(p)(e_i) 
+  = \sum_{i = 1}^n v_i \partial f / \partial e_i \mid_p
+  = [\sum_{i = 1}^n v_i \partial f_j / \partial e_i \mid_p]_j
+  = [\partial f_i / \partial e_j \mid_p]_{i, j} v\). 
+  (We used the fact that \([\partial f / \partial e_i]_j 
+  = \partial f_j / \partial e_i\).)
 \qed
