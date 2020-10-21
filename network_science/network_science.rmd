@@ -519,3 +519,44 @@ can achieve this.
 
 We see that the complexity of this algorithm is \(O(\left|V\right|)\) since every 
 node will be explored in the worst case. 
+
+## Random Networks
+
+While sometimes we do have a concrete network on hand to work this, this is not 
+often the case, thus, it is sometimes useful to model the behaviours of networks 
+with random networks. 
+
+There are two main definitions of a random network. The \(G(N, L)\) model 
+represents a random network with \(N\) nodes and \(L\) randomly placed edges 
+while \(G(N, p)\) model changes the number of edges with the probability of two 
+nodes to be connected. We will refer to these two models as *Erdos* and *Gilbert* 
+respectively.
+
+### Some Properties of the Gilbert Model
+
+In the section we will let \(G = G(N, p)\) be a Gilbert random network. As the 
+number of edges in \(G\) is characterised solely by the probability \(p\), \(G\) 
+can any number of edges between 0 and \(\begin{pmatrix} n \\ k \end{pmatrix}\), 
+so it is useful to consider the probability that \(G\) has \(n\) edges.
+
+We see straight away that the probability that \(G\) has \(n\) edges equals 
+the sum of the probabilities that \(G\) equals to some graph \(G_i\) with 
+\(\left| E(G_i) \right| = n\), so 
+\[\mathbb{P}(\left| E(G) \right| = n) = \sum_{\left| E(G_i) \right|}\mathbb{P}(G = G_i)
+  = \sum p^n (1 - p)^{N (N - 1) / 2 - n},\] 
+so it suffices to find the number of possible graphs with \(N\) nodes and \(n\) 
+edges. This is simply \(\begin{pmatrix} N (N - 1) / 2 \\ n \end{pmatrix}\), thus, 
+the probability of \(G\) having \(n\) edges is 
+\[\begin{pmatrix} N (N - 1) / 2 \\ n \end{pmatrix}p^n (1 - p)^{N (N - 1) / 2 - n}.\]
+In fact, this is the binomial distribution with parameters \(N (N - 1) / 2\) and 
+\(n\).
+
+We might also find the degree distribution of \(G\) to be useful. Let 
+\(v \in V(G)\), we recall the degree distribution is the probability that \(v\) 
+is connected to \(k\) other nodes. As there are in total \(N\) nodes, \(v\) can 
+at most connect to \(N - 1\) other nodes each with a success possibility of \(p\).
+Thus, the degree distribution of \(G\) is 
+\[p_k = \begin{pmatrix} N - 1 \\ k \end{pmatrix} p^k (1 - p)^{N - 1 - k}, \]
+that is, a binomial distribution with parameters \(N - 1\) and \(p\).
+
+We recall that for large \(n\) and small \(p\) such that \(n \approx p^{-1}\), 

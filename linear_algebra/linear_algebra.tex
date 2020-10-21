@@ -73,11 +73,13 @@
 \usepackage[ruled,vlined]{algorithm2e}
 \newtheorem{theorem}{Theorem}
 \newtheorem{prop}{Proposition}[section]
+\newtheorem{lemma}{Lemma}[section]
 \newtheorem{corollary}{Corollary}[theorem]
 \newtheorem*{remark}{Remark}
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[section]
 \newcommand{\diag}{\mathop{\mathrm{diag}}}
+\newcommand{\lcm}{\mathop{\mathrm{lcm}}}
 
 \title{Further Linear Algebra}
 \author{Kexing Ying}
@@ -197,8 +199,8 @@ will also extend this theory to arbitrary fields \(\mathbb{F}\) - the
 
 \newpage
 
-\hypertarget{more-on-linear-algebra}{%
-\section{More on Linear Algebra}\label{more-on-linear-algebra}}
+\hypertarget{more-on-vector-spaces}{%
+\section{More on Vector Spaces}\label{more-on-vector-spaces}}
 
 From this point forward, we write \(\sum \mu S\) as a shorthand for
 \(\sum_{s \in S} \mu_s s\) for some suitable set \(S\) and indexed value
@@ -598,5 +600,254 @@ to show that \(\mathop{\mathrm{tr}}(A) = \mathop{\mathrm{tr}}(Q)\). But
 this follows as
 \(\mathop{\mathrm{tr}}(A) = \mathop{\mathrm{tr}}(PQP^{-1}) =  \mathop{\mathrm{tr}}(P^{-1}PQ) = \mathop{\mathrm{tr}}(Q)\).
 \qed
+
+\hypertarget{polynomials}{%
+\section{Polynomials}\label{polynomials}}
+
+\hypertarget{cayley-hamilton-theorem}{%
+\subsection{Cayley-Hamilton Theorem}\label{cayley-hamilton-theorem}}
+
+Recall that given a polynomial \(p(x) = \sum_{i = 0}^n a_i x^i\), we
+write \(p(T)\) as the linear map \(\sum_{i = 0}^n a_i T^i\) for the
+linear map \(T : V \to V\) and similarly for matrices. Then, the
+Cayley-Hamilton theorem states the famous result that, given a linear
+map \(T : V \to V\), if \(\chi_T\) is the characteristic polynomial of
+\(T\), then \(\chi_T(T) = 0\). We will prove this theorem within this
+chapter.
+
+Straight away, we see that the result is trivial if the matrix in
+question is diagonal (or thus, similar to a diagonal matrix) since if
+\(A = \mathop{\mathrm{diag}}(\lambda_i)\),
+\(p(A) = \mathop{\mathrm{diag}}(p(\lambda_i))\) for any polynomial
+\(p\). In fact, by similar argument, we find the theorem is also true
+for triangular matrices, and thus, by the triangularisation theorem, the
+Cayley-Hamilton theorem is true for vector spaces over the complex
+numbers (see problem sheet 3). However, this is less trivial for general
+matrices over arbitrary fields which we shall provide a proof here.
+
+\begin{lemma}\label{no_proper}
+  Let \(T : V \to V\) be a linear map such that there does not exists a proper 
+  non-trivial \(T\)-invariant subspace of \(V\). Suppose \(\dim V = n\), then 
+  the set \(B := \{v, T(v), T^2(v), \cdots, T^{n - 1}(v)\}\) forms a basis of 
+  \(V\) for any non-zero \(v \in V\). 
+\end{lemma}
+\proof
+
+As \(\left| B \right| = n\), it suffices to show that it is linearly
+independent. Suppose otherwise, then there exists some \(\mu\), such
+that \(\sum \mu B = 0\). Then, we can choose \(i\) such that \(i\) is
+the largest number in which \(T^i(v) = \sum_{i \neq j} \mu_j T^j(v)\).
+But then, for all \(u \in \text{sp}(B), u = \sum \lambda T^i(v)\), so
+\(T(u) =  T(\sum \lambda T^i(v)) = \sum \lambda T^{i + 1}(v)\). Now, as
+\(T^{n + 1}(v)  = T^{n + 1 - k}(T^k(v)) = T^{n + 1 - k}(\sum_{i \neq j} \mu_j T^j(v))  = \sum_{i \neq j} \mu_j T^{n + 1 - k + j}(v) \in \text{sp}(B)\)
+as \(n + 1 - k + j \le n\) for all \(j\) as \(k\) is the largest. Thus,
+\(\text{sp}(B)\) is a proper and non-trivial \(T\)-invariant subspace.
+\# \qed
+
+\proof (Cayley-Hamilton Theorem) Let \(T : V \to T\) be a linear map and
+\(\chi_T\) be the characteristic polynomial of \(T\). We will induct on
+the dimension of \(T\), \(n\).
+
+The \(n = 1\) case is trivial, so let us suppose the inductive
+hypothesis for dimensions \(\le k\) and we will prove this theorem for
+\(n = k\).
+
+Suppose first that there exists a proper and non-trivial \(T\)-invariant
+subspace \(W\) of \(V\) and suppose it has basis \(B_W\). We can then
+extend this basis to a basis \(B\) of \(V\) such that \[[T]_B = 
+    \left[
+      \begin{array}{c|c}
+        [T_W]_{B_W} & A \\
+        \midrule
+        \mathbf{0} & [\bar{T}]_{\bar{B}}
+      \end{array}
+      \right]. \] Now, we recall that
+\(\chi_T = \chi_{T_W} \chi_{\bar{T}}\), so, \begin{align*}
+    \chi_T([T]_B) & = \chi_{T_W}([T]_B) \chi_{\bar{T}}([T]_B)\\
+    & = 
+    \left[
+      \begin{array}{c|c}
+        \chi_{T_W}([T_W]_{B_W}) & A \\
+        \midrule
+        \mathbf{0} & \chi_{T_W}([\bar{T}]_{\bar{B}})
+      \end{array}
+    \right]
+    \left[
+      \begin{array}{c|c}
+        \chi_{\bar{T}}([T_W]_{B_W}) & A \\
+        \midrule
+        \mathbf{0} & \chi_{\bar{T}}([\bar{T}]_{\bar{B}})
+      \end{array}
+    \right]\\
+    & = 
+    \left[
+      \begin{array}{c|c}
+        \mathbf{0} & A \\
+        \midrule
+        \mathbf{0} & \chi_{T_W}([\bar{T}]_{\bar{B}})
+      \end{array}
+    \right]
+    \left[
+      \begin{array}{c|c}
+        \chi_{\bar{T}}([T_W]_{B_W}) & A \\
+        \midrule
+        \mathbf{0} & \mathbf{0}
+      \end{array}
+    \right]\\
+    & = \mathbf{0},
+  \end{align*} where we write \(A\) for arbitrary block matrix and the
+second to last equality is due to the inductive hypothesis.
+
+Suppose now that there does not exists a non-trivial proper
+\(T\)-invariant subspace of \(V\). Then by lemma \ref{no_proper}, the
+set \(B := \{v, T(v), \cdots, T^n(v)\}\) forms a basis of \(V\). Now, we
+see that \([T]_B\) is a companion matrix resulting in
+\(\chi_{[T]_B}(x) = \sum a_i x^i\), where \(a_i\) are chosen such that
+\(T^{n + 1} = \sum -a_i T^i(v)\). But
+\(T^{n + 1} = \sum -a_i T^i(v) \iff \sum_{i = 0}^{n + 1} -a_i T^i(v) = 0\)
+where we let \(a_{n + 1} = 1\), so we have
+\(\chi_{[T]_B}([T]_B(v)) =  \sum_{i = 0}^{n + 1} -a_i T^i(v) = 0\).
+
+Thus, by the law of excluded middle, we have Cayley-Hamilton. \qed
+
+\hypertarget{some-theories-on-polynomials}{%
+\subsection{Some Theories on
+Polynomials}\label{some-theories-on-polynomials}}
+
+Let \(\mathbb{F}\) be a field, then we denote the ring formed by the
+polynomials over \(\mathbb{F}\) as \(\mathbb{F}[X]\). And we will
+develop the theories of greatest common divisor, least common multiple,
+and polynomial prime factorisation for this ring.
+
+\begin{theorem}[Euclidean Algorithm]
+  Let \(f, g \in \mathbb{F}[X]\) such that \(\deg g \ge 1\). Then there 
+  exists \(q, r \in \mathbb{F}[X]\), \(f = q g + r\) where \(r = 0\) or 
+  \(\deg r < \deg g\).
+\end{theorem}
+\proof
+
+We induct on the degree of \(f\), \(n\). For \(n = 0\), we can choose
+\(q = 0\) and \(r = f\) and we are done. Let's now assume \(n = k + 1\)
+alongside the inductive hypothesis.
+
+Let's write \(f(x) = a_{k + 1}x^{k + 1} + \cdots\) and
+\(g(x) = a_m x^m + \cdots\). Then, we can write
+\(f_1 = f - a_{k + 1} b_m^{-1} x^{n - m} g\), where
+\(\deg f_1 \le \deg f\). So by the inductive hypothesis, there exists
+some \(q, r \in \mathbb{F}[X]\) such that \(f_1 = q g + r\) and
+\(\deg r \le \deg g\). Then,
+\(f = f_1 + a_{k + 1} b_m^{-1} x^{n - m} g  = (q + a_{k + 1} b_m^{-1} x^{n - m}) g + r\).
+\qed
+
+\begin{definition}[Greatest Common Divisor]
+  Let \(f, g \in \mathbb{F}[X] \setminus \{0\}\). Then we say \(d \in \mathbb{F}[X]\) 
+  is the greatest common divisor of \(f\) and \(g\), \(\gcd(f, g)\) if and only 
+  if \(d \mid f, d \mid g\) and for all \(e \mid f\) and \(e \mid g\), \(e \mid d\). 
+\end{definition}
+
+Straight away, we see that, unlike the integers, the greatest common
+divisor is of two polynomials is not unique as we can simply multiply
+the gcd by any scalar and receive another gcd. However, if we quotient
+out by this relation
+(\(\sim : \mathbb{F}[X] \to \mathbb{F}[X] \to \text{Prop} : f, g \mapsto \exists \lambda \in \mathbb{F} \setminus \{0\}, f = \lambda g\)),
+the gcd turns out to be unique (see problem sheet 3) and exists.
+
+\begin{theorem}
+  If \(f, g \in \mathbb{F}[X] \setminus \{0\}\), then the \(\gcd(f, g)\) exists.
+\end{theorem}
+\proof
+
+Same argument as the integers by repeatedly applying the Euclidean
+algorithm. \qed
+
+\begin{definition}[Coprime]
+  We call two polynomials \(f, g \in \mathbb{F}[X]\) to be coprime if and only if
+  \(\gcd(f, g) = 1\).
+\end{definition}
+
+\begin{theorem}[Bezout's]
+  If \(f, g, d \in \mathbb{F}[X]\) such that \(d = \gcd(f, g)\), then there 
+  exists \(r, s \in \mathbb{F}[X]\) such that \(d = r f + s g\).
+\end{theorem}
+
+Now that we have established some basic properties about polynomials, we
+would like to consider what it might mean to be a prime polynomial.
+
+\begin{definition}[Irreducible]
+  A polynomial \(f \in \mathbb{F}[X]\) is irreducible over \(\mathbb{F}\) if 
+  and only if \(\deg f \ge 1\) and there does not exists 
+  \(g, h \in \mathbb{F}[X]\), \(\deg g, \deg h < \deg f\) such that \(f = gh\). 
+\end{definition}
+\begin{remark}
+  We see that this definition of irreducibility is consistent with the one we 
+  have defined in ring theory since, \(\langle f \rangle\) is not a maximal 
+  ideal if and only if there exists \(g \in \mathbb{F}[X]\), 
+  \(\langle f \rangle \subset \langle g \rangle \subset \mathbb{F}[X]\) and 
+  hence, \(f \in \langle g \rangle\) implying there exists 
+  \(h \in \mathbb{F}[X], f = gh\).
+\end{remark}
+
+Given \(p \in \mathbb{Q}[X]\), it is usually difficult to decide whether
+or not it is irreducible. However, there is some tools that can help us
+determine the irreducibility of some rational polynomials.
+
+\begin{theorem}
+  Let \(p \in \mathbb{Q}[X]\) be a monic polynomial with integer coefficients.
+  Then, 
+  \begin{itemize}
+    \item if \(\alpha \in \mathbb{Q}\) is a root of \(p\), then 
+      \(\alpha \in \mathbb{Z}\);
+    \item if \(p\) is irreducible over \(\mathbb{Q}\), then it has a monic
+      factorisation \(q, r\), where \(q, r\) also have integer coefficients. 
+  \end{itemize}
+\end{theorem}
+\proof
+
+The first part follows easily while the other is Gauss' lemma. \qed
+
+\begin{theorem}
+  Let \(p \in \mathbb{F}[X]\) be irreducible, and \(a, b \in \mathbb{F}[X]\), 
+  if \(p \mid ab\), then \(p \mid a\) or \(p \mid b\).
+\end{theorem}
+\proof
+
+Suppose \(p \nmid a\), then \(\gcd(p, q) = 1\) and by Bezout's, there
+exists \(r, s \in \mathbb{F}[X]\) such that \(rp + sa = 1\) so
+\(b = rpb + sab\). Now, as \(p \mid ab\), there exists
+\(q \in \mathbb{F}[X]\) such that \(ab = pq\) and so \(b = (rb + sq)p\)
+and thus \(p \mid b\). \qed
+
+\begin{theorem}[Unique factorisation Theorem for Polynomials]
+  Let \(f \in \mathbb{F}[X]\) with \(\deg f \ge 1\), then there exists a unique 
+  sequence of polynomials \((p_i)_{i = 1}^r \subset \mathbb{F}[X]\), such that 
+  \(f = \prod p_i\).
+\end{theorem}
+\proof
+
+Let us first prove existence. We induct on the degree of \(f\). For
+\(\deg f = 1\), the result is trivial so let use consider the theorem
+with \(\deg f = k + 1\) with the inductive hypothesis. Now, if \(f\) is
+irreducible, the result follows so suppose otherwise. Then \(f\) can be
+factorised into two polynomials with degree less than that of \(f\).
+But, by the inductive hypothesis, these two polynomial can be
+factorised, so, by multiplying their factors, can \(f\) be factorised.
+
+Let us now prove uniqueness. Suppose now
+\(f = \prod_{i = 1}^r p_i =  \prod_{j = 1}^s q_j\). Then, by considering
+that for all \(i\) \(p_i \mid q_j\) for some \(j\), the result follows.
+\qed
+
+Lastly, we conclude on defining the least common multiple for
+polynomials.
+
+\begin{definition}[Least Common Mulitple]
+  Let \(f, g \in \mathbb{F}[X]\), then the least common multiple of \(f\) and 
+  \(g\), \(\mathop{\mathrm{lcm}}(f, g)\) is the polynomial \(h\) such that \(f \mid h, g \mid h\) 
+  and for all \(k \in \mathbb{F}[X]\), if \(f \mid k\) and \(g \mid k\), then 
+  \(h \mid k\).
+\end{definition}
+
+Similarly to the greatest common multiple, we find the least common
+multiple exists and is unique (up to scalar multiplication).
 
 \end{document}
