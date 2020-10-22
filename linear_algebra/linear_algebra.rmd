@@ -26,6 +26,7 @@ header-includes:
   - \newtheorem{definition}{Definition}[section]
   - \newcommand{\diag}{\mathop{\mathrm{diag}}}
   - \newcommand{\lcm}{\mathop{\mathrm{lcm}}}
+  - \newcommand{\End}{\mathop{\mathrm{End}}}
 ---
 
 # Introduction
@@ -126,14 +127,15 @@ We will also extend this theory to arbitrary fields \(\mathbb{F}\) - the
 
 From this point forward, we write \(\sum \mu S\) as a shorthand for 
 \(\sum_{s \in S} \mu_s s\) for some suitable set \(S\) and indexed value 
-\(\mu\).
+\(\mu\). We will also write \(T \in \End(V)\) for \(T\) is an endomorphism of 
+\(V\), that is, a linear map \(T : V \to V\).
 
 ## Algebraic & Geometric Multiplicities of Eigenvalues
 
 We recall some basic definitions and properties of Eigenvectors.
 
 \begin{definition}
-  Let \(V\) be some vector space, \(T : V \to V\) a linear map and \(\lambda\) 
+  Let \(V\) be some vector space, \(T \in \End(V)\) a linear map and \(\lambda\) 
   an Eigenvalue of \(T\). Then the \(\lambda\)-Eigenspace of \(T\) is the 
   subspace of \(V\),
   \[E_\lambda := \{ v \in V \mid (\lambda I_V - T)v = \mathbf{0} \}.\]
@@ -142,7 +144,7 @@ We recall some basic definitions and properties of Eigenvectors.
 \end{definition}
 
 \begin{theorem}\label{eigen_li}
-  Let \(V\) be some vector space, \(T : V \to V\) a linear map. Suppose that 
+  Let \(V\) be some vector space, \(T \in \End(V)\) a linear map. Suppose that 
   \(\{v_1, \cdots, v_k\}\) are Eigenvectors corresponding to distinct 
   Eigenvalues \(\lambda_1, \cdots, \lambda_k\), then it is linearly independent.
 \end{theorem}
@@ -168,14 +170,14 @@ We recall some basic definitions and properties of Eigenvectors.
 
 \begin{corollary}
   Let \(V\) be a \(n\)-dimensional vector space. Then if the characteristic 
-  polynomial of the linear map \(T : V \to V\) has \(n\) distinct roots, then 
+  polynomial of the linear map \(T \in \End(V)\) has \(n\) distinct roots, then 
   \(T\) is diagonalisable. 
 \end{corollary}
 
 We define *algebraic* and *geometric* multiplicity for Eigenvalues.
 
 \begin{definition}[Algebraic and Geometric Multiplicity]
-  Let \(T : V \to V\) be a linear map with characteristic polynomial \(\chi_T\),
+  Let \(T \in \End(V)\) be a linear map with characteristic polynomial \(\chi_T\),
   such that \(\chi_T(\lambda) = 0\) (i.e. \(\lambda\) is an Eigenvalue of \(T\)).
 
   The algebraic multiplicity of \(\lambda\) is the number \(a(\lambda)\) such 
@@ -188,7 +190,7 @@ We define *algebraic* and *geometric* multiplicity for Eigenvalues.
 \end{definition}
 
 \begin{prop}
-  Let \(T : V \to V\) be a linear map with an Eigenvalue \(\lambda\), then 
+  Let \(T \in \End(V)\) be a linear map with an Eigenvalue \(\lambda\), then 
   \(g(\lambda) \le a(\lambda)\).
 \end{prop}
 \proof
@@ -233,7 +235,7 @@ We define *algebraic* and *geometric* multiplicity for Eigenvalues.
 \qed
 
 \begin{theorem}
-  Let \(\dim V = n\) and \(T : V \to V\) be a linear map with distinct 
+  Let \(\dim V = n\) and \(T \in \End(V)\) be a linear map with distinct 
   Eigenvalues \(\lambda_1, \cdots, \lambda_r\). Suppose that the characteristic 
   polynomial of \(T\) is 
   \[\chi_T = \prod_i (x - \lambda_i)^{a(\lambda_i)},\]
@@ -319,7 +321,7 @@ is a particular case of this and is closely linked to *block-diagonal* matrices.
 \qed
 
 \begin{definition}[Invariant Subspace]
-  Let \(V\) be a vector space with subspace \(W\) and let \(T : V \to V\) be 
+  Let \(V\) be a vector space with subspace \(W\) and let \(T \in \End(V)\) be 
   a linear map. We say \(W\) is \(T\)-invariant if and only if 
   \[T(W) \subseteq W.\]
   We write \(T_W : W \to W\) as the restriction of \(T\) to \(W\).
@@ -330,7 +332,7 @@ A example of an invariant subspace is the Eigenspace of a linear map since
 \subseteq E_\lambda\).
 
 \begin{theorem}
-  Let \(T : V \to V\) be a linear map and suppose \(V = \bigoplus V_i\) where 
+  Let \(T \in \End(V)\) be a linear map and suppose \(V = \bigoplus V_i\) where 
   for all \(i\), \(V_i\) is \(T\)-invariant. Let \(B_i\) be a basis of \(V_i\),
   and \(A_i = [T_{V_i}]_{B_i}\), then 
   \[[T]_{\bigcup B_i} = \diag (A_1, A_2, \cdots, A_k).\] 
@@ -352,7 +354,7 @@ we write \(\bigoplus_{i = 1}^k A_i = \diag (A_!, A_2, \cdots, A_k)\) where
   Let the vector space \(V\) in the above theorem be the span of the columns of 
   \(A\) and \(V_i\) the span of columns of \(A_i\) with the missing entries 
   filled with zero. Then it is not hard to see \(V = \bigoplus V_i\). Now, by 
-  letting \(T : V \to V : v \mapsto A v\), we see that for all \(i\), \(V_i\) is 
+  letting \(T \in \End(V) : v \mapsto A v\), we see that for all \(i\), \(V_i\) is 
   \(T\)-invariant and \(T_{V_i} = v \mapsto A_i v\), so, by taking the basis 
   \(B\) to be the standard basis, we have \(A = [T]_B\). Now, by permuting the 
   standard basis by \(pi\), resulting in the basis \(B'\), we have 
@@ -410,7 +412,7 @@ Let us now consider quotient spaces' relation with linear maps.
 
 \begin{definition}[Quotient Map]
   Let \(V\) be a vector space and \(W\) a subspace of \(V\). Suppose 
-  \(T : V \to V\) is a linear map and \(W\) is \(T\)-invariant. Then there 
+  \(T \in \End(V)\) is a linear map and \(W\) is \(T\)-invariant. Then there 
   is an induced quotient map 
   \[\bar{T} : V / W \to V / W : q_W(v) \mapsto q_W(T(v)).\]
 \end{definition}
@@ -422,7 +424,7 @@ implying \(\bar{T}(u) = \bar{T}(v)\).
 
 \begin{theorem}\label{blocks_quotient}
   Let \(V\) be a vector space \(W\) a subspace that is \(T\)-invariant for some 
-  \(T : V \to V\) a linear map. Let \(B_W\) be a basis of \(W\), \(B\) the 
+  \(T \in \End(V)\) a linear map. Let \(B_W\) be a basis of \(W\), \(B\) the 
   extended basis of \(V\) from \(B_W\), and \(\bar{B}\) the basis of \(V / W\) 
   as constructed by proposition \ref{dim_sub}. Then 
   \[[T]_B = 
@@ -442,7 +444,7 @@ implying \(\bar{T}(u) = \bar{T}(v)\).
 \qed
 
 \begin{corollary}\label{prod_char}
-  Let \(T : V \to V\) be a linear map and \(W \le V\) is \(T\)-invariant, 
+  Let \(T \in \End(V)\) be a linear map and \(W \le V\) is \(T\)-invariant, 
   then \(\chi_T = \chi_{T_W} \chi_{\bar{T}}\) where \(\chi_f\) denotes the 
   characteristic polynomial of the linear map \(f\). 
 \end{corollary}
@@ -465,7 +467,7 @@ work with upper triangular matrices when referring to triangular matrices.
 The Triangularisation theorem states:
 \begin{theorem}
   Let \(V\) be a finite dimensional vector space over some field \(\mathbb{F}\), 
-  and let \(T : V \to V\) be a linear map. Suppose the the characteristic 
+  and let \(T \in \End(V)\) be a linear map. Suppose the the characteristic 
   polynomial of \(T\), \(\chi_T\) factorises into a product of linear factors, 
   i.e. there exists \(\lambda_i \in \mathbb{F}\), 
   \[\chi_T(x) = \prod (x - \lambda_i),\]
@@ -514,9 +516,9 @@ fields such as the real numbers.
 
 Recall that given a polynomial \(p(x) = \sum_{i = 0}^n a_i x^i\), we write 
 \(p(T)\) as the linear map \(\sum_{i = 0}^n a_i T^i\) for the linear map 
-\(T : V \to V\) and similarly for matrices. Then, the Cayley-Hamilton theorem 
+\(T \in \End(V)\) and similarly for matrices. Then, the Cayley-Hamilton theorem 
 states the famous result that, given a linear map 
-\(T : V \to V\), if \(\chi_T\) is the characteristic polynomial of \(T\), then 
+\(T \in \End(V)\), if \(\chi_T\) is the characteristic polynomial of \(T\), then 
 \(\chi_T(T) = 0\). We will prove this theorem within this chapter.
 
 Straight away, we see that the result is trivial if the matrix in question is 
@@ -529,7 +531,7 @@ less trivial for general matrices over arbitrary fields which we shall provide a
 proof here.
 
 \begin{lemma}\label{no_proper}
-  Let \(T : V \to V\) be a linear map such that there does not exists a proper 
+  Let \(T \in \End(V)\) be a linear map such that there does not exists a proper 
   non-trivial \(T\)-invariant subspace of \(V\). Suppose \(\dim V = n\), then 
   the set \(B := \{v, T(v), T^2(v), \cdots, T^{n - 1}(v)\}\) forms a basis of 
   \(V\) for any non-zero \(v \in V\). 
@@ -746,3 +748,49 @@ Lastly, we conclude on defining the least common multiple for polynomials.
 
 Similarly to the greatest common multiple, we find the least common multiple 
 exists and is unique (up to scalar multiplication).
+
+## Minimal Polynomial
+
+We will in this section take a look at the minimal polynomial and some of its 
+applications.
+
+\begin{definition}[Minimal Polynomial]
+  The minimal polynomial of \(T \in \End(V)\) is the non-zero monic polynomial 
+  \(m_T(x)\) of least degree such that \(m_T(T) = x \mapsto 0\).
+\end{definition}
+
+Straight away, we see \(m_T \mid \chi_T\) as, by the Euclidean algorithm, there 
+exists \(q, r \in \mathbb{F}[X]\) such that \(\chi_T = q m_T + r\) where 
+\(\deg r < \deg m_T\) if \(r \neq 0\). By evaluating with \(T\) on both sides, we have 
+\(0 = r(T)\), so \(r\) annihilates \(T\). But this contradicts the minimality 
+of \(m_T\), so \(r = 0\).
+
+\begin{theorem}
+  Let \(T \in \End(V)\), and suppose there exists a non-zero polynomial \(p\) of 
+  degree greater than 0 such that \(p\) annihilates \(T\) and \(p\) can be 
+  factored into distinct roots. Then \(T\) is diagonalisable. 
+\end{theorem}
+\proof
+  Suppose we write \(p(x) = \prod(x - \lambda_i)\), then, it suffices to show 
+  that \(\dim \ker (\prod(T - \lambda_i)) \le \sum \dim \ker(T - \lambda_i)\) as 
+  the kernel of \(\prod(T - \lambda_i)\) is \(V\) while the latter is the sum 
+  of the dimensions of the Eigenspaces. This can be proved by showing 
+  \(\dim \ker T_1 T_2 \le \dim \ker T_1 + \dim \ker T_2\) and applying induction
+  (which is a nice exercise).
+\qed
+
+\begin{theorem}
+  Let \(T \in \End(V)\), then \(\lambda\) is an Eigenvalue of \(T\) if and only 
+  if \(m_T(\lambda) = 0\).
+\end{theorem}
+\proof
+  \((\implies)\) If \(\lambda\) is an Eigenvalue of \(T\) then there exists 
+  non-zero \(v \in V\), \(T(v) = \lambda v\), then 
+  \(0 = m_T(T)(v) = \sum a_i T^i(v) = \sum a_i \lambda^i v = m_T(\lambda)v\).
+  Now, as \(v\) is non-zero, \(m_T(\lambda) = 0\).
+
+  \((\impliedby)\) Backwards direction follows straight away as if
+  \(m_T(\lambda) = 0\), as \(m_T \mid \chi_T\) there exists some polynomial \(p\)
+  such that \(\chi_T = m_T p\) and thus, \(\chi_T(\lambda) 
+  = m_T(\lambda)p(\lambda) = 0\), and hence, is an Eigenvalue.
+\qed
