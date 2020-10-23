@@ -520,7 +520,7 @@ can achieve this.
 We see that the complexity of this algorithm is \(O(\left|V\right|)\) since every 
 node will be explored in the worst case. 
 
-## Random Networks
+# Random Networks
 
 While sometimes we do have a concrete network on hand to work this, this is not 
 often the case, thus, it is sometimes useful to model the behaviours of networks 
@@ -532,7 +532,7 @@ while \(G(N, p)\) model changes the number of edges with the probability of two
 nodes to be connected. We will refer to these two models as *Erdos* and *Gilbert* 
 respectively.
 
-### Some Properties of the Gilbert Model
+## Some Properties of the Gilbert Model
 
 In the section we will let \(G = G(N, p)\) be a Gilbert random network. As the 
 number of edges in \(G\) is characterised solely by the probability \(p\), \(G\) 
@@ -559,4 +559,118 @@ Thus, the degree distribution of \(G\) is
 \[p_k = \begin{pmatrix} N - 1 \\ k \end{pmatrix} p^k (1 - p)^{N - 1 - k}, \]
 that is, a binomial distribution with parameters \(N - 1\) and \(p\).
 
-We recall that for large \(n\) and small \(p\) such that \(n \approx p^{-1}\), 
+We recall that for large \(n\) and small \(p\) such that \(n \sim p^{-1}\), 
+so, in fact, at the limit, the degree distribution of a random network can 
+be approximated by a Poisson distribution with the parameter \(\lambda = np\).
+
+The clustering coefficient of a random Gilbert graph is given by \(p\). This is 
+because given \(n\) neighbouring nodes of a node, there are \(n (n - 1) / 2\) 
+possible edges connecting them each with probability \(p\), resulting in the 
+local clustering coefficient for a node being \(p n (n - 1) / 2\). But now, by 
+putting this into the clustering coefficient formulae, we have 
+\[C_i = \frac{2 p n (n - 1) / 2}{n (n - 1)} = p,\]
+as required.
+
+## Mathematical Approach
+
+Before now, we have considered the random graph mostly heuristically without 
+much rigour. While we shall not change this approach to proving everything from 
+first principle, we will in this section consider random graphs from a more 
+probabilistically.
+
+### Basic Notions
+
+Formally, a random Gilbert graph can be formulated as follows.
+
+\begin{definition}[Random Graph]
+  A random graph \(G(N, p)\) is a probability space \((\Omega, \mathcal{F}, \mathbb{P})\) 
+  where the sample space \(\Omega\) is all possible simple graphs with \(N\) 
+  nodes (that is all \(\left| \Omega \right| = 2^{N'}\)\footnote{From this point 
+  forward, we write \(\begin{pmatrix} n \\ 2 \end{pmatrix}\) as \(N'\).} of them), 
+  \(\mathcal{F}\) some \(\sigma\)-algebra and \(\mathbb{P} : \mathcal{F} \to [0, 1]\) 
+  the probability measure. 
+\end{definition}
+
+\begin{remark}
+  We will begin by looking at the probability measure \(\mathbb{P}\) such that 
+  for all \(G \in \Omega\), \(\mathbb{P}(G) = p^m (1 - p)^{N - m}\), where 
+  \(m = \left| E(G) \right|\).
+\end{remark}
+
+We will also be using small \(o\) notation in which we refer a function \(f\) as 
+\(f(n) = o(g(n))\) if \(f(n) / g(n) \to 0\) as \(n \to \infty\). 
+
+A statement that is commonplace within network science is: "For \(p > 0\), a 
+random graph in \(G(N, p)\) is connected." This means mathematically, 
+\(\mathbb{P}(G \in G(N, p), G \text{ is connected}) \to 1\) as \(N \to \infty\).
+In short, one often says: "for \(p > 0\), \(G\) is connected 
+w.h.p\footnote{With high probability.}".
+
+Consider a random Gilbert graph \(G(N, p)\). Suppose, naively, we write \(k_i\) 
+for the degree of the \(i\)-th node, then, it might make sense to say that, the 
+average \(k_i\) tends to the expected value of the nodes 
+\(\langle k \rangle = p(N - 1)\), i.e.
+\[\lim_{N \to \infty} \frac{1}{N} \sum_{i = 0}^N k_i = \langle k \rangle.\]
+But upon further inspection, this equation is less clear. As \(G(N, p)\) is simply 
+a probability space, it doesn't make sense to take the \(i\)-th node, so 
+\(k_i\) is in fact a function on the sample space \(\Omega\) to \(\mathbb{R}\). 
+Furthermore, this sequence of functions does not converge to some number, that 
+is, for all \(N \in \mathbb{N}\), we can find a graph \(G_N\) with \(0\) edges 
+so the limit is also \(0\) for this sequence. Indeed, what we would actually like 
+to say is 
+\[\lim_{N \to \infty} \mathbb{P} \left( \left| \frac{1}{N}\sum_{i = 0}^N k_i - 
+  \langle k \rangle \right| \ge 0 \right) = 0, \]
+for all \(\epsilon > 0\). We often write this as 
+\[\lim_{N \to \infty} \frac{1}{N} \sum_{i = 0}^N k_i = \langle k \rangle 
+  \hspace{2mm} \text{w.h.p}.\]
+This is true since \(k_i \sim B(N - 1, p)\) identically with mean \(\langle k \rangle\).
+So, using a version of the LLN\footnote{Be careful as they are not independent 
+since if \(k_0 = N - 1\), then \(k_i \ge 1\) for all other \(i\).}, the result 
+follows.
+
+### Existence of Large Clusters
+
+We will now prove some theorems that will provide us with some insights into 
+when will large clusters arise.
+
+\begin{theorem}
+  \(\langle k \rangle > 1 \iff\) there exists w.h.p. a connected component which 
+  contains a proportion \(S > 0\) of the total number of nodes, where \(S\) 
+  satisfies \(S = 1 - e^{-\langle k \rangle}S\).
+\end{theorem}
+\proof
+  \((\impliedby)\) By contrapositive, if \(\langle k \rangle \le 1\) then 
+  \(S = 1 - e^{-\langle k \rangle}S\) has no solution so we are done.
+  
+  \((\implies)\) We will instead prove a stronger statement with the next theorem.
+\qed
+
+\begin{theorem}
+  Given \(p > 0\), the diameter of \(G \in G(N, p)\) is w.h.p. is at most two, 
+  so \(G\) is connected w.h.p.
+\end{theorem}
+\proof
+  Let \(X_N(G)\) be the number of pairs \((i, j)\) in \(G\) such that \(i, j\) 
+  has no common neighbours. So, by considering the probability that \(i, j\) do 
+  not have \(k\) as a common neighbour is 
+  \[ p(1 - p) + (1 - p)p + (1- p)(1 - p) = 1 - p^2,\]
+  (where we simply add up the probabilities of all valid combinations), we have 
+  the probability that \(i ,j\) has no common neighbours is \((1 - p^2)^{N - 2}\).
+  So, 
+  \[E(X_N) = N'(1 - p^2)^{N - 2} \to 0,\]
+  as \(N \to \infty\). And, hence, by Markov's inequality, 
+  \(\mathbb{P}(X_N \ge 1) \le E(X_N) \to 0\) so \(\mathbb{P}(X_N = 0) \to 1\) 
+  as \(N \to \infty\).
+\qed
+
+\begin{theorem}
+  If \(p(N) = o(N) / N\) then, w.h.p. \(G \in G(N, p)\) has no triangles.
+\end{theorem}
+\proof
+  Let \(T_N\) be the number of triplets \((i, j ,k)\) such that they are pairwise 
+  connected. Of course, then probability of a randomly chosen triplet being a 
+  triangle is \(p^3\), so we have 
+  \[E(T_N) = \begin{pmatrix} n \\ 3 \end{pmatrix} p^3 \to 0,\]
+  as \(p\) tends to zero faster than \(N\). Hence, again by Markov's inequality 
+  we have \(\mathbb{P}(T_N \ge 1) \to 0\), resulting in \(\mathbb{P}(T_N = 0) \to 1\). 
+\qed
