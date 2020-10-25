@@ -5,7 +5,7 @@ date: May 15, 2020
 output: 
   pdf_document:
     toc: true
-    toc_depth: 3
+    toc_depth: 2
     number_sections: true
 geometry: margin = 1.5in
 urlcolor: red
@@ -142,7 +142,7 @@ proofs.
   true by finite additivity.
 \qed
 
-### The Lebesgue Measure
+## The Lebesgue Measure
 
 As the point of measures in general is to assign sets (in the relevant 
 \(\sigma\)-algebra) to some number, it might be useful to take a look at the 
@@ -198,7 +198,7 @@ example of a non-Lebesgue measurable set here called the Vitali set.
   \(\mathbb{P}(A_1) = 0\).
 \qed
 
-## Random variables
+# Random variables
 
 Now that we have the basic notion of a probability space, we would like to play 
 around with it using *random variables*. In the most general sense, random 
@@ -323,3 +323,158 @@ intended, that is
   \(A, B \in \mathcal{B}(\mathbb{R})\), then the \(\sigma\)-algebras are 
   independent by definition, and thus, so are the random variables.
 \qed
+
+## Cumulative Distribution Function
+
+We would now like to take a look at the cumulative distribution function of a 
+random variable \(X\). 
+
+\begin{definition}[Cumulative Distribution Function]
+  Given a random variable \(X\), the cumulative distribution function, of simply 
+  the CDF of \(X\) is 
+  \[F_x(x) = \mathbb{P}(X \le x).\]
+  This function is well defined as by our previous assertion, \(X\) is measurable 
+  on \(\mathcal{B}(\mathbb{R})\) if and only if 
+  \(\{\omega \in \Omega \mid X(\omega) \le x\}\) is measurable for all \(x\).
+\end{definition}
+
+The CDF of a random variable is important as it characterised the random variable. 
+Formally it can be stated as,
+
+\begin{theorem}
+  Let \(X, Y\) be real valued random variables. Then \(X, Y\) are identically 
+  distributed if and only if \(F_X = F_Y\).
+\end{theorem}
+\proof
+  The forward direction is trivial while the backwards direction follows from the 
+  fact that every open real set can be constructed using sets of the form 
+  \(\{x \le a | x \in \mathbb{R}\}\) from some \(a \in \mathbb{R}\).
+\qed
+
+The CDF of a random variable have some nice properties which we have used 
+throughout our first year probability course. 
+
+\begin{prop}
+  Given a random variable \(X\), its CDF, \(F_X\), is non-decreasing.
+\end{prop}
+\proof
+  This follows from the fact for all \(x, y \in \mathbb{R}\), if \(x < y\), 
+  then we can write \(\{\omega \in \Omega \mid X(\omega) \le y\}
+  = \{\omega \in \Omega \mid X(\omega) \le x\} \sqcup 
+    \{\omega \in \Omega \mid x < X(\omega) \le y\}\), and so 
+  \[F_X(y) = F_X(x) + \mathbb{P}(x < X \le y) \ge F_X(x).\]
+\qed
+
+\begin{prop}
+  Given a random variable \(X\), \(\lim_{x \to -\infty} F_X(x) = 0\) and 
+  \(\lim_{x \to \infty} F_X(x) = 1\).
+\end{prop}
+\proof
+  We recall that the axiom that \(\mathbb{P}(\Omega) = 1\), so it suffices to 
+  prove that \(X^{-1}(\lim_{x \to \infty} (-\infty, x])) = \Omega\). But this is 
+  trivial as every element of \(\Omega\) is mapped to a real number so we are done.
+  (This first claim is true by similar argument.)\footnote{Note that this proof 
+  is not technically true since we can't say 
+  \(\lim_{x \to \infty} (-\infty, x] = \mathbb{R}\). But this can be fixed by 
+  considering any sequence \((x_n)\) that it increasing to \(\infty\).}
+\qed
+
+\begin{prop}
+  Let \(X\) be a random variable, then 
+  \(\lim_{x \downarrow x_0} F_X(x) = F_X(x_0)\).
+\end{prop}
+\proof
+  Similar proof to the previous proposition.
+\qed
+
+## Types of Random Variables
+
+The most simple random variable we have is the point mass random variable. 
+\begin{definition}
+  Let \((\Omega, \mathcal{F}, \mathbb{P})\) be a probability space, then the 
+  point mass random variable \(X_a\) at \(a\) is the function 
+  \(X_a : \Omega \to \mathbb{R} : \omega \mapsto a\).
+\end{definition}
+We can easily see that the point mass random variable has the CDF 
+\(\delta_a(x) = \text{if } (x < a) \text{ then } 0, \text{ else } 1\). While 
+the point mass random variable in itself is not very interesting, it is the 
+building blocks for discrete random variables.
+
+\begin{definition}[Discrete Random Variable]
+  A random variable \(X\) is a discrete random variable if and only if there 
+  exist sequences \((a_n)_{n \ge 1}\) and \((b_n)_{n \ge 1}\) such that 
+  \(\sum b_i = 1\) and \(F_X(x) = \sum b_i \delta_{a_i}(x)\).
+\end{definition}
+
+\begin{definition}[Continuous Random Variable]
+  A random variable \(X\) is a continuous random variable if and only if \(F_X\) 
+  is continuous on \(\mathbb{R}\).
+\end{definition}
+
+\begin{definition}[Absolutely Continuous Random Variable]
+  A random variable \(X\) is absolutely continuous if and only if there exists 
+  some \(f_X : \mathbb{R} \to \mathbb{R}\) such that 
+  \(F_X(x) = \int_{-\infty}^x f(t) \text{d}t\).
+\end{definition}
+
+We note that continuous random variables need not be absolutely continuous (see 
+the Cantor distribution), however, for most purposes, we can assume interchangeability.
+
+\begin{prop}
+  Let \(X\) be any random variable and let \(x_n \uparrow x \in \mathbb{R}\), 
+  then \(\mathbb{P}(X < x) = \lim_{x_n \uparrow x} \mathbb{P}(X \le x_n)\).
+\end{prop}
+\proof
+  We define \(A_n := \{\omega \in \Omega \mid X(\omega) \le x_n\}\), then 
+  \(A_n \uparrow A := \{\omega \in \Omega \mid X(\omega) < x\}\). So, by taking 
+  the probability of the limit of \(A_n\), we have 
+  \(\lim_{n \to \infty} \mathbb{P}(A_n) = \mathbb{P}(A)\).
+\qed
+
+\begin{prop}
+  Let \(X\) be a continuous random variable, then \(\mathbb{P}(X = x) = 0\) for 
+  all \(x \in \mathbb{R}\).
+\end{prop}
+\proof
+  This follows as the probability measure is continuous.
+\qed
+
+While these are the some nicely behaving random variables, often times, random 
+variables appears to be neither discrete or continuous. An example of this is to 
+consider the random variable \(X\) representing the units of beer an individual 
+within the population had consumed today. 
+
+## Transformations of Random Variables
+
+Often times, we might want to work with transformed random variables. This can 
+be done in many ways, but the most obvious way is to work with the transformed 
+random variable straight away. While this can work in simple cases, we might 
+find it is normally easier to work with the transformed CDF instead. But before 
+we can discuss the consequences of transforming random variables, we should 
+first consider when is a transformed random variable still a random variable.
+
+Recall, by definition, a random variable is a measurable function from the 
+measurable set \(\Omega\) to some other measurable set, most often the reals. 
+So, for a transformed random variable to also be a random variable, we require 
+it to be measurable as well.
+
+\begin{theorem}
+  Let \((\Omega, \mathcal{F}, \mathbb{P})\) be a probability space and \(X\) 
+  be a real random variable. Then, for all \(g : \mathbb{R} \to \mathbb{R}\) 
+  where \(g\) is measurable with respect to \(\mathcal{B}(\mathbb{R})\), 
+  \(g(X) := g \circ X\) is a random variable.
+\end{theorem}
+\proof
+  Follows directly from definitions.
+\qed
+
+It is in general very hard to construct a non-\(\mathcal{B}(\mathbb{R})\)-measurable 
+function (but one example of this is the indicator function of the Vitali set), 
+we can regard most transformations of random variables to also be a random 
+variable\footnote{For one, continuity implies \(\mathcal{B}(\mathbb{R})\)-measurable.}.
+
+Working with transformed random variables is very simple. Say \(X\) is a real 
+random variable and \(g\) is \(\mathcal{B}(\mathbb{R})\)-measurable. Then 
+to get the CDF of \(g(X)\) (recall that the CDF characterises the random variable) 
+we simply consider \(F_{g(X)}(x) = \mathbb{P}(g(X) \in (-\infty, x]) = 
+\mathbb{P}(X \in g^{-1}(-\infty, x])\) which we can obtain using the CDF of \(X\).
