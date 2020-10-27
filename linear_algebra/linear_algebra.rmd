@@ -549,7 +549,7 @@ proof here.
   \(\text{sp}(B)\) is a proper and non-trivial \(T\)-invariant subspace. \#
 \qed
 
-\proof (Cayley-Hamilton Theorem)
+\proof (Cayley-Hamilton Theorem).
   Let \(T \in \End(V)\) and \(\chi_T\) be the characteristic 
   polynomial of \(T\). We will induct on the dimension of \(V\), \(n\).
 
@@ -908,7 +908,7 @@ This turns out to be true.
 Before we end this section, I would like to prove a powerful result regarding 
 diagonalisability.
 
-\begin{theorem}
+\begin{theorem}\label{diag_distinct}
   Let \(T \in \End(V)\), and suppose there exists a non-zero polynomial \(p\) of 
   degree greater than 0 such that \(p\) annihilates \(T\) and \(p\) can be 
   factored into distinct roots. Then \(T\) is diagonalisable. 
@@ -949,4 +949,77 @@ diagonalisability.
   cardinality \(\dim \ker T_1 T_2 / \ker T_2\) by taking the image of its basis 
   over \(\phi\). Thus, \(\dim \ker T_1 T_2 / \ker T_2 \le \dim \ker T_2\) and 
   the result follows from proposition \ref{dim_sub}.
+\qed
+
+# Canonical Forms of Vector Spaces
+
+As mentioned in the introduction, the highlight of this course are the canonical 
+form theorems on general vector spaces (that is we would like to show any matrix 
+over some field is similar to a particularly "nice" block diagonal matrix). This 
+will allow us to deduce properties about general matrices and correspondingly, 
+linear maps.
+
+In order to achieve this, we will first develop some theories on how to 
+decompose a general vector space, that is, given vector space \(V\), we 
+would like to find \(V_i\) such that \(V = \bigoplus V_i\).
+
+## Primary Decomposition
+
+\begin{theorem}[Primary Decomposition Theorem]
+  Let \(V\) be a finite dimensional vector space of the field \(\mathbb{F}\), and 
+  let \(T \in \End(V)\) with minimal polynomial \(m_T\). Suppose \(m_T\) has 
+  the irreducible factors \(p_i\) such that,
+  \[m_T = \prod_{i = 1}^k p_i^{n_i},\]
+  where \(p_i \neq p_j\) for all \(i \neq j\). Then, 
+  \begin{itemize}
+    \item V = \(\bigoplus_{i = 1}^k \ker(p_i(T)^{n_i})\);
+    \item \(\ker(p_i(T)^{n_i})\) is \(T\)-invariant;
+    \item each restriction of \(T\) on \(\ker(p_i(T)^{n_i})\) has minimal polynomial 
+      \(p_i^{n_i}\).
+  \end{itemize}
+\end{theorem}
+
+Straight away, we see that this decomposition is unique by the unique factorisation 
+theorem, so, we can call it a canonical decomposition. Furthermore, if all factors 
+of \(m_T\) are linear, the factorisation becomes,
+\[m_T = \prod_{i = 1}^k (x - \lambda_i)^{n_i},\]
+for distinct \(\lambda_i\). In this cases, the individual decomposition becomes 
+\(\ker (T - \lambda I)^{n_i}\) which are the *generalised Eigenspace* of \(T\).
+Lastly, we notice a direct corollary of this theorem is theorem \ref{diag_distinct}, 
+so we have alternatively an (arguably) easier proof of this.
+
+Before we can prove the primary decomposition theorem, let us prove the following 
+lemma.
+
+\begin{lemma}
+  Let \(T \in \End(V)\) and suppose \(p_1, p_2 \in \mathbb{F}[X]\) are coprime 
+  such that \(p_1(T)p_2(T) = 0\), then \(V = \ker p_1(T) \oplus \ker p_2(T)\). 
+  Furthermore, if \(m_T = p_1 p_2\), then the restriction of \(T\) to 
+  \(\ker p_i(T)\) has minimal polynomial \(p_i\) for \(i = 1, 2\).
+\end{lemma}
+\proof
+  By Bezout's, there exists \(s, t \in \mathbb{F}[X]\) such that 
+  \(1 = sp_1 + tp_2\). So, by evaluating at \(T\), we have 
+  \(I = s(T)p_1(T) + t(T)p_2(T)\). Then for all \(v \in V\), 
+  \(v = Iv = s(T)p_1(T)(v) + t(T)p_2(T)(v) = v_1 + v_2\). Now, as \(p_1 p_2 = 0\),
+  we have \(p_2(v_1) = p_2(s(T)p_1(T)(v)) = p_2 s(T)p_2 p_1(T)(v) = 0\), we have 
+  \(v_1 \in \ker p_2(T)\) and similarly, \(v_2 \in \ker p_1(T)\), and so, 
+  \(V = \ker p_1(T) + \ker p_2(T)\). Also, suppose \(v \in V_1 \cap V_2\), 
+  then \(v = Iv = s(T)p_1(T)(v) + t(T)p_2(T)(v) = 0\), so 
+  \(V = \ker p_1(T) \oplus \ker p_2(T)\).
+
+  Now, suppose \(m_T = p_1 p_2\) and let us denote the minimal polynomial of 
+  \(T\) restricted on \(\ker p_i(T)\) as \(m_i\) for \(i = 1, 2\). By definition 
+  \(p_i(T_i) := p_i(T \mid_{\ker p_i(T)}) = 0\), so \(m_i \mid p_i\). So, as 
+  \(p_1\) and \(p_2\) are coprime, so are \(m_1\) and \(m_2\), thus, 
+  \(m_T = \lcm (m_1, m_2) = m_1 m_2\) and the result follows.
+\qed
+
+We can see straight away how this lemma can help us prove the theorem.
+
+\proof (Primary Decomposition Theorem).
+  Let us write \(m_T = \prod_{i = 1}^k p_i^{n_i}\) and we will induct 
+  on \(k\). The theorem is trivial for for the base case so we begin by letting 
+  \(k = n + 1\). Then, by considering the previous lemma on \(p_{n + 1}\) and 
+  \(\prod_{i = 1}^n p_i\), the theorem follows.
 \qed
