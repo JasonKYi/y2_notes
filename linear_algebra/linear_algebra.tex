@@ -647,9 +647,9 @@ as \(n + 1 - k + j \le n\) for all \(j\) as \(k\) is the largest. Thus,
 \(\text{sp}(B)\) is a proper and non-trivial \(T\)-invariant subspace.
 \# \qed
 
-\proof (Cayley-Hamilton Theorem) Let \(T : V \to T\) be a linear map and
-\(\chi_T\) be the characteristic polynomial of \(T\). We will induct on
-the dimension of \(T\), \(n\).
+\proof (Cayley-Hamilton Theorem) Let \(T \in \mathop{\mathrm{End}}(V)\)
+and \(\chi_T\) be the characteristic polynomial of \(T\). We will induct
+on the dimension of \(V\), \(n\).
 
 The \(n = 1\) case is trivial, so let us suppose the inductive
 hypothesis for dimensions \(\le k\) and we will prove this theorem for
@@ -869,22 +869,51 @@ algorithm, there exists \(q, r \in \mathbb{F}[X]\) such that
 \(\chi_T = q m_T + r\) where \(\deg r < \deg m_T\) if \(r \neq 0\). By
 evaluating with \(T\) on both sides, we have \(0 = r(T)\), so \(r\)
 annihilates \(T\). But this contradicts the minimality of \(m_T\), so
-\(r = 0\).
+\(r = 0\). This can be generalised to any annihilators of \(T\).
+
+\begin{lemma}
+  Let \(T \in \mathop{\mathrm{End}}(V)\) and let \(p \in \mathbb{F}[X]\) such that \(p(T) = 0\). 
+  Then, a minimal polynomial of \(T\) divides \(p\). 
+\end{lemma}
+\proof
+
+By the Euclidean algorithm, there exists, \(q, r \in \mathbb{F}[X]\),
+where \(r = 0\) or \(\deg r < \deg m_T\), such that \(p = qm_T + r\).
+Thus, \(0 = p(T) = q(T) m_T(T) + r(T) = r(T)\). \# (Minimality of
+\(m_T\).) \qed
+
+Furthermore, we can deduce that the minimal polynomial is unique.
 
 \begin{theorem}
-  Let \(T \in \mathop{\mathrm{End}}(V)\), and suppose there exists a non-zero polynomial \(p\) of 
-  degree greater than 0 such that \(p\) annihilates \(T\) and \(p\) can be 
-  factored into distinct roots. Then \(T\) is diagonalisable. 
+  Let \(T \in \mathop{\mathrm{End}}(V)\) and let \(m_T\) and \(m'_T\) be minimal polynomials of 
+  \(T\), then \(m_T = m'_T\).
 \end{theorem}
 \proof
 
-Suppose we write \(p(x) = \prod(x - \lambda_i)\), then, it suffices to
-show that
-\(\dim \ker (\prod(T - \lambda_i)) \le \sum \dim \ker(T - \lambda_i)\)
-as the kernel of \(\prod(T - \lambda_i)\) is \(V\) while the latter is
-the sum of the dimensions of the Eigenspaces. This can be proved by
-showing \(\dim \ker T_1 T_2 \le \dim \ker T_1 + \dim \ker T_2\) and
-applying induction (which is a nice exercise). \qed
+By the previous lemma, we have \(m_T \mid m'_T\) so there exists
+\(p \in \mathbb{F}[X]\), such that \(m_T = p m'_T\). Now, as both
+\(m_T\) and \(m'_T\) are the minimal polynomials, they must have the
+same degree, thus \(\deg p = 0\) and hence, is a constant. But, since
+both \(m_T\) and \(m'_T\) are monic, \(p = 1\), so \(m_T = m'_T\). \qed
+
+As one can imagine, the minimal polynomial for matrices is defined
+similarly and alike many other properties, is shared for similar
+matrices.
+
+\begin{theorem}
+  Let \(A, B \in M_n{\mathbb{F}}\) and \(A \sim B\). Then the minimal polynomial 
+  of \(A\), \(m_A\) is the same as the minimal polynomial of \(B\), \(m_B\).
+\end{theorem}
+\proof
+
+Suppose \(A = P^{-1} B P\). Then,
+\(0 = m_A(A) = m_A(P^{-1}BP) = P^{-1} m_A(B) P\), so \(m_A(B) = 0\) as
+\(P\) is invertible. By symmetry, \(m_B(A) = 0\) and thus, the result
+follows by divisibility. \qed
+
+As the minimal polynomial is pretty powerful, it will be helpful to be
+able to compute the minimal polynomial. We will now develop some tools
+to help us find this minimal polynomial.
 
 \begin{theorem}
   Let \(T \in \mathop{\mathrm{End}}(V)\), then \(\lambda\) is an Eigenvalue of \(T\) if and only 
@@ -902,5 +931,140 @@ Now, as \(v\) is non-zero, \(m_T(\lambda) = 0\).
 polynomial \(p\) such that \(\chi_T = m_T p\) and thus,
 \(\chi_T(\lambda)  = m_T(\lambda)p(\lambda) = 0\), and hence, is an
 Eigenvalue. \qed
+
+With that, in order to find the minimal polynomial, it will be
+insightful to find the characteristic polynomial as the minimal
+polynomial shares roots and divides it (and then you can check all the
+cases).
+
+\begin{prop}\label{comp_min}
+  The minimal polynomial of the companion matrix of some polynomial \(p\) is \(p\).
+\end{prop}
+
+Before we can prove proposition \ref{comp_min}, let us prove another
+useful lemma.
+
+\begin{lemma}
+  Let \(A \in M_n(\mathbb{F})\) and suppose there exists some \(v \in \mathbb{F}^n\),
+  such that the set \(S := \{A^i v \mid i \le k \}\) is linearly independent for 
+  some \(k < n\). Then all polynomials that annihilates \(A\) has degree at 
+  least \(k + 1\).
+\end{lemma}
+\proof
+
+Suppose there exists \(p \in \mathbb{F}[X]\) with degree \(l \le k\)
+such that \(p(A) = 0\). Then \(0 = p(A)v = \sum A^i v\). \# \qed
+
+\proof
+
+(Proposition \ref{comp_min}). By the previous lemma, it suffices to find
+some \(v\) such that \(\{C(p)^i v \mid i \le n - 1\}\) is linearly
+independent. Straight away, we see \(v = e_1\) suffices so we are done.
+\qed
+
+While, we proved that the minimal polynomial share linear factors with
+the characteristic polynomial, we hope the same is true for all
+irreducible factors. This turns out to be true.
+
+\begin{theorem}
+  Let \(T \in \mathop{\mathrm{End}}(V)\), then, for all \(p \in \mathbb{F}[X]\) such that 
+  \(p\) is a irreducible factor of \(\chi_T\), \(p \mid m_T\).
+\end{theorem}
+\proof
+
+We will prove this theorem by cases on whether there exists a proper
+non-trivial \(T\)-invariant subspace of \(V\), so first, let us suppose
+such a subspace \(W\) exists.
+
+Let us induct on the dimension of \(V\), n.~The theorem is trivial for
+\(n = 1\), so let us consider the case for \(n = k + 1\) with the
+inductive hypothesis holding for all \(n = m \le k\). Again, as \(W\) is
+\(T\)-invariant, we have \[[T]_B = 
+    \left[
+      \begin{array}{c|c}
+        [T_W]_{B_W} & A \\
+        \midrule
+        \mathbf{0} & [\bar{T}]_{\bar{B}}
+      \end{array}
+      \right]. \] Now, suppose we write \(m_T(x) = \sum a_i x^i\), then,
+\begin{align*}
+    0 & = m_T([T]_B) = \sum a_i [T]_B^i \\
+      & = \left[
+          \begin{array}{c|c}
+            \sum a_i [T_W]_{B_W}^i & A' \\
+            \midrule
+            \mathbf{0} & \sum a_i [\bar{T}]_{\bar{B}}^i
+          \end{array}
+          \right] \\
+      & = \left[
+          \begin{array}{c|c}
+            m_T([T_W]_{B_W}) & A' \\
+            \midrule
+            \mathbf{0} & m_T([\bar{T}]_{\bar{B}})
+          \end{array}
+          \right],
+  \end{align*} so \(m_T\) annihilates both \([T_W]_{B_W}\) and
+\([\bar{T}]_{\bar{B}}\). Now, by considering
+\(p \mid \chi_T = \chi_{[T_W]_{B_W}} \chi_{[\bar{T}]_{\bar{B}}}\), where
+\(p\) is irreducible, \(p \mid \chi_{[T_W]_{B_W}}\) or
+\(p \mid \chi_{[\bar{T}]_{\bar{B}}}\). Either way, by the inductive
+hypothesis, \(p \mid m_{[T_W]_{B_W}}\) or
+\(p \mid m_{[\bar{T}]_{\bar{B}}}\), both of which divides \(m_T\) as
+\(m_T\) annihilates their respecctive matrices.
+
+Let us now consider the case in which there does not exists a proper
+non-trivial \(T\)-invariant subspace of \(V\). But, then, similar to the
+proof of the Cayley-Hamilton theorem, we can construct some basis \(B\)
+such that \([T]_B\) is the companion matrix of \(\chi_{[T]_B}\). Now as
+the companion matrix has the same minimal polynomial as the
+characteristic polynomial, we are done! \qed
+
+Before we end this section, I would like to prove a powerful result
+regarding diagonalisability.
+
+\begin{theorem}
+  Let \(T \in \mathop{\mathrm{End}}(V)\), and suppose there exists a non-zero polynomial \(p\) of 
+  degree greater than 0 such that \(p\) annihilates \(T\) and \(p\) can be 
+  factored into distinct roots. Then \(T\) is diagonalisable. 
+\end{theorem}
+\proof
+
+Suppose we write \(p(x) = \prod(x - \lambda_i)\), then, it suffices to
+show that
+\(\dim \ker (\prod(T - \lambda_i)) \le \sum \dim \ker(T - \lambda_i)\)
+as the kernel of \(\prod(T - \lambda_i)\) is \(V\) while the latter is
+the sum of the dimensions of the Eigenspaces. This can be proved by
+showing \(\dim \ker T_1 T_2 \le \dim \ker T_1 + \dim \ker T_2\) and
+applying induction. \qed
+
+\begin{prop}
+  Let \(T_1, T_2 \in \mathop{\mathrm{End}}(V)\), then 
+  \(\dim \ker T_1 T_2 \le \dim \ker T_1 + \dim \ker T_2\).
+\end{prop}
+\proof
+
+It is easy to see that \(\ker T_2 \le \ker T_1 T_2\) so it suffices to
+show \(\dim \ker T_1 T_2 / \ker T_2 \le \dim \ker T_1\) since for
+\(W \le V\), \(\dim V / W = \dim V - \dim W\).
+
+Consider the map
+\(\phi : \ker T_1 T_2 / \ker T_2 \to \dim \ker T_1 :  v + \ker T_2 \mapsto T_2(v)\).
+\(\phi\) has well-defined range as for all \(v \in \ker T_1 T_2\),
+\(T_2(v) \in \ker T_1\). We will now show \(\phi\) is well-defined
+overall and injective all at once. Let \(v_1, v_2 \in \ker T_1 T_2\),
+then,
+\[v_1 + \ker T_2 = v_2 + \ker T_2 \iff v_1 - v_2 \in \ker T_2 \iff T_2 (v_1 - v_2) = 0
+  \iff T_2(v_1) = T_2(v_2).\] Furthermore, it is easy to see that
+\(\phi\) is a linear map since \begin{align*}
+    \phi((v_1 + \ker T_2) + (v_2 + \ker T_2)) & = \phi((v_1 + v_2) + \ker T_2) \\
+      & = T_2(v_1 + v_2) = T_2(v_1) + T_2(v_2) \\
+      & = \phi(v_1 + \ker T_2) + \phi(v_2 + \ker T_2).
+  \end{align*} so \(\phi\) is a injective linear map. Now, as the image
+of an linearly independent set under a injective linear map is also
+linearly independent, we can construct an linearly independent set in
+\(\ker T_1\) with cardinality \(\dim \ker T_1 T_2 / \ker T_2\) by taking
+the image of its basis over \(\phi\). Thus,
+\(\dim \ker T_1 T_2 / \ker T_2 \le \dim \ker T_2\) and the result
+follows from proposition \ref{dim_sub}. \qed
 
 \end{document}
