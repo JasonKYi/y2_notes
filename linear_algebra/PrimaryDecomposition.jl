@@ -6,7 +6,7 @@ Primary Decomposition
 3. Change of basis
 """
 
-import Base.* 
+import Base.*, Base.+, Base.-
 
 using LinearAlgebra
 using SymEngine
@@ -22,6 +22,10 @@ LinearMap(M::Array{T, 2}) where T <: Number = LinearMap(size(M)[1], M)
 
 *(x::Basic, A::Diagonal{Bool, Array{Bool, 1}}) = x * Array{Int}(A)
 *(x::Basic, M::LinearMap{T, N}) where {T, N} = LinearMap(M.length, x * M.matrepr)
++(x::Basic, A::Array{T, 2}) where T = x * Array(size(A)[1] |> I) + A
+-(x::Basic, A::Array{T, 2}) where T = x * Array(size(A)[1] |> I) - A
++(x::Int, A::Array{U, 2}) where U = x * Array(size(A)[1] |> I) + A
+-(x::Int, A::Array{U, 2}) where U = x * Array(size(A)[1] |> I) - A
 
 function charpoly(M::LinearMap, var::Basic, simpr::Bool = true)::Basic
     eq = det(var * I(M.length) - M.matrepr)
@@ -30,10 +34,10 @@ end
 
 function terms(expr::Basic)::Array{SubString{String}, 1}
     strexpr = "$expr"
-    split(strexpr, r"\+|\-")
+    split(strexpr, r"\+ |\- ")
 end
 
-function degree(expr::Basic)::Int length(terms(expr)) - 1 end
+function degree(expr::Basic)::Int length(expr |> terms) end
 
 function distcomplex(z1::Vector{Basic}, z2::Vector{Basic})::Real    
     sum(map(abs, z1 - z2))
@@ -41,7 +45,7 @@ end
 
 # Using Durand-Kerner method to find all complex roots
 function durandkerner(expr::Basic, maxiterations::Int = 15, 
-        initvals::Complex = sqrt(2)im)::Vector{Basic}
+            initvals::Complex = sqrt(2)im)::Vector{Basic}
 
     # Initiate the values
     d, iter = degree(expr), maxiterations 
@@ -69,6 +73,32 @@ function rroots(r::Vector{Basic})::Vector{Basic}
     filter(x -> typeof(x) == Basic, map(rroot, r))
 end
 
+function getint(r::Vector{Basic})::Vector{Basic}
+    map(x -> abs(x - round(x)) < 10e-2 ? round(x) : x, r)
+end
+
+function getlambda(var::Basic, expr::Basic)
+    string("$var", "->", "$expr") |> Meta.parse |> eval
+end
+
+function findminipolyaux(M::LinearMap, roots::Vector{Basic}, var::Basic)
+    maxdegree = M.length
+    numroots = length(roots)
+    candidates = Vector()
+    for α ∈ Iterators.product([1:maxdegree for _ = 1:numroots]...)
+        expr = [(var - roots[i])^(α[i]) for i = 1:numroots] |> prod |> expand
+        push!(candidates, [α, getlambda(var, expr)])
+    end
+    return candidates
+end
+
+# function findminipoly(M::LinearMap, aux::Vector)
+#     annihilators = Vector{Tuple{Int, Int}}()
+#     for candidate ∈ aux
+#         println(candidate[2](1))
+#     end
+# end
+
 function main()
     @vars x
     # Companion matrix of x^4 + x^3 + 2x^2 + 1 which has no real roots
@@ -76,11 +106,15 @@ function main()
          [1 0 0  0]; 
          [0 1 0 -2];
          [0 0 1 -1]]
-    Mw = LinearMap(M)
+    # Example matrix from lecture notes
+    M2 = [[2 0 0]; [-1 -3 -1]; [-1 4 1]]
+    
+    Mw = LinearMap(M2)
     expr = charpoly(Mw, x)
-    println(expr)
-    v = rroots(durandkerner(expr))
-    println(v)
+
+    v = expr |> durandkerner |> rroots |> getint
+    vnew = findminipolyaux(Mw, v, x)
+    # p = findminipoly(Mw, vnew)
 end
 
 main()

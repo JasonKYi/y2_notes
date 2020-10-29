@@ -23,6 +23,7 @@ header-includes:
   - \newtheorem{definition}{Definition}[section]
   - \newtheorem{lemma}{Lemma}[section]
   - \newcommand{\diag}{\mathop{\mathrm{diag}}}
+  - \newcommand{\hess}{\mathop{\mathrm{Hess}}}
 ---
 
 # Euclidean Spaces
@@ -337,3 +338,49 @@ ask how higher partial derivatives interacts. That is, when does
   \[D_i D_j f(p) = D_j D_i f(p)\]
   for all \(p \in \Omega\).
 \end{theorem}
+
+If \(f : \Omega \to \mathbb{R}\), we call the matrix of second partial derivatives 
+of \(f\) at some point \(p\) the **Hessian** of \(f\) at \(p\) and we write 
+\(\hess f(p) = [D_i D_j f(p)]_{i, j = 1, \cdots, n}\). Given that the hypothesis 
+of Schwartz's theorem holds, we find that \([\hess f(p)]_{i, j} = [\hess f(p)]_{j, i}\) 
+so the Hessian is symmetric.
+
+## Taylor's Theorem
+
+We recall that the first derivative of a map \(f : \Omega \to \mathbb{R}^m\) allows 
+us to find an affine map at some point \(p \in \Omega\) such that the error 
+decreases faster than that of \(\| x - p\|\). The existence of higher derivatives 
+allows us to obtain better estimates with error decreasing even faster.
+
+Let us first introduce some notations. We define a multi-index \(\alpha\) an 
+element of \(\mathbb{N}^n\) and we write \(\left| \alpha \right| = \sum \alpha_i\).
+Furthermore, given some function \(f : \Omega \to \mathbb{R}^n\), we write 
+\[D^\alpha f := (D_1)^{\alpha_1}\cdots(D_n)^{\alpha_n} f,\]
+and given \(h \in \mathbb{R}^n\), we write 
+\[h^\alpha := h_1 ^ {\alpha_1} \cdots h_n^{\alpha_n}.\]
+Lastly, we write \(\alpha! := \alpha_1! \cdots \alpha_n!\).
+
+With that, we can state the Taylor's theorem.
+
+\begin{theorem}[Taylor's Theorem]
+  Suppose \(p \in \mathbb{R}^n\) and \(f : B_r(p) \to \mathbb{R}\) is \(k\)-times
+  differentiable on \(B_r(p)\) for some \(r > 0\) and \(k \ge 1\). Then for any 
+  \(h \in \mathbb{R}^n\) with \(\|h\| < r\), we have,
+  \[
+    f(p + h) = \sum_{\substack{\alpha \in \mathbb{N}^n,\\ \left|\alpha\right| \le k - 1}} 
+      D^\alpha f(p) \frac{h^\alpha}{\alpha!} + R_k(p, h),
+  \]
+  where there exists some \(x \in \mathbb{R}^n\) with \(0 < \| x - p\| < \| h \|\)
+  such that 
+  \[
+    R_k(p, h) = \sum_{\substack{\alpha \in \mathbb{N}^n \\ \left| \alpha \right| = k}} 
+      D^\alpha f(x)\frac{h^\alpha}{\alpha!}.
+  \]
+\end{theorem}
+\proof
+  See one dimensional version from year one. (Essentially boils down to finding 
+  the Taylor expansion of the restriction of \(f\) on
+  \(\{p + th \mid t \in \mathbb{R}\} \cap B_r(p)\) 
+  which is isomorphic to a open set in the real line.)
+\qed
+
