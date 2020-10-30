@@ -21,6 +21,8 @@ header-includes:
   - \newtheorem*{remark}{Remark}
   - \theoremstyle{definition}
   - \newtheorem{definition}{Definition}[section]
+  - \newcommand{\cov}{\mathop{\mathrm{Cov}}}
+  - \newcommand{\var}{\mathop{\mathrm{Var}}}
 ---
 
 # Introduction 
@@ -307,7 +309,7 @@ intended, that is
 
 \begin{theorem}
   Let \((\Omega, \mathcal{F}, \mathbb{P})\) be a probability space and 
-  \(X, Y\) be real-valued random variables. THen \(X, Y\) are independent if 
+  \(X, Y\) be real-valued random variables. Then \(X, Y\) are independent if 
   and only if for all \(A, B \in \mathcal{B}(\mathbb{R})\), 
   \[\mathbb{P}(X \in A, Y \in B) = \mathbb{P}(X \in A) \mathbb{P}(Y \in B).\]
 \end{theorem}
@@ -478,3 +480,81 @@ random variable and \(g\) is \(\mathcal{B}(\mathbb{R})\)-measurable. Then
 to get the CDF of \(g(X)\) (recall that the CDF characterises the random variable) 
 we simply consider \(F_{g(X)}(x) = \mathbb{P}(g(X) \in (-\infty, x]) = 
 \mathbb{P}(X \in g^{-1}(-\infty, x])\) which we can obtain using the CDF of \(X\).
+
+# Multivariate Random Variables
+
+Recall the definition regarding multivariate distributions from year one and 
+we shall in this section consider some of their properties.
+
+\begin{theorem}
+  Let \(X_1, \cdots, X_n\) be independent random variables and \(f_1, \cdots, f_n\) 
+  are Borel measurable real-valued functions, then \(f_1(X_1), \cdots, f_n(X_n)\) 
+  are also independent.  
+\end{theorem}
+\proof
+  Suppose \(B_1, \cdots, B_n \in \mathcal{B}(\mathbb{R})\), then we need to show 
+  that \(\mathbb{P}(\bigcap_{i = 1}^n\{f_i(X_i) \in B_i\}) 
+  = \prod_{i = 1}^n \mathbb{P}(f_i(X_i) \in B_i)\). By considering by definition 
+  \(\{f_i(X_i) \in B_i\} = f_i(X_i)^{-1}(B_i) = X_i^{-1}(f_i^{-1}(B_i))\), we 
+  have \(\mathbb{P}(\bigcap_{i = 1}^n\{f_i(X_i) \in B_i\}) = 
+  \mathbb{P}(\bigcap_{i = 1}^n X_i^{-1}(f_i^{-1}(B_i))) = 
+  \prod_{i = 1}^n \mathbb{P}(X_i^{-1}(f_i^{-1}(B_i))) = 
+  \prod_{i = 1}^n \mathbb{P}(f_i(X_i) \in B_i)\) where the third equality is due 
+  to the independence of \(X_i\).
+\qed
+
+## Covariance and Correlation
+
+While this is a nice theorem on independence of transformed random variables, it 
+is also useful to develop some tools to help us determine whether or not two 
+random variables are independent. Recall the definition of covariance.
+
+\begin{definition}[Covariance]
+  For random variables \(X, Y\), with finite expectations \(\mu_X, \mu_Y\) 
+  respectively, the covariance between \(X\) and \(Y\) is defined to be 
+  \[\cov(X, Y) = E((X - \mu_X) (Y - \mu_Y)).\]
+\end{definition}
+
+By expanding, we see that the covariance between \(X\) and \(Y\) is equivalently 
+\[\cov(X, Y) = E(XY) - E(X)E(Y).\]
+Furthermore, we see that the covariance is zero for independent random variables, 
+however, the reverse is not necessarily true. Indeed, not much can be interpreted 
+from this value as \(\cov(X, Y)\) has the same dimension as \(XY\), thus, it does 
+not make sense the refer to the covariance as big or small, this is instead the 
+role of the correlation.
+
+\begin{definition}[Correlation]
+  The correlation of the random variables \(X, Y\) is
+  \[\frac{\cov(X, Y)}{\sqrt{\var(X)} \sqrt{\var(Y)}}.\]
+\end{definition}
+
+We recall from last year that the correlation is always between \(-1\) and 1, so 
+it does make sense to consider the size of the correlation.
+
+From analysis, we recall the definition of a inner product space -- that is a 
+vector space equipped with an inner product. By checking the axioms, we find that 
+the covariance of random variables forms an inner product over the space of 
+random variables.
+
+\begin{remark}
+  The previous statement is not necessarily true since \(\cov(X, X) = 0\) for 
+  \(X = c\) for some \(c \in \mathbb{R}\); that is the covariance does not 
+  satisfy positive definiteness. To fix this, we quotient on the set of random 
+  variables with the equivalence relation \(X \sim Y\) if and only if there exists 
+  \(c \in \mathbb{R}\), \(\mathbb{P}(X = Y + c) = 1\).
+\end{remark}
+
+## Transformation of Multivariate Random Variables
+
+Let \(D \subseteq \mathbb{R}^2\) and \(T : D \to \mathbb{R}^2\) be a function 
+with range \(R \subseteq \mathbb{R}^2\).
+Suppose the partial derivatives of \(T\) exist and are continuous. 
+We define the Jacobian of \(T\) is 
+\[J(u, v) = \det\begin{bmatrix}
+  \frac{\partial{x}}{\partial{u}} & \frac{\partial{x}}{\partial{v}}\\
+  \frac{\partial{y}}{\partial{u}} & \frac{\partial{y}}{\partial{v}}
+\end{bmatrix}.\]
+Then, if \((U, V) = T(X, Y)\)is a function of the pair of random variables 
+\((X, Y)\) with joint probability density function \(f_{XY}\), the joint 
+pdf of \((U, V)\) is 
+\[f_{UV}(u, v) = f_{XY}(x(u, v), y(u, v))\left|J(u, v)\right|.\]
