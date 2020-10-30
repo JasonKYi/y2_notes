@@ -613,8 +613,32 @@ Note that we can optimize the algorithm by making sure that we do not go
 back to previously visited nodes but that's simply an implementation
 issue on how one can achieve this.
 
-We see that the complexity of this algorithm is \(O(\left|V\right|)\)
-since every node will be explored in the worst case.
+\hypertarget{analysing-complexity}{%
+\subsection{Analysing Complexity}\label{analysing-complexity}}
+
+We recall from year 1 computing the definitions of big-\(O\) and
+big-\(\Omega\) notations.
+
+\begin{definition}[Big-\(O\) notation]
+  Given a cost function \(C : \mathbb{N} \to \mathbb{R}\), we say 
+  \(C(N) = O(f(N))\) for some \(f : \mathbb{N} \to \mathbb{R}\) if and only 
+  if there exists some \(N_0 \in \mathbb{R}, r \in \mathbb{R}\) such that 
+  for all \(n \ge N_0\), \(C(n) \le rf(n)\).
+\end{definition}
+
+\begin{definition}[Big-\(\Omega\) notation]
+  Given a cost function \(C : \mathbb{N} \to \mathbb{R}\), we say 
+  \(C(N) = \Omega(f(N))\) for some \(f : \mathbb{N} \to \mathbb{R}\) if and only 
+  if there exists some \(N_0 \in \mathbb{R}, r \in \mathbb{R}\) such that 
+  for all \(n \le N_0\), \(C(n) \le rf(n)\).
+\end{definition}
+
+We can interpret the big-\(O\) and big-\(\Omega\) notations as providing
+some information about the upper and lower bounds of the cost function.
+
+With that, we see that the complexity of this algorithm is
+\(O(\left|V\right|)\) since every node will be explored in the worst
+case.
 
 \hypertarget{random-networks}{%
 \section{Random Networks}\label{random-networks}}
@@ -783,5 +807,29 @@ triplet being a triangle is \(p^3\), so we have
 tends to zero faster than \(N\). Hence, again by Markov's inequality we
 have \(\mathbb{P}(T_N \ge 1) \to 0\), resulting in
 \(\mathbb{P}(T_N = 0) \to 1\). \qed
+
+\hypertarget{other-models-of-random-networks}{%
+\subsection{Other Models of Random
+Networks}\label{other-models-of-random-networks}}
+
+By comparing the \(G(N, p)\) model to to real networks, we find that
+there is a big difference between the prediction and the actual
+networks. The could be due to numerous reasons such as the fact that the
+probability of the existence of a particular link in the \(G(N, p)\)
+model is independent from the number of links a node already have. In
+this section we shall take a look at some more modern models of random
+graphs with (perhaps) better predictions in certain situations.
+
+We will first take a look at the \emph{configuration model}.
+
+\begin{definition}[Configuration Model]
+  The configuration model with \(n\) nodes a random network with the
+  sequence \(S = \{x_1 \cdots x_n\} \subseteq (\mathbb{N}^*)^n\) such that the 
+  \(i\)-th node has degree \(x_i\).
+\end{definition}
+
+\begin{remark}
+  We see that \(\sum S\) must be even as each edge has two endpoints.
+\end{remark}
 
 \end{document}

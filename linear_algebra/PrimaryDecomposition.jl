@@ -32,23 +32,22 @@ function charpoly(M::LinearMap, var::Basic, simpr::Bool = true)::Basic
     simpr ? expand(eq) : eq
 end
 
-function terms(expr::Basic)::Array{SubString{String}, 1}
+function terms(expr::Basic)::Array{SubString{String}, 1} # Maybe not so useful
     strexpr = "$expr"
     split(strexpr, r"\+ |\- ")
 end
-
-function degree(expr::Basic)::Int length(expr |> terms) end
 
 function distcomplex(z1::Vector{Basic}, z2::Vector{Basic})::Real    
     sum(map(abs, z1 - z2))
 end
 
 # Using Durand-Kerner method to find all complex roots
-function durandkerner(expr::Basic, maxiterations::Int = 15, 
+function durandkerner(M::LinearMap, var::Basic, maxiterations::Int = 15, 
             initvals::Complex = sqrt(2)im)::Vector{Basic}
 
     # Initiate the values
-    d, iter = degree(expr), maxiterations 
+    d, iter, expr = M.length, maxiterations, charpoly(M, var)
+    println(d)
     sol = map(x -> convert(Basic, x), Array(hcat([[0, initvals^i] for i = 1:d]...)'))
 
     # Begin the main loop
@@ -66,7 +65,7 @@ function durandkerner(expr::Basic, maxiterations::Int = 15,
 end
 
 function rroot(r::Basic)::Union{Basic, Nothing}
-    imag(r) < 10e-6 ? real(r) : nothing
+    abs(imag(r)) < 10e-6 ? real(r) : nothing
 end
 
 function rroots(r::Vector{Basic})::Vector{Basic}
@@ -108,12 +107,11 @@ function main()
          [0 0 1 -1]]
     # Example matrix from lecture notes
     M2 = [[2 0 0]; [-1 -3 -1]; [-1 4 1]]
+    M3 = [[0 -1 0]; [1 0 0]; [0 0 3]]
     
-    Mw = LinearMap(M2)
-    expr = charpoly(Mw, x)
-
-    v = expr |> durandkerner |> rroots |> getint
-    vnew = findminipolyaux(Mw, v, x)
+    Mw = LinearMap(M3)
+    v = durandkerner(Mw, x) |> rroots |> getint
+    # vnew = findminipolyaux(Mw, v, x)
     # p = findminipoly(Mw, vnew)
 end
 
