@@ -544,7 +544,9 @@ random variables.
   \(c \in \mathbb{R}\), \(\mathbb{P}(X = Y + c) = 1\).
 \end{remark}
 
-## Transformation of Multivariate Random Variables
+## Working With Multivariate Random Variables
+
+### Transforming Multivariate Random Variables
 
 Let \(D \subseteq \mathbb{R}^2\) and \(T : D \to \mathbb{R}^2\) be a function 
 with range \(R \subseteq \mathbb{R}^2\).
@@ -558,3 +560,98 @@ Then, if \((U, V) = T(X, Y)\)is a function of the pair of random variables
 \((X, Y)\) with joint probability density function \(f_{XY}\), the joint 
 pdf of \((U, V)\) is 
 \[f_{UV}(u, v) = f_{XY}(x(u, v), y(u, v))\left|J(u, v)\right|.\]
+
+### Conditioning on Multivariate Random Variables
+
+We recall several definitions from last year. The Bayes' theorem for conditioning 
+on events states
+\[\mathbb{P}(B \mid A) = \frac{\mathbb{P}(B \cap A)}{\mathbb{P}A)}.\]
+With formula, we can extend this to condition on any random variables with 
+\[F_{X \mid A}(x) =\frac{\mathbb{P}(\{X \le x\} \cap A)}{\mathbb{P}(A)},\]
+where \(X\) is a random variable. and \(A \in \mathcal{F}\). 
+If \(X\) is discrete, we see that 
+\[f_{X \mid A}(x) = \mathbb{P}(X = x \mid A),\]
+by Bayes', while if \(X\) is absolutely continuous, we define 
+\[f_{X \mid A}(x) = \frac{\text{d}}{\text{d}x}F_{X \mid A}(x),\]
+resulting 
+\[\mathbb{P}(X \in C \mid A) = \int_{C} f_{X \mid A}(x) \text{d}x,\]
+for any \(C \in \mathcal{B}(\mathbb{R})\).
+
+We need to be careful when working with conditioned probabilities such as 
+\(Y \mid X = x\) as \(\mathbb{P}(X = x) = 0\) for absolutely continuous \(X\) 
+and \(Y\). To deal with this, we instead conditioning on 
+\(X \in (x, x + \delta)\) for some \(\delta > 0\) and consider the limit 
+of \(Y \mid X \in (x, x + \delta)\) as \(\delta \to 0\).
+\[\mathbb{P}(Y \mid X = x)
+  = \lim_{\delta \to 0}\mathbb{P}(Y \le y \mid X \in (x, x + \delta)) 
+  = \lim_{\delta \to 0}
+    \frac{\int_x^{x + \delta} \int_{-\infty}^y f_{X, Y}(u, v) \text{d}v \text{d}u}
+    {\int_x^{x + \delta} f_X(u)\text{d}u},
+\]
+then by using l'Hopital's rule, we find 
+\[\mathbb{P}(Y \mid X = x) = 
+  \frac{\int_{-\infty}^y f_{X, Y}(x, v) \text{d}v}{f_X(x)},\]
+and so, by differentiating,
+\[f_{Y \mid X}(y \mid x) = \frac{f_{X, Y}(x, y)}{f_X(x)}.\]
+
+When interpreting this probability, we need to be careful as we should never 
+by conditioning on events with probability 0 (see the Borel-Kolmogorov paradox in 
+the problem sheet).
+
+## Multivariate Normal Distribution 
+
+We shall examine one of the most useful distributions -- the multivariate normal 
+distribution.
+
+### Bivariate Normal Distribution
+
+We recall from last year the bivariate normal distribution with PDF given by 
+\[
+  f(x, y \mid \rho) = \frac{1}{2\pi \sqrt{1 - \rho ^2}}
+  \exp\left(-\frac{1}{2(1 - \rho ^2)}(x^2 - 2\rho x y + y^2) \right),
+\]
+where \((x, y) \in \mathbb{R}^2\) and the parameter \(-1 < \rho < 1\).
+
+Straight away, we see that whenever \(\rho = 0\), the PDF, can be factored into 
+two univariate functions. Therefore, by the factorisation theorem, if \(\rho = 0\)
+we have \(X, Y\) are independent (this is **not** true in general). 
+
+By completing the square in the exponential, we can compute the marginal density 
+of \(X\) and \(Y\). 
+\begin{align*}
+  f_Y(y) & = \int_{x \in \mathbb{R}} \frac{1}{2\pi \sqrt{1 - \rho ^2}}
+      \exp\left(-\frac{1}{2(1 - \rho ^2)}(x^2 - 2\rho x y + y^2) \right) \text{d}x\\
+    & = \int_{x \in \mathbb{R}} \frac{1}{2\pi \sqrt{1 - \rho ^2}}
+    \exp\left(-\frac{1}{2(1 - \rho ^2)}((x - \rho y)^2 + (1 - \rho ^2)y^2) \right) \text{d}x\\
+    & = \frac{1}{\sqrt{2\pi}}\exp(-y^2/ 2) \int_{x \in \mathbb{R}}
+    \frac{1}{\sqrt{2\pi}\sqrt{1 - \rho^2}}
+    \exp\left(-\frac{(x - \rho y)^2}{2(1 - \rho ^2)} \right) \text{d}x.
+\end{align*}
+By inspection, we see that the integral within the equation evaluates to 1 as 
+its the integral over the support of a univariate normal random variable 
+with mean \(\rho y\) and variance \(1 - \rho ^2\). Thus, the marginal density 
+of \(Y\) is simply, 
+\[f_Y(y) = \frac{1}{\sqrt{2\pi}}\exp(-y^2/ 2).\]
+By, symmetry, we also obtain the marginal distribution of \(X\),
+\[f_X(x) = \frac{1}{\sqrt{2\pi}}\exp(-x^2/ 2).\]
+That is, \(X, Y \sim N(0, 1)\).
+
+While, the initial step of completing the square might seem like a cheap trick, 
+it is equivalent to writing \(f(x, y) = f(x \mid y)f(y)\). Thus, we find also 
+that \(X \mid Y = y \sim N(\rho y, 1 - \rho ^2)\).
+
+Let us now look at the covariance of the bivariate normal distribution.
+\begin{align*}
+  E(XY) & = \iint_{\mathbb{R}^2} x y f_{X \mid Y}(x \mid y) f_Y(y)\text{d}x\text{d}y\\
+        & = \int_\mathbb{R} y f_Y(y) \int_\mathbb{R} x f_{X \mid Y} (x \mid y)\text{d}x\text{d}y\\
+        & = \int_\mathbb{R} y f_Y(y) \rho y \text{d}y\\
+        & = \rho E(Y^2) = \rho,
+\end{align*} 
+where the third equality because \(X \mid Y = y\sim N(\rho y, 1 - \rho ^2)\) 
+as previously mentioned, and thus, has an expectation \(\rho y\). Thus, the 
+covariance between \(X\) and \(Y\) is 
+\[
+  \cov(X, Y) = E(XY) - E(X)E(Y) = \rho - 0 = \rho,   
+\]
+so, in fact, the covariance between \(X\) and \(Y\) is 0 if and only if 
+they are independent (**not** true in general). 
