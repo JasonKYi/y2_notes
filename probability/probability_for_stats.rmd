@@ -655,3 +655,6 @@ covariance between \(X\) and \(Y\) is
 \]
 so, in fact, the covariance between \(X\) and \(Y\) is 0 if and only if 
 they are independent (**not** true in general). 
+
+In fact, we see this is simply the *law of iterated expectation*,
+\[E(XY) = E_Y(E(X \mid Y = y)) = E_Y(\rho YY) = \rho E(Y^2) = \rho.\]

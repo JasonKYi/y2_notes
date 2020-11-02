@@ -384,3 +384,126 @@ With that, we can state the Taylor's theorem.
   which is isomorphic to a open set in the real line.)
 \qed
 
+## Inverse and Implicit Function Theorem
+
+The inverse and implicit function theorem are two important theorems and we shall 
+look at them in this section. 
+
+From last year, we looked at the inverse function theorem in the first dimension.
+Let \(f : (a, b) \to \mathbb{R}\) be continuously differentiable, and suppose 
+there exists \(p \in (a, b)\) such that \(f'(p) \neq 0\). 
+Then there exists a neighbourhood \(I\) around \(p\) such that 
+\(f \mid_I : I \to f(I)\) is bijective and thus has a inverse on \(I\), \(f^{-1}\) 
+that is differentiable and 
+\[(f^{-1})'(y)) = \frac{1}{f'(f^{-1}(y))}.\]
+
+This theorem can be generalised into higher dimensions. 
+
+\begin{theorem}[\(C^1\) Inverse Function Theorem]
+  Let \(\Omega \subseteq \mathbb{R}^n\) be open and \(f : \Omega \to \mathbb{R}^m\) 
+  be continuously differentiable on \(\Omega\), and there exists some \(q \in \Omega\) 
+  such that \(Df(q) \in \mathcal{L}(\mathbb{R}^n; \mathbb{R}^m)\) is invertible.
+  Then, there exist open neighbourhoods around \(q\) and \(f(q)\), namely \(U, V\)
+  respectively, such that,
+  \begin{itemize}
+    \item \(f : U \to V\) is a bijection;
+    \item \(f^{-1} : V \to U\) is continuously differentiable;
+    \item for all \(v \in V\), \(Df^{-1}(v) = (Df(f^{-1}(v)))^{-1}\).
+  \end{itemize}
+\end{theorem}
+
+\begin{lemma}[Contraction Mapping Theorem]
+  Let \(X\) be a complete metric space and let \(\phi : X \to X\) be a contraction 
+  of \(X\). Then there exists an unique \(x\) such that \(\phi(x) = x\).
+\end{lemma}
+
+\begin{remark}
+  We shall examine exactly what this theorem states in the later sections on 
+  metric spaces and topology.
+\end{remark}
+
+\proof (Part 1 of the \(C^1\) Inverse Function Theorem).
+  We denote \(\|A\| = \sup_{\|x\| \le 1} \|Ax\|\) within this proof.
+  Suppose \(q \in \Omega\) and \(Df(q) = A\) is invertible, then let us define 
+  \(\epsilon := 1 / \|Df(q)\|\). As \(f\) is continuously differentiable, there 
+  exists some open neighbourhood of \(q\) -- \(U\) such that for all \(x \in U\)
+  \[\|Df(x) - A\| < \epsilon,\]
+  (simply choose \(U\) to have diameter smaller than 1). Now, for all 
+  \(y \in \mathbb{R}^m\), we define 
+  \[\phi_y(x) = x + A^{-1}(y - f(x)).\]
+  It is easy to see that \(\phi_y\) is differentiable with derivative 
+  \(D\phi_y(x) = I - A^{-1}Df(x) = A^{-1}(A - Df(x)),\) so 
+  \(\|D\phi_y(x)\| = \|A^{-1}\| \|(A - Df(x))\| < \|A^{-1}\|\epsilon = 1\). By 
+  the mean value theorem, \(\| \phi_y(x_1) - \phi_y(x_2) \| \le \| x_1 - x_2 \|\),
+  that is \(phi_y\) is a contraction on \(B\), and hence has a unique fixed point.
+  Now as \(f(x) = y\) if and only if \(x\) is a fixed point of \(\phi_y\), we are 
+  done. 
+\qed
+
+It is in general not easy to find the inverse of a function in the higher dimensions, 
+so the inverse function theorem can help us obtain some properties about the 
+inverse that is otherwise difficult or unobtainable.
+
+The inverse function theorem can be used to show existence and uniqueness of 
+solutions of non-linear system of equations. Given \(f_i(x_1, \cdots, x_n) = y_i\) 
+for \(i = 1,\cdots , n\), we can define \(F(\mathbf{x}) = (f_i(\mathbf{x}))^T\). 
+Then, by looking at some open neighbourhood containing \(\mathbf{y}\), it might 
+be possible to determine \(F^{-1}(\mathbf{y})\).
+
+Let \(\Omega, \Omega' \subseteq \mathbb{R}^n\) be open. Then, we say 
+\(f : \Omega \to \Omega'\) is a \(C^1\)-diffeomorphism is 
+\begin{itemize}
+  \item \(f : \Omega \to \Omega'\) is a bijection;
+  \item \(f : \Omega \to \Omega'\) is continuously differentiable;
+  \item for all \(x \in \Omega\), \(Df(x)\) is invertible.
+\end{itemize}
+
+\begin{remark}
+  In fact, the set of all \(C^1\)-diffeomorphisms from some open 
+  \(\Omega \subseteq \mathbb{R}^n\) to itself forms a group under composition.
+\end{remark}
+
+\begin{theorem}[Implicit Function Theorem -- Simple ver.]
+  Let \(\Omega \subseteq \mathbb{R}^2\) be open and \(f : \Omega \to \mathbb{R}\) 
+  is continuously differentiable, moreover, suppose there exists 
+  \(q = (a, b) \in \Omega\) such that \(f(a, b) = 0\) and \(D_2 f(a, b) \neq 0\). 
+  Then, there exists open \(A, B \subseteq \mathbb{R}\) and \(g : A \to B\)
+   such that \(a \in A\), \(b \in B\) and \((x, y) \in A \times B\) satisfies 
+   \(f(x, y) = 0\) if and only if \(y = g(x)\). Furthermore, \(g\) is 
+   continuously differentiable.
+\end{theorem}
+
+\proof
+Wlog. We assume \(D_2f(p) > 0\), then as \(f\) is continuously differentiable, 
+\(D_2f(p)\) is continuous and thus, there exists some open neighbourhoods around 
+\(a\) and \(b\) -- \(A, B = (a - \delta_a, a + \delta_a), 
+(b - \delta_b, b + \delta_b)\) respectively, such that for all 
+\(u \in A \times B\), \(D_2f(u) > 0\) (this can be obtained by drawing the a 
+square insider the open ball). Now, suppose we define 
+\[h : B \to \mathbb{R} : y \mapsto f(a, y).\]
+As \(h'(y) = D_2f(a, y) > 0\), we see that \(h\) is strictly increasing. 
+Furthermore, as \(h(b) = f(a, b) = 0\), we have \(h(b - \delta_b / 2) < h(b) = 0\), 
+and similarly, \(h(b + \delta_b / 2) > 0\). Thus, there exists some \(\delta_a > \delta' > 0\)
+such that \(f(x, b - \delta_b / 2) < 0\) and \(f(x, b + \delta_b / 2) > 0\) for 
+all \(x \in (a - \delta', a + \delta')\). Now, by the intermediate value theorem, 
+for all \(x \in (a - \delta', a + \delta')\) there exists (uniquely) some 
+\(y_x \in (b - \delta_b / 2, b + \delta_b / 2)\) such that \(f(x, y_x) = 0\)
+(unique as \(D_2f(x, y) > 0\)). Thus, we can define 
+\[g : (a - \delta', a + \delta') \to (b - \delta_b / 2, b + \delta_b / 2) : x \mapsto y_x.\]
+We see straight away that \(g\) is continuously differentiable as \(f\) is. So 
+we are done.
+\qed
+
+There is a more general version of this theorem applying to arbitrary dimensions.
+
+\begin{theorem}[Implicit Function Theorem]
+  Let \(\Omega \subseteq \mathbb{R}^n, \Omega' \subseteq \mathbb{R}^m\) be open, 
+  and \(f : \Omega \times \Omega' \to \mathbb{R}^m\) be continuously differentiable 
+  on \(\Omega \times \Omega'\). Suppose there exists 
+  \(p = (a, b) \Omega \times \Omega'\) such that \(f(p) = 0\) and 
+  \(D_{n + j} f^i(p)\) is invertible for all \(1 \le i, j \le m\). Then there 
+  are \(A \subseteq \Omega, B \subseteq \Omega'\) with \(a \in A, b \in B\) 
+  such that there exists a map \(g : A \to B\) in which, 
+  \(f(x, y) = 0\) if and only if \(y = g(x)\) for some \(x \in A\).
+  Furthermore, \(g\) is continuously differentiable.
+\end{theorem}
