@@ -1145,4 +1145,143 @@ theorem is trivial for for the base case so we begin by letting
 \(k = n + 1\). Then, by considering the previous lemma on \(p_{n + 1}\)
 and \(\prod_{i = 1}^n p_i\), the theorem follows. \qed
 
+\hypertarget{jordan-canonical-form}{%
+\subsection{Jordan Canonical Form}\label{jordan-canonical-form}}
+
+Recall that the triangularisation theorem is limited in many ways. Not
+only does it not apply for matrices who's characteristic polynomial
+cannot be factored, for those matrices the theorem does apply, the
+triangularisation is not unique. We attempt to improve upon this with
+the Jordan canonical form theorem.
+
+\begin{definition}[Jordan Blocks]
+  Let \(\mathbb{F}\) be a field and let \(\lambda \in \mathbb{F}\). Then 
+  \(J_n(\lambda) \in M_n(\mathbb{F})\) is a Jordan block if and only if 
+  \[J_n(\lambda) = \begin{bmatrix}
+      \lambda & 1 & 0 & \cdots & 0\\
+      0 & \lambda & 1 & \cdots & 0\\
+      0 & 0 & \lambda & \cdots & 0\\
+      \vdots & \vdots &  \vdots & \ddots & \vdots \\
+      0 & 0 & 0 & \cdots & \lambda\\
+    \end{bmatrix}.\]
+\end{definition}
+
+Jordan blocks are a nice form of matrices and we can derive several
+properties straight away.
+
+\begin{prop}
+  Let \(J = J_n(\lambda)\) be some Jordan block, then 
+  \begin{itemize}
+    \item \(\chi_J(x) = (x - \lambda)^n = m_J\);
+    \item \(\lambda\) is the only Eigenvalue and \(a(\lambda) = n, g(\lambda) = 1\);
+    \item \((J - \lambda I)e_{i + 1} = e_i\) for \(i = 1, \cdots, n - 1\) 
+      and \((J - \lambda I)e_1 = 0\).
+  \end{itemize}
+\end{prop}
+\proof
+
+Obvious. \qed
+
+Before we state the Jordan canonical form theorem, let us recall some
+properties of block diagonal matrices. Let \(A_i\) have characteristic
+polynomial \(\chi_i\) and let \(A = \bigoplus A_i\), then
+
+\begin{itemize}
+  \item \(\chi_A = \prod \chi_i\);
+  \item \(m_A = \mathop{\mathrm{lcm}}(m_i)\);
+  \item for all \(\lambda\) and Eigenvalue of \(A\), 
+    \(\dim E_\lambda(A) = \sum \dim E_\lambda(A_i)\);
+  \item for all \(q \in \mathbb{F}[X]\), \(q(A) = \bigoplus q(A_i)\).
+\end{itemize}
+
+With that, we can state the Jordan canonical form theorem.
+
+\begin{theorem}[Jordan canonical form theorem]
+  Let \(A \in M_n(\mathbb{F})\) and the characteristic polynomial is a product 
+  of linear factors over \(\mathbb{F}\). Then, 
+  there exists some \(J\), \(A \sim J = \bigoplus J_{n_i}(\lambda_i)\) and 
+  this decomposition is unique up to the ordering of the Jordan blocks.
+\end{theorem}
+
+We call this unique decomposition the Jordan canonical form of \(A\).
+
+\begin{remark}
+  The condition on which the characteristic polynomial must be factorisable is 
+  necessary as otherwise it would not even be triangulisable. Also, we note that 
+  the \(\lambda_i\) is not necessarily distinct.
+\end{remark}
+
+Of course, there is an equivalent theorem for linear maps. In fact, we
+shall prove the linear map version now.
+
+\begin{theorem}
+  Let \(V\) be a \(n\)-dimensional vector space over \(\mathbb{F}\) and 
+  \(T \in \mathop{\mathrm{End}}(V)\) such that \(\chi_T\) is a product of linear factors over 
+  \(\mathbb{F}\). Then, there exists a basis \(B\) of \(V\) such that 
+  \([T]_B = J = \bigoplus J_{n_i}(\lambda_i)\), and furthermore, \(J\) is 
+  uniquely determined by \(T\) (up to ordering).
+\end{theorem}
+\proof
+
+We shall provide a proof for uniqueness.
+
+Suppose that \(T\) has only one Eigenvalue \(\lambda\) and
+\[[T]_B \sim J = \bigoplus J_{n_i}(\lambda)\] for some basis of \(V\),
+\(B\). Let us write \(J = \bigoplus_{i = 1}^r J_i(\lambda)^{a_i}\) where
+\(a_i\) is the number of \(\lambda\)-blocks with size \(i\). Then, let
+us define \[m_i := \dim \text{Im}(J - \lambda I)^i.\] Now, by
+considering \(J_r(0)^i\), for \(i = 1, \cdots, r\) we have
+\begin{align*}
+    m_{r - 1} & = a_r,\\ 
+    m_{r - 2} & = a_{r - 1} + 2a_r,\\
+    m_{r - 3} & = a_{r - 2} + 2a_{r - 1} + 3a_r,\\
+  \end{align*} and so on. In general, we see
+\[m_i = \sum_{j = 1}^{r - i} j a_{i + j}\] for \(i = 0, \cdots, r - 1\).
+Thus, \(m_i\) uniquely determines \(a_i\); and as \(m_i\) is computable
+and is uniquely determined by \((J - \lambda I)^i\), we have \(a_i\) is
+unique.
+
+Now, let us relax the number of Eigenvalues condition. Suppose \(T\) has
+at least two Eigenvalues with one of them being \(\lambda\), then we can
+write \[[T]_B \sim J = J_\lambda \oplus L,\] where \(L\) is the direct
+sum of all the other Jordan blocks. Now, as \(L - \lambda I\) is
+invertible (easy to see as the determinant is non-zero), it has full
+rank \(l\). Thus, by defining \[r_i = \dim \text{Im}(J - \lambda I)^i,\]
+we have \(r_i = \dim \text{Im}(J_\lambda - \lambda I)^i + l\), allowing
+us to compute
+\(m_i = \dim \text{Im}(J_\lambda - \lambda I)^i = r_i - l\). \qed
+
+In most cases, it might not be necessary to go through the steps as
+described above to find the Jordan canonical form of a matrix.
+
+\begin{prop}
+  Let \(A \in M_n(\mathbb{F}) \sim J\) where \(J\) is in Jordan Canonical Form. 
+  Suppose we write 
+  \[J = (J_{n_1}(\lambda) \oplus \cdots \oplus J_{n_\alpha}(\lambda)) \oplus 
+    (J_{m_1}(\mu) \oplus \cdots \oplus J_{m_\beta}(\mu)) \oplus \cdots,\]
+  where \(\lambda, \mu, \cdots\) are Eigenvalues of \(A\), then,
+  \begin{itemize}
+    \item the sum of the size of the \(\lambda\)-blocks equals the algebraic 
+    multiplicity of \(\lambda\), i.e. \(n_1 + \cdots + n_\alpha = a(\lambda)\);
+    \item the number of \(\lambda\)-blocks equals the geometric multiplicity of 
+    \(\lambda\), i.e. \(\alpha = g(\lambda)\);
+    \item \(\max \{n_1, \cdots, n_\alpha\} = r\) where \((x - \lambda)^r\) is the 
+    highest power of \(x - \lambda\) dividing \(m_A\).
+  \end{itemize}
+\end{prop}
+\proof
+
+The proofs are rather straight forward.
+
+\begin{itemize}
+    \item Obvious by considering the characteristic polynomial of \(J_k(\lambda)\).
+    \item True by considering each \(\lambda\)-block has geometric multiplicity one, 
+      and that \(J\) and \(A\) share the same \(\lambda\)-Eigenspace.
+    \item Since for all \(n\), \(J_n(\lambda)\) has minimal polynomial 
+    \((x - \lambda)^n\), we have the power dividing \(m_J\) is 
+    \(\mathop{\mathrm{lcm}}((x - \lambda)^{n_i}, \cdots, (x - \lambda)^{n_\alpha})\) which equals 
+    \((x - \lambda)^{\max \{n_1, \cdots, n_\alpha\}}\).
+  \end{itemize}
+\qed
+
 \end{document}
