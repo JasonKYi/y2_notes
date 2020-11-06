@@ -645,21 +645,17 @@ case.
 
 While sometimes we do have a concrete network on hand to work this, this
 is not often the case, thus, it is sometimes useful to model the
-behaviours of networks with random networks.
+behaviours of networks with random networks. We will first take a look
+at the classical random network -- the \(G(N, p)\) model and move on to
+some modern approaches.
 
-There are two main definitions of a random network. The \(G(N, L)\)
-model represents a random network with \(N\) nodes and \(L\) randomly
-placed edges while \(G(N, p)\) model changes the number of edges with
-the probability of two nodes to be connected. We will refer to these two
-models as \emph{Erdos} and \emph{Gilbert} respectively.
+\hypertarget{some-properties-of-the-model}{%
+\subsection{Some Properties of the
+Model}\label{some-properties-of-the-model}}
 
-\hypertarget{some-properties-of-the-gilbert-model}{%
-\subsection{Some Properties of the Gilbert
-Model}\label{some-properties-of-the-gilbert-model}}
-
-In the section we will let \(G = G(N, p)\) be a Gilbert random network.
-As the number of edges in \(G\) is characterised solely by the
-probability \(p\), \(G\) can any number of edges between 0 and
+In the section we will take a look at the \(G(N, p)\) model. As the
+number of edges in \(G\) is characterised solely by the probability
+\(p\), \(G\) can any number of edges between 0 and
 \(\begin{pmatrix} n \\ k \end{pmatrix}\), so it is useful to consider
 the probability that \(G\) has \(n\) edges.
 
@@ -689,12 +685,12 @@ We recall that for large \(n\) and small \(p\) such that
 a random network can be approximated by a Poisson distribution with the
 parameter \(\lambda = np\).
 
-The clustering coefficient of a random Gilbert graph is given by \(p\).
-This is because given \(n\) neighbouring nodes of a node, there are
-\(n (n - 1) / 2\) possible edges connecting them each with probability
-\(p\), resulting in the local clustering coefficient for a node being
-\(p n (n - 1) / 2\). But now, by putting this into the clustering
-coefficient formulae, we have
+The clustering coefficient of a random Erdos-Renyi graph is given by
+\(p\). This is because given \(n\) neighbouring nodes of a node, there
+are \(n (n - 1) / 2\) possible edges connecting them each with
+probability \(p\), resulting in the local clustering coefficient for a
+node being \(p n (n - 1) / 2\). But now, by putting this into the
+clustering coefficient formulae, we have
 \[C_i = \frac{2 p n (n - 1) / 2}{n (n - 1)} = p,\] as required.
 
 \hypertarget{mathematical-approach}{%
@@ -708,7 +704,7 @@ graphs from a more probabilistically.
 \hypertarget{basic-notions}{%
 \subsubsection{Basic Notions}\label{basic-notions}}
 
-Formally, a random Gilbert graph can be formulated as follows.
+Formally, a random Erdos-Renyi graph can be formulated as follows.
 
 \begin{definition}[Random Graph]
   A random graph \(G(N, p)\) is a probability space \((\Omega, \mathcal{F}, \mathbb{P})\) 
@@ -736,10 +732,10 @@ mathematically,
 \(N \to \infty\). In short, one often says: ``for \(p > 0\), \(G\) is
 connected w.h.p\footnote{With high probability.}''.
 
-Consider a random Gilbert graph \(G(N, p)\). Suppose, naively, we write
-\(k_i\) for the degree of the \(i\)-th node, then, it might make sense
-to say that, the average \(k_i\) tends to the expected value of the
-nodes \(\langle k \rangle = p(N - 1)\), i.e.
+Consider a random Erdos-Renyi graph \(G(N, p)\). Suppose, naively, we
+write \(k_i\) for the degree of the \(i\)-th node, then, it might make
+sense to say that, the average \(k_i\) tends to the expected value of
+the nodes \(\langle k \rangle = p(N - 1)\), i.e.
 \[\lim_{N \to \infty} \frac{1}{N} \sum_{i = 0}^N k_i = \langle k \rangle.\]
 But upon further inspection, this equation is less clear. As \(G(N, p)\)
 is simply a probability space, it doesn't make sense to take the
@@ -769,15 +765,8 @@ into when will large clusters arise.
 \begin{theorem}
   \(\langle k \rangle > 1 \iff\) there exists w.h.p. a connected component which 
   contains a proportion \(S > 0\) of the total number of nodes, where \(S\) 
-  satisfies \(S = 1 - e^{-\langle k \rangle}S\).
+  satisfies \(S = 1 - e^{-\langle k \rangle S}\).
 \end{theorem}
-\proof
-
-\((\impliedby)\) By contrapositive, if \(\langle k \rangle \le 1\) then
-\(S = 1 - e^{-\langle k \rangle}S\) has no solution so we are done.
-
-\((\implies)\) We will instead prove a stronger statement with the next
-theorem. \qed
 
 \begin{theorem}
   Given \(p > 0\), the diameter of \(G \in G(N, p)\) is w.h.p. is at most two, 
@@ -831,5 +820,107 @@ We will first take a look at the \emph{configuration model}.
 \begin{remark}
   We see that \(\sum S\) must be even as each edge has two endpoints.
 \end{remark}
+
+While the configuration model have some benefits in that it better model
+a network given its degree distribution, and that it retains the small
+world property, we find that it is still lacking. Not only is does the
+configuration model require we to provide it with the degree
+distribution, it has a fixed number of nodes, so it cannot model the
+growth of a network over time. We attempts to achieve this with the
+\emph{Barabasi-Albert} model.
+
+Consider an evolving network in which the number of nodes increases over
+time. By considering real world examples, we notices some pattern
+regarding how new links are formed -- the nodes with higher degree form
+new links more easily. This property is called \emph{preferential
+attachment} and we would like to model this with our random graph.
+
+To achieve this, at each iteration, we assign each nodes some value
+proportional to their degree to indicate how likely they are to form new
+links. The easiest way to do this is linear preferential attachment.
+
+\begin{definition}[Linear Preferential Attachment]
+  The probability of a new link attaching to an existing node following 
+  linear preferential attachment is given by 
+  \[\pi_i (t + 1, G(t)) = \frac{k_i}{\sum_{i = 1}^{N(t)}k_i(t)},\]
+  where \(\pi_i(t + 1, G(t))\) is the probability of a link connecting to node 
+  \(i\) in graph \(G(t)\) with \(t = 1, 2, \cdots\).
+\end{definition}
+
+So, at each time \(t\), we add in a new node and a new edge with
+probabilities according to the linear preferential attachment. We call
+this an element of the family of the Barabasi-Albert models.
+
+Without needing to consider the preferential attachment model, we see
+that at time \(t \in \mathbb{N}\), there are \((t + 1)!\) number of
+possible graphs.
+
+We would also like to consider the expected properties of this model. By
+definition, given some property of a graph at time \(t\), \(f(t)\), we
+can write the expected value of \(f\) as
+\[\langle f(t) \rangle = \sum_{i = 1}^{(t + 1)}\mathbb{P}(G_i(t))f(t \mid G_i(t)).\]
+However, this is very vague and does not provide us with much useful
+information, so let us look at some concrete examples.
+
+Let us take a look at the degree distribution of a Barabasi-Albert
+model. Consider the expected number of nodes of degree \(k\) at time
+\(t + 1\), \[
+\langle N_k(t + 1) \rangle = \sum_{i = 1}^{(t + 1)!} P(G_i(t)) N_k(t + 1 \mid G_i(t)).
+\] By considering each cases we find, in general, \[
+N(t + 1)p_k(t + 1) = N(t)p_k(t) - \frac{p_k(t)N(t)k}{2L(t)} + \frac{p_k(t)N(t)(k - 1)}{2L(t)},
+\] and for \(k = 1\), \[
+N(t + 1)p_1(t + 1) = N(t)p_1(t) - \frac{p_1(t)N(t)}{2L(t)} + 1.
+\] Thus, by taking the limit of the two equations as \(t \to \infty\),
+we have \[p_{1, \infty} = \frac{2}{3};\] and
+\[p_{k, \infty} = \frac{k - 1}{k + 2}p_{k - 1, \infty},\] where
+\(p_{k, \infty}\) is the limit of the probability that a node has degree
+\(k\) as \(t \to \infty\). By rearranging, we have
+\(p_{k + 1, \infty} = \frac{k}{k + 3}p_{k, \infty}\), and by induction,
+we find \[p_{k, \infty} = \frac{4}{(k + 2)(k + 1)k} \sim k^{-3}.\] Thus,
+we can conclude that the Barabasi-Albert model has the scale free
+property.
+
+Lastly, let us look at how the degree of a node evolve over time.
+Luckily, this is very simple. If we let \(k_i(t)\) be the random
+variable describing the degree of node \(i\), we see straight away the
+relation, \[k_i(t + 1) = k_i(t) + \delta_i(t + 1),\] where
+\(\delta_i(t + 1)\) is the Bernoulli random variable with parameter
+given by \(k_i(t)\), that is \(\pi_i(t + 1)\). So, (assuming linear
+preferential attachment), we have
+\[\langle k_i(t + 1) \rangle = \langle k_i(t) \rangle\left(1 + \frac{1}{2 + 2t}\right).\]
+So, by induction, \[\langle k_i(t_0 + j) \rangle = 
+  \prod_{n = 0}^{t_0 + j - 1}\left( 1 + \frac{1}{2 + 2(t_0 + n)} \right)
+  \sim \sqrt{\frac{t_0 + 1 + j}{t_0 + 1}},\] where \(t_0\) is defined to
+be the smallest \(t\) such that \(k_i(t = t_0) = 1\). We define such an
+\(t_0\) since for all \(t < t_0\), \(i\)-th node does not exist.
+
+So far, we have looked at an element of the family of the
+Barabasi-Albert model, that is adding one edge and one node at each
+iteration. It is not hard to see that this will result in zero
+clustering everywhere. Suppose instead, we add one node and \(m\) new
+edges every iteration. Then, the degree distribution is
+\[p_k \approx \frac{2m(m + 1)}{(k + 2)(k + 1)k},\] and the clustering is
+\[\langle C \rangle \sim \frac{(\log N)^2}{N}.\]
+
+\begin{remark}
+  We see that the degree distribution is consistent with our previous result 
+  where \(m = 1\).
+\end{remark}
+
+With the general Barabasi-Albert model, we observe an ``ultra
+small-world'' behaviour, that is the distance grows slower than
+\(\log N\). Furthermore, by once again observing our degree
+distribution, we see that they all follow a \(k^{-3}\) trend. However,
+this is not necessary the case for real networks. By observing real
+networks, it was found that the linear preferential attachment model can
+be generalised such that \[\pi_i = c(k_i^\alpha + \beta),\] where
+\(\alpha, \beta\) are parameters and \(c\) is the normalising constant.
+
+With \(\alpha = 1\),
+\[p_k \sim k^{- \left(3 + \frac{\beta}{m}\right)}.\] With \(\beta = 0\)
+and \(\alpha < 1\), we find
+\[p_k \sim k^{-\alpha}\exp\left(\frac{-2 \mu(\alpha)}
+{\langle k\rangle (1 - \alpha)k^{1 - \alpha}}\right).\] Lastly, with
+\(\alpha > 1\), we find a unrealistic hub structure is generated.
 
 \end{document}
