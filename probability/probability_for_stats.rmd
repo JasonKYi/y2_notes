@@ -544,7 +544,7 @@ random variables.
   \(c \in \mathbb{R}\), \(\mathbb{P}(X = Y + c) = 1\).
 \end{remark}
 
-## Working With Multivariate Random Variables
+## Working with Multivariate Random Variables
 
 ### Transforming Multivariate Random Variables
 
@@ -658,3 +658,212 @@ they are independent (**not** true in general).
 
 In fact, we see this is simply the *law of iterated expectation*,
 \[E(XY) = E_Y(E(X \mid Y = y)) = E_Y(\rho YY) = \rho E(Y^2) = \rho.\]
+
+### Multivariate Normal Distribution
+
+We notice that what we have discussed above is the standard bivariate normal 
+distribution -- that is, the marginal distributions are standard normal 
+distributions. Of course, in the real world, we rarely see just standard normal 
+distributions but scaled normal distributions. 
+We deal with this similar to how we deal with the 1 dimensional case -- 
+transforming it by some affine transformation such that we end up back with 
+a standard bivariate normal distribution.
+
+\begin{definition}[Multivariate Normal Distribution]
+  The multivariate normal distribution is the probability density function of 
+  a vector of normal random variables \(\mathbf{X} = (X_1, X_2, \cdots, X_d)\) 
+  where \(X_i \sim N(\mu_i, \sigma_i^2)\) for all \(i = 1,\cdots, d\). Writen 
+  out explicitly, we have 
+  \[
+    f_\mathbf{X}(\mathbf{x} \mid \mathbf{\mu}, \mathbf{\Sigma}) = 
+    \frac{1}{\sqrt{(2\pi)^d\left| \mathbf{\Sigma} \right| }}  
+    \exp\left(-\frac{1}{2}(\mathbf{x} - \mathbf{\mu})^T \mathbf{\Sigma}^{-1}
+    (\mathbf{x} - \mathbf{\mu})\right),
+  \]
+  where \(\mathbf{\Sigma}\) is the covariance matrix with 
+  \(\mathbf{\Sigma}_{i, j} = \cov (X_i, X_j)\) and \(\mathbf{\mu} = 
+  (\mu_1, \mu_2, \cdots, \mu_d)\) is the vector of means.
+\end{definition}
+
+In the two dimension case, we have \(\mathbf{\mu} = (\mu_X, \mu_Y)\) and 
+\[
+  \mathbf{\Sigma} = 
+  \begin{bmatrix}
+    \sigma_X^2 & \rho \sigma_X \sigma_Y \\
+    \rho \sigma_X \sigma_Y & \sigma_Y^2
+  \end{bmatrix}.
+\]
+
+\begin{remark}
+  We see that 
+  \[
+    f_\mathbf{X}(\mathbf{x} \mid \mathbf{\mu}, \mathbf{\Sigma}) \propto 
+    \exp\left(-\frac{1}{2}(\mathbf{x} - \mathbf{\mu})^T \mathbf{\Sigma}^{-1}
+    (\mathbf{x} - \mathbf{\mu})\right)
+  \]
+  where the inner term \((\mathbf{x} - \mathbf{\mu})^T \mathbf{\Sigma}^{-1}
+  (\mathbf{x} - \mathbf{\mu})\), is in positive definite quadratic form. 
+  In fact, we see that this quantity is the inner product 
+  \(\langle \mathbf{\Sigma}^{-1} (\mathbf{x} - \mathbf{\mu}), 
+  (\mathbf{x} - \mathbf{\mu}) \rangle\) and thus, represents some distance 
+  between \(\mathbf{x}\) and \(\mathbf{\mu}\). This is refereed to as 
+  Mahalanobis distance.
+\end{remark}
+
+\begin{prop}
+  The covariance matrix is symmetric, positive definite and has diagonal 
+  \(\mathbf{\Sigma}_{i, i} = \sigma_{X_i}\).
+\end{prop}
+\proof
+  The first and last property follows directly from the properties of covariance.
+
+  To show that the covariance matrix is positive definite, we consider that 
+  \[\var(a^T X) = \var\left(\sum_{i = 1}^d a_i X_i\right) = 
+    \sum_{i = 1}^d a_i^2 \var(X_i) + 2 \sum_{i < j} a_i a_j \cov(X_i, X_j)
+    = a^T \mathbf{\Sigma}a \]
+for arbitrary \(a \in \mathbb{R}^d\). So, as the variance is non-negative, we have 
+\(\mathbf{\Sigma}\) is positive definite.
+\qed
+
+Let us now consider the linear transformations of a multivariate normal 
+distribution. Let \(\mathbf{X} \sim MVN_d(\mu, \mathbf{\Sigma})\) and 
+\(\mathbf{Y} = A \mathbf{X}\) for some \(A \in GL_d(\mathbb{R})\). So, 
+\(\mathbf{X} = A^{-1}\mathbf{Y}\) and \(\frac{\partial{X_i}}{\partial{Y_i}} = (A^{-1})_{i, j}\) 
+and thus, the Jacobian is simply \(A^{-1}\). Hence, 
+\begin{align*}
+  f_\mathbf{Y}(\mathbf{y}) & = f_\mathbf{X}(A^{-1}\mathbf{y})\left|A^{-1}\right|\\
+  & \propto \exp\left(-\frac{1}{2}(A^{-1}\mathbf{y} - \mu)^T 
+    \mathbf{\Sigma}^{-1}(A^{-1}\mathbf{y} - \mu)\right)\\
+  & = \exp\left(-\frac{1}{2}(\mathbf{y} - A\mu)^T (A^{-1})^T
+    \mathbf{\Sigma}^{-1} A^{-1}(\mathbf{y} - A\mu)\right),
+\end{align*}
+and thus \(\mathbf{Y} \sim MVN_d(A\mu, A \mathbf{\Sigma}A^T)\).
+
+## Order Statistic
+
+Given a random sample, we often would like to consider the ordering of the sample. 
+This suggests we should investigate the joint distribution of ordered samples 
+from a distribution. We call the random variables of such statistics the 
+*order statistics*. A version of the *order statistic* is the random variable 
+\(Y := \max\{X_1, \cdots, X_n\}\) where \(X_1, \cdots, X_n\) is a random sample 
+(i.e. independence and identically distributed) from an absolutely continuous 
+distribution with CDF \(F_X\) and PDF \(f_X\). 
+
+We see that \(Y\) is a random variable as, by previous results, the composition 
+of measurable functions is measurable, so, as \(\max\{X_1, \cdots, X_n\} = 
+g \circ f : \Omega \to \mathbb{R}\) where \(f : \Omega \to \mathbb{R}^n : 
+\omega \mapsto (X_1(\omega), \cdots, X_n(\omega))\) and \(g : \mathbb{R}^n \to 
+\mathbb{R} = \max\), it suffices to show that \(g\) is measurable. Now, it is 
+very easy to show that \(g\) is measurable. Let \(a \in \mathbb{R}\),
+then, we see that \(g^{-1}(-\infty, a) = \{(x_i) \mid x_i < a\} = (-\infty, a)^n
+\in \mathcal{B}(\mathbb{R})^n\) and we are done.
+
+In general, given a random sample \(X_1, \cdots, X_n\), we denote 
+\(X_{(k)}\) or \(Y_k\) the \(k\)-th smallest sampled variable and we call the 
+the \(k\)-th order statistic.
+
+To see the PDF of the \(k\)-th order statistic, we consider that 
+\(X_{(k)} \le y\) for some \(y \in \mathbb{R}\) if and only if there 
+are at least \(k\) \(X_i\) which are less than \(y\) (since if otherwise 
+\(X_{(k)} > y\)). So, by independence, we have, 
+\[F_{X_{(k)}} = \sum_{i = k}^n \binom{n}{i}F_X(X \le y)^i(1 - F_X(X \le y))^{n - i}.\]
+
+Alternatively, by symmetry and independence, we notice that the joint density of 
+the order statistics is 
+\[f_{X_{(i)}}(y_i) = n! \prod_i f_X(y_i).\]
+
+# Convergence of Random Variables
+
+We would sometimes like to consider a sequence of random variables and 
+how they behave with respect to some parameter. As random variables are functions, 
+one might think to use the same notion of convergence we had learnt during last 
+years analysis, that is pointwise convergence and uniform convergence 
+of functions. Nonetheless, we shall look at a different notion of convergence 
+-- the convergence of probabilities (or more generally -- the convergence of 
+functions in measures). 
+
+Suppose we would like to estimate some disease' prevalence within some population. 
+Say, we sample some individuals at random, then a simple model can describe this as 
+\[X_1, X_2, \cdots, X_n \sim \text{Ber}(p)\]
+where \(X_i\) are i.i.d. for all \(i\). From last year, we recall that the maximum 
+likelihood estimator for the parameter \(p\) is \(\hat{p} = \bar{\mathbf{x}}\) 
+with \(E(\hat{p}) = E\left(\frac{1}{n}\sum X_i \right) = p\) and 
+\(\var(\hat{p}) = \var\left(\frac{1}{n} \sum X_i\right) = \frac{1}{n^2} \sum \var(X_i)
+= \frac{p(1 - p)}{n}\). Thus \(\hat{p}\) is unbiased and \(\var(\hat{p}) \to 0\) 
+as \(n \to \infty\). Heuristically, we can interpret this as the estimator becoming 
+more accurate as \(n\) becomes larger and indicates some sort of convergence 
+for the estimator. We formalise the above notion with the converge of 
+random variables.
+
+## Convergence in Measure
+
+\begin{definition}[Convergence in Measure]
+  Let \((X, \mathcal{A}, \mu)\) be a measure space and let
+  \((f_i)_{i = 1}^\infty\) be a sequence of measurable functions. Then, 
+  \(f_i \to f\) in measure for some measurable function \(f\) if and only if 
+  \[\mu(\{x \in X \mid \left| f_n(x) - f(x) \right| \ge \epsilon\}) \to 0,\]
+  as \(n \to \infty\) for all \(\epsilon > 0\).
+\end{definition}
+
+If \((X, \mathcal{A}, \mu)\) is a probability space then we say \(f_i\) 
+converges in probability. That is, given \(X_i\) is sequence of 
+random variables, then \(X_i \to X\) for some random variable \(X\) if and only 
+if for all \(\epsilon > 0\), 
+\(\lim_{n \to \infty}\mathbb{P}(\left|X_n - X\right| \ge \epsilon) = 0\).
+
+This is a weaker notion than pointwise convergence and in fact, if the sequence 
+of function converges pointwise almost everywhere (i.e. \(\mu(\{x \in X \mid f_n(x) 
+\not\to f(x)\}) = 0\)), then it converges in measure. The proof of this 
+follows from the property that \(\liminf \mu(A_n) \ge \mu(\liminf A_n)\) which is 
+proved later when we consider limit events. 
+
+### Weak Law of Large Numbers
+
+We recall the weak law of large numbers from last year. Now that we are equipped 
+with the formal definition of what it means to converge in probability, we can 
+finally prove it (semi-)formally.
+
+We first recall Markov's and Chebychev's inequality.
+\begin{theorem}[Markov's Inequality]
+  Let \(X\) be a random variable with \(X(\Omega) \subseteq [0, \infty)\). Then 
+  for all \(a \in \mathbb{R}\),
+  \[\mathbb{P}(X \ge a) \le \frac{E(X)}{a}.\]
+\end{theorem}
+\proof
+  Let \(A = [a, \infty)\), then for all \(\omega \in \Omega\), 
+  \(X(\omega) \ge a\mathbb{I}_A(X(\omega))\) where \(\mathbb{I}_A\) is the indicator 
+  of \(A\); this is because if \(X(\omega) < a\), the the right hand side is zero 
+  so we are done; on the other hand, if \(X(\omega) \ge 0\), then the right 
+  hand side is \(a\) and the inequality is also true. So, by taking the expectation 
+  of this inequality on both sides, we have 
+  \[E(X) \ge a E(\mathbb{I}_A(X)) = a \mathbb{P}(X \ge a).\]
+\qed
+
+\begin{theorem}[Chebychev's Inequality]
+  Let \(X\) be a random variable such that \(E(X) = \mu, \var(X) = \sigma ^2 < \infty\).
+  Then for any \(\epsilon > 0\),
+  \[\mathbb{P}(\left|X - \mu \right| \ge \epsilon) \le \frac{\sigma ^2}{\epsilon^2}.\]
+\end{theorem}
+\proof
+  Let \(Y := (X - \mu)^2\) which is non-negative. So by Markov's inequality, 
+  by letting \(a = \epsilon ^2\), we are done!
+\qed
+
+With that, the weak law of large number follows straight away.
+
+\begin{theorem}[Weak Law of Large Numbers]
+  Let \((X_i)_{i = 1}^\infty\) be a sequence of i.i.d. random variable such that 
+  \(E(X_i) = \mu, \var(X_i) = \sigma ^2 < \infty\) for all \(i\). 
+  Then \(\bar{X}_n \to \mu\) is probability where \(\bar{X}_n := 
+  \frac{1}{n} \sum_{i = 1}^n X_i\).
+\end{theorem}
+\proof
+  By Chebychev's inequality, for all \(\epsilon > 0\)
+  \[\mathbb{P}(\left|\bar{X}_n - E(\bar{X}_n) \right| \ge \epsilon) \le 
+  \frac{\var(\bar{X}_n)}{\epsilon^2}.\]
+  By independence, we have \(E(\bar{X}_n) = \mu\) and 
+  \(\var(E(\bar{X}_n)) = \frac{1}{n}\sigma ^2\), so 
+  \[\mathbb{P}(\left|\bar{X}_n - \mu \right| \ge \epsilon) \le 
+  \frac{\sigma^2}{n\epsilon^2}.\]
+  Thus, by taking the limit as \(n \to \infty\), we have \(\bar{X}_n \to \mu\).
+\qed
