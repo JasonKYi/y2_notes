@@ -507,3 +507,116 @@ There is a more general version of this theorem applying to arbitrary dimensions
   \(f(x, y) = 0\) if and only if \(y = g(x)\) for some \(x \in A\).
   Furthermore, \(g\) is continuously differentiable.
 \end{theorem}
+
+# Metric and Topological Spaces
+
+## Metric Spaces
+
+\begin{definition}[Metric]
+  Let \(X\) be some set. Then, a metric \(d\) on \(X\) is a function from 
+  \(X^2\) to \(\mathbb{R}\) such that, 
+  \begin{itemize}
+    \item for all \(x, y \in X\), \(d(x, y) \ge 0\) and \(d(x, y) = 0\) if and 
+      only if \(x = y\);
+    \item for all \(x, y \in X\), \(d(x, y) = d(y, x)\);
+    \item for all \(x, y, z \in X\), \(d(x, y) \le d(x, z) + d(z, y)\).
+  \end{itemize}
+\end{definition}
+
+We call the ordered pair \((X, d)\) where \(d\) is a metric on \(X\), a metric 
+space. In general, for short hand, we simply refer to the metric space \((X, d)\) 
+as \(X\).
+
+\begin{definition}[Subspace]
+  Let \((X, d)\) be a metric space. Then, for all \(Y \subseteq X\), \((Y, d\mid_Y)\) 
+  forms a metric space where 
+  \[d\mid_y : Y \times Y \to \mathbb{R} : (x, y) \mapsto d(x, y).\]
+  We call this metric space a metric subspace of \((X, d)\).
+\end{definition}
+
+Up to now, we have seen examples of metric spaces in terms of normed vector 
+spaces. It is not difficult to see that all normed vector spaces induces a metric 
+space (where \(d(u, v) := \|u - v\|\)) while the reverse is in general not true. 
+We shall formally define the notion of norm here.
+
+\begin{definition}[Norm]
+  Let \(V\) be some vector space over a field \(\mathbb{R}\). Then a function 
+  \(\| \cdot \| : V \to \mathbb{R}\) is a norm on \(V\) if 
+  \begin{itemize}
+    \item for all \(v \in V\), \(\|v\| \ge 0\) and \(\|v\| = 0\) if and only if 
+      \(v = 0\);
+    \item for all \(v \in V\), and \(\lambda \in \mathbb{R}\), 
+      \(\|\lambda v\| = \left| \lambda \right| \|v\|\);
+    \item for all \(u, v \in V\), \(\|u + v\| \le \|u\| + \|v\|\).
+  \end{itemize}
+\end{definition}
+
+We see that this definition can be extending to vector spaces over arbitrary 
+fields if and only if there is a notion of absolute value on that field. 
+
+Similar to metric spaces, we call the ordered pair \((V, \|\cdot\|)\) 
+where \(\|\cdot\|\) is a norm on \(V\) a normed vector space.
+
+\begin{definition}[\(n\)-Norm]
+  Given \(\mathbb{R}^n\), the \(n\)-norm \(\| \cdot \|_n\) on \(\mathbb{R}^n\) is 
+  the norm such that for all \(v \in \mathbb{R}^n\), 
+  \(\|v\|_n = \left(\sum v_i^n \right)^{\frac{1}{n}}\). We also define the 
+  \(\infty\)-norm as \(\|v\|_\infty = \max\{\left|v_i\right|\}\).
+\end{definition}
+
+As one might expect, \(d_n\) is the metric induced by the \(n\)-norm and similarly, 
+\(d_\infty\) is the metric induced by the \(\infty\)-norm.
+
+\begin{definition}[Open Ball]
+  Let \((X, d)\) be a metric space and suppose \(x \in X\). Then a ball 
+  of radius \(\epsilon > 0\) at \(x\) is the set 
+  \(B_\epsilon(x) = \{y \in X \mid d(x, y) < \epsilon\}.\)
+\end{definition}
+
+This is also called the \(\epsilon\)-ball about \(x\) or the \(\epsilon\)-neighbourhood 
+of \(x\).
+
+\begin{definition}[Open]
+  Let \((X, d)\) be a metric space and let \(U \subseteq X\). We say that \(U\) 
+  is open on \((X, d)\) if and only if for all \(u \in U\), there exists some 
+  \(\delta > 0\) such that \(B_\delta(u) \subseteq U\).
+\end{definition}
+
+\begin{lemma}
+  For all metric spaces \((X, d)\), \(\varnothing\) and \(X\) are open.
+\end{lemma}
+\proof
+  Follows from definition.
+\qed
+
+\begin{lemma}
+  Let \((X, d)\) be a metric space and let \(\mathcal{C}\) be a collection of 
+  open sets, then \(\bigcup \mathcal{C}\) is open. On the other hand, if 
+  \(\mathcal{C}\) is finite, then \(\bigcap\mathcal{C}\) is also open.
+\end{lemma}
+\proof
+  Easy.
+\qed
+
+\begin{definition}[Topologically Equivalent]
+  Let \(d_1, d_2\) be two metrics on \(X\). We call \(d_1\) and \(d_2\) 
+  topologically equivalent if and only if for all \(U \subset X\), \(U\) is open
+  with respect to \(d_1\) if and only if is it open with respect to \(d_2\).
+\end{definition}
+
+With this definition, we see that the family of 
+\(\{d_n \mid n \in \bar{\mathbb{N}}\}\) is all topologically equivalent 
+to one another.
+
+There is another notion of equivalence for metrics called the Lipschitz equivalence. 
+
+\begin{definition}[Lipschitz Equivalence]
+  Let \(d_1, d_2\) be two metrics on \(X\). We call \(d_1\) and \(d_2\) 
+  Lipschitz equivalent if and only if there exists \(M_0, M_1 \in \mathbb{R}^+\) 
+  such that for all \(x, y \in X\),
+  \[M_0 d_1(x, y) \le d_2(x, y) \le M_1 d_1(x, y).\] 
+\end{definition}
+
+It is not difficult to see that Lipschitz equivalence is a stronger notion of 
+equivalence since if two metrics are Lipschitz equivalent then they are 
+topologically equivalent. This can be proved by choosing \(\delta' = M_0\delta\).
