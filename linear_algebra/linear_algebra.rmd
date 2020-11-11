@@ -357,14 +357,14 @@ we write \(\bigoplus_{i = 1}^k A_i = \diag (A_!, A_2, \cdots, A_k)\) where
   letting \(T \in \End(V) : v \mapsto A v\), we see that for all \(i\), \(V_i\) is 
   \(T\)-invariant and \(T_{V_i} = v \mapsto A_i v\), so, by taking the basis 
   \(B\) to be the standard basis, we have \(A = [T]_B\). Now, by permuting the 
-  standard basis by \(pi\), resulting in the basis \(B'\), we have 
+  standard basis by \(\pi\), resulting in the basis \(B'\), we have 
   \(A' = [T]_{B'}\), and so, by letting \(P\) be the change of basis matrix from 
   \(B \to B'\), we have shown \(A \sim A'\).
 \qed
 
 ## Quotient Spaces
 
-Just like other algebraic graphs we have can construct a quotient structure on 
+Just like other algebraic graphs we can construct a quotient structure on 
 vector spaces. 
 
 Let \(V\) be a vector space and \(W \le V\), then let
@@ -504,7 +504,7 @@ fields such as the real numbers.
 \end{corollary}
 \proof
   By the triangularisation theorem, \(A = PQP^{-1}\) where \(Q\) is triangular.
-  As \(A\) and \(Q\) have the same Eigenvectors, it suffices to show that 
+  As \(A\) and \(Q\) have the same Eigenvalues, it suffices to show that 
   \(\mathop{\mathrm{tr}}(A) = \mathop{\mathrm{tr}}(Q)\). But this follows as 
   \(\mathop{\mathrm{tr}}(A) = \mathop{\mathrm{tr}}(PQP^{-1}) = 
   \mathop{\mathrm{tr}}(P^{-1}PQ) = \mathop{\mathrm{tr}}(Q)\).
