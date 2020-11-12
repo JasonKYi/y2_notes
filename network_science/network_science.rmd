@@ -533,7 +533,7 @@ notations.
   Given a cost function \(C : \mathbb{N} \to \mathbb{R}\), we say 
   \(C(N) = \Omega(f(N))\) for some \(f : \mathbb{N} \to \mathbb{R}\) if and only 
   if there exists some \(N_0 \in \mathbb{R}, r \in \mathbb{R}\) such that 
-  for all \(n \le N_0\), \(C(n) \le rf(n)\).
+  for all \(n \ge N_0\), \(C(n) \ge rf(n)\).
 \end{definition}
 
 We can interpret the big-\(O\) and big-\(\Omega\) notations as providing some 
