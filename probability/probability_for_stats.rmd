@@ -566,7 +566,7 @@ pdf of \((U, V)\) is
 We recall several definitions from last year. The Bayes' theorem for conditioning 
 on events states
 \[\mathbb{P}(B \mid A) = \frac{\mathbb{P}(B \cap A)}{\mathbb{P}A)}.\]
-With formula, we can extend this to condition on any random variables with 
+We can extend this to condition on any random variables with 
 \[F_{X \mid A}(x) =\frac{\mathbb{P}(\{X \le x\} \cap A)}{\mathbb{P}(A)},\]
 where \(X\) is a random variable. and \(A \in \mathcal{F}\). 
 If \(X\) is discrete, we see that 
@@ -582,14 +582,14 @@ We need to be careful when working with conditioned probabilities such as
 and \(Y\). To deal with this, we instead conditioning on 
 \(X \in (x, x + \delta)\) for some \(\delta > 0\) and consider the limit 
 of \(Y \mid X \in (x, x + \delta)\) as \(\delta \to 0\).
-\[\mathbb{P}(Y \mid X = x)
+\[\mathbb{P}(Y \le y \mid X = x)
   = \lim_{\delta \to 0}\mathbb{P}(Y \le y \mid X \in (x, x + \delta)) 
   = \lim_{\delta \to 0}
     \frac{\int_x^{x + \delta} \int_{-\infty}^y f_{X, Y}(u, v) \text{d}v \text{d}u}
     {\int_x^{x + \delta} f_X(u)\text{d}u},
 \]
 then by using l'Hopital's rule, we find 
-\[\mathbb{P}(Y \mid X = x) = 
+\[\mathbb{P}(Y \le y \mid X = x) = 
   \frac{\int_{-\infty}^y f_{X, Y}(x, v) \text{d}v}{f_X(x)},\]
 and so, by differentiating,
 \[f_{Y \mid X}(y \mid x) = \frac{f_{X, Y}(x, y)}{f_X(x)}.\]

@@ -81,6 +81,7 @@
 \newcommand{\diag}{\mathop{\mathrm{diag}}}
 \newcommand{\lcm}{\mathop{\mathrm{lcm}}}
 \newcommand{\End}{\mathop{\mathrm{End}}}
+\newcommand{\image}{\mathop{\mathrm{Im}}}
 
 \title{Further Linear Algebra}
 \author{Kexing Ying}
@@ -1395,5 +1396,38 @@ and so, \((\sum^n \mu T^i)v = 0\). Hence, by the choice of \(k\),
 Obvious except perhaps for the last part. However, we have proved that
 the minimal polynomial of the companion matrix is the polynomial it is
 associated with, that is \(m_v\). \qed
+
+\begin{prop}\label{max_cyclic}
+  Let \(A \in M_n (\mathbb{F})\). For all \(v \in \mathbb{F}^n\), suppose we 
+  let \(k\) be the largest number such that \(\{v, Av, \cdots, A^kv\}\) is 
+  linearly independent, then, \(k \le \dim \mathop{\mathrm{Im}}A\).
+\end{prop}
+\proof
+
+Suppose \(k > \dim \mathop{\mathrm{Im}}A\), for some \(v\). Then we see
+that \(A\) is similar to a matrix with rank greater than \(A\) by
+considering \(PAP^{-1}\) where \(P\) is the change of basis matrix from
+the standard basis to the basis extended from \(\{v, \cdots, A^kv\}\).
+But this is a contradiction as similar matrices to \(A\) has the same
+rank as \(A\). \qed
+
+We can easily extend the above proposition to block diagonal matrices.
+
+\begin{prop}
+  Let \(A \in M_n (\mathbb{F})\) and suppose \(A = \bigoplus A_i\). 
+  Then, for all \(v \in \mathbb{F}^n\), if \(k\) is the largest number such that 
+  \(\{v, Av, \cdots, A^kv\}\) is linearly independent, then, 
+  \(k \le \max \{\dim \mathop{\mathrm{Im}}A_i\}\).
+\end{prop}
+\proof
+
+Suppose we write \(v = (v_i)\) such that \(Av = (A_i v_i)\), then, since
+by assumption, there exists \(\mu \neq 0\),
+\(\sum_{j = 0}^{k + 1} \mu A^j v = 0\), so, by restricting \(\mu\) to
+the appropriate dimensions, \(\sum_{j = 0}^{k + 1} \mu' A_i^j v = 0\).
+Now, by proposition \ref{max_cyclic},
+\(k \le \dim \mathop{\mathrm{Im}}A_i\) and thus, by considering the
+above argument for all \(i\),
+\(k \le \max \{\dim \mathop{\mathrm{Im}}A_i\}\). \qed
 
 \end{document}
