@@ -191,9 +191,7 @@ with \(n\) vertices such that two vertices are adjacent if and only if they are
 in different partite sets, then we call \(G\) a complete bipartite graph and 
 denote it by \(K_{r, s}\) where \(r, s\) are the sizes of the partite sets.
 
-# Trees
-
-## Basic Properties of Trees
+## Trees
 
 \begin{definition}[Minimally Connected]
   We say a graph \(G\) is minimally connected if and only if it is connected 
@@ -588,12 +586,12 @@ putting this into the clustering coefficient formulae, we have
 \[C_i = \frac{2 p n (n - 1) / 2}{n (n - 1)} = p,\]
 as required.
 
-## Mathematical Approach
+## Properties at the Limit
 
 Before now, we have considered the random graph mostly heuristically without 
 much rigour. While we shall not change this approach to proving everything from 
 first principle, we will in this section consider random graphs from a more 
-probabilistically.
+probabilistically point of view.
 
 ### Basic Notions
 
@@ -813,3 +811,85 @@ With \(\beta = 0\) and \(\alpha < 1\), we find
 \[p_k \sim k^{-\alpha}\exp\left(\frac{-2 \mu(\alpha)}
 {\langle k\rangle (1 - \alpha)k^{1 - \alpha}}\right).\]
 Lastly, with \(\alpha > 1\), we find a unrealistic hub structure is generated.
+
+# Spreading Processes
+
+## Diffusion in the First Dimension
+
+We will first consider random walks and diffusion in the first dimension.
+
+\begin{definition}[Random Walk in 1-D]
+  A random walk in the first dimension is a real valued function 
+  \(X_i : \mathbb{R} \to \mathbb{R}\) such that 
+  \[X_i(t + \delta) = X_i(t) + l_i(t),\]
+  where \(l_i\) is the random variable such that 
+  \(\mathbb{P}(l_i(t) = h) = \mathbb{P}(l_i(t) = -h) = 1 / 2\) for 
+  some \(t, \delta, h \in \mathbb{R}\).
+\end{definition}
+
+Given some particles following some a particular random walk, we would like 
+to find the expected number of particles as some position \(x_0\) at time \(t\). 
+Consider that, during some time \(\Delta t\), a particle will move some distance 
+\(\pm \Delta x\) that is, the flux at \(x_0 \pm \Delta x/ 2\). We see that 
+\[\langle j(x_0 + \Delta x / 2, t) \rangle = \frac{1}{2}(N(x_0, t) - N(x_0 + \Delta x, t)),\]
+\[\langle j(x_0 - \Delta x / 2, t) \rangle = \frac{1}{2}(N(x_0 + \Delta x, t) - N(x_0, t)),\]
+where \(j(x, t)\) denotes the flux at position \(x\) time \(t\) (note that 
+we have define movement to the right to be positive). These flux' tells us how 
+the expected number of particles changes over a particular time step with 
+\[\langle N(x_0, t + \Delta t) \rangle = \langle N(x_0, t) \rangle + 
+  \langle j(x_0 - \Delta x / 2, t) \rangle -
+  \langle j(x_0 + \Delta x / 2, t) \rangle,\]
+and so, 
+\[\langle N(x_0, t + \Delta t) \rangle - \langle N(x_0, t) \rangle = 
+  \frac{1}{2}(\langle N(x_0, t + \Delta t) \rangle - 
+   2\langle N(x_0 + \Delta x / 2, t) \rangle) +
+  \langle N(x_0 - \Delta x / 2, t) \rangle.\]
+However, we are not interested in this values as it is dependent on a particular 
+pair of \(\Delta x\) and \(\Delta t\), and so, by defining 
+\(n(x, t) := \langle N(x, t) \rangle / \Delta x\), we can take the limit as 
+\(\Delta x, \Delta t\) tends to 0, resulting in, 
+\begin{equation}\label{diffusion1d}
+\frac{\partial{n}}{\partial{t}} = \alpha \frac{\partial^2{n}}{\partial{x}^2}.  
+\end{equation}
+To obtain this, we assumed \(\Delta x \sim 2\alpha \sqrt{\Delta t}\) which turns 
+out to be empirically supported. Equation \ref{diffusion1d} is refereed to as the 
+one dimensional diffusion equation and can be easily extended in to higher 
+dimensions to obtain 
+\begin{equation}
+  \frac{\partial{n}}{\partial{t}} = \alpha \nabla ^2 n.
+\end{equation}
+
+## Diffusion in Networks
+
+With networks, we no longer have spatial derivatives, however, we can employ a 
+similar idea. Instead of just considering the two fluxes, we now consider the flux' 
+of all edges connected to some node. 
+
+Suppose we denote \(n_i(t)\) to be the number of particles at node \(i\) at time 
+\(t\) and \(J_{i,j}(t)\) to be the flux per unit time \(\Delta t\) from \(j\) to 
+\(i\) at time \(t\), we see that 
+\[J_{i, j}(t) = -\alpha(n_i(t) - n_j(t)),\]
+and so, following the 1 dimensional case, 
+\[n_i(t + \Delta t) - n_i(t) = \Delta t \sum_{j \in N_i} J_{i, j}(t),\]
+where \(N_i\) is the set of neighbours of \(i\). Thus, by taking the limit as 
+\(\Delta t \to 0\), we have, 
+\begin{equation}
+  \frac{dn_i}{dt} = \alpha \sum_{j = 1}^N A_{i, j} J_{i, j} = 
+  \alpha \sum_{j = 1}^N A_{i, j}(n_j - n_i)
+\end{equation}
+where \(A\) is the adjacency matrix of the network. By recognizing that 
+\(\sum_{j = 1}^N A_{i, j}n_i = n_i \sum_{j = 1}^N A_{i, j}\), and that 
+\(\sum_{j = 1}^N A_{i, j} = k_i\), the degree of \(i\), we see 
+\begin{equation}
+  \frac{dn_i}{dt} = \alpha (\sum_{j = 1}^N A_{i, j} n_j - n_i k_i).
+\end{equation}
+Lastly, by defining \(Q := \text{diag}(k_1, \cdots, k_n)\) the degree matrix, 
+and by writing \(c = (n_1, \cdots, n_N)^T\), we find, 
+\begin{equation}
+  \frac{d\mathbf{n}}{dt} = \alpha (A - Q)\mathbf{n}.
+\end{equation}
+Interestingly, we recall from last year that we have seen \(A - Q = -L\) where 
+\(L\) is the graph Laplacian, so we can write this equation as 
+\(\frac{d\mathbf{n}}{dt} = -\alpha L \mathbf{n}\) which is easily solvable 
+using the methods from last year's calculus.
+
