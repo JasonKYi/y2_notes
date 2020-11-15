@@ -5,7 +5,7 @@ date: May 15, 2020
 output: 
   pdf_document:
     toc: true
-    toc_depth: 3
+    toc_depth: 2
     number_sections: true
 geometry: margin = 1.5in
 urlcolor: red
@@ -620,3 +620,193 @@ There is another notion of equivalence for metrics called the Lipschitz equivale
 It is not difficult to see that Lipschitz equivalence is a stronger notion of 
 equivalence since if two metrics are Lipschitz equivalent then they are 
 topologically equivalent. This can be proved by choosing \(\delta' = M_0\delta\).
+
+Sometimes, it is also useful to induce a new metric using an existing one by 
+pushing it over some function. It turns out, this is possible over 
+continuous and injective functions.
+
+\begin{theorem}\label{induce_metric}
+  Let \((X, d_X)\) be a metric space and let \(f : Y \to X\) be continuous and 
+  injective. Then 
+  \[d_Y : Y \times Y \to \mathbb{R} : (y_1, y_2) \mapsto d_X(f(y_1), f(y_2))\]
+  is a metric on \(Y\).
+\end{theorem}
+\proof
+  \(d_Y\) is trivially non-negative and symmetric so let us consider whenever 
+  \(d_Y = 0\). Let \(y_1, y_2 \in Y\) such that \(d_Y(y_1, y_2) = 0\), then 
+  by definition, \(f(y_1) = f(y_2)\), and so, as \(f\) is injective, \(y_1 = y_2\).
+  
+  Thus, it suffices to prove the triangle inequality for \(d_Y\). let 
+  \(y_1, y_2, y_3 \in Y\), then 
+  \begin{align*}
+    d_Y(y_1, y_2) & = d_X(f(y_1), f(y_2)) \\
+      & \le d_X(f(y_1), f(y_3)) + d_X(f(y_3), f(y_2))\\
+      & = d_Y(y_1, y_3) + d_Y(y_3, y_2).
+  \end{align*}
+\qed
+
+## Basic Notions in Metric Spaces
+
+In this section, we will establish some basic notions regarding metric spaces.
+
+\begin{definition}[Convergence]
+  Let \((X, d)\) be a metric space and suppose \((x_n)_{n = 1}^\infty\) is a 
+  sequence in \(X\). Then, we say \(x_n\) converges to some \(x \in X\) is and 
+  only if for all \(\epsilon > 0\), there exists some \(N \in \mathbb{N}\) such 
+  that for all \(n \ge N\), \(d(x, x_n) < \epsilon\).
+\end{definition}
+
+As this definition of convergence is essentially the same as the one we looked at 
+last year, it follows some similar properties.
+
+\begin{lemma}
+  Let \((X, d)\) be a metric space and suppose \((x_n)_{n = 1}^\infty\) is a 
+  sequence in \(X\). Then, if \(x_n\) converges in \(X\), the its limit is unique.
+\end{lemma}
+\proof
+  Suppose \(x_n \to a\) and \(x_n \to b\) for some \(a, b \in X\). Then 
+  for all \(\epsilon\), there exists \(N \in \mathbb{N}\) such that for all 
+  \(n \ge N\), \(d(x_n, a), d(x_n, b) < \epsilon / 2\) and thus, by triangle 
+  inequality, \(d(a, b) < \epsilon / 2 + \epsilon / 2 = \epsilon\). As \(\epsilon\) 
+  is an arbitrary positive number, \(d(a, b) = 0\) and so \(a = b\).
+\qed
+
+\begin{definition}[Closed Set]
+  Let \((X, d)\) be a metric space and \(U \subseteq X\). Then we say \(U\) is 
+  closed in \(X\) is and only if for any convergent sequence \((x_n)_{n \ge 1}\) 
+  in \(U\) converges in \(U\).
+\end{definition}
+
+We see that this is the same definition we had for closed sets in \(\mathbb{R}\) 
+and similarly to what we had found last year, a set is closed if and only if 
+its complement is open.
+
+\begin{prop}\label{closed_iff}
+  Let \((X, d)\) be a metric space and let \(U \subseteq X\). Then \(U\) is 
+  closed in \(X\) if and only if \(U^c\) is open.
+\end{prop}
+\proof
+  \((\implies)\) We prove the contrapositive. Suppose \(U^c\) is not open, then 
+  there exists \(x \in U^c\) such that for all \(\epsilon > 0\), 
+  \(B_\epsilon(x) \not\subseteq U^c\). So, for all \(n \in \mathbb{N}\), 
+  \(B_{1 / n}(x) \cap U \neq \varnothing\). So, by defining the sequence 
+  \((x_n)_{n \ge 1}\) such that \(x_n \in B_{1 / n}(x) \cap U\) we have a sequence 
+  in \(U\). Now, we see that \(x_n \to x\) as for all \(\epsilon\), we can choose 
+  \(N \ge 1 / \epsilon\) so, for all \(n \ge N\), 
+  \(x_n \in B_{1 / n}(x) \subseteq B_{1 / N}(x) \subseteq B_\epsilon (x)\).
+  But \(x \not\in U\) and thus, \(U\) is not closed.
+
+  \((\impliedby)\) The reverse is by similar argument. Suppose there exists a 
+  sequence \((x_n)_{n \ge 1}\) in \(U\) such that \(x_n\) converges to \(x \in U^c\). 
+  Then, if \(U^c\) is open, there exists some \(\epsilon > 0\) such that 
+  \(B_\epsilon (x) \subseteq U^c\). But now as \(x_n \to x\), there exists 
+  \(N \in \mathbb{N}\) such that for all \(n \ge N\), \(x_n \in B_\epsilon(x)\) 
+  implying \(B_\epsilon(x) \not\subseteq U^c\) since \(x_n \not\in U^c\) \# 
+\qed
+
+We might sometimes find the above condition as the definition of closed sets instead, 
+that is, a set is closed if and only if its complement is open. However, this 
+does not matter by the above proposition. The question of which definition to 
+use is rather pedagogical since the definition we presented resembles more of 
+that we had defined for Euclidean spaces while the latter definition resembles 
+the topological definition which we shall examine later.
+
+\begin{definition}[Interior, Isolated, Limit and Boundary Point]
+  Let \((X, d)\) be a metric space and \(V \subseteq X\). Then
+  \begin{itemize}
+    \item a point \(x \in V\) is an interior point (or inner point) of \(V\) if 
+      and only if there exists some \(\delta > 0\) such that \(B_\delta \subseteq V\);
+    \item \(x \in V\) is an isolated point of \(V\) is and only if there exists 
+      there exists some \(\delta > 0\) such that \(B_\delta(x) \cap V = \{x\}\);
+    \item \(x \in X\) is a limit point (or accumulation point) of \(V\) if and 
+      only if for all \(\epsilon > 0\), 
+      \((B_\epsilon \cap V) \setminus \{x\} \neq \varnothing\);
+    \item \(x \in X\) is a boundary point of \(V\) if and only if for all 
+      \(\epsilon > 0\), \(B_\epsilon(x) \cap V \neq \varnothing\) and 
+      \(B_\epsilon(x) \cap V^c \neq \varnothing\).
+  \end{itemize}
+\end{definition}
+
+Straight away, we see that every element of an open set is an interior point 
+while having no boundary points.
+
+\begin{definition}
+  Let \((X, d)\) be a metric space and \(V \subseteq X\). Then, 
+  \begin{itemize}
+    \item the interior of \(V\) is the set of all interior points of \(V\);
+    \item the closure of \(V\), \(\bar{V}\) is the union of \(V\) and all limit points of \(V\);
+    \item the boundary of \(V\) is the set of boundary points of \(V\).
+  \end{itemize}
+\end{definition}
+
+Again, the notion of the closure might be different in other literatures. 
+We might see the closure of \(V\) as the intersection of all closed sets that 
+are greater or equal to \(V\), that is the smallest closed set containing \(V\). 
+We once again find these two definitions to be equivalent.
+
+\begin{prop}
+  Let \((X, d)\) be a metric space and \(V \subseteq X\). Then, 
+  \[\bar{V} = \bigcap_{\substack{V \subseteq U \subseteq X \\ 
+    U \mathop{\mathrm{closed}}}} U\]
+\end{prop}
+\proof
+  It is obvious that the intersection of collections of closed sets is closed, 
+  so to prove this proposition, it suffices to show that \(\bar{V}\) is 
+  closed in \(X\) and for all closed \(V \subseteq U \subseteq X\), \(U\) 
+  contains the limit points of \(V\).
+
+  Let \(x \in V\) be a limit point of \(V\), then, for all \(\epsilon > 0\), 
+  \(B_\epsilon(x) \cap V \neq \empty\). Thus, we can construct a sequence in 
+  \(V\) converging to \(x\) by the same method as proposition \ref{closed_iff}. 
+  Now, as \(V \subseteq U\), this is also a sequence in \(U\), to its limit 
+  \(x\), is also in \(U\).
+
+  Now, we show \(\bar{V}\) is closed. Suppose there exists some sequence 
+  \((x_n)_{n \ge 1}\), \(x_n \to x\), we need to show \(x \in \bar{V}\). But, 
+  we see straight away \(x\) is a limit point of \(V\) since for all 
+  \(\epsilon > 0\), there exists some \(N \in \mathbb{N}\) such that for all 
+  \(n \ge N\), \(x_n \in B_\epsilon(x)\), and as \(x_n \in V\), 
+  \(x_n \in B_\epsilon(x) \cap V\), so the intersection is not empty and we 
+  are done!
+\qed
+
+# Extra
+
+This is a temporary section and all contents within this section will be moved 
+to their appropriate sections once the notes is complete.
+
+### Completeness is not a Topological Property 
+
+Completeness is not a topological property. Heuristically this makes sense as 
+in general, it does not make sense to call a metric space complete as completeness 
+is a property of metric spaces and not all topologies are metric spaces. 
+
+\begin{theorem}
+  Completeness is not a Topological Property.
+\end{theorem}
+\proof
+  To show this, we need find two metrics on some set that induces the same 
+  topology but one is complete while the other is not. We see that \((0, 1)\) 
+  is not complete with respect to the Euclidean metric but \(\mathbb{R}\) is 
+  with \(\mathbb{R}\) being homeomorphic to \((0, 1)\). Thus, the main idea is to 
+  pull back the metric on \(\mathbb{R}\) on to \((0, 1)\) over the homeomorphism.
+
+  By theorem \ref{induce_metric}, as \(\tan : (0, 1) \to \mathbb{R}\) is injective 
+  we have a induced metric on \((0, 1)\), \(d_{\tan}\). I claim the topologies 
+  induced by \((X, d_{\| \cdot \|})\) and \((X, d_{\tan})\) are the same, that is 
+  for all \(U \subseteq (0, 1)\), \(U\) is open in \(d_{\| \cdot \|}\) if and only 
+  if it is open in \(d_{\tan}\). But this is true as \(\tan\) and \(\arctan\) 
+  are both continuous, so we are done!
+\qed
+
+### Properties of the Quotient Map
+
+\begin{theorem}
+  Let \((X, \mathcal{T})\) be a topological space and let \(\sim\) be an equivalence 
+  relation on \(X\). Let us denote the quotient map from \(X\) to \(X / \sim\) as 
+  \(q\) where \(q(x) = [x] = \{x' \in X \mid x \sim x'\}\). Then, \(q\) is continuous
+  and surjective.
+\end{theorem}
+\proof
+  Surjectivity is trivial while \(q\) being continuous is true by definition.
+\qed
