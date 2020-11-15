@@ -1185,7 +1185,7 @@ similar to its JCF (we can say this since we had proved uniqueness).
 
   By considering the 0-Jordan blocks are cyclic matrices, that is, we see
   \([S]_B = J_{1}(0) \oplus \cdots\) where \(B := \{v_1, \cdots, v_n\}\) if and 
-  only if \(S(v_i) = S(v_{i + 1}\) for all \(i = 0, \cdots n - 1\) and 
+  only if \(S(v_i) = v_{i + 1}\) for all \(i = 0, \cdots n - 1\) and 
   \(S(v_{n_1}) = 0\), we can write the basis \(B\) as the union 
   \[\bigcup_{i = 1}^k \{v_1, S(v_1), \cdots, S^{n_i - 1}(v)\}.\]
   So, it suffices to find such \(\{v_1, \cdots, v_k\}\) (we call basis generated 
