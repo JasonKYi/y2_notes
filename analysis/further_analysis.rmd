@@ -756,7 +756,7 @@ We once again find these two definitions to be equivalent.
   contains the limit points of \(V\).
 
   Let \(x \in V\) be a limit point of \(V\), then, for all \(\epsilon > 0\), 
-  \(B_\epsilon(x) \cap V \neq \empty\). Thus, we can construct a sequence in 
+  \(B_\epsilon(x) \cap V \neq \varnothing\). Thus, we can construct a sequence in 
   \(V\) converging to \(x\) by the same method as proposition \ref{closed_iff}. 
   Now, as \(V \subseteq U\), this is also a sequence in \(U\), to its limit 
   \(x\), is also in \(U\).
@@ -770,7 +770,102 @@ We once again find these two definitions to be equivalent.
   are done!
 \qed
 
-# Extra
+## Maps Between Metric Spaces
+
+Just as how we can consider properties about functions of real numbers, we can 
+define equivalent properties for function between metric spaces.
+
+\begin{definition}[Continuity at a Point]
+  Let \((X, d_X), (Y, d_Y)\) be two metric spaces and let \(f : X \to Y\) be 
+  a map. Then, we say that \(f\) is continuous at some \(x \in X\) if and only if 
+  for all \(\epsilon > 0\) there exists a \(\delta > 0\) such that 
+  \(f(B_\delta(x)) \subseteq B_\epsilon(f(x))\).  
+\end{definition}
+
+\begin{definition}[Uniformly Continuous]
+  Let \((X, d_X), (Y, d_Y)\) be two metric spaces and let \(f : X \to Y\) be 
+  a map. Then, we say that \(f\) is uniformly continuous if and only if 
+  for all \(\epsilon > 0\) there exists a \(\delta > 0\) such that for 
+  all \(x \in X\), \(f(B_\delta(x)) \subseteq B_\epsilon(f(x))\).  
+\end{definition}
+
+This is essentially the same idea as the definition of continuity in Euclidean 
+spaces. While, it makes sense to define it this way, we shall encounter a different 
+notion of continuity later in this course -- continuity on topological spaces. 
+While we shall not talk about it too much here, it turns out that these notions 
+of continuity is consistent on metric spaces, that is, a function is continuous 
+on some metric spaces if and only if it is continuous on their induced topologies.
+
+\begin{prop}
+  Let \((X, d_X), (Y, d_Y)\) be two metric spaces and let \(f : X \to Y\) be 
+  a map. Then \(f\) is continuous on \(X\) if and only if \(f^{-1}(U)\) is open 
+  in \(X\) for all open \(U \subset Y\)
+\end{prop}
+\proof
+  \((\implies)\) Suppose \(f\) is continuous, then, for all \(v \in f^{-1}(U)\),
+  where \(U\) is open in \(Y\), we have \(f(v) \in U\). So, as \(U\) is open, 
+  there exists some \(\epsilon > 0\) such that \(B_\epsilon(f(v)) \subseteq U\). 
+  By continuity of \(f\), there exists some \(\delta > 0\) such that 
+  \(f(B_\delta(v)) \subseteq B_\epsilon(f(v)) \subset U\) so, 
+  \(B_\delta(v) \subset f^{-1}(U)\), and thus, \(f^{-1}(U)\) is open.
+
+  \((\impliedby)\) Suppose now that \(f^{-1}(U)\) is open in \(X\) for all open 
+  \(U \subset Y\), then for all \(x \in X\), \(\epsilon > 0\), as
+  \(B_\epsilon(f(x))\) is open, \(f^{-1}(B_\epsilon(f(x)))\) is also open. Now, 
+  as \(x \in f^{-1}(B_\epsilon(f(x)))\), there exists some \(\delta > 0\) such 
+  that \(B_\delta(x) \subseteq f^{-1}(B_\epsilon(f(x)))\) and so, 
+  \(f(B_\delta(x)) \subseteq B_\epsilon(f(x))\).
+\qed
+
+\begin{prop}
+  Let \((X, d_X), (Y, d_Y), (Z, d_Z)\) be metric spaces and let 
+  \(f\) and \(g : Y \to Z\) be maps, then, if \(f, g\) are both continuous at 
+  some \(x \in X\), then \(g \circ f\) is continuous at \(x\).
+\end{prop}
+\proof
+  Trivial.
+\qed
+
+\begin{definition}[Homeomorphism]
+  Let \((X, d_X), (Y, d_Y)\) be two metric spaces and let \(f : X \to Y\) be 
+  a map. Then, we call \(f\) a homeomorphism between \(X\) and \(Y\) if and only 
+  if \(f\) is a bijection and both \(f\) and \(f^{-1}\) are continuous. If such 
+  a homeomorphism exists between two metric spaces, then we call them homeomorphic.
+\end{definition}
+
+A classic example of homeomorphisms between metric spaces is the homeomorphism 
+between \((-1, 1)\) and \(\mathbb{R}\) by scaling \(\tan\) (of course this is 
+not the only homeomorphism between the two, we see that 
+\(x \mapsto \log(1 + x) - \log(1 - x)\) is also a homeomorphism). With this, we 
+can conclude that \(\mathbb{R}\) is homeomorphic to any open intervals. 
+Furthermore, we find that \((a_1, b_1]\) is homeomorphic to \([a_2, b_2)\) by 
+considering that \((-1, 1] \cong [-1, 1)\) by \(x \mapsto -x\).
+
+\begin{definition}[Lipschitz Continuous]
+  Let \((X, d_X), (Y, d_Y)\) be two metric spaces and let \(f : X \to Y\) be 
+  a map. We call \(f\) Lipschitz continuous if and only if there exists some 
+  \(M > 0\) such that for all \(x_1, x_2 \in X\), 
+  \[d_Y(f(x_1), f(x_2)) \le M d_X(x_1, x_2).\]
+\end{definition}
+
+\begin{definition}[bi-Lipschitz]
+  Let \((X, d_X), (Y, d_Y)\) be two metric spaces and let \(f : X \to Y\) be 
+  a map. We call \(f\) bi-Lipschitz if and only if there exists \(M_0, M_1 > 0\) 
+  such that for all \(x_1, x_2 \in X\), we have 
+  \[M_2 d_X(x_1, x_2) \le d_Y(f(x_1), f(x_2)) \le M_1 d_X(x_1, x_2).\]
+\end{definition}
+
+We see that bi-Lipschitz is stronger than Lipschitz continuity which is in turn
+a stronger condition than uniform continuity by simply choosing 
+\(\delta = \epsilon / 2M\).
+
+\begin{definition}[Isometry]
+  Let \((X, d_X), (Y, d_Y)\) be two metric spaces and let \(f : X \to Y\) be 
+  a map. We call \(f\) an isometry if and only if for all \(x_1, x_2 \in X\),
+  \[d_Y(f(x_1), f(x_2)) = d_X(x_1, x_2).\]
+\end{definition}
+
+# Extras
 
 This is a temporary section and all contents within this section will be moved 
 to their appropriate sections once the notes is complete.
