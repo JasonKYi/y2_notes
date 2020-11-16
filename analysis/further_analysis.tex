@@ -837,9 +837,9 @@ point while having no boundary points.
 \begin{definition}
   Let \((X, d)\) be a metric space and \(V \subseteq X\). Then, 
   \begin{itemize}
-    \item the interior of \(V\) is the set of all interior points of \(V\);
+    \item the interior of \(V\), \(V^\circ\) is the set of all interior points of \(V\);
     \item the closure of \(V\), \(\bar{V}\) is the union of \(V\) and all limit points of \(V\);
-    \item the boundary of \(V\) is the set of boundary points of \(V\).
+    \item the boundary of \(V\), \(\partial V\) is the set of boundary points of \(V\).
   \end{itemize}
 \end{definition}
 
@@ -852,7 +852,7 @@ be equivalent.
 \begin{prop}
   Let \((X, d)\) be a metric space and \(V \subseteq X\). Then, 
   \[\bar{V} = \bigcap_{\substack{V \subseteq U \subseteq X \\ 
-    U \mathop{\mathrm{closed}}}} U\]
+    U \mathop{\mathrm{closed}}}} U.\]
 \end{prop}
 \proof
 
@@ -874,6 +874,54 @@ But, we see straight away \(x\) is a limit point of \(V\) since for all
 all \(n \ge N\), \(x_n \in B_\epsilon(x)\), and as \(x_n \in V\),
 \(x_n \in B_\epsilon(x) \cap V\), so the intersection is not empty and
 we are done! \qed
+
+\begin{prop}
+  Let \((X, d)\) be a metric space and \(V \subseteq X\). Then, 
+  \[V^\circ = \bigcup_{\substack{U \subseteq V \\ U \mathop{\mathrm{open}}}} U.\]
+\end{prop}
+\proof
+
+Similarly, it suffices to show that \(V^\circ\) is open and for all
+\(U \subseteq V\), \(U\) is open \(\implies\) \(U \subseteq V^\circ\).
+\(V^\circ\) is open as, for all \(v \in V^\circ\), there exists some
+\(\delta > 0\) such that \(B_\delta(v) \subseteq V\). Now, we see that
+for all \(v' \in B_\delta(v)\), we define
+\(\delta ' = \delta - d_X(v, v')\), then, for all
+\(u \in B_{\delta '}(v')\),
+\(d_X(u, v) \le d_X(u, v') + d_X(v', v)  < \delta ' + d_X(v', v) = \delta\),
+so \(B_{\delta '}(v') \subseteq B_\delta(v)  \subseteq V\), that is
+\(v'\) is an interior point of \(V\). So \(v' \in V^\circ\) and
+\(B_\delta(v) \subseteq V^\circ\).
+
+Now, let \(U \subseteq V\) be an open set. Then for all \(u \in U\),
+there exists some \(\delta > 0\) such that
+\(B_\delta(u) \subseteq U \subseteq V\), and so, \(u\) is an interior
+point of \(V\) and \(U \subseteq V^\circ\). \qed
+
+\begin{prop}
+  Let \((X, d)\) be a metric space and \(V \subseteq X\). Then, 
+  \(\partial V = \bar{V} \setminus V^\circ\).
+\end{prop}
+\proof
+
+Let \(v \in \partial V\). If \(v \in V\) then it follows
+\(v \in \bar{V}\). On the other hand, if \(v \in V^c\), then \(v\) is a
+limit point of \(V\) as for all \(\epsilon > 0\),
+\(B_\epsilon(x) \cap V =  (B_\epsilon(x) \cap V) \setminus \{v\} \neq \varnothing\).
+Thus, by excluded middle \(v \in \bar{V}\). Now, if \(v \in V^\circ\)
+then there exists some \(\delta > 0\) such that
+\(B_\delta(v) \subseteq V\) implying
+\(B_\delta(v) \cap V^c = \varnothing\) contradicting
+\(v \in \partial V\). Thus,
+\(\partial V \subseteq \bar{V} \setminus V^\circ\).
+
+Now, let \(v \in \bar{V} \setminus V^\circ\). As \(v \in \bar{V}\), for
+all \(\epsilon > 0\), \(B_\epsilon (v) \cap V \neq \varnothing\), thus
+it suffices to show \(B_\epsilon (v) \cap V^c \neq \varnothing\).
+Suppose \(B_\epsilon (v) \cap V^c = \varnothing\), then
+\(B_\epsilon (v) \subseteq V\) implying \(v \in V^\circ\) \#. So
+\(\bar{V} \setminus V^\circ \subseteq \partial V\), and hence
+\(\partial V = \bar{V} \setminus V^\circ\). \qed
 
 \hypertarget{maps-between-metric-spaces}{%
 \subsection{Maps Between Metric
