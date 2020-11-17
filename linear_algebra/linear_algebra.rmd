@@ -1226,7 +1226,7 @@ Let \(S \in \End(V)\) be nilpotent,
   \item Repeat the above step until we get a Jordan basis of \(V\).
 \end{enumerate}
 
-## Cyclic Subspaces
+## Cyclic Decomposition
 
 So far we have seen a satisfactory canonical form for matrices who's characteristic 
 polynomial factors into linear roots. However, this is often not the case. So, 
@@ -1258,7 +1258,7 @@ there exists some \(k\), where \(k\) is the smallest natural number such that
 such that \(T^k(v) = - \sum \mu T^i(v)\), and so, \((\sum^n \mu T^i)v = 0\). Hence, 
 by the choice of \(k\), \(m_v(x) = x^k \sum \mu x^i\).
 
-\begin{prop}
+\begin{prop}\label{annihilator}
   Given \(k\) as defined above, \(B = \{v, \cdots, T^{k - 1}v\}\) is a basis 
   of \(Z(v, T)\). Furthermore, \([T_v]_B\) is the companion matrix of \(m_v\) and 
   the minimal polynomial of \(T_v\) is \(m_v\).
@@ -1298,3 +1298,127 @@ We can easily extend the above proposition to block diagonal matrices.
   \(k \le \dim \image A_i\) and thus, by considering the above argument for all 
   \(i\), \(k \le \max \{\dim \image A_i\}\).
 \qed
+
+With the above set-up, let us state the *cyclic decomposition theorem*.
+
+\begin{theorem}[Cyclic Decomposition Theorem]\label{cyclic_dcomp}
+  Let \(V\) be a finite dimensional vector space over the field \(\mathbb{F}\) 
+  and let \(T \in \End(V)\). Then if \(m_T = f^k\) for some irreducible 
+  \(f \in \mathbb{F}[X]\), there exists some \(v_1, \cdots, v_r \in V\) such 
+  that 
+  \[V = \bigoplus_{i = 1}^r Z(v_i, T),\]
+  where \(Z(v_i, T)\) has \(T\)-annihilator \(f^{k_i}\) for all \(i = 1, \cdots, r\) 
+  and \(k = k_1 \ge k_2 \ge \cdots \ge k_r\). Furthermore, \(k_i\) for all \(i\) is 
+  uniquely determined by \(T\).
+\end{theorem}
+Straight away, we see that this theorem can be generalised to arbitrary endomorphism 
+by the primary decomposition theorem, that is, by the same argument as the proof 
+of the JCF theorem, the general case can be reduced to the above case. 
+Furthermore, by considering that the change of basis matrix of \(T\) with respect 
+to its cyclic subspace is the companion matrix of its annihilator, we have the 
+following corollary.
+
+\begin{corollary}
+  Let \(T\) be as described in theorem \ref{cyclic_dcomp}. Then there exists a 
+  basis \(B\) of \(V\) such that 
+  \[[T]_B = \bigoplus_{i = 1}^r C(f^{k_i}).\]
+\end{corollary}
+
+In fact, the cyclic decomposition theorem implies the JCF theorem. By the same 
+argument as before, we can simply consider the nilpotent case. Suppose \(A\) is 
+some nilpotent matrix, then there exists some \(k\) such that \(m_A(x) = x^k\), 
+so by the cyclic decomposition theorem, \(A \sim \bigoplus C(x^{k_i})\). But 
+\(C(x^{k_i}) = (J_{k_i}(0))^T \sim J_{k_i}(0)\), so we are done!
+
+As we have seen, the cyclic decomposition theorem is a powerful theorem. However, 
+unlike the proof of the JCF and the primary decomposition theorems, as we shall 
+see, the proof the the cyclic decomposition theorem is non-constructive, that 
+is, we will not end up with an algorithm for computing the cyclic decomposition 
+basis in the end, so it is less useful in that regard.
+
+\proof (Cyclic Decomposition Theorem).
+  We induct on the dimension of \(V\). Again the theorem is trivial for the base 
+  case so let us consider the case whenever \(\dim V = n\) where the 
+  cyclic decomposition theorem is true for all \(\dim V' = k < n\).
+
+  By assumption, there exists some \(f \in \mathbb{F}[X]\), \(k \in \mathbb{N}\) 
+  such that \(m_T = f^k\) and \(f\) is irreducible. By the minimality of \(m_T\), 
+  there exists some \(v_1 \in V\) such that \(f(T)^{k - 1}(v_1) \neq 0\). Furthermore, 
+  by proposition \ref{annihilator}, we have the \(T\)-annihilator of \(v_1\) is 
+  \(f^k\) (since \(m_{T_{v_1}} \mid m_T = f^k\) and for all \(l < k\), \(f^l\) is 
+  not the \(T\)-annihilator). Thus, by defining \(Z_1 = Z(v_1, T)\), we have the 
+  first component of the decomposition.
+
+  Now let \(\bar{V} = V / Z_1\) and let \(\bar{T} : \bar{V} \to \bar{V}\) be 
+  the quotient map of \(T\). By recalling that we can decompose the matrix 
+  representation of \(T\) as
+  \[[T]_B = 
+    \left[
+      \begin{array}{c|c}
+        [T_{Z_1}]_{B_{Z_1}} & A \\
+        \midrule
+        \mathbf{0} & [\bar{T}]_{\bar{B}}
+      \end{array}
+    \right]\]
+  we see that the \(m_{\bar{T}} \mid m_{T} = f^k\), so \(m_{\bar{T}} = f^l\) for 
+  some \(l \le k\). Then, as \(\dim \bar{V} < \dim V\), we can apply the inductive 
+  hypothesis to \(\bar{T}\), so there exist \(\bar{w}_i := w_i + Z_1\) such that 
+  \(\bar{V} = \bigoplus Z(\bar{w}_i, \bar{T})\) and \(\bar{w}_i\) has 
+  \(\bar{T}\)-annihilator \(f^k_i\) where \(i = 2, \cdots r\) and 
+  \(n - \dim Z_1 = k_2 \ge \cdots k_r\). However, theses \(\bar{w}_i\) are vectors 
+  in the quotient space so we need to find some ways to "lift" them back to \(V\) 
+  such that they preserve their properties in \(\bar{V}\).
+
+  I claim that there exists some \(v_2 \in Z_1 + w_2\) such that \(v_2\) has 
+  \(T\)-annihilator \(f^{k_2}\). To see this, we considering that, as \(f^{k_2}\) 
+  is the \(\bar{T}\) annihilator of \(\bar{w}_2\), by definition 
+  \(f(\bar{T})^{k_2}(\bar{w_2}) = 0_{\bar{V}}\) and so, for all \(v \in \bar{w}_2\),
+  \(v + Z_1 = \bar{w}_2\), thus, 
+  \[0_{\bar{V}} = f(\bar{T})^{k_2}(v + Z_1) = f(T)^{k_2}(v) + Z_1,\]
+  implying \(f(T)^{k_2}(v) \in Z_1\). Hence, as \(Z_1\) is a cyclic subspace of \(V\),
+  there exists some \(g \in \mathbb{F}[X]\) such that \(f(T)^{k_2}(v) = g(T)(v_1)\).
+  Then, \(0 = 0 v = f(T)^k (v) = f(T)^{k - k_2}g(T)(v_1)\) and so, 
+  \(f(T)^{k - k_2}g(T)(v_1)\) is a \(T\)-annihilator of \(v_1\). But, as 
+  \(m_{v_1} = f^k\), \(f_k \mid f^{k - k_2}g\), and by the irreducibility of \(f\), 
+  there exists some \(h \in \mathbb{F}[X]\) such that \(g = f^{k_2} h\). 
+  Financially, by defining \(v_2 := v - h(T)(v_1)\), we have 
+  \[f(T)^{k_2}(v_2) = f(T)^{k_2}(v - h(T)(v_1)) = f(T)^{k_2}(v) - g(T)(v_2) = 0,\]
+  and hence \(f^{k_2}\) is a \(T\)-annihilator of \(v_2\). (We see that this is 
+  part of the proof that uses the axiom of choice making it non-constructive.)
+
+  By similar process, we see that for all \(i\), there exists \(v_i \in w_i + Z_1\) 
+  with \(T\)-annihilator \(f^{k_1}\). So it suffices to show that 
+  \(V = \bigoplus Z_i\) where \(Z_i = Z(v_i, T)\) and thus, we need two show 
+  \(\dim V = \sum \dim Z_i\) and \(V = \sum Z_i\).
+
+  To show that \(\dim V = \sum \dim Z_i\), let us consider the subspaces 
+  \(Z_i\) and \(\bar{Z}_i := \{\bar{z} \mid z \in Z_i\} = Z(\bar{w}_i, \bar{T})\). 
+  By recalling our inductive hypothesis and the above claim, \(Z_i\) and 
+  \(\bar{Z}_i\) has annihilator \(f^{k_i}\). Thus, as the dimension of a cyclic 
+  subspace is the degree of its annihilator, we have 
+  \(\dim Z_i = \dim \bar{Z}_i = k_i \deg f\). Now, since by the inductive hypothesis 
+  we have \(\bar{V} = \bigoplus \bar{Z}_i\), so \(\dim \bar{V} = 
+  \sum_{i = 2}^r \dim \bar{Z}_i = \sum_{i = 2}^r \dim Z_i\), and hence, 
+  \(\dim V = \dim Z_1 + \dim \bar{V} = \dim Z_1 + \sum \dim_{i = 2}^r Z_i = 
+  \sum \dim Z_i\).
+
+  Lastly, it remains to show that \(V = \sum Z_i\). But for all \(v \in V\), either 
+  \(v \in Z_1\), or \(\bar{v} \in \bigoplus_{i = 2}^r \bar{Z_i} \setminus \{0\}\),
+  since \(V / Z_1 = \bigoplus_{i = 2}^r \bar{Z_i}\). Thus, it is the sum of 
+  non-trivial vectors \(u_i\) for \(u_i \in Z_i\), and hence, we are done with 
+  the existence part of the proof!
+
+  To show uniqueness, we use a similar argument which we had used for the uniqueness 
+  of the JCF theorem. Let \(V = \bigoplus_{i = 1}^r Z_i\) where \(Z_i\) has 
+  \(T\)-annihilator \(f^{k_i}\) where \(k = k_1 \ge \cdots \ge k_r\) and suppose 
+  \(n_j\) is the number of \(Z_i\) with \(T\)-annihilator \(f^j\). 
+  Then by applying \(f(T)^{k - 1}\) to \(V = \bigoplus_{i = 1}^r Z_i\), we have 
+  \[f(T)^{k - 1}(V) = \bigoplus_{i = 1}^{n_k} f(T)^{k - 1}(Z_i)\]
+  since all smaller \(Z_i\) will be annihilated by \(f(T)^{k - 1}\). Now, as 
+  each subspace \(f(T)^{k - 1}(Z_i)\) is cyclic and has \(T\)-annihilator \(f(t)\), 
+  it has dimension \(\deg f\). Thus, \(\dim f(T)^{k - 1}(V) = n_k \deg f\). 
+  Similarly, we see \(\dim f(T)^{k - 2}(V) = 2 n_k \deg f + n_{k - 1} \deg f\) 
+  and so forth, thus, uniquely determining \(n_j\) for all \(j\).
+\qed
+
+## Rational Canonical Form

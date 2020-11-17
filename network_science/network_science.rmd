@@ -814,7 +814,7 @@ Lastly, with \(\alpha > 1\), we find a unrealistic hub structure is generated.
 
 # Spreading Processes
 
-## Diffusion in the First Dimension
+## Diffusion in Networks
 
 We will first consider random walks and diffusion in the first dimension.
 
@@ -859,8 +859,6 @@ dimensions to obtain
   \frac{\partial{n}}{\partial{t}} = \alpha \nabla ^2 n.
 \end{equation}
 
-## Diffusion in Networks
-
 With networks, we no longer have spatial derivatives, however, we can employ a 
 similar idea. Instead of just considering the two fluxes, we now consider the flux' 
 of all edges connected to some node. 
@@ -893,3 +891,141 @@ Interestingly, we recall from last year that we have seen \(A - Q = -L\) where
 \(\frac{d\mathbf{n}}{dt} = -\alpha L \mathbf{n}\) which is easily solvable 
 using the methods from last year's calculus.
 
+## Modelling Pandemics
+
+The spread of disease is a form of diffusion and this can be modelled especially 
+well with networks. We shall in this section take a look at the different models 
+for predicting the spreading of diseases. 
+
+### The Susceptible-Infected (SI) Model
+
+Consider a disease the spreads in a population of \(N\) individuals. Suppose 
+we let \(S(t), I(t)\) be the number of susceptible and infected individuals 
+respectively at time \(t\), so \(S(0) = N\) and \(I(0) = 0\), then the SI model 
+predicts the spread of this disease with, 
+\[\frac{dI}{dt} = \beta \langle k \rangle \frac{S(t) I(t)}{N},\]
+where \(\beta\) is the infection rate, \(\langle k \rangle\) is the average 
+degree of each individual, that is the average number of people an individual 
+has contact with. By inspection, we see the SI model interprets the infection 
+rate to be proportional to the number of susceptible individuals, the number of 
+infected individuals and their average number of contacts.
+
+By rewriting \(s = S / N\) and \(i = I / N\), we find the SI model becomes
+\[\frac{di}{dt} = \beta \langle k \rangle si,\]
+and by solving this differential equation, we have 
+\[i = \frac{i_0 e^{\beta\langle k \rangle t}}{1 - i_0 + i_0 e^{\beta\langle k \rangle t}},\]
+where \(i_0 = i(0)\). 
+
+### The Susceptible-Infected-Susceptible (SIS) Model
+
+Unlike the SI model, in which once an individuals become sick, they are sick 
+forever, the SIS model considers the fact that an individual will eventually 
+recover and become susceptible again. This model is described by 
+\[\frac{di}{dt} = \beta \langle k \rangle i(1 - i) - \mu i,\]
+where \(\mu\) is the recovery rate.
+
+By solving the differential equation, we have 
+\[i = \left(1 - \frac{\mu}{\beta \langle k \rangle}\right)
+  \frac{Ce^{(\beta\langle k \rangle - \mu)t}}{1 +Ce^{(\beta\langle k \rangle - \mu)t}},\]
+where 
+\[C = \frac{i_0}{1 - i_0 - \frac{\mu}{\beta \langle k \rangle}}.\]
+We see that, while in the SI model, \(i \to 1\) as \(t \to \infty\), that is 
+everyone will eventually become infected, the SIS model will reach the 
+equilibrium \(1 - \mu / \beta \langle k \rangle\) if \(\mu < \beta \langle k \rangle\) 
+or the disease will die out if \(\mu \ge \beta \langle k \rangle\). 
+By this fact alone, we see that \(R_0 = \beta \langle k \rangle / \mu\) is an 
+important number, that is, if \(R_0 > 1\) then the disease will remain within 
+the population while if \(R_0 \le 1\), the disease will die out.
+
+### The Susceptible-Infected-Recovered (SIR) Model
+
+Lastly, we have the SIR model. While the previous two model assume that individuals 
+are either infected or susceptible, the SIR model assumes that an 
+individuals, after being infected will either die or become immune, that is 
+removed from the ecosystem. This model is governed by the following system 
+of differential equations.
+\begin{align*}
+  \frac{ds}{dt} & = -\beta \langle k \rangle is\\
+  \frac{di}{dt} & = - \mu i + \beta \langle k \rangle is\\
+  \frac{dr}{dt} & = \mu i
+\end{align*}
+where \(r\) is the proportion of the population that are recovered or removed.
+
+In contrast to the SI and the SIS models, with this model, \(i \to 0\) as 
+\(t \to \infty\) as everyone either becomes immune or died. 
+
+Unlike the the SI and the SIS model, the SIR model does not have an analytical 
+solution so we would need to look at limiting cases to gain insight into this model. 
+Suppose we have \(s = 1 - \epsilon \tilde{s}(t) + o(\epsilon^2)\),
+\(i = \epsilon \tilde{x}(t) + o(\epsilon^2)\) and 
+\(r = \epsilon \tilde{r}(t) + o(\epsilon^2)\) for some small \(\epsilon\).
+Then, the by rewritting and simplifying, SIR model becomes 
+\begin{align*}
+  \frac{d\tilde{s}}{dt} & = \beta \langle k \rangle \tilde{x} - 
+    \epsilon \tilde{x} \tilde{s} + o(\epsilon)\\
+  \frac{d\tilde{i}}{dt} & = \beta \langle k \rangle \tilde{x} - 
+    \epsilon \tilde{x} \tilde{s} - \mu \tilde{x} + o(\epsilon)\\
+  \frac{d\tilde{r}}{dt} & = \mu \tilde{x} + o(\epsilon)
+\end{align*}
+Thus, by taking \(\epsilon \to 0\), we have 
+\begin{align*}
+  \frac{d\tilde{s}}{dt} & = \beta \langle k \rangle \tilde{x}\\
+  \frac{d\tilde{i}}{dt} & = \beta \langle k \rangle \tilde{x}\\
+  \frac{d\tilde{r}}{dt} & = \mu \tilde{x}.
+\end{align*}
+Resulting in \(\tilde{x} = \tilde{x_0}e^{(\beta \langle k \rangle - \mu)t}\), 
+implying that if \(\beta \langle k \rangle - \mu > 0\) then the disease will 
+exponentially spread while if \(\beta \langle k \rangle - \mu < 0\) 
+the number of infected will exponentially decrease.
+
+## Epidemics on Networks
+
+The models described above, while useful in certain conditions, make many assumptions 
+(such as the assumptions that all susceptible individuals are equally likely to 
+catch the disease and all infected individuals spread the disease equally likely) 
+that are not necessarily correct. To combat this, it might be useful to consider 
+epidemics on specific networks.
+
+For simplicity, we shall again suppose that an individual is either susceptible 
+or infected and we shall assign a different definition on \(\beta\), that 
+\(\beta \Delta t\) is the probability that a susceptible person is infected via 
+a link to an infectious person over some time \(\Delta t\). Let us now define the 
+random variable \(X_i(t)\) to be the indicator random variable that determines 
+whether or not note \(i\) is infected at time \(t\). Consider now, 
+\[\mathbb{P}(X_i(t + \Delta t) = 1) = \mathbb{P}(X_i(t) = 1) + 
+  \mathbb{P}(i \text{ is infected between } t, t + \Delta t)\]
+where 
+\[\mathbb{P}(i \text{ is infected between } t, t + \Delta t) = 
+  \beta \Delta t \sum_{j = 1}^N \mathbb{P}(X_i(t) = 0, X_j(t) = 1) A_{i, j},\]
+and so, by rearranging,
+\[\frac{\langle X_i(t + \Delta t) \rangle - \langle X_i(t) \rangle}{\Delta t} = 
+  \beta \sum_{j = 1}^N A_{i, j} \langle (1 - X_i(t))X_j(t) \rangle.\]
+So, by letting \(\Delta t \to 0\), we have 
+\[\frac{d\langle X_i \rangle}{dt} = 
+  \beta \sum_{j = 1}^N A_{i, j}\langle (1 - X_i)X_j \rangle.\]
+However, this system of differential equations in general does not have closed 
+solutions, so we shall make some approximations. For giant networks in which 
+each node has many neighbour, the effect of one neighbour to another is minimal, 
+so, it is reasonable to approximate \(\mathbb{P}(X_i = 0, X_j = 1) = 
+\mathbb{P}(X_i = 0)\mathbb{P}(X_j = 1)\). Thus, with this approximation, we have 
+\[\frac{d\langle X_i \rangle}{dt} = 
+  \beta \langle k_i \rangle \sum_{j = 1}^N A_{i, j}\langle X_j \rangle,\]
+where \(\langle k_i \rangle = \langle 1 - X_i \rangle\).
+
+While this is a neat solution, we naively assume independence which is in general 
+not true. So we need to approach this problem with perturbation as we had done 
+with the SIR model. Suppose we have \(\langle X_i \rangle = \epsilon z_i + o(\epsilon^2\),
+for some small \(\epsilon\). Then, 
+\[\epsilon \frac{dz_i}{dt} = \beta(1 - \epsilon z_i) 
+  \sum_{j = 1}^N A_{i, j}\epsilon z_j + o(\epsilon^2),\]
+and so, by dividing by \(\epsilon\),
+\[\frac{dz_i}{dt} = \beta(1 - \epsilon z_i) \sum A_{i, j} z_j + o(\epsilon).\]
+Thus, as \(\epsilon \to 0\), we have
+\[\frac{dz_i}{dt} = \beta \sum A_{i, j} z_j.\]
+Now, by writing this in matrix form, 
+\[\frac{d\mathbf{z}}{dt} = \beta A \mathbf{z},\]
+which can be solved using first year's calculus resulting in 
+\(\mathbf{z} = \tilde{\mathbf{z}}_i e^{\lambda_i t}\) where \(\lambda_i / \beta\) 
+and \(\tilde{\mathbf{z}}_i\) are Eigenvalues and Eigenvectors of \(A\) 
+respectively\footnote{The existence of the real Eigenvalue follows from the 
+Perron-Frobenius theorem.}.
