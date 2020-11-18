@@ -1318,7 +1318,7 @@ Furthermore, by considering that the change of basis matrix of \(T\) with respec
 to its cyclic subspace is the companion matrix of its annihilator, we have the 
 following corollary.
 
-\begin{corollary}
+\begin{corollary}\label{rat_lemma}
   Let \(T\) be as described in theorem \ref{cyclic_dcomp}. Then there exists a 
   basis \(B\) of \(V\) such that 
   \[[T]_B = \bigoplus_{i = 1}^r C(f^{k_i}).\]
@@ -1381,7 +1381,7 @@ basis in the end, so it is less useful in that regard.
   \(f(T)^{k - k_2}g(T)(v_1)\) is a \(T\)-annihilator of \(v_1\). But, as 
   \(m_{v_1} = f^k\), \(f_k \mid f^{k - k_2}g\), and by the irreducibility of \(f\), 
   there exists some \(h \in \mathbb{F}[X]\) such that \(g = f^{k_2} h\). 
-  Financially, by defining \(v_2 := v - h(T)(v_1)\), we have 
+  Finally, by defining \(v_2 := v - h(T)(v_1)\), we have 
   \[f(T)^{k_2}(v_2) = f(T)^{k_2}(v - h(T)(v_1)) = f(T)^{k_2}(v) - g(T)(v_2) = 0,\]
   and hence \(f^{k_2}\) is a \(T\)-annihilator of \(v_2\). (We see that this is 
   part of the proof that uses the axiom of choice making it non-constructive.)
@@ -1422,3 +1422,44 @@ basis in the end, so it is less useful in that regard.
 \qed
 
 ## Rational Canonical Form
+
+With that, we can finally state and prove the rational canonical form theorem.
+
+\begin{theorem}[Rational Canonical Form Theorem]
+  Let \(V\) be a finite dimensional vector space over some field \(\mathbb{F}\), 
+  and let \(T \in \End(V)\) with \(m_T = \prod_{i = 1}^t f_i^{k_i}\) where \(f_i\) 
+  are distinct irreducible polynomials in \(\mathbb{F}[X]\). Then there exists 
+  some basis \(B\) of \(V\) such that 
+  \[[T]_B = \bigoplus_{i = 1}^t \bigoplus_{j = 1}^{r_i} C(f_i^{k_{i_{r_j}}}),\]
+  where for all \(i = 1, \cdots, t\), \(k_i = k_{i_1} \ge k_{i_2} \ge \cdots 
+  \ge k_{i_{r_i}},\) and further more, these \(k_{i_j}\) for all 
+  \(j = 1, \cdots, r_i\) are uniquely determined. 
+\end{theorem}
+
+We call this decomposition the rational canonical form of \(T\) and for all \(i, j\),
+\(f_i^{k_{i_j}}\) the elementary divisors of \(T\). 
+
+\proof
+  This proof is rather straight forward in comparison to the cyclic decomposition 
+  theorem by considering corollary \ref{rat_lemma}.
+
+  By the primary decomposition theorem, if \(V_i = \ker f_i^{k_i}\), we have 
+  \(V = \bigoplus V_i\), and furthermore, each restriction \(T_{V_i}\) has 
+  minimlal polynomila \(f_i^{k_i}\). So, by corollary \ref{rat_lemma}, there 
+  exists some \(B_i\), a basis of \(V_i\), such that 
+  \[[T_{V_i}]_{B_i} = \bigoplus_{j = 1}^{r_i} C(f_i^{k_{i_{r_j}}})),\]
+  and thus, by letting \(B = \bigcup B_i\),
+  \[[T]_B = \bigoplus_{i = 1}^t \bigoplus_{j = 1}^{r_i} C(f_i^{k_{i_{r_j}}}).\]
+\qed
+
+In some literature, the rational canonical form refers to a different decomposition 
+where the elementary divisors are not necessarily irreducible; instead it shows that 
+every \(n \times n\) matrix over \(\mathbb{F}\) is similar to a unique matrix 
+of the form \(\bigoplus C(g_i)\) where \(g_i \in \mathbb{F}[X]\) and for all \(i\),
+\(g_i \mid g_{i + 1}\) (see problem sheet 7).
+
+Recall the general linear group \(G = GL_n(\mathbb{F})\) and for all \(g \in G\) 
+we will denote its conjugation class by \([g] := \{h \in G \mid g \sim h\}\). 
+Then, by the rational canonical form theorem, as the RCF of a matrix is unique, 
+there exists a bijection between the conjugacy classes of \(GL_n(\mathbb{F})\) 
+and the set of \(n \times n\) invertible RCF matrices.  
