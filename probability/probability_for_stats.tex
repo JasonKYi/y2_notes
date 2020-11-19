@@ -930,8 +930,8 @@ This is a weaker notion than pointwise convergence and in fact, if the
 sequence of function converges pointwise almost everywhere
 (i.e.~\(\mu(\{x \in X \mid f_n(x) \not\to f(x)\}) = 0\)), then it
 converges in measure. The proof of this follows from the property that
-\(\liminf \mu(A_n) \ge \mu(\liminf A_n)\) which is proved later when we
-consider limit events.
+\(\liminf \mu(A_n) \ge \mu(\liminf A_n)\) which definitions we shall
+encounter later.
 
 \hypertarget{weak-law-of-large-numbers}{%
 \subsubsection{Weak Law of Large
@@ -1028,5 +1028,150 @@ let \(\epsilon > 0\). By considering
 Thus, as \(\epsilon \to 0\), we have by squeeze,
 \(\mathbb{P}(X \le x) = \mathbb{P}(X_n \le x)\), and so
 \(X_i \xrightarrow[]{\mathcal{D}} X\). \qed
+
+\hypertarget{limiting-events}{%
+\subsection{Limiting Events}\label{limiting-events}}
+
+Let \((\Omega, \mathcal{F}, \mathbb{P})\) be a probability space and let
+\((A_n)_{n = 1}^\infty\) be a sequence of events in \(\mathcal{F}\). We
+are often interested in considering whether or not \(A_n\) occurs
+\emph{infinitely often}, denoted by \(\{A_n \text{ i.o.}\}\), that is
+\[\omega \in \{A_n \text{ i.o.}\} \iff \forall N \in \mathbb{N}, 
+  \exists n \ge N, \omega \in A_n.\] So, by definition, for all
+\(n \in \mathbb{N}\), \(\omega \in \{A_n \text{ i.o.}\}\) if and only if
+\(\omega \in \bigcup_{n = N}^\infty A_n\) and so
+\[\{A_n \text{ i.o.}\} = \bigcap_{N = 1}^\infty \bigcup_{n = N}^\infty A_n.\]
+A closely related is the notion that \(A_n\) occurs \emph{almost
+always}, that is all but finitely many of the \(A_n\) occur, we denote
+this by \(\{A_n \text{ a.a}\}\). Formally, we define this as
+\[\omega \in \{A_n \text{ a.a.}\} \iff \exists N \in \mathbb{N}, 
+  \forall n \ge N, \omega \in A_n.\] Similarly, we can write this as
+\[\{A_n \text{ a.a.}\} = \bigcup_{N = 1}^\infty \bigcap_{n = N}^\infty A_n.\]
+Clearly, \(\{A_n \text{ a.a.}\} \subseteq \{A_n \text{ i.o.}\}\), and
+furthermore, by De Morgan's, we see that
+\(\{A_n \text{ i.o.}\}^c = \{A_n^c \text{ a.a.}\}\).
+
+By recalling the definition of \(\limsup\) and \(\liminf\) of real
+sequences from last year, we see that this is an analogous construction
+of \(\limsup\) and \(\liminf\) of set with respect to the partial order
+\(\subseteq\). That is, we define
+\[\{A_n \text{ i.o.}\} = \limsup_{n \to \infty} A_n = 
+  \bigcap_{N = 1}^\infty \bigcup_{n = N}^\infty A_n;\]
+\[\{A_n \text{ a.a.}\} = \liminf_{n \to \infty} A_n =
+  \bigcup_{N = 1}^\infty \bigcap_{n = N}^\infty A_n.\] Straight away, we
+see that \(\limsup_{n \to \infty} A_n\) and
+\(\liminf_{n \to \infty} A_n\) are in \(\mathcal{F}\) since
+\(\sigma\)-algebras are closed under countable union and intersections.
+
+\begin{theorem}[Borel-Cantelli Lemmas]
+  Let \((\Omega, \mathcal{F}, \mathbb{P})\) be a probability space and suppose 
+  \((A_n)_{n = 1}^\infty\) is a sequence of events in \(\mathcal{F}\). Then, 
+  \begin{itemize}
+    \item if \(\sum_{n = 1}^\infty \mathbb{P}(A_n) < \infty\), then 
+      \(\mathbb{P}(\limsup_{n \to \infty} A_n) = 0\);
+    \item if \(\sum_{n = 1}^\infty \mathbb{P}(A_n) = \infty\), and \((A_n)\) is 
+      a independent sequence, then \(\mathbb{P}(\limsup_{n \to \infty} A_n) = 1\).
+  \end{itemize}
+\end{theorem}
+\proof
+
+We provide a proof for the first part while the second part is left as
+exercise.
+
+Suppose \(\sum \mathbb{P}(A_n) < \infty\), then
+\(\sum_{N = n}^\infty \mathbb{P}(A_N) \to 0\) as \(n \to \infty\). Now,
+as
+\[\mathbb{P}(\limsup_{n \to \infty} A_n) = \mathbb{P}(\bigcap_{N = 1}^\infty 
+    \bigcup_{n = N}^\infty A_n) \le \mathbb{P}(\bigcup_{N = k}^\infty A_n) 
+    \le \sum_{n = k}^\infty \mathbb{P}(A_n),\] for all
+\(k \in \mathbb{N}\), we have
+\[0 \le \mathbb{P}(\limsup_{n \to \infty} A_n) \le \lim_{k \to \infty} 
+    \sum_{n = k}^\infty \mathbb{P}(A_n) = 0,\] implying the first part
+of the theorem by the squeeze theorem. \qed
+
+\hypertarget{convergence-almost-everywhere}{%
+\subsection{Convergence Almost
+Everywhere}\label{convergence-almost-everywhere}}
+
+Lastly, we have an even stronger notion of convergence than convergence
+in probability -- convergence almost everywhere. But before, we can
+define this notion, we have to make sure that the event
+\[\{X_n \to X\} := \{\omega \in \Omega \mid X_n(\omega) \to X(\omega)\}\]
+is measurable.
+
+\begin{prop}
+  Let \((\Omega, \mathcal{F}, \mathbb{P})\) be a probability space and suppose 
+  \((X_n)\) is a sequence of random variables. Furthermore, let \(X\) also be 
+  a random variable. Then 
+  \[\{X_n \to X\} := \{\omega \in \Omega \mid X_n(\omega) \to X(\omega)\} \in \mathcal{F}.\]
+\end{prop}
+\proof
+
+Consider for all \(\omega \in \Omega\), \(\omega \in \{X_n \to X\}\) if
+and only if, for all \(m \in \mathbb{N}\), there exists some
+\(N(m) \in \mathbb{N}\) such that for all \(n \ge N(m)\),
+\[\left| X_n(\omega) - X(\omega) \right| < \frac{1}{m}.\] That is,
+\[\omega \in \bigcap_{m = 1}^\infty \bigcup_{N = 1}^\infty \bigcap_{n = N}^\infty
+    \{\omega \mid \left| X_n(\omega) - X(\omega) \right| < 1 / m \},\]
+which is an event in \(\mathcal{F}\) by previous arguments. \qed
+
+With that, we can define the notion of convergence almost everywhere.
+
+\begin{definition}[Convergence Almost Everywhere]
+  Let \((\Omega, \mathcal{F}, \mathbb{P})\) be a probability space and suppose 
+  \((X_n)\) is a sequence of random variables. Furthermore, let \(X\) also be 
+  a random variable. Then we say \(X_n \to X\) almost everywhere (or almost 
+  surely) if and only if \(\mathbb{P}(\{X_n \to X\}) = 1\). We denote this by 
+  \(X_n \xrightarrow[]{a.s.} X\).
+\end{definition}
+
+\begin{prop}
+  \(X_n \xrightarrow[]{a.s.} X\) implies 
+  \(X_n \xrightarrow[]{\mathcal{P}} X\), that is, convergence 
+  almost everywhere implies convergence in probability.
+\end{prop}
+\proof
+
+For all \(\epsilon > 0\), define the sequence of events,
+\[A_N := \{\omega \in \Omega \mid \left| X_n(\omega) - X(\omega) \right| < \epsilon, n \ge N\}.\]
+We see that \(A_N\) is increasing and
+\(\{X_n \to X\} \subseteq \bigcup A_N\), so,
+\[1 = \mathbb{P}(\{X_n \to X\}) \le \mathbb{P}\left(\bigcup A_N\right) \le 1.\]
+Hence, by continuity,
+\(\lim_{N \to \infty} \mathbb{P}(A_N) =  \mathbb{P}(\bigcup A_N) = 1\).
+Now as \(A_N \subseteq \{\left| X_N - X \right| < \epsilon\}\), we have
+\[\lim_{n \to \infty} \mathbb{P}(\left| X_n - X \right| < \epsilon) = 1,\]
+which is equivalent to \(X_n \xrightarrow[]{\mathcal{P}} X\). \qed
+
+\hypertarget{strong-law-of-large-numbers}{%
+\subsubsection{Strong Law of Large
+Numbers}\label{strong-law-of-large-numbers}}
+
+\begin{theorem}[Strong Law of Large Numbers]
+  Let \((X_n)_{n = 1}^\infty\) be a sequence of independent and identically 
+  distributed random variables such that \(E(X_n^4) < \infty\) and \(E(X_n) = \mu\) 
+  for all \(n\). Then
+  \[\mathbb{P}(\bar{X}_n \to \mu) = 1.\]
+\end{theorem}
+\proof
+
+Suppose we define \(Z_n := X_n - \mu\), and
+\(S_n := \sum_{i = 1}^n X_i\) and consider
+\[E((S_n - n\mu)^4) = E((\sum_{i = 1}^n Z_i)^4) = n E(Z_1^4) + 3n(n - 1)E(Z_1^2Z_2^2),\]
+where the second equality is true as \(E(Z_i) = 0\) for all \(i\) and
+the all terms but the above two of the sum expansion contains it. Now,
+by defining \(C := 4 \max \{E(Z_1^4), E(Z_1^2)^2\}\),
+\[n E(Z_1^4) + 3n(n - 1)E(Z_1^2Z_2^2) = 
+  n^2 \left(\frac{C}{4n} + \frac{3C(n - 1)}{4n} \right) \le Cn^2,\] and
+so,
+\[E((\bar{X}_n - \mu)^4) = \frac{1}{n^4}E((S_n - n\mu)^4) \le \frac{C}{n^2}.\]
+Now, let \(A_n := \{\left| \bar{X}_n - \mu \right| \ge n^{-1 / 8}\}\),
+then by Markov's inequality,
+\[\mathbb{P}(\left| \bar{X}_n - \mu \right| \ge n^{- 1 / 8}) \le 
+    \frac{E(\bar{X}_n - \mu)^4}{n^{-2}} \le Cn^{- 3 / 2}.\] Lastly, by
+taking the sum on both sides, we have \(\sum \mathbb{P}(A_n) < \infty\),
+and so, by the Borel-Cantelli lemma,
+\(\mathbb{P}(\{A_n^c \text{ a.a.}\}) = 1\), which implies straight away
+\(\mathbb{P}(\bar{X}_n \to \mu) = 1\). \qed
 
 \end{document}

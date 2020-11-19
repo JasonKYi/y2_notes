@@ -1026,6 +1026,99 @@ Now, by writing this in matrix form,
 \[\frac{d\mathbf{z}}{dt} = \beta A \mathbf{z},\]
 which can be solved using first year's calculus resulting in 
 \(\mathbf{z} = \tilde{\mathbf{z}}_i e^{\lambda_i t}\) where \(\lambda_i / \beta\) 
-and \(\tilde{\mathbf{z}}_i\) are Eigenvalues and Eigenvectors of \(A\) 
+and \(\tilde{\mathbf{z}}_i\) are eigenvalues and eigenvectors of \(A\) 
 respectively\footnote{The existence of the real Eigenvalue follows from the 
 Perron-Frobenius theorem.}.
+
+## Degree-based analysis
+
+Thus far, we had looked at the evolution of a epidemic on a network and have 
+found that the early spread is related to the eigenvalues of the adjacency 
+matrix. However, we do not have much insight into how the network structure is 
+related to these eigenvalues. To combat this, we take a look at an alternative 
+approach where we assume the statistical properties of a node is dependent only 
+on its degree. 
+
+Suppose we let \(\phi_k\) be the indicator random variable indicating whether or 
+not nodes of degree \(k\) is infected at some time \(t\). Then, we are interested 
+in the probability \(\mathbb{P}(\phi_k = 1)\). Consider 
+\[\mathbb{P}(\phi_k(t + \Delta t) = 1) = \mathbb{P}(\phi_k(t) = 1) + 
+  \sum_{k' = 1}^{k_{\max}} \beta \Delta t 
+  \mathbb{P}(\theta(k, k') = 1, \phi_{k'}(t) = 1, \phi_k(t) = 0),\]
+where \(\theta(k, k')\) is the indicator random variable indicating whether or 
+not \(k\) has neighbour of degree \(k'\). By conditional probability, we see that 
+\begin{align*}
+  \mathbb{P}(\theta(k, k') & = 1, \phi_{k'}(t) = 1, \phi_k(t) = 0) \\
+  & = \mathbb{P}(\phi_{k'} = 1 \mid \phi_k = 0, \theta(k, k') = 1)
+    \mathbb{P}(\theta(k, k') = 1 \mid \phi_k = 0) \mathbb{P}(\phi_k = 0) \\
+  & = \mathbb{P}(\phi_{k' - 1} = 1) \mathbb{P}(\theta(k, k') = 1) 
+    \mathbb{P}(\phi_k = 0),
+\end{align*}
+so we have,
+\[\mathbb{P}(\phi_k(t + \Delta t) = 1) = \mathbb{P}(\phi_k(t) = 1) + 
+  \sum_{k' = 1}^{k_{\max}} \beta \Delta t 
+  \mathbb{P}(\phi_{k' - 1} = 1) \mathbb{P}(\theta(k, k') = 1) \mathbb{P}(\phi_k = 0).\]
+Now, by taking \(\Delta t \to 0\), we have 
+\[\frac{d \langle \phi_k \rangle}{dt} = \beta k (1 - \langle \phi_k \rangle) 
+  \sum_{k' = 1}^{k_{\max}} \langle \phi_{k' - 1} \rangle \langle \theta(k, k') \rangle.\]
+With the configuration model, we have \(\mathbb{P}(\theta(k, k') = 1) = 
+\frac{k' p_{k'}}{\bar{k}}\) resulting, 
+\[\frac{d \langle \phi_k \rangle}{dt} = \beta k \langle 1 - \phi_k \rangle
+  \sum_{k' = 1}^{k_{\max}} \langle \phi_{k' - 1} \rangle \frac{k' p_{k'}}{\bar{k}}.\]
+Let us now introduce a small perturbation \(\langle \phi_k \rangle\). Suppose 
+we write \(\Theta = \sum_{k' = 1}^{k_{\max}} \langle \phi_{k' - 1} \rangle 
+\frac{k' p_{k'}}{\bar{k}} = \sum_{k' = 0}^{k_{\max} - 1} \langle \phi_{k'} \rangle 
+\frac{(k' + 1) p_{k' + 1}}{\bar{k}}\) as a short hand and so, the above equation becomes 
+\(d\langle \phi_k \rangle / dt = k\beta \Theta\). Now by differentiating with 
+respect to \(t\), we have,
+\[\frac{d\Theta}{dt} = \sum_{k' = 0}^{k_{\max} - 1} \frac{(k' + 1) p_{k' + 1}}{\bar{k}}
+\frac{d\langle \phi_{k'} \rangle }{dt} = \sum_{k' = 0}^{k_{\max} - 1} 
+\frac{(k' + 1) p_{k' + 1}}{\bar{k}}k'\beta \Theta.\]
+Now, as 
+\[\sum_{k' = 0}^{k_{\max} - 1} \frac{(k' + 1) p_{k' + 1}}{\bar{k}}k' = 
+  \sum_{k' = 1}^{k_{\max}} \frac{(k') p_{k'}}{\bar{k}}(k' - 1) = \frac{1}{\bar{k}} 
+  \sum_{k' = 1}^{k_{\max}}p_k(k'^2- k') = \frac{\bar{k^2}}{\bar{k}} - 1,\]
+we have 
+\[\frac{d\Theta}{dt} = \beta \left(\frac{\bar{k^2}}{\bar{k}} - 1\right) \Theta.\]
+Thus, solving for \(\Theta\), we have \(\Theta = \Theta_0 e^{t / \tau}\), and 
+hence,
+\[\langle \phi_k \rangle = \frac{k\beta\Theta_0}{\tau}(e^{t / \tau} - 1) + 
+  \langle \phi_k(0) \rangle,\]
+where \(\frac{1}{\tau} = \beta(\frac{\bar{k^2}}{\bar{k}} - 1)\). With that, 
+from the equation, we can conclude that smaller \(\tau\) indicates faster spread.
+
+## Pair Approximation
+
+We go back to our SI model on networks \(\frac{d\langle x_i \rangle}{dt} = 
+\beta \sum_{j = 1}^N A_{i, j}\langle (1 - x_i)x_j \rangle\), where had previously 
+made the naive assumption that \(\langle (1 - x_i)x_j \rangle \approx 
+\langle 1 - x_i \rangle \langle x_j \rangle\). While this approximation works 
+well in certain situations, it is not a good approximation in many others. So, 
+to solve this problem, we shall consider the pair approximation.
+
+We know \(\frac{d\langle (1 - x_i) x_j \rangle}{dt} = 
+\frac{d\langle x_j \rangle}{dt} - \frac{d\langle x_i x_j \rangle}{dt}\) and we 
+know \(\frac{d\langle x_j \rangle}{dt}\), so we shall consider 
+\(\frac{d\langle x_i x_j \rangle}{dt}\). Consider, 
+\begin{align*}
+  \mathbb{P}(X_i (t + \Delta t) = 1, X_j (t + \Delta t) = 1) & = 
+    \mathbb{P}(X_i (t) = 1, X_j (t) \\
+  & + \mathbb{P}(X_i (t) = 1, X_j \to 1) \\
+  & + \mathbb{P}(X_j (t) = 1, X_i \to 1) \\
+  & + \mathbb{P}(X_i \to 1, X_j \to 1),
+\end{align*}
+where we denote \(X_i \to 1\) as the event where \(X_i\) is not infected at time 
+\(t\) but is infected at time \(t + \Delta t\). By considering that 
+\(\mathbb{P}(X_i \to 1, X_j \to 1) = o(\Delta t^2)\),  
+\[\mathbb{P}(X_i (t) = 1, X_j \to 1) = \beta \Delta t 
+  \sum_{k = 1}^N A_{j, l} \mathbb{P}(X_i(t) = 1, X_j(t) = 0, X_l(t) = 1),\]
+and similarly 
+\[\mathbb{P}(X_j (t) = 1, X_i \to 1) = \beta \Delta t 
+  \sum_{k = 1}^N A_{j, l} \mathbb{P}(X_j(t) = 1, X_i(t) = 0, X_l(t) = 1),\]
+we see that, as \(\Delta t \to 0\), we have,
+\[\frac{d\langle x_i x_j \rangle}{dt} = \beta \sum_{l = 1}^N 
+  \left(A_{j, l} \langle x_i s_j x_l \rangle + A_{i, l} \langle s_i x_j x_l \rangle \right),\]
+where \(s_i = 1 - x_i\). So
+\[\frac{d\langle (1 - x_i) x_j \rangle}{dt} = \beta \sum_{l = 1}^N 
+  \left(A_{j, l} \langle s_i s_j x_l \rangle + A_{i, l} \langle s_i x_j x_l \rangle \right).\]
+
