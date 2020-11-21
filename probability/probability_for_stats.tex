@@ -1218,7 +1218,7 @@ and continuous under certain conditions.
   identically distributed.
 \end{prop}
 
-\begin{prop}
+\begin{prop}\label{contin}
   Suppose \(X\) is a random variable with moment generating function \(M_X\) and 
   \((X_n)_{n \ge 1}\) is a sequence of random variables, with respective moment 
   generating function \(M_{X_i}(t)\). If \(M_{X_i}(t) \to M_X(t) < \infty\) as 
@@ -1226,7 +1226,73 @@ and continuous under certain conditions.
   some \(t_0 > 0\), then \(X_n \xrightarrow[]{\mathcal{D}} X\).
 \end{prop}
 
-The above proposition will be very helpful for proving the central limit
-theorem.
+The above proposition provides us with another proof of the weak law of
+large numbers.
+
+\proof (Weak Law of Large Numbers again). Let \((X_n)_{n = 1}^\infty\)
+be a sequence of independent and identically distributed random
+variables with moment generating function \(M(t)\). Consider the moment
+generating function of \(\bar{X}_n\),
+\[M_{\bar{X}_n}(t) = E\left(\exp\left(\frac{t}{n}\sum_{i = 1}^n (X_i)\right)\right) = 
+    \prod_{i = 1}^n E\left(\exp\left(\frac{tX_i}{n}\right)\right) 
+    = M\left(\frac{t}{n}\right)^n.\] Now, by considering the Taylor
+expansion of \(M(t) = 1 + \mu t + o(t)\), we have
+\[M_{\bar{X}_n}(t) = \left(1 + \frac{\mu t}{n} + o\left(\frac{t}{n}\right)\right)^n 
+    \to \exp(\mu t),\] as \(n \to \infty\). We see that this is the
+moment generating function of a constant random variable, and thus, by
+proposition \ref{contin}, \(\bar{X}_n \to \mu\) in distribution. Now, as
+\(\mu\) is constant, we have \(\bar{X}_n \to \mu\) in probability. \qed
+
+We shall use a similar method when proving the central limit theorem in
+the next section.
+
+\hypertarget{central-limit-theorem-1}{%
+\subsection{Central Limit Theorem}\label{central-limit-theorem-1}}
+
+Let \((X_n)_{n = 1}^\infty\) be a sequence of independent and
+identically distributed random variables with mean \(\mu\) and variance
+\(\sigma^2\). We would like to consider the behaviour of \(\bar{X}_n\)
+as \(n\) becomes large. As we have previously seen, the weak law of
+large numbers dictates that \(\bar{X}_n \to \mu\) in probability as
+\(n \to \infty\) but this is not sufficient for our analysis; instead,
+we would like to consider the behaviour of the region around \(\mu\) as
+\(n\) becomes large. To achieve this, we shall consider the following
+transformation, \[Z_n = \frac{\bar{X}_n - \mu}{\sigma / \sqrt{n}},\] in
+which we standardise both the mean and the variance. By empirical
+experimentation we find that as \(n\) becomes large, \(Z_n\) seems to
+become standard normal. This is not a coincidence and we shall formalise
+this observation with the central limit theorem.
+
+\begin{theorem}[The Central Limit Theorem]
+  Let \((X_n)_{n = 1}^\infty\) be a sequence of independent and identically distributed 
+  random variables with mean \(\mu\) and variance \(\sigma^2 < \infty\). Then, 
+  by defining 
+  \[Z_n = \frac{\sqrt{n}(\bar{X}_n - \mu)}{\sigma},\]
+  then, \(Z_n \xrightarrow[]{\mathcal{D}} Z \sim N(0, 1)\).
+\end{theorem}
+\proof
+
+Let \(M(t)\) be the moment generating function of \(X_i - \mu\) and
+furthermore, let \(M_n(t)\) be the moment generating function of
+\(Z_n\). By expanding the definitions, we have
+\[M_n(t) = E \left(\exp\left( \frac{t}{\sigma\sqrt{n}} \sum(X_i - \mu) \right)\right) 
+    = \prod E \left(\exp\left(\frac{t}{\sigma\sqrt{n}}(X_i - \mu)\right)\right) = 
+    M\left(\frac{t}{\sigma\sqrt{n}}\right)^n.\] Now, by considering the
+Taylor expansion of \(M(t)\) at zero, that is
+\[M(t) = 1 + t M'(0) + \frac{t^2}{2} M''(0) + o(t^2) 
+    = 1 + \frac{t^2}{2} \sigma^2 + o(t^2),\] we have,
+\[M_n(t) = M\left(\frac{t}{\sigma\sqrt{n}}\right)^n = 
+    \left(1 + \frac{t^2}{2n} + o\left(\frac{t^2}{n}\right)\right)^n \to 
+    \exp\left(\frac{t^2}{2}\right),\] as \(n \to \infty\) resulting in
+the moment generating function of standard normal random variable.
+Hence, by proposition \ref{contin}, we have
+\(Z_n \xrightarrow[]{\mathcal{D}} Z \sim N(0, 1)\). \qed
+
+\begin{remark}
+  We assumed within the proof that the moment generating function of \(X_i\) 
+  exists in some open interval around 0. This is in general not true, but the 
+  central limit theorem can be proved in the general case using characteristic 
+  functions.
+\end{remark}
 
 \end{document}
