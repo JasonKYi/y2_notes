@@ -1174,4 +1174,59 @@ and so, by the Borel-Cantelli lemma,
 \(\mathbb{P}(\{A_n^c \text{ a.a.}\}) = 1\), which implies straight away
 \(\mathbb{P}(\bar{X}_n \to \mu) = 1\). \qed
 
+\hypertarget{central-limit-theorem}{%
+\section{Central Limit Theorem}\label{central-limit-theorem}}
+
+\hypertarget{moment-generating-functions}{%
+\subsection{Moment Generating
+Functions}\label{moment-generating-functions}}
+
+We recall the definition of the moment generating functions of a random
+variable from last year.
+
+\begin{definition}[Moment Generating Function]
+  Let \(X\) be a random variable, then the moment generating function of \(X\), 
+  is the function \(M_X(t) = E(\exp(tX))\). 
+\end{definition}
+
+Also, recall some basic properties of the moment generating function.
+
+\begin{prop}
+  Let \(X\) be a random variable and suppose there exists some 
+  \(a, b \in \mathbb{R}\) such that \(Y = aX + b\). Then \(M_Y(t) = \exp(bt)M_X(at)\)
+\end{prop}
+\begin{prop}
+  Let \(X, Y\) be independent random variables and let \(Z = X + Y\). Then 
+  \(M_Z = M_X M_Y\).
+\end{prop}
+\begin{prop}
+  Let \(X\) be a random variable and suppose there exists \(t_0 > 0\) such that 
+  for all \(t \in \mathbb{R}, \left| t \right| < t_0\), \(M_X(t) < \infty\), 
+  then 
+  \[M_X(t) = \sum_{k = 0}^\infty E(X^k) \frac{t^k}{k!},\]
+  and for all \(k \ge 0\), 
+  \[\frac{d^k}{dt^k}M_X(t)\mid_{t = 0} = E(X^k).\]
+\end{prop}
+
+Furthermore, we can show that this moment generating function is unique
+and continuous under certain conditions.
+
+\begin{prop}
+  Suppose \(X\) and \(Y\) are random variables with common moment generating 
+  function \(M\) which is finite for all \(t \in \mathbb{R}\), 
+  \(\left| t \right| < t_0\) for some \(t_0 > 0\). Then \(X\) and \(Y\) are 
+  identically distributed.
+\end{prop}
+
+\begin{prop}
+  Suppose \(X\) is a random variable with moment generating function \(M_X\) and 
+  \((X_n)_{n \ge 1}\) is a sequence of random variables, with respective moment 
+  generating function \(M_{X_i}(t)\). If \(M_{X_i}(t) \to M_X(t) < \infty\) as 
+  \(n \to \infty\) for all \(t \in \mathbb{R}\), \(\left| t \right| < t_0\) for 
+  some \(t_0 > 0\), then \(X_n \xrightarrow[]{\mathcal{D}} X\).
+\end{prop}
+
+The above proposition will be very helpful for proving the central limit
+theorem.
+
 \end{document}
