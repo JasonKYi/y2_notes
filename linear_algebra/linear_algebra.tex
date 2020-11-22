@@ -95,6 +95,8 @@
 \setcounter{tocdepth}{2}
 \tableofcontents
 }
+\newpage
+
 \hypertarget{introduction}{%
 \section{Introduction}\label{introduction}}
 
@@ -605,6 +607,8 @@ this follows as
 \(\mathop{\mathrm{tr}}(A) = \mathop{\mathrm{tr}}(PQP^{-1}) =  \mathop{\mathrm{tr}}(P^{-1}PQ) = \mathop{\mathrm{tr}}(Q)\).
 \qed
 
+\newpage
+
 \hypertarget{polynomials}{%
 \section{Polynomials}\label{polynomials}}
 
@@ -1067,6 +1071,8 @@ linearly independent, we can construct an linearly independent set in
 the image of its basis over \(\phi\). Thus,
 \(\dim \ker T_1 T_2 / \ker T_2 \le \dim \ker T_2\) and the result
 follows from proposition \ref{dim_sub}. \qed
+
+\newpage
 
 \hypertarget{canonical-forms-of-vector-spaces}{%
 \section{Canonical Forms of Vector
@@ -1611,5 +1617,177 @@ Recall the general linear group \(G = GL_n(\mathbb{F})\) and for all
 form theorem, as the RCF of a matrix is unique, there exists a bijection
 between the conjugacy classes of \(GL_n(\mathbb{F})\) and the set of
 \(n \times n\) invertible RCF matrices.
+
+\newpage
+
+\hypertarget{geometry-1}{%
+\section{Geometry}\label{geometry-1}}
+
+\hypertarget{dual-space}{%
+\subsection{Dual Space}\label{dual-space}}
+
+\begin{definition}[Linear Functional]
+  Let \(V\) be a vector space over some field \(\mathbb{F}\). Then, a linear 
+  functional is a linear map\footnote{We recall that a field is a vector 
+  space over itself.} \(\phi : V \to \mathbb{F}\).
+\end{definition}
+
+Some typical examples of linear functionals are the zero map
+\(\mathbf{0}\), the projection map \(\pi_i\) and the trace function
+\(\text{tr} : M_n(\mathbb{F}) \to \mathbb{F} : A \mapsto \text{tr}(A)\).
+We also observe that linear functionals are closed under addition and
+scalar multiplication. This is helpful as we would like to create a
+vector space from these linear functionals.
+
+\begin{definition}[Dual Space]
+  Let \(V\) be a vector space over some field \(\mathbb{F}\). Then the dual space 
+  \(V^*\) of \(V\), is the vector space consisting of the linear functionals of 
+  \(V\) with natural addition and scalar multiplication.
+\end{definition}
+
+\begin{prop}
+  Let \(V\) be a finite dimensional vector space with dimension \(n\). Then 
+  \(\dim V^* = n\).
+\end{prop}
+\proof
+
+Let \(B := \{v_1, \cdots, v_n\}\) be a basis of \(V\) and let us define
+the linear functionals
+\(\phi_i : V \to \mathbb{F} :  \sum_{j = 1}^n \lambda_j v_j \mapsto \lambda_j\)
+(it is obvious that \(\phi_i\) is well-defined and is a linear map).
+Now, by defining \(B^* := \{\phi_1, \cdots, \phi_n\}\), I claim that
+\(B^*\) spans \(V^*\) and is linearly independent.
+
+Let \(\phi \in V^*\) and suppose we denote \(w_i := \phi(v_i)\). Then
+for all \(v = \sum \mu v_i \in V\),
+\(\phi(v) = \phi(\sum \mu v_i) = \sum \mu \phi(v_i)  w_i = \sum w_i \phi_i(\mu v_i) = \sum w_i \phi_i(\sum \mu v_j) = \sum w_i \phi_i(v)\),
+where the second to last equality is true as all other components but
+\(\mu v_i\) evaluates to zero.
+
+Now, let us prove linear independence. Suppose that there exists \(\mu\)
+such that \(\sum \mu \phi_i = 0\). Then \(\sum \mu \phi_i(v_j) = 0\) for
+some \(j = 1, \cdots, n\). But then,
+\(0 = \sum \mu \phi_i(v_j) = \mu_j\), and so \(\mu = 0\) as \(j\) was
+chosen arbitrarily. \qed
+
+The basis \(B^*\) in the proof above is in general refereed to as the
+dual basis of \(B\).
+
+\begin{definition}[Annihilators]
+  Let \(V\) be a vector space over the field \(\mathbb{F}\), then for some 
+  \(X \subseteq V\), the annihilator of \(X\) is 
+  \[X^\circ = \{\phi \in V^* \mid \phi(X) = 0\}.\]
+\end{definition}
+
+It is easy to see that for all \(X \subseteq V\), the annihilator of
+\(X\) is a subspace of the dual space of \(V\).
+
+\begin{prop}
+  Let \(V\) be a vector space over the field \(\mathbb{F}\) with subspace \(W\),
+  then \(\dim W^\circ = \dim V - \dim W\).
+\end{prop}
+\proof
+
+Let \(r = \dim W\) and \(B := \{w_1, \cdots, w_r\}\) be a basis of
+\(W\). Furthermore, suppose we extend \(B\) to a basis of \(V\),
+\(B' := \{w_1, \cdots, w_r, v_1, \cdots, v_s\}\). Then, there exists a
+dual basis of \(B'\),
+\(\{\phi_1, \cdots, \phi_r, \sigma_1, \cdots, \sigma_s\}\). Consider
+that, for all \(w \in W, w = \sum \mu B' = \sum \mu w_1\) for some
+\(\mu\), that is, the coefficients for \(v_i = 0\), we have
+\(\sigma_i(W) = 0\), so \(\sigma_i \in W^\circ\). Now, as it is trivial
+that \(\{\sigma_i \mid i\}\) is linearly independent, it remains to show
+this set spans \(W^\circ\). Let \(\sigma \in W^\circ\), then there
+exists \(\lambda, \mu\) such that
+\(\sigma = \sum \lambda \phi_i + \sum \mu \sigma_i\). Then, as
+\(\sigma\) is a \(W\)-annihilator, for all \(i\),
+\(0 = \sigma(w_i) =  \sum \lambda \phi_j(w_i) + \sum \mu \sigma_j(w_i) = \sum \lambda \phi_j(w_i)  = \lambda_i \phi_i(w_i)\)
+implying \(\lambda_i = 0\). Thus, \(\sigma = \sum \mu \sigma_i\), and
+hence, \(\{\sigma_i \mid i\}\) spans \(W^\circ\) and is a basis of
+\(W^\circ\). \qed
+
+Alternatively, one can prove the above proposition by showing
+\(W^\circ \cong (V / U)^*\) or by considering rank-nullity on the map
+\(r : V^* \to W^* : \phi \mapsto \phi\mid_W\).
+
+\hypertarget{inner-product-spaces}{%
+\subsection{Inner Product Spaces}\label{inner-product-spaces}}
+
+\begin{definition}[Inner Product]
+  Let \(\mathbb{F}\) be either \(\mathbb{R}\) or \(\mathbb{C}\), and let 
+  \(V\) be a vector space over \(\mathbb{F}\). An inner product on \(V\), is 
+  a map, \(\langle \cdot, \cdot \rangle : V \times V \to \mathbb{F}\), such 
+  that,
+  \begin{itemize}
+    \item for all \(\lambda_1, \lambda_2 \in \mathbb{F}\), \(v_1, v_2, w \in V\)
+      \(\langle \lambda_1 v_1 + \lambda_2 v_2, w \rangle 
+      = \lambda_1 \langle v_1, w \rangle + \lambda_2 \langle v_2, w \rangle\) (left-linear);
+    \item for all \(v, w \in V\), \(\langle v, w \rangle = \overline{\langle w, v \rangle}\) 
+      where \(\bar{z}\) is the complex conjugate of \(z\) (Hermitian symmetry);
+    \item for all \(v \in V\setminus\{0\}\), \(\langle v, v \rangle > 0\) 
+      (positive definite).
+  \end{itemize}
+  A vector space equipped with an inner product is a (real or complex) 
+  inner product space.
+\end{definition}
+
+\begin{remark}
+  The first two conditions of an inner product forms a Hermitian form. Therefore, 
+  we can say that an inner product is simply a positive definite Hermitian form.
+\end{remark}
+
+Straight away we see that \(\langle 0, v \rangle = 0\) and
+\(\langle v, \lambda_1 w_1 + \lambda_2 w_2 \rangle = \overline{\lambda_1} \langle v, w_1 \rangle + \overline{\lambda_2} \langle v, w_2 \rangle\).
+Furthermore, we see that if \(\mathbb{F} = \mathbb{R}\), then the inner
+product is symmetric and right-linear as well. Lastly, we see that if
+\(\langle u, v \rangle = \langle u, w \rangle\) for all \(u \in V\),
+then \(v = w\) (since,
+\(\langle v - w, v - w \rangle = \langle v, v - w \rangle - \langle w, v - w \rangle = \overline{\langle v - w, v \rangle} - \overline{\langle v - w, w \rangle} = \overline{\langle v - w, v \rangle - \langle v - w, w \rangle} = 0\)).
+
+Some typical examples of inner products are of course the dot product on
+\(\mathbb{R}^n\) or \(\mathbb{C}^n\),
+\(\langle \cdot, \cdot \rangle : \mathcal{C}([a, b], \mathbb{R})^2 \to \mathbb{R} : (f, g) \mapsto \int_a^b fg\),
+and
+\(\langle \cdot, \cdot \rangle : M_{m, n}(\mathbb{C})^2 \to \mathbb{C} : (A, B) \mapsto \text{tr}(B^T \bar{A})\).
+
+There is a very natural way of defining the matrix of a inner product on
+a vector space with respect to some basis. Let \(V\) be a finite
+dimensional inner product space and suppose \(B = \{v_1, \cdots, v_n\}\)
+is a basis of \(V\), then the matrix associated with the inner product
+is defined to be the matrix \(A\) with \([A]_{i, j} = (v_i, v_j)\).
+Straight away, we see that \(A\) is Hermitian, that is
+\(A^T = \overline{A}\) since \(a_{j, i} = \overline{a_{i, j}}\) and we
+find \(\langle u, v \rangle = [u]_B^T A \overline{[v]}_B\).
+
+\begin{definition}
+  A Hermitian matrix \(A\) such that \(x^T A x > 0\) for all \(x \neq 0\) is called 
+  positive definite. 
+\end{definition}
+
+\begin{prop}
+  A Hermitian matrix \(A\) has only real Eigenvalues and it is positive definite 
+  if and only if every Eigenvalue of \(A\) is positive.
+\end{prop}
+\proof
+
+See problem sheet 8. \qed
+
+We recall from analysis that the inner product on the vector space \(V\)
+induces a norm with \(\| v \| := \sqrt{\langle v, v \rangle}\) which in
+turn induced a metric on \(V\) with \(d(x, y) := \| x - y\|\). This
+results in the classical inequalities -- Cauchy-Schwarz and the Triangle
+inequality.
+
+\begin{prop}
+  Let \(V\) be a inner product space and let \(v, w \in V\), then 
+  \begin{itemize}
+    \item \(\left| \langle v, w \rangle\right| \le \|v\| \|w\|\);
+    \item \(\|v + w\| \le \|v\| + \|w\|\);
+    \item \(\|v - w\| \le \|u - w\| + \|w - v\|\).
+  \end{itemize}
+\end{prop}
+\proof
+
+Same proof as last year. \qed
 
 \end{document}
