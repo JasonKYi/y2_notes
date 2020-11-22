@@ -907,6 +907,113 @@ a stronger condition than uniform continuity by simply choosing
   \[d_Y(f(x_1), f(x_2)) = d_X(x_1, x_2).\]
 \end{definition}
 
+## Topological Spaces
+
+We generalise metric spaces such that instead of defining the notion of openness 
+through metrics, we bundle it with in the structure itself -- namely topologies.
+
+\begin{definition}[Topologial Space]
+  The ordered pair \((X, \mathcal{T})\) is call a topologically space if and only 
+  if \(\mathcal{T}\) is a collection of subsets of \(X\) such that, 
+  \begin{itemize}
+    \item \(X \in \mathcal{T}\);
+    \item for all \(U, V \in \mathcal{T}\), \(U \cap V \in \mathcal{T}\);
+    \item for all \(\mathcal{I} \subset \mathcal{T}\), 
+      \(\bigcup \mathcal{I} \in \mathcal{T}\).
+  \end{itemize}
+  We call \(\mathcal{T}\) a topology on \(X\) and for all \(U \in \mathcal{T}\), 
+  we say \(U\) is open.
+\end{definition}
+
+In many literatures, topologies must also satisfy the condition that 
+\(\varnothing \in \mathcal{T}\). We have omitted it here since the above conditions 
+imply that \(\varnothing \in \mathcal{T}\).
+
+\begin{prop}
+  Let \((X, \mathcal{T})\) be a topological space. Then \(\varnothing \in \mathcal{T}\).
+\end{prop}
+\proof
+  Let \(\mathcal{I}\) be the empty collection of subsets of \(X\). Then, as for all 
+  \(U \in \mathcal{I}, U \in \mathcal{T}\) (as \(\mathcal{I}\) is empty), by 
+  definition \(\varnothing = \bigcup \mathcal{I} \in \mathcal{T}\).
+\qed
+
+We can construct topologies quite easily. In fact, all metrics \(d\) induces a topology 
+with their notion of openness, i.e. \(\mathcal{T} := \{U \subseteq X \mid U 
+\text{ is open w.r.t } d\}\). With this definition, we have the topology induced 
+by to discrete metric, resulting in the discrete topology where 
+\(\mathcal{T} = \mathcal{P}(X)\). Another trivial topology is the coarse topology 
+where \(\mathcal{T} := \{\varnothing, X\}\).
+
+\begin{prop}
+  Let \((X, \mathcal{T})\) be a topological space and \(U \subseteq X\), then, 
+  \(U \in \mathcal{T}\) if and only if for all \(u \in U\), there exists some 
+  open neighbourhood \(\mathcal{N}\) of \(u\), \(\mathcal{N} \subseteq U\).
+\end{prop}
+Again, by open neighbourhood of \(u\) we mean an open set containing \(u\).
+\proof
+  If \(U \in \mathcal{T}\) then we can simply choose \(\mathcal{N} = U\) and 
+  we are done so let us consider the backwards direction. Suppose for all 
+  \(u \in U\), there exists an open neighbourhood of \(u\), 
+  \(\mathcal{N}_u \subseteq U\). Then, by defining the collection of open sets, 
+  \(\mathcal{I} := \{\mathcal{N}_u \mid u \in U\}\), we have 
+  \(U = \bigcup \mathcal{I} \in \mathcal{T}\). 
+\qed
+
+We in general refers to the above property where there exists some open 
+neighbourhood \(\mathcal{N}\) of \(u\) such that \(\mathcal{N} \subseteq U\) as 
+\(U\) is *locally open* at \(u\).
+
+With a structure like this with clear correspondence with the metric spaces, 
+we can straight away translate some definitions from metric spaces to topological spaces.
+
+\begin{definition}[Subspace]
+  Let \((X, \mathcal{T})\) be a topological space and suppose \(Y \subseteq X\). 
+  Then the subspace \((Y, \mathcal{T}_Y)\) is a topological space where 
+  \[\mathcal{T}_Y := \{Y \cap U \mid U \in \mathcal{T}\}.\]
+\end{definition}
+
+\begin{definition}[Interior Point and Interior]
+  Let \((X, \mathcal{T})\) be a topological space and suppose \(U \subseteq X\).
+  Then we call \(x \in U\) an interior point of \(U\) if and only if \(U\) is 
+  locally open as \(x\). Furthermore, we define the interior of \(U\), denoted 
+  \(U^\circ\) as the set of interior points of \(U\).
+\end{definition}
+
+Again, alike the metric spaces definition, we see that the interior of any set 
+is open since, for all \(u \in U^\circ\), there exists \(\mathcal{N}_u \subseteq U\).
+Now as \(\mathcal{N}_u\) is open, for all \(n \in \mathcal{N}_u\), there exists 
+\(\mathcal{N}_n \subseteq \mathcal{N}_u \subseteq U\), that is \(n\) is also an 
+interior point of \(U\). Thus, \(\mathcal{N}_u \subseteq U^\circ\) and hence, 
+\(U^\circ\) is locally open everywhere and therefore, is open. 
+
+\begin{definition}[Closed Sets]
+  Let \((X, \mathcal{T})\) be a topological space and suppose \(U \subseteq X\). 
+  Then we say \(U\) is closed if and only if \(U^c\) is open.
+\end{definition}
+
+\begin{definition}[Limit Point]
+  Let \((X, \mathcal{T})\) be a topological space and suppose \(U \subseteq X\),
+  then we call \(u \in U\) a limit point of \(U\) if and only if for all 
+  \(\mathcal{N} \in \mathcal{T}\) containing \(x\), 
+  \(U \cap \mathcal{N} \neq \varnothing\). We denote the set of limit points 
+  of \(U\) by \(\bar{U}\).
+\end{definition}
+
+Similarly, we see that the set of limit points is closed. This is because for all 
+\(u \in \bar{U}^c\), \(u\) is not a limit point of \(U\), so there exists some 
+open neighbourhood of \(u\), \(\mathcal{N}\) such that 
+\(U \cap \mathcal{N} = \varnothing\). Now, as \(\mathcal{N}\) is open, it is 
+locally open, so for all \(n \in \mathcal{N}\) there exists an open neighbourhood 
+of \(n\), \(\mathcal{N}_n\) such that \(\mathcal{N}_n \subseteq \mathcal{N}\) and 
+so \(U \cap \mathcal{N}_n = \varnothing\) implying \(n \in \bar{U}^c\) and hence, 
+\(\mathcal{N} \subseteq \bar{U}^c\), that is, \(\bar{U}^c\) is locally open, and 
+hence, is open.
+
+Furthermore, we see that the interior and the set of limit points of \(U\) are the 
+largest open set contained by \(U\) and the smallest closed set containing \(U\) 
+respectively. The proof of this is left as an exercise.
+
 # Extras
 
 This is a temporary section and all contents within this section will be moved 
