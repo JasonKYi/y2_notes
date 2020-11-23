@@ -1116,12 +1116,26 @@ open everywhere and therefore, is open.
   Then we say \(U\) is closed if and only if \(U^c\) is open.
 \end{definition}
 
-\begin{definition}[Limit Point]
+We can deduce some properties about closed sets straight away.
+
+\begin{prop}
+  Let \((X, \mathcal{T})\) be a topological space. Then 
+  \begin{itemize}
+    \item \(\varnothing\) and \(X\) are both closed;
+    \item the intersection of a collection of closed sets is also closed;
+    \item the union of any finite number of closed sets is also closed.
+  \end{itemize}
+\end{prop}
+\proof
+
+Trivial. \qed
+
+\begin{definition}[Limit Point and Closure]
   Let \((X, \mathcal{T})\) be a topological space and suppose \(U \subseteq X\),
   then we call \(u \in U\) a limit point of \(U\) if and only if for all 
   \(\mathcal{N} \in \mathcal{T}\) containing \(x\), 
   \(U \cap \mathcal{N} \neq \varnothing\). We denote the set of limit points 
-  of \(U\) by \(\bar{U}\).
+  of \(U\) by \(\bar{U}\) and we call it the closure of \(U\).
 \end{definition}
 
 Similarly, we see that the set of limit points is closed. This is
@@ -1137,8 +1151,214 @@ locally open, and hence, is open.
 
 Furthermore, we see that the interior and the set of limit points of
 \(U\) are the largest open set contained by \(U\) and the smallest
-closed set containing \(U\) respectively. The proof of this is left as
-an exercise.
+closed set containing \(U\) respectively. We will provide a proof of the
+former while the proof of the latter is similar.
+
+\begin{prop}
+  Let \((X, \mathcal{T})\) be a topological space and let \(U \subseteq X\). 
+  Then 
+  \[U^\circ = \bigcup \{V \in \mathcal{T} \mid V \subseteq U\},\]
+  and 
+  \[\bar{U} = \bigcap \{V \subseteq X \mid U \subseteq V \wedge V^c \in \mathcal{T}\}.\]
+\end{prop}
+\proof
+
+\(U^\circ \subseteq \bigcup \{V \in \mathcal{T} \mid V \subseteq U\}\)
+trivially as \(U^\circ \in \mathcal{T}\) as shown previously.
+
+Let \(v \in \bigcup \{V \in \mathcal{T} \mid V \subseteq U\}\), then
+there exists some \(V \in \mathcal{T}\) such that \(v \in V\) and
+\(V \subseteq U\), so \(U\) is locally open at \(v\), and hence
+\(v \in U^\circ\). Thus,
+\(U^\circ = \bigcup \{V \in \mathcal{T} \mid V \subseteq U\}\) as
+required. \qed
+
+Lastly, we find the interior and closure operations to be monotonic.
+
+\begin{prop}
+  Let \((X, \mathcal{T})\) be a topological space and suppose 
+  \(U, V \subseteq X\), \(U \subseteq V\). Then \(U^\circ \subseteq V^\circ\) 
+  and \(\bar{U} \subseteq \bar{V}\).
+\end{prop}
+\proof
+
+See problem sheet 7. \qed
+
+\hypertarget{convergence-in-topological-spaces}{%
+\subsection{Convergence in Topological
+Spaces}\label{convergence-in-topological-spaces}}
+
+Just as all the spaces we have studied thus far, there is also a notion
+of convergence in the topological spaces.
+
+\begin{definition}
+  Let \((X, \mathcal{T})\) be a topological space and suppose 
+  \((x_n)_{n \ge 1}\) is a sequence in \(X\). Then we say that \((x_n)\) converges 
+  in \((X, \mathcal{T})\) if and only if there exists some \(x \in X\) such 
+  that for all \(U \in \mathcal{T}\), \(x \in U\), there exists \(N \in \mathbb{N}\), 
+  such that for all \(n \ge N\), \(x_n \in U\).
+
+  Whenever this is true, we say that \(x_n\) converges to \(x\) and we write 
+  \(x_n \to x\).
+\end{definition}
+
+However, unlike the Euclidean and metric spaces, it is not necessarily
+true that every convergent sequence has a unique limit. This is easy to
+see by considering that, given the coarse topology on
+\(X, \mathcal{T}\), every sequence is convergent to any point within
+\(X\), thus a counterexample. Because of this, we propose the notion of
+\emph{Hausdorff} which does imply the uniqueness of limits.
+
+\begin{definition}[Hausdorff]
+  A topological space \((X, \mathcal{T})\) is called Hausdorff if and only if 
+  for all \(x, y \in X\), \(x \neq y\), there exists \(U, V \in \mathcal{T}\) 
+  such that \(x \in U\) and \(y \in V\) and \(U \cap V = \varnothing\).
+\end{definition}
+
+We in general refer to a topological space that is Hausdorff as a
+Hausdorff space.
+
+\begin{theorem}
+  Let \((X, \mathcal{T})\) be a Hausdorff space and suppose \((x_n)_{n \ge 1}\) 
+  is a convergent sequence in \(X\). Then, if there exists \(x, y \in X\) such 
+  that \(x_n \to x\) and \(x_n \to y\), then \(x = y\).
+\end{theorem}
+\proof
+
+Suppose otherwise that \(x \neq y\). Then, as \(X\) is Hausdorff, it
+separates \(x\) and \(y\), so there exists \(U, V \in \mathcal{T}\),
+such that \(x \in U\) and \(y \in V\) such that
+\(U \cap V = \varnothing\). By the definition of convergence, there
+exists \(N_1, N_2 \in \mathbb{N}\) such that for all \(n \ge N_1\),
+\(x_n \in U\) and for all \(n \ge N_2\) \(x_n \in V\). But then
+\(x_{\max\{N_1, N_2\}} \in U \cap V = \varnothing\) \#.\\
+\qed
+
+With the notion of convergence of sequence defined, we see that the
+notion of closeness on topological spaces is related to the definition
+of closeness on metric spaces.
+
+\begin{prop}
+  Let \((X, \mathcal{T})\) be a topological space and suppose \(U \subseteq X\). 
+  Then \(U\) is closed if and only if for all \((x_n)_{n \ge 1}\) in \(U\), if 
+  \((x_n)\) converges then it converges in \(U\).
+\end{prop}
+\proof
+
+Identical to the proof for metric spaces. \qed
+
+\begin{prop}
+  Let \((X, \mathcal{T})\) be a Hausdorff space and suppose \(x \in X\). 
+  Then the singleton \(\{x\}\) is closed.
+\end{prop}
+\proof
+
+Consider for all \(y \in X \setminus \{x\}\), \(y \neq x\) and thus, by
+Hausdorff, there exists \(U, V \in \mathcal{T}\) such that
+\(x \in U, y \in V\), and \(U \cap V = \varnothing\), and so,
+\(x \not\in V\), that is \(V \subseteq X \setminus \{x\}\). Now, as
+\(V\) by definition is a open set containing \(y\) in
+\(X \setminus \{x\}\), \(X \setminus \{x\}\) is locally open everywhere,
+and hence \(X \setminus \{x\}\) is open and \(\{x\}\) is closed. \qed
+
+\begin{prop}
+  The induced topology of any metric space is Hausdorff.
+\end{prop}
+\proof
+
+Let \((X, d)\) be a metric space and let \(x, y\) be unique points of
+\(X\). Then, by letting \(\epsilon = d(x, y) / 2 > 0\), we have
+\(B_\epsilon(x),  B_\epsilon(y) \in \mathcal{T}_d\) containing \(x\) and
+\(y\) respectively that are disjoint. Hence, \((X, \mathcal{T}_d)\) is
+Hausdorff. \qed
+
+\hypertarget{maps-on-topological-spaces}{%
+\subsection{Maps on Topological
+Spaces}\label{maps-on-topological-spaces}}
+
+As alluded towards during our discussion of continuous maps between
+metric spaces, there is a natural definition of continuity on
+topological spaces by considering the preimage of an open set.
+
+\begin{definition}[Continuous on Topological Spaces]
+  Let \((X, \mathcal{T}_X)\), \((Y, \mathcal{T}_Y)\) be topological spaces and 
+  suppose \(f : X \to Y\) is a mapping between the two. Then we say \(f\) is 
+  continuous on \(X\) if and only if for all \(U \in \mathcal{T}_Y\), 
+  \(f^{-1}(U) \in \mathcal{T}_X\).
+\end{definition}
+
+To prove that a map is continuous on some topology, it is often helpful
+to consider the preimage of closed sets instead. We will show that this
+is possible.
+
+\begin{prop}
+  Let \((X, \mathcal{T}_X)\), \((Y, \mathcal{T}_Y)\) be topological spaces and 
+  suppose \(f : X \to Y\) is a mapping between the two. Then, \(f\) is continuous 
+  if and only if the \(f\)-preimage of any closed sets is closed.
+\end{prop}
+\proof
+
+We note that \(f^{-1}(U)^c = f^{-1}(U^c)\) for all \(U \subseteq Y\) and
+the result follows. \qed
+
+\begin{prop}
+  Let \((X, \mathcal{T}_X)\), \((Y, \mathcal{T}_Y)\) and \((Z, \mathcal{T}_Z)\) 
+  be topological spaces and suppose \(f : X \to Y\) and \(g : Y \to Z\) are 
+  continuous. Then \(g \circ f : X \to Z\) is also continuous.
+\end{prop}
+\proof
+
+Trivial. \qed
+
+Again with all structures, we would like to consider a notion of
+equivalence.
+
+\begin{definition}[Homeomorphism]
+  Let \((X, \mathcal{T}_X)\), \((Y, \mathcal{T}_Y)\) be topological spaces and 
+  suppose \(f : X \to Y\) is a mapping between them. Then we call \(f\) a 
+  homeomorphism if and only if \(f\) is bijective and both \(f\) and \(f^{-1}\) 
+  are continuous. 
+
+  If such a homeomorphism exists between \(X\) and \(Y\) then we say \(X\) and 
+  \(Y\) are homeomorphic or topologically equivalent and we write \(X \cong Y\).
+\end{definition}
+
+\begin{definition}[Topological Property]
+  Given a predicate \(P\) on the set of topological spaces (that is given 
+  a topological space \(X\), \(P(X)\) is either true or false), we say \(P\) is 
+  a topological property if and only if for all homeomorphic \(X, Y\), 
+  \(P(X) \to P(Y)\).
+\end{definition}
+
+Consider the set of all topological spaces. One can show that
+homeomorphisms gives us an equivalence relation on this set, and thus,
+the set of all topological spaces is partitioned into equivalence
+classes. In general, we would rather study theses classes instead of
+individual topological spaces themselves and this definition of what is
+means to be a topological property gives use the means to do exactly
+that. That is, we study topological properties on theses equivalence
+classes by simply examining the property on a single element of this
+class.
+
+\begin{prop}
+  Hausdorff is a topological property. 
+\end{prop}
+\proof
+
+Let \((X, \mathcal{T}_X)\), \((Y, \mathcal{T}_Y)\) be topological spaces
+with homeomorphism \(f : X \cong Y\). Suppose that \(X\) is Hausdorff,
+and let \(y_1, y_2 \in Y\), \(y_1 \neq y_2\). Then, as \(f\) is
+bijective, there exists \(x_1, x_2 \in X\), such that \(f(x_1) = y_1\)
+and \(f(x_2) = y_2\). Now, as \(X\) is Hausdorff, there exists
+\(U, V \in \mathcal{T}_X\) such that \(x_1 \in U\), \(x_2 \in V\) and
+\(U \cap V = \varnothing\). So, as \(f\) is a homeomorphism, \(f^{-1}\)
+is continuous, and thus,
+\((f^{-1})^{-1}(U), (f^{-1})^{-1}(V) \in \mathcal{T}_Y\). Now, as
+\(x_1 = f^{-1}(y_1) \in U\) and \(x_2 = f^{-1}(y_2) \in V\), we have
+\(y_1 \in (f^{-1})^{-1}(U)\) and \(y_2 \in (f^{-1})^{-1}(V)\).
+Furthermore, as \(U \cap V = \varnothing\),
+\((f^{-1})^{-1}(U) \cap (f^{-1})^{-1}(V) =  \varnothing\), and so \(Y\)
+is also Hausdorff. \qed
 
 \hypertarget{extras}{%
 \section{Extras}\label{extras}}
