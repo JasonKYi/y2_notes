@@ -17,6 +17,7 @@ header-includes:
   - \usepackage{mathtools}
   - \usepackage{lipsum}
   - \usepackage[ruled,vlined]{algorithm2e}
+  - \theoremstyle{definition}
   - \newtheorem{theorem}{Theorem}
   - \newtheorem{prop}{Proposition}[section]
   - \newtheorem{lemma}{Lemma}[section]
@@ -1551,7 +1552,7 @@ is a subspace of the dual space of \(V\).
 \qed
 
 Alternatively, one can prove the above proposition by showing 
-\(W^\circ \cong (V / U)^*\) or by considering rank-nullity on the map 
+\(W^\circ \cong (V / W)^*\) or by considering rank-nullity on the map 
 \(r : V^* \to W^* : \phi \mapsto \phi\mid_W\).
 
 ## Inner Product Spaces
@@ -1632,3 +1633,125 @@ classical inequalities -- Cauchy-Schwarz and the Triangle inequality.
 \proof
   Same proof as last year.
 \qed
+
+Let us now consider the connection between the dual spaces and the inner product 
+spaces. 
+
+\begin{prop}\label{dual}
+  Let \(\mathbb{F}\) be either \(\mathbb{R}\) or \(\mathbb{C}\) and 
+  suppose \(V\) is an inner product space over \(\mathbb{F}\). Then for \(v \in V\),
+  define \(f_v : V \to \mathbb{F}\) by,
+  \[f_v(w) = \langle w, v \rangle,\]
+  for all \(w \in V\). Then \(V^* = \{f_v \mid v \in V\}\).
+\end{prop}
+
+\(\{f_v \mid v \in V\} \subseteq V^*\) trivially so it suffices to show that 
+\(V^* \subseteq \{f_v \mid v \in V\}\). To prove this, we might instinctively 
+try to show that \(\{f_v \mid v \in B\}\) for \(B\) some basis of \(V\) is 
+linearly independent. However, we immediately becomes stuck as 
+inner products are not necessarily right linear. So instead, let us consider the 
+following vector space.
+
+Given a vector space \(V = (V, \mathbb{F}, +, \times)\), denote \(\bar{V}\) as the 
+vector space \((V, \mathbb{F}, +, \otimes)\) where 
+\[\otimes : \mathbb{F} \times V \to V : (\lambda, v) \mapsto \bar{\lambda} \times v.\]
+It is a routine check to see that \(\bar{V}\) is a vector space, and since 
+\(\sum\mu B = 0 \iff \sum \bar{\mu} B = 0\), we have \(\dim V = \dim \bar{V}\).
+\proof (Proposition \ref{dual}).
+  Consider \(\pi : \bar{V} \to V^* : v \mapsto f_v\). We see that \(\pi\) is 
+  a linear map since for all \(\lambda, \mu \in \mathbb{F}, v, w \in \bar{V}\), 
+  \begin{align*}
+    \pi(\lambda \otimes v + \mu \otimes  w) & = 
+      u \mapsto \langle u, \bar{\lambda} v + \bar{\mu} w \rangle \\
+      & = u \mapsto \overline{\langle \bar{\lambda} v + \bar{\mu} w, u \rangle} \\
+      & = u \mapsto \overline{\bar{\lambda} \langle v, u \rangle} + \bar{\mu} 
+        \langle w, u \rangle \\
+      & = u \mapsto \lambda \langle u, v \rangle + \mu \langle u, w \rangle \\
+      & = \lambda \pi(v) + \mu \pi(u).
+  \end{align*}
+  Furthermore, as \(\ker \pi = \{0\}\), \(\pi\) is injective and by the rank-nullity 
+  theorem \(\dim \mathrm{Im}(\pi) = \dim \bar{V} = \dim V^*\) implying 
+  \(\pi\) is surjective (since if otherwise, we can find some \(f \not\in \text{Im}(\pi)\)
+  implying \(\text{Im}(\pi) < \text{sp}(B \cup \{f\}) \le V^*\) \#). Hence, 
+  \(\pi\) is bijective and is a vector space isomorphism between \(\bar{V}\) and 
+  \(V^*\). But, as \(\{f_v \mid v \in V\} = \text{Im}(\pi) = V^*\), we are done!
+\qed
+
+Let us now extend some definitions regarding orthogonality from last year to 
+inner product spaces.
+
+\begin{definition}[Orthogonal]
+  Let \(V\) be an inner product space. We say vectors \(v, w \in V\) are 
+  orthogonal if and only if \(\langle u, v \rangle = 0\).
+\end{definition}
+
+\begin{definition}[Orthogonal and Orthonormal Set]
+  A set of vectors \(S := \{v_1, \cdots, v_n\} \subseteq V\) where \(V\) is 
+  an inner product space is called orthogonal if and only if for all 
+  \(i, j = 1 \cdots n\), if \(i \neq j\) then \(\langle v_i, v_j \rangle = 0\). 
+  Furthermore, if \(S\) is orthogonal and for all \(i = 1 \cdots n\), 
+  \(\| v_i \| = \sqrt{\langle v_i, v_i \rangle} = 1\), we call \(S\) an 
+  orthonormal set.
+\end{definition}
+
+We see that the definition of an orthonormal set can be represented nicely with 
+the Kronecker delta where \(\langle v_i, v_j \rangle = \delta_{ij}\).
+
+\begin{definition}[Orthogonal Complement]
+  Let \(V\) be an inner product space and suppose \(W \subseteq V\), then the 
+  orthogonal complement of \(W\) is 
+  \[W^{\bot} = \{v \in V \mid \langle v, w \rangle = 0, \forall w \in W\}.\]
+\end{definition}
+
+\begin{prop}\label{dsumorth}
+  Let \(V\) be a finite dimensional inner product space and suppose \(W\ le V\) 
+  is a subspace of \(V\), then \(V = W \oplus W^\bot\).
+\end{prop}
+\proof
+  Recall the annihilator space \(W^\circ = \{f \in V^* \mid f(w) = 0, \forall w \in W\} 
+  = \{f_v \in V^* \mid v \in W^\bot\}\), so \(\dim W^\bot = \dim W^\circ = 
+  \dim V - \dim W\). Thus, it remains to show that \(W \cap W^\bot = \{0\}\). But 
+  this is trivial as for all \(v \in W \cap W^\bot\), \(\langle v, v \rangle = 0\),
+  so \(v = 0\). 
+\qed
+
+A direct consequence of the above proposition is an important result we knew 
+from last year.
+
+\begin{theorem}
+  Let \(V\) be a finite dimensional inner product space then,
+  \begin{itemize}
+    \item \(V\) has an orthonormal basis;
+    \item any orthonormal set \(S := \{v_1, \cdots, v_r\}\) can be extended to an 
+      orthonormal basis.
+  \end{itemize}
+\end{theorem}
+\proof
+  We prove that \(V\) has an orthonormal basis by induction on \(\dim V = n\). 
+  The theorem is trivial for \(n = 1\)
+  so let us assume the theorem for inner products spaces with dimension less than \(n\).
+  Let \(v_1 \in V\) be a vector with \(\| v_1 \| = 1\) and suppose we define 
+  \(W = \text{sp}(v_1)\). Then, by proposition \ref{dsumorth}, 
+  \[V = W \oplus W^\bot,\]
+  implying \(\dim W^\bot = n - 1\). So by the inductive hypothesis, \(W^\bot\) has 
+  an orthonormal basis \(B\). Now, by the properties of direct sum, we have 
+  \(B \cup \{v_1\}\) is a basis of \(V\), and as \(v_1\) is orthogonal to all 
+  elements of \(W^\bot\), \(B \cup \{v_1\}\) is in fact an orthonormal basis.
+
+  Similarly for the second part of the theorem, we let \(W = \text{sp}(S)\) and 
+  we have \(V = W \oplus W^\bot\). Now, by invoking part 1, we have a orthonormal 
+  basis of \(W^\bot\), \(B\). Thus, \(B \cup S\) is an orthonormal basis of \(V\).
+\qed
+
+Of course, this theorem was already a direct result of last years linear algebra 
+module where we found an algorithm for finding such orthonormal bases -- the 
+Gram-Schmidt process. We shall quickly recall the process here.
+
+\begin{enumerate}
+  \item Start with any basis of \(V\), \(\{v_1, \cdots, v_n\}\);
+  \item Let \(u_1 = v_1 / \|v_1\|\);
+  \item Define \(u_{k + 1} = (v_k - \sum_{i = 1}^k \langle v_k, u_i \rangle u_i) / 
+    \| (v_k - \sum_{i = 1}^k \langle v_k, u_i \rangle u_i) \|\) for all \(k\).
+\end{enumerate}
+Then, \(\{u_1, \cdots, u_n\}\), is a orthonormal basis of \(V\) with the nice 
+property that \(\text{sp}(u_1, \cdots, u_i) = \text{sp}(v_1, \cdots, v_i)\).

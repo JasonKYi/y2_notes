@@ -1122,3 +1122,79 @@ where \(s_i = 1 - x_i\). So
 \[\frac{d\langle (1 - x_i) x_j \rangle}{dt} = \beta \sum_{l = 1}^N 
   \left(A_{j, l} \langle s_i s_j x_l \rangle + A_{i, l} \langle s_i x_j x_l \rangle \right).\]
 
+# Synchronisation 
+
+## Synchronisation for Coupled Differential Equations
+
+Let us consider a network of two node with some property \(x_1(t), x_2(t)\) 
+that varies with time according to 
+\[\dot x_i = \frac{dx_i}{dt} = ax_i,\]
+where \(a > 0\) for all \(i = 1, 2\). We see straight away that, as 
+\(t \to \infty\), the two solutions desynchronise and diverges, that is,
+\[\left| x_1(t) - x_2(t) \right| = e^{at} \left| x_1(0) - x_2(0) \right| \to \infty,\]
+if \(x_1(0) \neq x_2(0)\). Suppose we instead *couple* the two equations such that 
+\begin{align*}
+  \dot x_1 & = ax_1 + \alpha(x_2 - x_1),\\
+  \dot x_2 & = ax_2 + \alpha(x_1 - x_2),
+\end{align*}
+for some \(\alpha > 0\). We call this coupling a *diffusive coupling* and let us 
+consider the behaviours of this system as \(t \to \infty\).
+
+\begin{prop}
+  Given the diffusive coupling system, 
+  \begin{align*}
+    \dot x_1 & = ax_1 + \alpha(x_2 - x_1),\\
+    \dot x_2 & = ax_2 + \alpha(x_1 - x_2),
+  \end{align*}
+  where \(\alpha > a / 2 > 0\), \(\left| x_1(t) - x_2(t) \right| \to 0\) as 
+  \(t \to \infty\).
+\end{prop}
+\proof
+  Follows straight away by defining \(z = x_2 - x_1\) and solving the resultant 
+  differential equation.
+\qed
+
+Thus, we see that for this simple case, \(x_1\) and \(x_2\) becomes synchronised 
+eventually. We can generalise this result for non-linear coupled systems under 
+certain conditions.
+
+\begin{prop}
+  Consider the diffusive coupling system of non-linear equations,
+  \begin{align*}
+    \dot x_1 & = f(x_1) + \alpha (x_2 - x_1),\\
+    \dot x_2 & = f(x_2) + \alpha (x_1 - x_2),
+  \end{align*}
+  Where \(x_1, x_2 : \mathbb{R} \to \mathbb{R}^n\) and 
+  \(f : \mathbb{R}^n \to \mathbb{R}^n\) is continuously differentiable.
+  Then, if the image of \(x_1\) is bounded, and there exists some 
+  \(\epsilon > 0\), \(M \in \mathbb{R}^+\), such that if 
+  \(\left| x_1(0) - x_2(0) \right| < \epsilon\) and \(\alpha > M\), then 
+  \(\left| x_1(t) - x_2(t) \right| \to 0\) as \(t \to \infty\).
+\end{prop}
+\proof
+  Let \(z = x_2 - x_1\), then we have \(\dot z = f(x_2) - f(x_1) - 2 \alpha z\).
+  Using the Taylor expansion for higher dimensions, we have 
+  \begin{align*}
+    f(x_2) & = f(x_1) + Df(x_1)(x_2 - x_1) + O(\left|x_2 - x_1\right|^2)\\
+      & = f(x_1) + Df(x_1)z + O(\left|z \right|^2).
+  \end{align*}
+  So, by substituting, \(\dot z = Df(x_1)z + O(\left| z\right|^2) - 2 \alpha z\).
+  Now, by defining \(w = e^{2\alpha t}z\), we have by product rule, 
+  \(\dot w = 2 \alpha w + e^{2\alpha t} \dot z\). Once again, by substituting, 
+  we have 
+  \[\dot w = 2 \alpha e^{2 \alpha t}z + e^{2 \alpha t}
+    (Df(x_1)z + O(\left| z\right|^2) - 2 \alpha z) = Df(x_1)w + O(\left| w \right|^2).\]
+  Consider now that, as \(f\) is continuously differentiable, and as \(x_1\) is 
+  bounded, \(Df(x_1)\) is also bounded by some \(K \in \mathbb{R}\), i.e. 
+  \(\left| Df(x_1)u \right| \le K\left| u \right|\) for all \(u\). Thus,
+  \(\left| \dot w \right| \le K \left| w \right|\) and so, 
+  \[\frac{d}{dt}\left| w\right|^2 = 2w \cdot \dot w = 2w \cdot Df(x_1)w \le 
+    2 \left| w \right| \left| Df(x_1) w \right| \le 2 K \left|w\right|^2,\]
+  so, by solving this differential inequality, we have, 
+  \(\left|w\right|^2 \le e^{Kt}\left| w(0)\right|^2\), so 
+  \(\left|w\right| \le e^{Kt}\left| w(0)\right|\), and hence, if \(2\alpha > K\)
+  then, 
+  \[\left| x_1 - x_2\right| = \left| z \right| = \left| e^{-2\alpha t}w \right| 
+    \le e^{-2\alpha t}e^{Kt} \left| w(0)\right| \to 0,\]
+  as \(t \to \infty\).
+\qed
