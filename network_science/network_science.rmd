@@ -15,6 +15,7 @@ header-includes:
   - \usepackage{mathtools}
   - \usepackage{lipsum}
   - \usepackage[ruled,vlined]{algorithm2e}
+  - \theoremstyle{definition}
   - \newtheorem{theorem}{Theorem}
   - \newtheorem{lemma}{Lemma}
   - \newtheorem{prop}{Proposition}[theorem]
@@ -24,6 +25,7 @@ header-includes:
   - \newtheorem{definition}{Definition}[section]
 ---
 
+\newpage
 # Fundamental Graph Theory
 
 ## Basic Concepts
@@ -347,7 +349,7 @@ have at least two leaves).
   we have \(G\) is also a tree.
 \qed
 
-
+\newpage
 # Working with Networks
 
 In this section we will be less rigorous and focus more on the methods used to 
@@ -540,6 +542,108 @@ information about the upper and lower bounds of the cost function.
 With that, we see that the complexity of this algorithm is \(O(\left|V\right|)\) 
 since every node will be explored in the worst case. 
 
+## Modularity
+
+Networks are often useful in describing communities where there might be 
+regions of dense clustering and sparse clustering. In analysing the networks, 
+it might often be helpful to partition the network into different sections but 
+this is often not easy to do. In this section, we will take a look at one of 
+the methods one can categorise different partitions -- modularity.
+
+\begin{definition}[Modularity of Set of Nodes]
+  Let \(G = (V, E)\) be a graph and let \(S_a \subseteq V\) be a set of vertices 
+  within the graph. Then the modularity of \(S_a\) is given by 
+  \[M_a = \frac{1}{2L} \sum_{i \in S_a} \sum_{j \in S_a} 
+    \left(A_{ij} - \frac{k_i k_j}{2L}\right).\]
+\end{definition}
+By directly inspecting the definition, we see that the modularity is related to 
+how connected the nodes within \(S_a\) are compared to a configuration model with 
+the same degree distribution (we will see more on the configuration model in the 
+next chapter).
+\begin{definition}[Modularity of a Partition]
+  Let \(G = (V, E)\) be a graph and suppose \(\mathcal{C}\) is a partition of 
+  \(V\). Then the modularity of \(\mathcal{C}\) is 
+  \[M(\mathcal{C}) = \sum_{S_a \in \mathcal{C}} M_a.\]
+\end{definition}
+The modularity of a particular partition is a possible metric on how good a partition 
+is where the higher the modularity is better. Thus, we are now interested in 
+how to partition a graph such that the partition has highest modularity.
+
+Straight away, we see that there are \(2^{N - 1}\) possible partitions of two 
+subset and much more for arbitrary partitions so it is unrealistic to brute force 
+every partition. In fact, the is in general no good way of finding the best 
+partition and the modularity maximization problem is "NP-hard". Thus, instead of 
+finding the maximum modularity partition, we aim to find a partition who's 
+modularity is close to the maximum.
+
+Let us study one of these algorithms first introduced by Newman. Given a 
+partition of some graph \(G = (V, E)\), \(S_1 \sqcup S_2 = V\), let 
+\(s_i = \pm 1\) be a indicator variable where \(s_i = 1\) if \(i \in S_1\) and 
+\(s_i = -1\) if \(i \in S_2\). Then, we see that \(1 / 2 (s_i s_j + 1) = 1\) is 
+the indicator of whether or not \(i, j\) are in the same set. With that, we 
+can write the modularity of this partition is 
+\[M = \frac{1}{4L} \sum_{i = 1}^N \sum_{j = 1}^N \left(A_{ij} - \frac{k_i k_j}{2L}\right) 
+  (s_i s_j + 1).\]
+Now, by introducing the modularity matrix \(B\), where 
+\(B_{ij} = \left(A_{ij} - \frac{k_i k_j}{2L}\right)\), we have 
+\[M = \frac{1}{4L}s^T B s,\]
+where \(s = (s_1, s_2, \cdots, s_N)^T\). However, as mentioned previously, we 
+cannot simply maximize this equation so we will have to make some approximations.
+Suppose we relax \(s\) such that we consider the equation for \(v \in \mathbb{R}^N\) 
+where \(v\) is some arbitrary vector such that \(v^T v = \| v \|^2 = N\).
+Then, by enforcing the Lagrange multiplier \(\lambda\), we will maximize 
+\[\mathcal{L}(v, \lambda) = v^T B v - \lambda(v^T v - N),\]
+by requiring \(\nabla \mathcal{L} = 0\) which results in \(Bv = \lambda v\). 
+This is simply a eigenvalue problem and by the fact that \(B\) is symmetric, we 
+know that there exists at least one zero eigenvalue. Now, by considering that 
+for an eigenpair \((\lambda, v)\) of \(B\), \(v^T B v = \lambda v^T v = \lambda N\),
+(as we required \(v^T v = N\)), we see that the maximum solution is simply the 
+eigenpair with the largest eigenvalue.
+
+However, we are not done yet as \(s\) must have entries \(\pm 1\) and thus, \(v\) 
+is in general not a solution. So, to approximate the maximum \(s\), we find 
+the a possible solution of \(s\) near \(v\). Consider that if \(s'\) is a vector 
+such that \(\| s' \| = N\), then \(v^T s' = N \cos \theta\). So, we can construct 
+some \(s\) to minimize \(\theta\) by maximizing \(v^T s\). Now, by observing that 
+the closest possible vector of \(s\) is the vector of \(\pm 1\) with the same sign 
+as \(v\) in each entries, we have found an approximation for a partition of 
+maximal modularity.
+
+To summarize, the Newman's spectral modularity maximization method is the following 
+algorithm. Given some graph \(G\),
+\begin{enumerate}
+  \item construct the modularity matrix \(B\), where 
+    \(B_{ij} = \left(A_{ij} - \frac{k_i k_j}{2L}\right)\);
+  \item compute the largest eigenvalue of \(B\) and its corresponding eigenvector \(v\);
+  \item construct \(s\) based on the sign of \(v\).
+\end{enumerate}
+
+As we can see from above, the main cost of the spectral method is from computing 
+the eigenvalues and eigenvectors of \(B\). In general, for a dense matrix, 
+the cost of computing all of the eigenvalues and eigenvectors is roughly \(O(N^3)\).
+However, as mentioned before, we only need the largest eigenvalue and its 
+corresponding eigenvector so this cost can be improved upon using the *power method*.
+
+Recall that a symmetric matrix is diagonalisable, and so \(\sum \dim E_\lambda = N\), 
+and thus, the eigenvectors of \(B\), \(\{v_1, \cdots, v_n\}\) form a basis of 
+\(\mathbb{R}^N\) (where we order the eigenvalues 
+\(\lambda_1 \ge \lambda_2 \ge \cdots \ge \lambda n\)). Hence, for all 
+\(x \in \mathbb{R}^N\), there exists \(\mu\) such 
+that \(x = \sum_i \mu v_i\). Assuming that \(\mu_1 \neq 0\) and that 
+\(\lambda_1 > \lambda_2\), we have 
+\[B^m x = \sum \mu \lambda_i^m v_i \approx c_1 \lambda_1^m v_1,\]
+for sufficiently large \(m \in \mathbb{N}\). Now, if \(B^m x = \lambda_1^m v_1\),
+we have \(B^m x \in \text{sp}(v_1) \in E_{\lambda_1}\) which is an eigenvector 
+of \(\lambda_1\).
+
+\begin{remark}
+  Sometimes, \(B^m x\) might become too large for computations, so it might make 
+  sense to normalize the vector after each multiplication (or alternatively divide 
+  the vector by the maximum entry -- that is normalize with respect to the 
+  \(\infty\)-norm).
+\end{remark}
+
+\newpage
 # Random Networks
 
 While sometimes we do have a concrete network on hand to work this, this is not 
@@ -812,6 +916,7 @@ With \(\beta = 0\) and \(\alpha < 1\), we find
 {\langle k\rangle (1 - \alpha)k^{1 - \alpha}}\right).\]
 Lastly, with \(\alpha > 1\), we find a unrealistic hub structure is generated.
 
+\newpage
 # Spreading Processes
 
 ## Diffusion in Networks
@@ -1122,6 +1227,7 @@ where \(s_i = 1 - x_i\). So
 \[\frac{d\langle (1 - x_i) x_j \rangle}{dt} = \beta \sum_{l = 1}^N 
   \left(A_{j, l} \langle s_i s_j x_l \rangle + A_{i, l} \langle s_i x_j x_l \rangle \right).\]
 
+\newpage
 # Synchronisation 
 
 ## Synchronisation for Coupled Differential Equations
@@ -1198,3 +1304,70 @@ certain conditions.
     \le e^{-2\alpha t}e^{Kt} \left| w(0)\right| \to 0,\]
   as \(t \to \infty\).
 \qed
+
+Another system which might be interesting to couple are the Lorenz equations.
+The Lorenz equations is a famous system of linear equations which can describe 
+chaotic motions. We shall take a look at them now. The Lorenz equations 
+is the following system of differential equations.
+\begin{align*}
+  \dot x & = \sigma (y - x),\\
+  \dot y & = x(\rho - z) - y,\\
+  \dot z & = - \beta z + xy,
+\end{align*}
+for some constants \(\sigma, \rho, \beta\).
+This system of equations was first introduces in the 1960's as a simplified version 
+of the Navier-Stokes equation which can be used to model fluids. 
+
+For shorthand, 
+let us write the Lorenz equations in the vector form \(\dot w = f(w)\), and it 
+turns out there exists a unique solution for each \(w_0 = w(0)\).
+
+\begin{prop}
+  For each \(w_0 \in \mathbb{R}^3\), there exists a unique 
+  \(w : \mathbb{R}^3 \to \mathbb{R}^3\) that is a solution of 
+  \[\dot w = f(w),\]
+  and \(w(0) = w_0\), where \(f\) is the vectorised function for the Lorenz 
+  equations.
+\end{prop}
+
+The proof of this follows from Picard's existence and uniqueness of solutions 
+of ODE's which will be studied in the differential equations module.
+
+It turns out that the solution of these equations has sensitive dependence 
+on initial conditions. That is, there exists some \(\delta > 0\) such that 
+for all \(w_1 \neq w_2\), there exists some \(t > 0\) where 
+\(d((w_1(t), w_2(t)) \ge \delta\). This is one of the reason why weather 
+forecast is difficult.
+
+Let us now couple the Lorenz equations as follow. 
+\begin{align*}
+  \dot w_1 & = f(w_1) + \alpha(w_2 - w_1),\\
+  \dot w_2 & = f(w_2) + \alpha(w_1 - w_2).
+\end{align*}
+For \(\alpha = 0\), as \(f\) has sensitive dependence, we have that the systems 
+desynchronise over time. On the other hand, for \(\alpha\) large enough, by our 
+previous theorem, the systems can eventually converge.
+
+## Synchronisation on Networks
+
+To discuss Synchronisation on general networks, we will use the graph Laplacian 
+matrices \(L = L_{ij} = D - A\) where \(D\) is the degree matrix and \(A\) the 
+adjacency matrix. 
+
+\begin{prop}
+  Let \(G\) be an undirected network and suppose \(L\) is the associated Laplacian.
+  Then, \(L\) has only real positive eigenvalues, \(0\) is an eigenvaue corresponding 
+  to the eigenvector \(mathbb{1}\), and \(0\) has multiplicity one if \(G\) is 
+  connected.
+\end{prop}
+
+It turns out, the least positive eigenvalue \(\lambda_2\) is important for 
+characterising the synchronisation behaviour of a graph. 
+
+\begin{prop}
+  The coupled network 
+  \[\dot x_i = f(x_i) - \alpha \sum_{j = 1}^N L_{ij}x_j\]
+  for \(i = 1, \cdots, N\) globally synchronises whenever 
+  \(\alpha > \Gamma / \lambda_2\) where \(\Gamma \ge 0\) depends on the 
+  Lyapounov exponent of \(f\). 
+\end{prop}

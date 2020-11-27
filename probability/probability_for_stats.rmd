@@ -25,7 +25,8 @@ header-includes:
   - \newcommand{\var}{\mathop{\mathrm{Var}}}
 ---
 
-# Introduction 
+\newpage
+# Measures
 
 ## Probability Measures
 
@@ -200,6 +201,7 @@ example of a non-Lebesgue measurable set here called the Vitali set.
   \(\mathbb{P}(A_1) = 0\).
 \qed
 
+\newpage
 # Random variables
 
 Now that we have the basic notion of a probability space, we would like to play 
@@ -481,6 +483,7 @@ to get the CDF of \(g(X)\) (recall that the CDF characterises the random variabl
 we simply consider \(F_{g(X)}(x) = \mathbb{P}(g(X) \in (-\infty, x]) = 
 \mathbb{P}(X \in g^{-1}(-\infty, x])\) which we can obtain using the CDF of \(X\).
 
+\newpage
 # Multivariate Random Variables
 
 Recall the definition regarding multivariate distributions from year one and 
@@ -772,6 +775,7 @@ Alternatively, by symmetry and independence, we notice that the joint density of
 the order statistics is 
 \[f_{X_{(i)}}(y_i) = n! \prod_i f_X(y_i).\]
 
+\newpage
 # Convergence of Random Variables
 
 We would sometimes like to consider a sequence of random variables and 
@@ -1048,6 +1052,7 @@ With that, we can define the notion of convergence almost everywhere.
   which implies straight away \(\mathbb{P}(\bar{X}_n \to \mu) = 1\).
 \qed
 
+\newpage
 # Central Limit Theorem
 
 ## Moment Generating Functions
@@ -1163,3 +1168,66 @@ central limit theorem.
   central limit theorem can be proved in the general case using characteristic 
   functions.
 \end{remark}
+
+\newpage
+# Stochastic Processes
+
+## Markov Chains
+
+\begin{definition}[Stochastic Process]
+  A stochastic process on the state space \(\mathcal{E}\) is a collection of 
+  \(\mathcal{E}\)-valued random variables \((X_t)_{t \in \mathcal{T}}\) indexed 
+  by some set \(\mathcal{T}\).
+\end{definition}
+We note that we are no longer necessarily using real valued random variables 
+and instead, considering random variables on some arbitrary measurable set 
+\(\mathcal{E}\). In general, we shall consider stochastic processes on 
+discrete time, that is, the index set \(\mathcal{T} = \mathbb{N}\).
+
+\begin{definition}[Markov Chain]
+  Let \((X_n)_{n \in \mathbb{N}}\) be a discrete time stochastic process on 
+  the state space \(\mathcal{E}\). Then, we say \((X_n)\) is a Markov chain if 
+  and only if 
+  \[\mathbb{P}(X_n = x_n \mid \bigcap_{i \le n} \{X_i = x_i\}) = 
+    \mathbb{P}(X_n = x_n \mid X_{n - 1} = x_{n - 1}).\]
+  That is, the stochastic process is memoryless.
+\end{definition}
+
+A consequence of the Markov assumption results in 
+\[\mathbb{P}(X_n = z, X_{n - 2} = x \mid X_{n - 1} = y) = 
+  \mathbb{P}(X_n = z \mid X_{n - 1 = y}\mathbb{P}(X_{n - 2} = x \mid X_{n - 1} = y).\]
+That is, \(X_n\) is conditionally independent of \(X_{n - 2}\) given \(X_{n - 1}\).
+
+\begin{definition}[Time Homegenoeous]
+  Let \((X_n)_{n \in \mathbb{N}}\) be a Markov chain on some state space 
+  \(\mathcal{E}\). Then, we say \((X_n)\) is time homogeneous if and only if 
+  for all \(n \in \mathbb{N}\), \(i, j \in \mathcal{E}\), 
+  \[\mathbb{P}(X_{n + 1} = j \mid X_n = i) = \mathbb{P}(X_1 = j \mid X_0 = i).\]
+\end{definition}
+
+A time homogeneous Markov chain results in the probability of a particular state 
+to be independent of the indexing \(\mathcal{T}\). We shall mostly look at 
+time homogeneous Markov chains in this course.
+
+Time homogeneous Markov chains can be represented nicely in matrix called the 
+transition matrix.
+
+\begin{definition}[Transition Matrix]
+  Let \((X_n)_{n \in \mathbb{N}}\) be a time homogeneous Markov chain and suppose 
+  \(p_{ij} = \mathbb{P}(X_1 = j \mid X_0 = i)\) for all \(i, j \in \mathcal{E}\). 
+  Then the transition matrix of \((X_n)\) is the matrix \(P\) where 
+  \([P]_{ij} = p_{ij}\).
+\end{definition}
+
+Since the entries of transition matrix are probabilities, we have \(0 \le p_{ij} \le 1\).
+Furthermore, by total probability, we have the sum of each row 
+\(\sum_{j \in \mathcal{E}} p_{ij} = 
+  \sum_{j \in \mathcal{E}} \mathbb{P}(X_1 = j \mid X_o = i) = 1\).
+
+The transition matrix tells us that, given a state, how the system will change 
+in the next time frame. However, this is not sufficient to characterise a whole 
+Markov chain as we still do not know how the system began. Thus, to fully specify 
+the stochastic process, we will also provide the initial distribution, that is 
+\(\lambda = (\lambda_j)_{j \in \mathcal{E}} \in \mathbb{R}^n\) where 
+\(\lambda_j = \mathbb{P}(X_0 = j)\) and \(n = \left| \mathcal{E} \right|\). 
+
