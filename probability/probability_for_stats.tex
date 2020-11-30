@@ -1375,4 +1375,44 @@ provide the initial distribution, that is
 \(\lambda_j = \mathbb{P}(X_0 = j)\) and
 \(n = \left| \mathcal{E} \right|\).
 
+Sometimes, however, we are interested in the probability of reaching
+some state given some previous state.
+
+\begin{definition}
+  Let \((X_n)_{n \in \mathbb{N}}\) be a Markov chain with state space \(\mathcal{E}\).
+  Then, the \(n\)-step transition matrix \(P(n)\) is the matrix with entries 
+  \[p_{ij}(n) = \mathbb{P}(X_n = j \mid X_0 = i).\]
+\end{definition}
+
+Clearly, we have \(P(1) = P\) the transition matrix and \(P(0) = I\). In
+general however, the Chapman-Kolmogorov equations provides us explicitly
+the \(n\)-step transition probability.
+
+\begin{prop}[The Chapman-Kolmogorov Equations]
+  Let \((X_n)_{n \in \mathbb{N}}\) be a Markov chain with state space \(\mathcal{E}\). 
+  Suppose now that, \(m \ge 0\) and \(n \ge 1\), then 
+  \[p_{ij}(n) = \sum_{l \in \mathcal{E}}p_{il}(m)p_{lj}(n).\]
+  As matrices,
+  \[P(m + n) = P(m) P(n).\] 
+\end{prop}
+
+From the second part of the proposition, we can deduce that
+\(P(m) = P^m\).
+
+\proof
+
+By considering the law of total probability and the properties of time
+homogeneous Markov chains, \begin{align*}
+    p_{ij}(n) = \mathbb{P}(X_{m + n} = k \mid X_0 = i) & = 
+      \sum_{l \in \mathcal{E}} \mathbb{P}(X_{m + n} = j, X_m = l \mid X_0 = i)\\
+    & = \sum_{l \in \mathcal{E}} \mathbb{P}(X_{m + n} = j \mid X_n = l, X_0 = i)
+      \mathbb{P}(X_m = l \mid X_0 = i)\\
+    & = \sum_{l \in \mathcal{E}} \mathbb{P}(X_{m + n} = j \mid X_n = l)
+      \mathbb{P}(X_m = l \mid X_0 = i)\\
+    & = \sum_{l \in \mathcal{E}}\mathbb{P}(X_ n = j \mid X_0 = l) 
+      \mathbb{P}(X_m = l \mid X_0 = i) = \sum_{l \in \mathcal{E}}p_{il}(m)p_{lj}(n).
+  \end{align*}
+
+\qed
+
 \end{document}

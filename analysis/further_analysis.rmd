@@ -15,6 +15,7 @@ header-includes:
   - \usepackage{mathtools}
   - \usepackage{lipsum}
   - \usepackage[ruled,vlined]{algorithm2e}
+  - \theoremstyle{definition}
   - \newtheorem{theorem}{Theorem}
   - \newtheorem{prop}{Proposition}
   - \newtheorem{corollary}{Corollary}[section]
@@ -1218,7 +1219,174 @@ by simply examining the property on a single element of this class.
   \varnothing\), and so \(Y\) is also Hausdorff.
 \qed
 
+## Connectedness 
 
+We would like to consider a notion of connectedness in both the metric and 
+topological spaces. To motivate this, let us recall the intermediate value 
+theorem for the real numbers.
+
+\begin{prop}
+  Let \(f : [a, b] \to \mathbb{R}\) be continuous and let \(r \in \mathbb{R}\) 
+  such that \(f(a) < r < f(b)\) Then, there exists some \(c \in [a, b]\) such 
+  that \(f(c) = r\).
+\end{prop}
+We would like to generalise this function and as we will see, this is closely 
+related to the notion of connectedness.
+
+\begin{definition}[Connected Sets]
+  Let \((X, \mathcal{T})\) be a toplogical space and let \(S \subseteq X\). 
+  We say that \(S\) is disconnected if and only if there exists 
+  \(U, V \in \mathcal{T}\) such that \(S \subseteq U \sqcup V\) and 
+  \(S \cap U, S \cap V \neq \varnothing\). We say \(S\) is connected if and only 
+  if it is not disconnected.
+\end{definition}
+We can easily generalise this notion of connectedness to the entire topological 
+space and furthermore, to metric spaces and its subsets. We say a topological 
+space is disconnected if and only if it is disconnected in itself, and for metric 
+spaces, we can simply apply the definition to the induced topology.
+
+\begin{prop}
+  Let \((X, \mathcal{T})\) be a topological space, then \(X\) is disconnected 
+  if and only if there exists some surjective continuous map \(f : X \to \{0, 1\}\),
+  where we equip \(\{0, 1\}\) with the discrete topology. 
+\end{prop}
+\proof
+  As \(\{0, 1\}\) is equipped with the discrete topology, both \(\{0\}\) and 
+  \(\{1\}\) are open, and thus, \(f^{-1}(\{0\}), f^{-1}(\{1\}) \in \mathcal{T}\).
+  Now, as \(f\) is surjective, \(f^{-1}(\{0\}) \sqcup f^{-1}(\{1\}) = X\) and 
+  furthermore, neither \(f^{-1}(\{0\})\) nor \(f^{-1}(\{1\})\) are empty, we 
+  have \(X\) is disconnected.
+
+  Now, suppose \(X\) is disconnected and \(U, V \in \mathcal{T}\) such that 
+  \(X = U \sqcup V\), then we can easily construct the function 
+  \[f = 0 \text{ if } x \in U, 1 \text{ otherwise.}\]
+  We see straight away that \(f\) is a continuous surjection so we are done!
+\qed
+
+The above proposition can be rearranged into alternative forms that are useful 
+for some situations. One can easily prove that the above condition holds 
+whenever \(\{0, 1\}\) is considered as a set of \(\mathbb{R}\) equipped with the 
+Euclidean metric. This results in the direct corollary that an interval in 
+\(\mathbb{R}\) is connected.
+
+\begin{corollary}
+  Let \(I \subseteq \mathbb{R}\) be an interval. Then \(I\) is connected.
+\end{corollary}
+\proof
+  Suppose otherwise, then there exists some continuous \(f : I \to \mathbb{R}\)
+  such that \(f(I) = \{0, 1\}\). Then there exists \(a, b \in I\) such that 
+  \(f(a) = 0\) and \(f(b) = 1\). WLOG. let us assume that \(a < b\), then 
+  by the intermediate value theorem, there exists some \(c \in [a, b]\) such 
+  that \(f(c) = 1 / 2\). But, by definition \(1 / 2 \not\in f(I)\) \#.
+\qed
+
+\begin{prop}
+  Let \((X, \mathcal{T}_X)\), \((Y, \mathcal{T}_Y)\) topological spaces and let 
+  \(f : X \to Y\) be a continuous mapping. Then if \(X\) is connected, so is 
+  \(f(X)\) connected in \(Y\).
+\end{prop}
+\proof
+  Suppose otherwise, then there exists some continuous surjective 
+  \(g : f(X) \to \{0, 1\}\). Thus, as \(f : X \to f(X)\) is obviously surjective, 
+  and as the composition of continuous surjective functions are continuous 
+  surjective, we have \(g \circ f : X \to \{0, 1\}\) is continuous surjective 
+  implying \(X\) is disconnected \#. 
+\qed
+
+From this, we can deduce that *connectedness* is a topological property as 
+if \(f : X \cong Y\) is a homeomorphism, then \(f(X) = Y\) and \(f^{-1}(Y) = X\)
+implying one being connected implies the other is also connected.
+
+Finally, let us generalise the intermediate value theorem for arbitrary topological 
+spaces, and thus, also for metric and Euclidean spaces.
+
+\begin{theorem}
+  Let \((X, \mathcal{T})\) be a connected topological space and suppose 
+  \(f : X \to \mathbb{R}\) is continuous such that there exists \(a, b \in X\), 
+  \(f(a) < r < f(b)\) for some \(r \in \mathbb{R}\), then there exists some 
+  \(c \in X\) such that \(f(c) = r\).
+\end{theorem}
+\proof
+  Suppose otherwise that for all \(x \in X\), \(f(x) \neq r\), then let us 
+  consider the sets \(U := f^{-1}(-\infty, r)\) and \(V := f^{-1}(r, \infty)\).
+  We see straight away that \(U \cap V = \varnothing\) and \(U, V \in \mathcal{T}\)
+  as \(f\) is continuous. Furthermore, for all \(x \in X, f(x) \in 
+  (-\infty, r) \cup (r, \infty)\), so \(X = U \cup V\), and thus, \(X\) is 
+  disconnected /#.
+\qed
+
+With that, we have provided an alternative proof of the intermediate value theorem
+as any closed intervals of \(\mathbb{R}\) is connected.
+
+\begin{prop}
+  Let \((X, \mathcal{T})\) be a topological space and let \((A_n)_{n \in I}\) 
+  be a family of connected subsets of \(X\) indexed by some set \(I\) such 
+  that for all \(i, j \in I\), \(i \neq j\), \(A_i \cap A_j \neq \varnothing\).
+  Then, \(\bigcup_{i \in I} A_i\) is also connected.
+\end{prop}
+\proof
+  Suppose otherwise, that \(\bigcup_{i \in I} A_i\) is disconnected, then 
+  there exists some \(U, V \in \mathcal{T}\) such that 
+  \(\bigcup_{i \in I} A_i \subseteq U \sqcap V\). Now, if there exists some 
+  \(i \in I\) such that \(A_i \not\subseteq U\) and \(A_i \not\subseteq V\), 
+  we have \(A_i\) is disconnected, that is \(A_i \subseteq U\) or 
+  \(A_i \subseteq V\). Thus, \(I = \{i \in I \mid A_i \subseteq U\} \sqcup 
+  \{i \in I \mid A_i \subseteq V\}\), furthermore, as neither sets are 
+  empty since otherwise \(U \cap \bigcup_{i \in I} A_i = \varnothing\) or 
+  \(V \cap \bigcup_{i \in I} A_i = \varnothing\), we have, there exists 
+  \(i, j \in I\), \(A_i \subseteq U\) and \(A_j \subseteq V\). But, by assumption 
+  \(A_i \cap A_j \neq \varnothing\) and so \(U \cap V \neq \varnothing\) \#.
+\qed
+
+This fits well with our intuition that we can "glue" connected sets together 
+(with some overlaps) such that the resulting set to also be connected. Another 
+intuitive method of visualising connectedness is that a set is connected if 
+we can draw a continuous line from any point within the set to any other points. 
+This results in the definition of *path-connected* sets which is a stronger 
+notion of connectedness then connected.
+
+\begin{definition}[Path]
+  Let \((X, \mathcal{T})\) be a topological space and let \(x_0, x_1 \in X\). 
+  Then a path from \(x_0\) to \(x_1\) is a continuous function 
+  \(\gamma : [0, 1] \to X\), such that \(\gamma (0) = x_0\) and \(\gamma (1) = x_1\).
+\end{definition}
+
+\begin{definition}[Path-Connected]
+  Let \((X, \mathcal{T})\) be a topological space. We call \(X\) path-connected 
+  if and only if for all \(x_0, x_1 \in X\), there exists some path connecting 
+  \(x_0\) to \(x_1\).
+\end{definition}
+
+\begin{prop}
+  Let \((X, \mathcal{T})\) be a topological space. Then, if \(X\) is path-connected, 
+  it is connected.
+\end{prop}
+\proof
+  Suppose \(X\) is disconnected. Then there exists some continuous surjection 
+  \(f : X \to \{0, 1\}\) with respect to the discrete topology. Now, as 
+  \(f\) is surjective, there exists some \(x_0, x_1 \in X\) such that 
+  \(f(x_0) = 0\) and \(f(x_1) = 1\). By path-connectedness of \(X\), there exists 
+  some path \(\gamma\) from \(x_0\) to \(x_1\). So, by letting \(I = \gamma[0, 1]\),
+  we have the continuous surjection \(f \mid_I \circ \gamma : [0, 1] \to \{0, 1\}\) 
+  implying that the interval \([0, 1]\) is disconnected \#.
+\qed
+
+\begin{prop}
+  Let \((X, \mathcal{T}_X)\), \((Y, \mathcal{T}_Y)\) be two topological spaces, 
+  and suppose \(f : X \cong Y\) is a homeomorphism. Then, \(X\) is path-connected 
+  if and only if \(Y\) is path-connected, that is path-connectedness is a 
+  topological property.
+\end{prop}
+\proof
+  Follows straight away by composing \(f\) and some appropriately chosen path.
+\qed
+
+This notion of connectedness is useful and a nice corollary of the above is that 
+\(\mathbb{R}^2 \not\cong \mathbb{R}\). This is true since if they are 
+homeomorphic, by say \(f\), we have the restriction homeomorphism on the subspaces 
+\(\mathbb{R}^2 \setminus \{0\} \cong \mathbb{R} \setminus \{f(0)\}\). But, we 
+can easily see that while \(\mathbb{R}^2 \setminus \{0\}\) is path-connected, 
+\(\mathbb{R} \setminus \{f(0)\}\) is not, \#.
 
 # Extras
 
