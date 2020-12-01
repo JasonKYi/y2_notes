@@ -1920,4 +1920,102 @@ Then, \(\{u_1, \cdots, u_n\}\), is a orthonormal basis of \(V\) with the
 nice property that
 \(\text{sp}(u_1, \cdots, u_i) = \text{sp}(v_1, \cdots, v_i)\).
 
+\begin{prop}
+  Let \(V\) be a finite dimensional inner product space with an orthonormal 
+  basis \(B := \{u_1, \cdots, u_n\}\). Then for all \(v \in V\), 
+  \(v = \sum_{i = 1}^n \langle v, u_i \rangle u_i\), and we call elements of the set 
+  \(\{\langle v, u_i \rangle \mid i = 1, \cdots, n\}\) the Fourier coefficients 
+  of \(v\). Furthermore, \(\| v \|^2 = \sum_{i = 1}^n \langle v, u_i \rangle^2\).
+\end{prop}
+\proof
+
+Since \(B\) is a basis, there exists some \(\lambda\) such that
+\(v = \sum \lambda u_i\). Now, by taking the inner product of \(v\) with
+\(u_i\), we have
+\(\langle v, u_i \rangle = \langle \sum \lambda u_j, u_i \rangle  = \sum \lambda \langle u_j, u_i \rangle = \lambda_i\)
+and we are done!
+
+For the second part, we see that
+\(\| v \|^2 = \langle v, v \rangle  = \langle \sum_{i = 1}^n \langle v, u_i \rangle u_i,  \sum_{j = 1}^n \langle v, u_j \rangle u_j \rangle  = \sum_{i = 1}^n \langle v, u_i \rangle \langle u_i,  \sum_{j = 1}^n \langle v, u_j \rangle u_j \rangle  = \sum_{i = 1}^n \langle v, u_i \rangle \overline{  \sum_{j = 1}^n \langle v, u_j \rangle \langle u_j, u_i \rangle}  = \sum_{i = 1}^n \langle v, u_i \rangle \overline{\langle v, u_i \rangle}  = \sum_{i = 1}^n \langle v, u_i \rangle^2\).
+\qed
+
+As can be imagined by the name ``Fourier coefficients'', there is a
+connection between the above proposition and the Fourier series.
+Consider the vector space \(V\) over \(\mathbb{R}\) (works for
+\(\mathbb{C}\) also) consisting of continuous functions with domain
+\([0, \pi]\), i.e.~\(V = \mathcal{C}([0, \pi], \mathbb{R})\). We recall
+the natural inner product on continuous functions,
+\[\langle \cdot, \cdot \rangle : V \times V \to \mathbb{R} : 
+  (f, g) \mapsto \frac{2}{\pi} \int_0^\pi fg.\] By manually checking, we
+find the set \(\{1 / 2, \cos x, \cos 2x, \cdots \}\) is an orthonormal
+set of \(V\). Consider that for all \(f \in V\),
+\[\langle f, \cos n x \rangle = \frac{2}{\pi} \int_0^\pi f(x) \cos nx dx,\]
+we have found the Fourier cosine coefficients of the Fourier series. The
+similar can be done to the sine coefficients.
+
+\begin{definition}[Orthogonal Projection Map]
+  Let \(V\) be an inner product space and suppose \(v, w \in V \setminus \{0\}\).
+  Then the projection of \(v\) along \(w\) is the vector
+  \(\frac{\langle v, w \rangle}{\langle w, w \rangle} w\). More generally, 
+  for all \(W \le V\), recall that \(V = W \oplus W^\bot\); so there exist unique 
+  \(w \in W\), \(w' \in W^\bot\) such that \(v = w + w'\). Thus, we define the 
+  orthogonal projection map \(\pi_W : V \to W\) such that \(\pi_W(v) = w\). 
+\end{definition}
+
+To see why the first vector is called a projection, we consider two
+vectors in Euclidean spaces equipped with the dot product as the inner
+product. By drawing the vectors explicitly, we see that the projection
+of \(v\) along \(w\) is exactly what the name describes, that is the
+projection of \(v\) in the direction of \(w\).
+
+\begin{prop}
+  Let \(V\) be an inner product space and suppose \(v \in V \setminus \{0\}\) 
+  and \(W \le V\). Then \(\pi_W(v)\) is the vector in \(W\) closest (with respect 
+  to the induced metric) to \(v\), that is for all \(w \in W\), 
+  \(\| v - \pi_W(v) \| \le \| v - w \|\). Furthermore, if \(\{v_1, \cdots, v_r\}\) 
+  is an orthonormal basis of \(W\), then 
+  \[\pi_W(v) = \sum \langle v, v_i \rangle v_i.\]
+\end{prop}
+\proof
+
+See problem sheet 9. \qed
+
+Lastly, let us revisit some properties about the change of orthonormal
+basis from last year.
+
+\begin{prop}
+  Let \(V\) be an inner product space with orthonormal bases 
+  \(E := \{e_1, \cdots, e_n\}\) and \(F := \{f_1, \cdots, f_n\}\). Furthermore 
+  if \(P = (p_{ij})\) is the change of basis matrix such that 
+  \[f_i = \sum_{j = 1}^n p_{ji}e_i,\]
+  Then \(P^T \bar{P} = I\) and we will call \(P\) orthogonal if \(P\) is a real 
+  matrix and unitary if it is a complex matrix.
+\end{prop}
+\proof
+
+Consider for all \(r, s\), \begin{align*}
+    \langle f_r, f_s \rangle & = \langle \sum_{i = 1}^n p_{ir}e_i, 
+      \sum_{j = 1}^n p_{js}e_j \rangle
+      = \sum_i p_{ir} \sum_j \bar{p}_{js} \overline{\langle e_j, e_i \rangle}\\
+    & = \sum_i p_{ir} \bar{p}_{is} = \sum_i P^T_{ri} \bar{p}_{is} = [P^T \bar{P}]_{r_s}
+  \end{align*} Now, since \(\langle f_r, f_s \rangle = 1\) is \(r = s\)
+and 0 otherwise, we have \(P^T \bar{P} = I\). \qed
+
+We have thus far defined orthogonality for matrices but alike all
+definitions for matrices, there is an equivalent definition for linear
+maps. It turns out that theses orthogonal linear maps preserves
+distance, that is, if \(T \in \mathop{\mathrm{End}}(V) : v \mapsto Pv\)
+where \(P\) is orthogonal, then \(\| T(v) \| = \| v \|\). This follows
+as
+\(\|T(v)\|^2 = \|Pv\|^2 = (Pv)^T \overline{Pv} = v^T P^T \bar{P} \bar{v} = v^T v = \| v \|^2\).
+Alike that of metric spaces, we call such maps that preserves distance
+\emph{isometries}.
+
+By checking the axioms, we find that these isometries forms the
+well-known groups under composition -- the orthogonal group and the
+unitary group, which are
+\[O(n, \mathbb{R}) := \{P \in M_n(\mathbb{R}) \mid P^T P = I\},\] and
+\[U(n, \mathbb{C}) := \{P \in M_n(\mathbb{C}) \mid P^T \bar{P} = I\},\]
+respectively.
+
 \end{document}
