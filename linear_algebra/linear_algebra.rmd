@@ -1750,8 +1750,8 @@ Gram-Schmidt process. We shall quickly recall the process here.
 \begin{enumerate}
   \item Start with any basis of \(V\), \(\{v_1, \cdots, v_n\}\);
   \item Let \(u_1 = v_1 / \|v_1\|\);
-  \item Define \(u_{k + 1} = (v_k - \sum_{i = 1}^k \langle v_k, u_i \rangle u_i) / 
-    \| (v_k - \sum_{i = 1}^k \langle v_k, u_i \rangle u_i) \|\) for all \(k\).
+  \item Define \(u_{k + 1} = (v_{k + 1} - \sum_{i = 1}^k \langle v_k, u_i \rangle u_i) / 
+    \| (v_{k + 1} - \sum_{i = 1}^k \langle v_k, u_i \rangle u_i) \|\) for all \(k\).
 \end{enumerate}
 Then, \(\{u_1, \cdots, u_n\}\), is a orthonormal basis of \(V\) with the nice 
 property that \(\text{sp}(u_1, \cdots, u_i) = \text{sp}(v_1, \cdots, v_i)\).
@@ -1808,6 +1808,18 @@ drawing the vectors explicitly, we see that the projection of \(v\) along \(w\)
 is exactly what the name describes, that is the projection of \(v\) in the 
 direction of \(w\).
 
+\begin{lemma}
+  Let \(V\) be a inner product space and suppose \(u, v \in V\) such that 
+  \(\langle u, v \rangle = 0\), then \(\|u + v\|^2 = \|u\|^2 + \|v\|^2\). 
+\end{lemma}
+\proof
+  Follows straight away from definition.
+  \[\|u + v\|^2 = \langle u + v, u + v \rangle = 
+    \langle u, u \rangle + \langle u, v \rangle + \langle v, u \rangle +
+    \langle v, v \rangle = \langle u, u \rangle + \langle v, v \rangle + 
+    \|u\|^2 + \|v\|^2.\]
+\qed
+
 \begin{prop}
   Let \(V\) be an inner product space and suppose \(v \in V \setminus \{0\}\) 
   and \(W \le V\). Then \(\pi_W(v)\) is the vector in \(W\) closest (with respect 
@@ -1817,7 +1829,27 @@ direction of \(w\).
   \[\pi_W(v) = \sum \langle v, v_i \rangle v_i.\]
 \end{prop}
 \proof
-  See problem sheet 9.
+  Let \(w \in W\), then \(\|v - w\| = \|(v - \pi_W(v)) + (\pi_W(v) - w)\|\). 
+  Since \(v - \pi_W(v) \in W^\bot\) and \(\pi_W(v) - w \in W\) we have 
+  \(\|v - w\| = \|v - \pi_W(v)\| + \|\pi_W(v) - w\| \ge  \|v - \pi_W(v)\|\).
+
+  For the second part, we consider that the decomposition of \(v = w + w'\) is 
+  unique, thus, it suffices to show that \(v - \sum \langle v, v_i \rangle v_i \in W^\bot\).
+  Let \(u \in W\), then 
+  \[\langle v - \sum \langle v, v_i \rangle v_i, u \rangle = 
+    \langle v, u \rangle - \sum \langle v, v_i \rangle \langle v_i, u \rangle.\]
+  As \(\{v_1, \cdots, v_r\}\) is an orthonormal basis of \(W\), 
+  \(u = \sum \langle u, v_i \rangle v_i\), so,
+  \[\langle v - \sum \langle v, v_i \rangle v_i, u \rangle = 
+    \langle v, u \rangle - \sum_i \langle v, v_i \rangle \sum_j 
+    \overline{\langle w, v_j \rangle} \langle v_i, v_j \rangle = 
+    \langle v, u \rangle - \sum_i \langle v, v_i \rangle \overline{\langle w, 
+    v_i \rangle},\]
+  since \(\langle v_i, v_j \rangle = \delta_{ij}\). Now, by considering 
+  \[\langle v, u \rangle = \langle v, \sum \langle u, v_i \rangle v_i \rangle = 
+    \sum \overline{\langle w, v_i \rangle} \langle v, v_i \rangle,\]
+  and hence, \(\langle v - \sum \langle v, v_i \rangle v_i, u \rangle = 0\) 
+  for all \(u \in W\) implying \(v - \sum \langle v, v_i \rangle v_i \in W^\bot\).
 \qed
 
 Lastly, let us revisit some properties about the change of orthonormal basis 
@@ -1857,3 +1889,152 @@ under composition -- the orthogonal group and the unitary group, which are
 and 
 \[U(n, \mathbb{C}) := \{P \in M_n(\mathbb{C}) \mid P^T \bar{P} = I\},\]
 respectively.
+
+## Linear Maps on Inner Product Spaces
+
+Recall the *spectral theorem* for symmetric matrices from first year -- for 
+all \(A \in M_n(\mathbb{R})\) such that \(A = A^T\), there exists some 
+\(P \in M_n(\mathbb{R})\) an orthogonal matrix such that \(P^{-1} A P\) is 
+diagonal. We will in this section generalise this result for arbitrary Inner 
+product spaces. 
+
+\begin{prop}
+  Let \(V\) be a finite dimensional inner product space and let \(T \in \End(V)\). 
+  Then, there exists an unique linear map \(T^* \in \End(V)\) such that 
+  \[\langle T(u), v \rangle = \langle u, T^*(v) \rangle,\]
+  for all \(u, v \in V\).
+\end{prop}
+\proof
+  Let \(v \in V\) and let us define 
+  \(h : V \to \mathbb{F} : u \mapsto \langle T(u), v \rangle\). Clearly, \(h\) 
+  is linear, so \(h\) is an element of the dual space of \(V\), \(V^*\). Then, 
+  by proposition \ref{dual}, there exists uniquely a \(v' \in V\) such that 
+  \(h = f_{v'}\) where \(f_{v'} : V \to \mathbb{F} : u \mapsto \langle u, v' \rangle\).
+  So, let use define \(T^* : V \to V : v \to v'\) so 
+  \(\langle  T(u), v \rangle = \langle u, T^*(v) \rangle\), and thus, it suffices 
+  to show \(T^*\) is a linear map. 
+
+  Let \(\alpha, \beta \in \mathbb{F}\) and \(v_1, v_2 \in V\), then 
+  \begin{align*}
+    \langle u, T^*(\alpha v_1, \beta v_2) \rangle 
+    & = \langle T(u), \alpha v_1, \beta v_2 \rangle 
+    = \bar{\alpha} \langle T(u), v_1 \rangle + \bar{\beta} \langle T(u), v_2 \rangle \\ 
+    & = \bar{\alpha} \langle u, T^*(v_1) \rangle + \bar{\beta} \langle u, T^*(v_2) \rangle = 
+    \langle u, \alpha T^*(v_1) + \beta T^*(v_2) \rangle.
+  \end{align*}
+  Since \(u\) was choosen arbitrary, \(T^*(\alpha v_1, \beta v_2) = 
+  \alpha T^*(v_1) + \beta T^*(v_2)\), and so \(T^*\) is a linear map.
+\qed
+
+\begin{definition}[Adjoint]
+  We call \(T^*\) as described above the adjoint of \(T\) and if \(T = T^*\) then 
+  we say \(T\) is self-adjoint.
+\end{definition}
+
+The property of a linear map being self-adjoint correlates with the notion of 
+symmetric in matrices. We see that if \(T(v) = Av\) and the inner product of 
+\(u, v\) is \(u^T v\), then 
+\(\langle T(u), v \rangle = \langle Au, v \rangle = (Au)^T v = u^T A^Tv 
+= \langle u, A^T v \rangle\), so \(T^*(v) = A^T v\) and \(T\) is self-adjoint 
+if and only if \(A^T = A\), that is \(A\) is symmetric.
+
+\begin{prop}
+  Let \(V\) be an inner product space with an orthonormal basis 
+  \(B := \{v_1, \cdots v_n\}\). Let \(T \in \End(V)\) such that 
+  \([T]_B = A = (a_{ij})\). Then \([T^*]_B = \bar{A}^T\).
+\end{prop}
+\proof
+  Consider that \(T(v_i) = \sum_j \langle T(v_i), v_j \rangle v_j\), and so 
+  \(a_{ij} = \langle T(v_j), v_i \rangle\). Now, as 
+  \(\langle T(v_j), v_i \rangle = \langle v_j, T^*(v_i) \rangle\), 
+  \(([T^*]_B)_{ij} = \langle T^*(v_j), v_i \rangle = 
+    \overline{\langle v_i, T^*(v_j) \rangle} = 
+    \overline{\langle T(v_i), v_j \rangle} = \bar{a}_{ji}\).
+  So, \([T^*]_B = \bar{A}^T\) as required.
+\qed
+
+With this proposition, we can conclude that a self-adjoint matrix is either 
+real symmetric or complex Hermitian.
+
+\begin{theorem}[The Spectral Theorem]
+  Let \(V\) be a finite dimensional inner product space and let \(T \in \End(V)\) 
+  be self-adjoint, then \(V\) has an orthonormal basis of Eigenvectors of \(T\).
+\end{theorem}
+
+This is a generalisation of last year's spectral theorem where we saw that real
+symmetric matrices are diagonalisable by some orthonormal matrix. Of course, 
+we also see that, for complex matrices, we will require the matrix to be 
+unitary.
+
+Before proving the spectral theorem, let us first prove the following useful 
+lemma.
+
+\begin{lemma}\label{spectral_lemma}
+  Let \(V\) be a finite dimensional inner product space and let \(T \in \End(V)\) 
+  be self-adjoint. Then, 
+  \begin{itemize}
+    \item all Eigenvalues of \(T\) are real;
+    \item the Eigenvectors of distinct Eigenvalues are orthogonal to each other;
+    \item if \(W \le V\), is \(T\)-invariant, then so it \(W^\bot\).
+  \end{itemize}
+\end{lemma}
+\proof \hfill
+  \begin{enumerate}
+    \item Let \(\lambda\) be an Eigenvalue of \(T\) with the Eigenvector \(v\), then 
+      \(\lambda \langle v, v \rangle = \langle \lambda v, v \rangle = 
+        \langle T(v), v \rangle = \langle v, T(v) \rangle = \langle v, \lambda v \rangle = 
+        \bar{\lambda} \langle v, v \rangle\). Now as \(v\) is an Eigenvector, 
+        \(v \neq 0\) so \(\lambda = \bar{\lambda}\) and hence, \(\lambda \in \mathbb{R}\).
+    \item Let \(\lambda, \mu \in \mathbb{R}\) be distinct Eigenvalues with
+      Eigenvectors \(v_1, v_2\). Then \(\lambda \langle v_1, v_2 \rangle = 
+      \langle \lambda v_1, v_2 \rangle = \langle T(v_1), v_2 \rangle = 
+      \langle v_1, T(v_2) \rangle = \langle v_1, \mu v_2 \rangle = 
+      \bar{\mu} \langle v_1, v_2 \rangle = \mu \langle v_1, v_2 \rangle\). Now 
+      as \(\lambda \neq \mu\), we have \(\langle v_1, v_2 \rangle = 0\).
+    \item Let \(w' \in W^\bot\), then, for all \(w \in W\), 
+      \(\langle T(w'), w \rangle = \langle w', T(w) \rangle\). Now, as \(W\) is 
+      \(T\)-invariant, \(T(w) \in W\), so, \(\langle w', T(w) \rangle = 0\) and 
+      hence,  \(\langle T(w'), w \rangle = 0\) and so \(T(w') \in W^\bot\). Thus, 
+      \(W^\bot\) is \(T\)-invariant.
+  \end{enumerate}
+\qed
+
+With the above lemma, the spectral theorem follows straight away.
+
+\proof (The Spectral Theorem).
+  We induct on the dimension of \(V\), \(\dim V = n\). If \(n = 1\) then the 
+  theorem is trivial so let us assume the inductive hypothesis for all \(\dim V \le k\) 
+  and suppose \(n = k + 1\). 
+  
+  By the fundamental theorem of algebra, \(T\) must 
+  have some Eigenvalue in \(\mathbb{C}\) and by the above lemma, this Eigenvalue 
+  is in fact real. So, suppose we denote this by \(\lambda\) and let \(E_\lambda\) 
+  the the Eigenspace corresponding to \(\lambda\). If \(\dim E_\lambda = k + 1\) 
+  then every vector is an Eigenvector of \(T\) so we can simply choose the 
+  elementary basis; so, let us suppose otherwise -- \(\dim E_\lambda \le k\). 
+  
+  Then, as \(E_\lambda \le V\) is \(T\)-invariant, we have \(T \mid_{E_\lambda}\)
+  is self-adjoint, and hence, by the inductive hypothesis, there exists some 
+  orthonormal basis of \(B\) such that \([T \mid_{E_\lambda}]_B\) is diagonal. 
+  Furthermore, by the above lemma, so is \(E_\lambda^\bot\) \(T\)-invariant, therefore, 
+  \(T \mid_{E_\lambda^\bot}\) is self-adjoint. Since \(E_\lambda \oplus E_\lambda^\bot = V\), 
+  we have \(\dim E_\lambda^\bot = \dim V - \dim E_\lambda \le k\), and hence, by the 
+  inductive hypothesis, there exists some orthonormal basis \(B'\) of \(E_\lambda^\bot\) 
+  such that \([T \mid_{E_\lambda^\bot}]_{B'}\) is diagonal. With that, we 
+  have \(B \cup B'\) forms a basis of \(V\) and is in fact, orthonormal by 
+  the above lemma. Furthermore, \([T]_{B \cup B'}\) is diagonal since, 
+  \([T]_{B \cup B'} = [T \mid_{E_\lambda}]_B \oplus [T \mid_{E_\lambda^\bot}]_{B'}\).
+\qed
+
+As the above proof is constructive, we can construct an algorithm to find 
+such an orthonormal basis of a self-adjoint endomorphism. 
+
+\begin{enumerate}
+  \item Compute the Eigenspaces of \(T\);
+  \item Find an orthonormal basis of each Eigenspace (by Gram-Schmidt);
+  \item Union over all the orthonormal basis.
+\end{enumerate}
+
+The resulting basis is an orthonormal basis of \(V\) since 
+\(V = \bigoplus E_{\lambda_i}\) (by primary decomposition and the fundamental 
+theorem of algebra) and by part 2 of lemma \ref{spectral_lemma}.
