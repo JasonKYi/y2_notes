@@ -1247,7 +1247,7 @@ however, the Chapman-Kolmogorov equations provides us explicitly the
 \begin{prop}[The Chapman-Kolmogorov Equations]
   Let \((X_n)_{n \in \mathbb{N}}\) be a Markov chain with state space \(\mathcal{E}\). 
   Suppose now that, \(m \ge 0\) and \(n \ge 1\), then 
-  \[p_{ij}(n) = \sum_{l \in \mathcal{E}}p_{il}(m)p_{lj}(n).\]
+  \[p_{ij}(m + n) = \sum_{l \in \mathcal{E}}p_{il}(m)p_{lj}(n).\]
   As matrices,
   \[P(m + n) = P(m) P(n).\] 
 \end{prop}
@@ -1266,5 +1266,215 @@ From the second part of the proposition, we can deduce that \(P(m) = P^m\).
     & = \sum_{l \in \mathcal{E}}\mathbb{P}(X_ n = j \mid X_0 = l) 
       \mathbb{P}(X_m = l \mid X_0 = i) = \sum_{l \in \mathcal{E}}p_{il}(m)p_{lj}(n).
   \end{align*}
-   
 \qed
+
+Conceptually, the Chapman-Kolmogorov equation is saying that, in order to reach 
+\(j\) from \(i\) in \(m + n\) time steps, we must first reach some state \(l\) 
+from \(i\) in \(m\) time steps and then reach \(j\) from \(l\) in \(n\) time 
+steps. 
+
+## Classification of Chains
+
+Some Markov chains can be predictable in some sense. Consider a random walk 
+on the integers \(\mathbb{Z}\), where at state \(i\), there is equal probability 
+the state is \(i + 1\) and \(i - 1\) at the next time step. We see that, say if 
+we started at \(0\) at time \(0\), then for even \(t\) the state would also be even 
+while the state would be odd for odd \(t\). This gives us some information about 
+this walk and we need to take this into account when calculating. 
+
+In analysing Markov chains, it is often useful to consider whether or not a state 
+is accessible from another, that is, starting at some state \(i\), we would like 
+to know whether or not it is possible to reach state \(j\).
+
+\begin{definition}[Accessible]
+  Let \(i, j \in \mathcal{E}\) where \(\mathcal{E}\) is some state space. Then 
+  we say \(j\) is accessible from \(i\) if and only if there exists \(n \ge 0\) 
+  such that \(p_{ij}(n) > 0\). We denote this by \(i \to j\) (and we sometimes 
+  call this \(i\) \textit{leads to} \(j\)).
+\end{definition}
+
+\begin{definition}[Communicate]
+  Let \(i, j \in \mathcal{E}\) where \(\mathcal{E}\) is some state space. Then 
+  we say \(i, j\) communicate if and only if \(i \to j\) and \(j \to i\) and 
+  we denote this by \(i \leftrightarrow j\).
+\end{definition}
+
+\begin{prop}
+  Given some state space \(\mathcal{E}\), communication forms an equivalence relation 
+  on \(\mathcal{E}\).
+\end{prop}
+\proof
+  Reflexivity are trivial is trivial, so it suffices to prove transitivity. 
+  Suppose \(i \leftrightarrow j\) and \(j \leftrightarrow k\) for some 
+  \(i, j, k \in \mathcal{E}\), then, there exists some \(n_1, n_2 \ge 0\) such 
+  that \(p_{ij}(n_1), p_{jk}(n_2) > 0\). Then, by Chapman-Kolmogorov, 
+  \(p_{ik}(n_1 + n_2) = \sum_{l \in \mathcal{E}} p_{il}(n_1) p_{lk}(n_2) \ge 
+  p_{ij}(n_1)p_{jk}(n_2) > 0\). So, \(i \to k\) and by a similar argument, 
+  we have \(k \to i\) and so \(i \leftrightarrow k\). 
+\qed
+
+With that, we see that the state space can be partitioned into *communicating 
+classes* such that every element of a class communicates with every other 
+element of that class.
+
+\begin{definition}[Closed]
+  A communicating class \(C \subseteq \mathcal{E}\) of the state space 
+  \(\mathcal{E}\) is closed if and only if \(p_{ij}(n) = 0\) for all \(i \in C\),
+  \(j \not\in C\), \(n \in \mathbb{N}\).
+\end{definition}
+
+\begin{definition}[Irreducible]
+  Let \(\mathcal{E}\) be a state space and let \(S \subseteq \mathcal{E}\). 
+  Then, we call \(S\) irreducible if and only if for all \(i, j \in S\), 
+  \(i \leftrightarrow j\), that is, there exists a communicating class \(C\) 
+  such that \(S \subseteq C\). We call a Markov chain on the state space 
+  \(\mathcal{E}\) irreducible if and only if \(\mathcal{E}\) is irreducible 
+  (so \(\mathcal{E}\) has only one communicating class).
+\end{definition}
+
+Informally, we can think of closed sets of a state space as a set which the 
+chain cannot escape from, and furthermore, we can think of a irreducible 
+chain as a chain where starting from any position it is possible to reach 
+everywhere.
+
+We see that the communicating classes of a state space does not depend on the 
+values of \(P\) -- the transition matrix, but only the position of the non-zero 
+entries. We call properties with such dependence *structural properties*, so 
+communicating classes are a structural property.
+
+\begin{definition}[Period]
+  Let \(\mathcal{E}\) be some state space and suppose \(i \in \mathcal{E}\). Then 
+  the period of \(i\) is \(d(i) := \gcd \{n > 0 \mid p_{ii}(n) > 0\}\). 
+  If \(d(i) = 1\), then we say that \(i\) is aperiodic and periodic if \(d(i) > 1\).
+\end{definition}
+
+\begin{prop}
+  All states in a communicating class have the same periodicity.
+\end{prop}
+\proof
+  It suffices to show that, given \(i, j \in \mathcal{E}\), 
+  \(i \leftrightarrow j\), \(d(i) = d(j)\). Suppose that \(d \mid n\) for all 
+  \(n > 0\), \(p_{ii}(n) > 0\), then we will show that whenever \(p_{jj}(m) > 0\),
+  \(d \mid m\) for \(m > 0\).
+
+  Since \(i \leftrightarrow j\), there exist \(n_1, n_2 > 0\) such that 
+  \(p_{ij}(n_1), p_{ji}(n_2)\). Then, by the Chapman-Kolmogorov equation, 
+  \(p_{ii}(n_1 + n_2) = \sum_{l \in \mathcal{E}} p_{il}(n_1)p_{li}(n_2) > 0\), 
+  so \(d \mid n_1 + n_2\). Now, let \(m > 0\) such that \(p_{jj}(m) > 0\) following 
+  some path \(j \xrightarrow{\gamma} j\). Then, by appending this path, 
+  we have \(i \xrightarrow{n_1} j \xrightarrow{\gamma} j \to \xrightarrow{n_2} i\),
+  so \(d \mid \gamma + n_1 + n_2\). Therefore, 
+  \(d \mid (\gamma + n_1 + n_2) - (n_1 + n_2) = \gamma\) as required.
+\qed
+
+A question that is often asked regarding Markov chains is that, starting at some 
+position \(i\), what is the probability that we will eventually return to that 
+position. To answer this question, let us first introduce some definitions. 
+
+\begin{definition}[Recurrent]
+  Let \(\mathcal{E}\) be a state space and let \(i \in \mathcal{E}\). We call 
+  \(i\) to be recurrent if and only if 
+  \[\mathbb{P}\left(\bigcup_{n = 1}^\infty \{X_n = i\} \mid X_0 = i\right) = 1.\]
+\end{definition}
+
+\begin{definition}[Transient]
+  Let \(\mathcal{E}\) be a state space and let \(i \in \mathcal{E}\). We call 
+  \(i\) to be transient if and only if \(i\) is not recurrent, that is
+  \[\mathbb{P}\left(\bigcup_{n = 1}^\infty \{X_n = i\} \mid X_0 = i\right) < 1.\]
+\end{definition}
+
+\begin{definition}[First Passage Time]
+  The first passage time of some \(j \in \mathcal{E}\) for some state space 
+  \(\mathcal{E}\) starting at \(i \in \mathcal{E}\) is 
+  \[T_j = \min\{n \ge 1 \mid X_n = j\}.\]
+\end{definition}
+
+We note that \(T_j\) is not strictly a random variable (and we call it a 
+defective random variable) so whenever we refer to the event 
+\(\{T_j = n\}\), we are using it for the shorthand 
+\[\{X_n = j\} \cap \bigcap_{m < n} \{X_m \neq j\}. \]
+With that in mind, it makes sense to assign a probability to \(T_j\).
+
+\begin{definition}[First Passage Probability]
+  The first passage probability of some \(j \in \mathcal{E}\) for some state space 
+  \(\mathcal{E}\) starting at \(i \in \mathcal{E}\) is
+  \(f_{ij}(n) = \mathbb{P}(T_j = n \mid X_0 = i)\)
+  and we denote \(f_{ij} = \mathbb{P}(T_j < \infty \mid X_0 = i)\).
+\end{definition}
+
+As for all \(k \neq l\), \(\{T_j = k\}\) and \(\{T_j = l\}\) are disjoint, we find 
+that \(f_{ij} = \sum_n f_{ij}(n)\). With this definition in place, we see straight 
+away that a state \(i\) is recurrent if and only if \(f_{ii} = 1\) and transient 
+if and only if \(f_{ii} < 1\).
+
+\begin{prop}
+  Let \(i, j \in \mathcal{E}\) for some state space \(\mathcal{E}\), then 
+  for \(n \ge 1\), \(p_{ij}(n) = \sum_{l = 1}^n f_{ij}(l) p_{ii}(n - l)\). 
+\end{prop}
+\proof
+  Consider that \(\{X_n = j\}\) implies that the first passage of time \(T_j \le n\)
+  we see that, \(\{X_n = j\} = \bigsqcup_{l = 1}^n\{X_n = j \cap T_j = l\}\). So, 
+  by the law of total probability, 
+  \begin{align*}
+    \mathbb{P}(X_n = j \mid X_0 = i) & = 
+      \mathbb{P}\left(\bigsqcup_{l = 1}^n \{X_n = j \cap T_j = l \mid X_0 = i\}\right)
+      = \sum_{l = 1}^n \mathbb{P}(X_n = j \cap T_j = l \mid X_0 = i)\\
+      & = \sum_{l = 1}^n \mathbb{P}(X_n = j \mid T_j = l \cap X_0 = i) \mathbb{P}(T_j = l \mid X_0 = i).\\
+  \end{align*}
+  So, by considering that \(\mathbb{P}(X_n = j \mid T_j = l \cap X_0 = i) = 
+  \mathbb{P}(X_n = j \mid X_l = j \cap \bigcap_{m < l} X_m \neq j \cap X_0 = i)
+  = \mathbb{P}(X_n = j \mid X_l = j)\) by the Markov property, we have
+  \[\mathbb{P}(X_n = j \mid X_0 = i) = \sum_{l = 1}^n
+    \mathbb{P}(X_n = j \mid X_l = j) 
+    \mathbb{P}(T_j = l \mid X_0 = i) = \sum p_{jj}(n - l)f_{ij}(l).\]
+\qed
+
+Consider the following notation, \(N_i := \sum_{i = 1}^\infty I_{\{X_n = i\}}\). 
+We are interested in finding the expectation of \(N_i\) given the \(X_0 = i\),
+that is, the number of times the chain is expected to return back to \(i\). 
+By the linearity of expectation, we find that 
+\[E(N_i \mid X_0 = i) = \sum_{n = 1}^\infty E(I_{\{X_n = i\}} \mid X_0 = i) 
+= \sum p_{ii}(n).\]
+Intuitively, if \(i\) is recurrent, we would expect that the chain would keep 
+returning to \(i\) resulting in \(E(N_i \mid X_0 = i) = \infty\), while on the 
+other hand, if \(i\) is transient, \(N_i \mid X_0 = i\) will be geometrically 
+distributed with parameter \(1 - f_{ii}\), and so \(E(N_i \mid X_0 = i) < \infty\).
+
+\begin{theorem}
+  Let \(C \subseteq \mathcal{E}\) be a communicating class for some state space 
+  \(\mathcal{E}\). Then, for all \(i, j \in C\), either both \(i, j\) are 
+  recurrent, or transient.
+\end{theorem}
+\proof
+  Since \(i, j\) are in the same communicating class \(i \leftrightarrow j\) 
+  and thus, ther exists \(m, n \ge 0\) such that \(p_{ij}(m), p_{ji}(n) > 0\).
+  Now, we see that, for all \(l \ge 0\), the Chapman-Kolmogorov equation 
+  gives us 
+  \begin{align*}
+    p_{jj}(m + l + n) & = \sum_k p_{jl}(m + l) p_{kj}(n)
+      \ge p_ji(m + l)p_{ij}(n)\\
+      & = p_{ij}(n) \sum_k p_{jk}(m)p_{ki}(l)
+      \ge p_{ij}(n) p_{ji}(m) p_{ii}(l).
+  \end{align*}
+  So, if \(i\) is recurrent, then \(\sum p_{jj}(l) \ge \sum p_{jj}(m + l + n) 
+  \ge p_{ij}(n) p_{ji}(m) \sum p_{ii}(l) > \infty\) and so is \(j\) recurrent. 
+  Similarly, if \(j\) is transient, the same inequality gives us \(i\) is 
+  also transient. Now, as communicating is symmetric, we have the result 
+  is therefore true in the reverse direction.
+\qed
+
+\begin{prop}
+  Let \(C\) be a communicating class such that there exists \(i \in C\) such 
+  that \(i\) is recurrent. Then \(C\) is closed. 
+\end{prop}
+\proof
+  Suppose otherwise, then, there exists some \(j \in \mathcal{E} \setminus C\) 
+  such that \(p_{ij} > 0\) and so \(i \to j\). Now, as \(j \not\in C\), 
+  \(i \not\leftrightarrow j\) and so \(j \not\to i\), and hence, 
+  \[\{X_m = j\} \subseteq \bigcap_{n \ge m} \{X_n \neq i\}.\]
+  With that, we have \(0 < \mathbb{P}(X_m = j \mid X_0 = i) \le \mathbb{P}
+  (\bigcap_{n \ge m} \{X_n \neq i\}) = 0\) \#.
+\qed
+
+With that, we can conclude that a state space is uniquely partitioned into 
+transient communicating classes and the closed irreducible sets.
