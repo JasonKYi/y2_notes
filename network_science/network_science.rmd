@@ -643,6 +643,41 @@ of \(\lambda_1\).
   \(\infty\)-norm).
 \end{remark}
 
+## Centrality
+
+While the modularity of a graph provides us with a measure of how well a partition 
+fit for a particular network, the partition with the largest modularity is not 
+necessarily the best partition for a particular use case. Considering the following 
+situation.
+
+Suppose \(G = (V, E)\) is a network and let \(I \sqcup J = V\) and denote 
+\(L_I\) the number of links connecting nodes within \(I\), \(L_{IJ}\) the 
+number of links connecting nodes between \(I\) and \(J\), \(K_I\) the 
+number of stubs in \(I\) and \(M_{IJ}\) the modularity of the partition 
+of \(\{I, J\}\), that is \(M_{IJ} = M_I + M_J). Then, by definition 
+\[M_I = \frac{1}{K}(2L_I - K_I^2 / K) ; \hspace{2mm} M_J = \frac{1}{K}(2L_J - K_J^2 / K),\]
+and 
+\[M_{IJ} = \frac{1}{K} (2L_I + 2L_J + 2L_{IJ} - (K_I + K_J)^2 / K),\]
+and so, by expanding the parenthesis,
+\[M_{IJ} = M_I + M_J + \frac{2}{K}(L_{IJ} - (K_IK_J) / K).\]
+
+Thus, we see that if \(L_{IJ} > K_I K_J / K\) then the modularity of the 
+partition is less than the modularity of not partitioning at all. This is can 
+cause a problem since this might result in different partitions depending on 
+the size of the community one is working with. To solve this problem, we 
+shall take a look at the method of centrality that measures the importance of 
+links within communities.
+
+\begin{definition}[Centrality]
+  Let \(G = (V, E)\) be an undirected connected graph and let \(n_i(a, b)\) be the 
+  number of distinct shortest paths connecting \(a\) to \(b\) through \(i\) for 
+  some \(a, b, i \in V\). Furthermore, let \(p_{ab}\) be the number of total 
+  number of distinct shortest paths between \(a\), and \(b\) for \(a \neq b\) 
+  and 1 if \(a = b\). Then, the centrality of the node \(i \in V\) is 
+  \[x_i = \sum_{a \in V} \sum_{b \in V} \frac{n_i(a, b)}{p_{ab}}.\]
+ \end{definition}
+
+
 \newpage
 # Random Networks
 
