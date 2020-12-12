@@ -98,123 +98,20 @@
 }
 \newpage
 
-\hypertarget{introduction}{%
-\section{Introduction}\label{introduction}}
+\hypertarget{vector-spaces}{%
+\section{Vector Spaces}\label{vector-spaces}}
 
-As we have learnt from last year, linear algebra is a important subject
-regarding matrices, vector spaces, linear maps, and this year we will
-also take a look at some geometrical interpretations of these concepts.
+We continue from last year and examine some properties about vector
+spaces.
 
-\hypertarget{matrices}{%
-\subsection{Matrices}\label{matrices}}
-
-\begin{definition} [Similar matrices]
-  Let \(A, B \in \mathbb{F}^{n \times n}\) for some field \(\mathbb{F}\). 
-  We say \(A\) is similar to \(B\) if and only if there exists some 
-  \(P \in \mathbb{F}^{n \times n}\) such that, 
-  \[B = P^{-1} A P.\]
-\end{definition}
-
-We recall that \emph{similar} is an equivalence relation and similar
-matrices shares many useful properties such as
-
-\begin{itemize}
-  \item same determinant
-  \item same characteristic polynomial
-  \item same Eigenvalues
-  \item same rank
-\end{itemize}
-
-and many more. As similar matrices share so many properties, one major
-aim in linear algebra is to find a ``nice'' matrix \(B\) given any
-arbitrary square matrix \(A\) such that \(A\) and \(B\) are similar. We
-first saw a version of this question last year through the
-\emph{diagonalisation} of matrices. However, as we have seen, not all
-matrices are diagonalisable, therefore, in this course, we will take a
-look at some \emph{weaker} versions that are more general.
-
-A version of our aim is the triangular theorem which states that; given
-\(A \in \mathbb{C}^{n \times n}\) (note that this theorem is not true
-for arbitrary field), there exists (and not uniquely) some upper
-triangular matrix \(B \in \mathbb{C}^{n \times n}\) such that \(A\) is
-similar to \(B\).
-
-Another version of this aim is the \emph{Jordan Canonical Form} theorem.
-It turns out if \(A \in \mathbb{C}^{n \times n}\), then \(A\) is similar
-to a \emph{unique} matrix in the Jordan canonical form. This theorem is
-powerful due to the canonical nature of this theorem. One immediate
-result of this theorem is that we can check whether two matrices are
-similar to each other by checking where or not they have the same
-\emph{JCF} (which is computationally easy to do).
-
-However, we see that neither of the above version are theorems over
-arbitrary fields. The \emph{Rational Canonical Form} attempts to solve
-this.
-
-\begin{definition} [Companion matrix]
-  Given an arbitrary field \(\mathbb{F}\), \(p \in \mathbb{F}[X]\) such that 
-  \(p\) is monic (i.e. the coefficient of the highest term of \(p\) is 1) and 
-  \(\deg p = k\), the companion matrix of \(p\) is the the \(k \times k\) matrix 
-  \[C(p) =
-    \begin{bmatrix}
-      0 & 0 & 0 & \cdots & 0 & -a_0 \\
-      1 & 0 & 0 & \cdots & 0 & -a_1 \\
-      0 & 1 & 0 & \cdots & 0 & -a_2 \\
-       &  & \ddots & \ddots & \vdots & \vdots \\
-      0 & 0 & 0 & \cdots & 1 & -a_{k - 1}
-    \end{bmatrix}  
-  \]
-  where \(a_i\) is the coefficient of \(p\) of the term \(X^i\) in 
-  \(\mathbb{F}\).
-\end{definition}
-
-The companion matrix is a nice matrix and it we can in fact show that
-the characteristic polynomial of the companion matrix of some \(p\) is
-\(p\).
-
-\begin{theorem}
-  Let \(A \in \mathbb{F}^{n \times n}\) with characteristic polynomial \(p\). 
-  Then, there exists a polynomial factorisation such that 
-  \(p = \prod_{i = 1}^k p_i\) and
-  \[ A \sim
-    \begin{bmatrix}
-      C(p_1) & 0 & \cdots & 0 \\
-      0 & C(p_2) & \cdots & 0 \\
-      \vdots & \vdots & \ddots & \vdots \\
-      0 & 0 & \cdots & C(p_k)
-    \end{bmatrix}.
-  \]
-\end{theorem}
-
-Furthermore, it turns out this factorisation is unique under certain
-assumptions which we will take a look at in the course.
-
-\hypertarget{geometry}{%
-\subsection{Geometry}\label{geometry}}
-
-Recall the dot product on \(\mathbb{R}^n\) where given
-\(u, v \in \mathbb{R}^n\),
-\(\langle u, v \rangle = \sum_{i = 1}^n u_i v_i\). Furthermore, recall
-we also took a look at \emph{orthogonal} and \emph{symmetric} matrices
-last year. All of these, of course, has geometric interpretations and we
-will in this part of the course generalise and axiomatise these to the
-theory of \emph{inner product spaces} of \(V\) over \(\mathbb{R}\). We
-will also extend this theory to arbitrary fields \(\mathbb{F}\) - the
-\emph{Theory of Bilinear Forms}.
-
-\newpage
-
-\hypertarget{more-on-vector-spaces}{%
-\section{More on Vector Spaces}\label{more-on-vector-spaces}}
-
-From this point forward, we write \(\sum \mu S\) as a shorthand for
+We will from this point forward write \(\sum \mu S\) as a shorthand for
 \(\sum_{s \in S} \mu_s s\) for some suitable set \(S\) and indexed value
 \(\mu\). We will also write \(T \in \mathop{\mathrm{End}}(V)\) for \(T\)
 is an endomorphism of \(V\), that is, a linear map \(T : V \to V\).
 
-\hypertarget{algebraic-geometric-multiplicities-of-eigenvalues}{%
-\subsection{Algebraic \& Geometric Multiplicities of
-Eigenvalues}\label{algebraic-geometric-multiplicities-of-eigenvalues}}
+\hypertarget{algebraic-geometric-multiplicities}{%
+\subsection{Algebraic \& Geometric
+Multiplicities}\label{algebraic-geometric-multiplicities}}
 
 We recall some basic definitions and properties of Eigenvectors.
 
@@ -1621,8 +1518,8 @@ between the conjugacy classes of \(GL_n(\mathbb{F})\) and the set of
 
 \newpage
 
-\hypertarget{geometry-1}{%
-\section{Geometry}\label{geometry-1}}
+\hypertarget{geometry}{%
+\section{Geometry}\label{geometry}}
 
 \hypertarget{dual-space}{%
 \subsection{Dual Space}\label{dual-space}}
@@ -2206,5 +2103,269 @@ The resulting basis is an orthonormal basis of \(V\) since
 \(V = \bigoplus E_{\lambda_i}\) (by primary decomposition and the
 fundamental theorem of algebra) and by part 2 of lemma
 \ref{spectral_lemma}.
+
+\hypertarget{bilinear-quadratic-forms}{%
+\subsection{Bilinear \& Quadratic
+Forms}\label{bilinear-quadratic-forms}}
+
+We have so far examined geometric properties of vector spaces over real
+and complex fields with the inner product. We will now generalise this
+to arbitrary fields with the bilinear forms and later the quadratic
+forms.
+
+While working with the inner product space, we were required the
+positive definite axiom, i.e.~for all \(v \in V \setminus \{0\}\),
+\(\langle v, v \rangle > 0\). Straight away, we see that this axiom
+cannot be be generalised to fields that are not totally ordered and so,
+we will drop this axiom in our definition.
+
+\begin{definition}[Bilinear Form]
+  Let \(V\) be a vector space of some field \(\mathbb{F}\). Then the map
+  \(\langle \cdot, \cdot \rangle : V \times V \to \mathbb{F}\) is a 
+  bilinear form if and only if it is both left and right linear, that is, for all 
+  \(\alpha, \beta \in \mathbb{F}\), \(v_1, v_2, w \in V\), 
+  \(\langle \alpha v_1 + \beta v_2, w \rangle = \alpha \langle v_1, w \rangle 
+    + \beta \langle v_2, w \rangle\).
+\end{definition}
+
+Beware that the bilinear form is not a strict generalisation of the
+inner product as we see that a inner product is not necessarily right
+linear.
+
+\begin{prop}
+  For any field \(\mathbb{F}\) let \(V = \mathbb{F}^n\) and suppose 
+  \(A \in M_n(\mathbb{F})\), then by defining 
+  \(\langle \cdot, \cdot \rangle : V \times V \to \mathbb{F} : 
+  (u, v) \mapsto u^T A v\),
+  \(\langle \cdot, \cdot \rangle\) is a bilinear form.
+\end{prop}
+
+The statement is true staright away by properties of matrix
+multiplications and it turns out, this definition gives all the bilinear
+forms of \(\mathbb{F}^n\). By defining
+\((A)_{ij} := \langle v_i, v_j \rangle\), for some basis of \(V\),
+\(B\), one can immediately see that this matrix captures all bilinear
+forms; and for \(\mathbb{F}^n\) one can simply choose \(B\) as the
+standard basis.
+
+\begin{definition}[Symmetric and Skew-Symmetric]
+  A bilinear form \(\langle \cdot, \cdot \rangle\) on the vector space \(V\) 
+  is symmetric if and only if for all \(u, v \in V\), 
+  \(\langle u, v \rangle = \langle v ,u \rangle\); and is skew-symmetric if 
+  and only if for all \(u, v \in V\), \(\langle u, v \rangle = - \langle v, u \rangle\).
+\end{definition}
+
+By definition, we see that, for a skew-symmetric bilinear form, for all
+\(v\), we have \(\langle v, v \rangle = -\langle v, v \rangle\), that is
+\(2 \langle v, v \rangle = 0\). This does \emph{not} imply that
+\(\langle v, v \rangle = 0\) since, for example in \(\mathbb{F}_2\), it
+is possible for \(\langle v, v \rangle = 1\). However, we can say that
+\(\langle v, v \rangle = 0\) if and only if \(2 \neq 0\) in the
+particular field (that is \(\mathbb{F}\) has
+characteristic\footnote{We recall from 
+\textit{groups and rings} that the characteristic of a ring is the smallest 
+natural number \(n\) such that the sum of \(n\) 1s equals 0 (the characteristic 
+is defined to be 0 if such \(n\) does not exist).} 2) as non-zero
+elements of a field has multiplicative inverses.
+
+\begin{prop}
+  Let \(V\) be a vector space over the field \(\mathbb{F}\) with the skew-symmetric 
+  bilinear form \(\langle \cdot, \cdot \rangle\).
+  If \(\text{char}(\mathbb{F}) \neq 2\), then for all \(v \in V\), 
+  \(\langle v, v \rangle = 0\).
+\end{prop}
+\proof
+
+See above. \qed
+
+A nice result about the symmetric and skew-symmetric bilinear forms is
+the following.
+
+\begin{prop}
+  Let \(V\) be a vector space over the field \(\mathbb{F}\) with the 
+  bilinear form \(\langle \cdot, \cdot \rangle\). Then, 
+  \(\langle \cdot, \cdot \rangle\) is symmetric or skew-symmetric if and only 
+  if for all \(u, v \in V\), \(\langle u, v \rangle = 0 \iff 
+  \langle v, u \rangle = 0\).
+\end{prop}
+
+Since the above proposition demonstrates that the symmetric and
+skew-symmetric bilinear forms are the only bilinear forms that satisfy
+the particular restriction, we shall only consider symmetric and
+skew-symmetric bilinear forms when extending the notion of orthogonality
+into bilinear forms.
+
+\begin{definition}
+  Let \(V\) be a vector space over the field \(\mathbb{F}\) with the 
+  symmetric/skew-symmetric bilinear form \(\langle \cdot, \cdot \rangle\). 
+  Then given \(W \le V\), we define the perpendicular subspace of \(W\) to be 
+  \[W^\bot := \{v \in V \mid \langle v, w \rangle = 0, \forall w \in W\}.\]
+\end{definition}
+
+Lastly, to compensate for our inability to restrict the positive
+definite axiom onto our bilinear forms, we define the following notion.
+
+\begin{definition}[Non-Degenerate]
+  A bilinear form \(\langle \cdot, \cdot \rangle\) on the vector space \(V\) 
+  is non-degenerate if and only if \(V^\bot = \{0_V\}\).
+\end{definition}
+
+There is a easy way to see whether or not a bilinear form is degenerate,
+that is, it is degenerate if and only if the matrix associated with the
+bilinear form with respect to any basis is degenerate, i.e.~it is not
+invertible (see problem sheet).
+
+The non-degenerate condition on bilinear forms results in similar
+notions as that of the inner product and allows us to prove similar
+propositions which we had proved for inner product spaces.
+
+\begin{prop}
+  Let \(V\) be a finite dimensional vector space over the field \(\mathbb{F}\) 
+  equipped with the non-degenerate bilinear form \(\langle \cdot, \cdot \rangle\). 
+  Then, for all \(v \in V\), \(f_v : V \to \mathbb{F} : u \mapsto \langle v, u \rangle\) 
+  is a linear functional in the dual space \(V^*\) and 
+  \(\phi : V \to V^* : v \mapsto f_v\) forms an vector space isomorphism.
+  Furthermore, for all \(W \le V\), \(\dim W^\bot = \dim V - \dim W\).
+\end{prop}
+\proof
+
+\(\phi\) is trivially linear and so it suffices to show it is bijective.
+We recall that a linear map is injective if and only if it has a trivial
+kernel, and so, since \(\langle \cdot, \cdot \rangle\) is
+non-degenerate, for all \(v \in \ker \phi\), \(\phi(v) = f_v = 0\), and
+so, for all \(u \in V\), \(\langle v, u \rangle = 0\) implying
+\(v = 0\). Now, as \(\dim V = \dim V^*\), we have \(\phi\) is an
+isomorphism. Then, the second part of the proof follows straight away by
+rank-nullity. \qed
+
+Note that for inner product spaces, we also showed that
+\(V = W \oplus W^\bot\); this is not necessarily true for non-degenerate
+bilinear forms. To find an example this we can simply consider any
+skew-symmetric bilinear forms and so \(\langle v, v \rangle = 0\) and
+hence, for all \(w \in W \le V\), \(w \in W \cap W^\bot\).
+
+For bilinear forms, we unfortunately cannot in general find a
+orthonormal basis of the vector space as, say for example, any
+skew-symmetric matrix, for all \(v \in V\),
+\(\langle v, v \rangle = 0\). So, to formulate this question properly
+such that there exists a nice basis which we can work with, let us first
+consider the following.
+
+\begin{prop}
+  Let \(V\) be a vector space over \(\mathbb{F}\) equipped with the non-degenerate 
+  bilinear form \(\langle \cdot, \cdot \rangle\). Suppose we have the bases of 
+  \(V\), \(B_1, B_2\) and let \(P\) be the change of basis matrix from \(B_2\) 
+  to \(B_1\), then, if \(A\) is the matrix associated with the bilinear form with 
+  respect to the basis \(B_1\), then \(P^TAP\) is the matrix associated with the 
+  bilinear form with respect to the basis \(B_2\).
+\end{prop}
+\proof
+
+For all \(u, v \in V\), we have
+\[\langle u, v \rangle = [u]_{B_1}^T [v]_{B_1} = (P[u]_{B_2})^T A (P[v]_{B_2}) 
+  = [u]_{B_2}^T(P^TAP)[v]_{B_2},\] and so, \(P^TAP\) is the matrix
+associated with the bilinear form with respect to the basis \(B_2\).
+\qed
+
+\begin{definition}[Congruent]
+  Let \(\mathbb{F}\) be some field and let \(A, B \in M_n(\mathbb{F})\), then 
+  we say \(A, B\) are congruent if and only if there exists some 
+  \(P \in M_n(\mathbb{F})\) such that \(B = P^TAP\).
+\end{definition}
+
+By routinely checking, we see that congruence if an equivalence relation
+and, of course, all the nice properties associated with equivalence
+relations.
+
+\begin{theorem}
+  Let \(V\) be a finite dimensional over the field \(\mathbb{F}\) where 
+  \(\text{char}(\mathbb{F}) \neq 2\) and suppose \(\langle \cdot, \cdot \rangle\) 
+  is a non-degenerate skew-symmetric bilinear form on \(V\), then 
+  \begin{itemize}
+    \item there exists \(m \in \mathbb{N}\) such that \(\dim V = 2m\); 
+    \item there exists a basis \(B := \{e_1, f_1, \cdots, e_m, f_m\}\) such that 
+      the matrix associated with the bilinear form with respect to \(B\) is 
+      \(J_m = \bigoplus_{i = 1}^m A\) where 
+      \[A = \begin{bmatrix} 0 & 1 \\ -1 & 0 \end{bmatrix},\]
+      that is \(\langle e_i, f_i \rangle = 1\), \(\langle e_i, f_i \rangle = -1\) 
+      and \(\langle e_i, e_i \rangle = \langle f_i, f_i \rangle = 
+      \langle e_i, f_j \rangle = \langle f_i, e_j \rangle = 0\) for all 
+      \(i \neq j\).
+  \end{itemize}
+  This basis is often called the symplectic basis and the non-degenerate skew-symmetric 
+  bilinear form itself is called a symplectic form.
+\end{theorem}
+\proof
+
+We induct on the dimension of \(V\). If \(\dim V = 1\), then we we
+cannot have a skew-symmetric bilinear form on \(V\), and thus, by
+\emph{exfalso}, we have the statement is true for \(\dim V = 1\). Let us
+now suppose the inductive hypothesis and let \(\dim V = n > 1\). We can
+choose an arbitrary vector \(e_1\) and then, as
+\(\dim \text{sp}\{e_1\}^\bot = \dim V - \dim \text{sp}\{e_1\} = n - 1 < n\),
+\(V \setminus \text{sp}\{e_1\}^\bot\) is non-empty, and so, we can
+simply choose an arbitrary vector
+\(f_1 \in V \setminus \text{sp}\{e_1\}^\bot\) and scale it such that
+\(\langle e_1, f_1 \rangle = 1\). We see that \(\{e_1, f_1\}\) is
+linearly independent as otherwise, there exists some
+\(\lambda \in \mathbb{F}\) such that \(f_1 = \lambda e_1\) and so,
+\(\langle e_1, f_1 \rangle =  \lambda\langle e_1, e_1 \rangle = 0\) as
+the bilinear form is skew-symmetric. \#
+
+With the above procedure, if \(\dim V = 2\), then we are done, so
+suppose \(\dim V > 2\), and let \(W := \text{sp}\{e_1, f_1\}\). We see
+that it suffices to show that \(V = W \oplus W^\bot\) since, if this is
+the case, we can simply apply the inductive hypothesis to \(W^\bot\) (we
+know that the restricted bilinear form on \(W^\bot\) is also
+non-degenerate since if there exists a vector \(v\) such that for all
+\(w \in W^\bot\), then \(v \in (W^\bot)^\bot = W\) contradicting the
+direct sum condition). Let \(w \in W \cap W^\bot\), then there exists
+\(\alpha, \beta \in \mathbb{F}\) such that
+\(w = \alpha e_1 + \beta e_2\) and by considering
+\(0 = \langle e_1, w \rangle = \alpha \langle e_1, e_1 \rangle + \beta \langle e_1, f_1 \rangle\)
+and
+\(0 = \langle f_1, w \rangle = \alpha \langle f_1, e_1 \rangle + \beta \langle f_1, f_1 \rangle = -\alpha\),
+we have \(\alpha = \beta = 0\) and so \(w = 0\) and hence,
+\(V = W \oplus W^\bot\). \qed
+
+With this theorem, we can conclude that there exists a unique symplectic
+form on any even dimensional vector spaces up to congruence.
+
+\begin{lemma}
+  Let \(V\) be a finite dimensional over the field \(\mathbb{F}\) where 
+  \(\text{char}(\mathbb{F}) \neq 2\) and suppose \(\langle \cdot, \cdot \rangle\) 
+  is a non-degenerate symmetric bilinear form on \(V\), then there exists some 
+  \(v \in V\) such that \(\langle v, v \rangle \neq 0\).
+\end{lemma}
+\proof
+
+Suppose otherwise that for all \(v \in V\) such that
+\(\langle v, v \rangle = 0\), then, for all \(u, v \in V\),
+\(0 = \langle u + w, u + w \rangle =  \langle u, u \rangle + \langle w, w \rangle + 2\langle u, w \rangle  = 2\langle u, w \rangle\).
+So, as the characteristic of \(\mathbb{F}\) is not 2,
+\(\langle u, w \rangle = 0\) for all \(u, v \in V\). But this means that
+the bilinear form is degenerate. \# \qed
+
+\begin{theorem}
+  Let \(V\) be a finite dimensional over the field \(\mathbb{F}\) where 
+  \(\text{char}(\mathbb{F}) \neq 2\) and suppose \(\langle \cdot, \cdot \rangle\) 
+  is a non-degenerate symmetric bilinear form on \(V\), then \(V\) has an orthogonal 
+  basis \(B := \{v_1, \cdots, v_n\}\), i.e. \(B\) is a basis such that 
+  \(\langle v_i, v_j \rangle = 0\) whenever \(i \neq j\).
+\end{theorem}
+\proof
+
+We induct on the \(\dim V = n\). The result is clear for \(n = 1\) so
+let us assume the inductive hypothesis for all \(n \le k\). By the above
+lemma, let \(v_1 \in V\) such that \(\langle v_1, v_1 \rangle \neq 0\).
+Then, by defining \(W := \text{sp}\{v_1\}\) it suffices to show that
+\(V = W \oplus W^\bot\) since if this is the case, we can apply the
+inductive hypothesis to \(W^\bot\). Suppose \(w \in W \cap W^\bot\)
+then, there exists \(\lambda \in \mathbb{F}\) such that
+\(w = \lambda v_1\) and
+\(0 = \langle v_1, w \rangle =  \lambda \langle v_1, v_1 \rangle\).
+Since \(\langle v_1, v_1 \rangle \neq 0\) we have \(\lambda = 0\) and so
+\(w = 0\) and \(W \cap W^\bot = \varnothing\) so
+\(V = W \oplus W^\bot\). \qed
 
 \end{document}

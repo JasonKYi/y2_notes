@@ -615,10 +615,7 @@ Note that we can optimize the algorithm by making sure that we do not go
 back to previously visited nodes but that's simply an implementation
 issue on how one can achieve this.
 
-\hypertarget{analysing-complexity}{%
-\subsection{Analysing Complexity}\label{analysing-complexity}}
-
-We recall from year 1 computing the definitions of big-\(O\) and
+We quickly recall from year 1 computing the definitions of big-\(O\) and
 big-\(\Omega\) notations.
 
 \begin{definition}[Big-\(O\) notation]
@@ -784,7 +781,7 @@ depending on the size of the community one is working with. To solve
 this problem, we shall take a look at the method of centrality that
 measures the importance of links within communities.
 
-\begin{definition}[Centrality]
+\begin{definition}[Node Betweenness Centrality]
   Let \(G = (V, E)\) be an undirected connected graph and let \(n_i(a, b)\) be the 
   number of distinct shortest paths connecting \(a\) to \(b\) through \(i\) for 
   some \(a, b, i \in V\). Furthermore, let \(p_{ab}\) be the number of total 
@@ -792,6 +789,68 @@ measures the importance of links within communities.
   and 1 if \(a = b\). Then, the centrality of the node \(i \in V\) is 
   \[x_i = \sum_{a \in V} \sum_{b \in V} \frac{n_i(a, b)}{p_{ab}}.\]
  \end{definition}
+
+Similarly, we can define a notion of centrality for edges.
+
+\begin{definition}[Edge Betweenness Centrality]
+  Taking all notations from above, given an edge \(\alpha\beta \in E\) where 
+  \(\alpha, \beta \in V\), the edge betweenness is 
+  \[y_{\alpha\beta} = \sum_{a \in V} \sum_{b \in V} \frac{m_{\alpha\beta}(a, b)}{p_{ab}},\]
+  where \(m_{\alpha\beta}(a, b)\) for \(a, b \in V\) is the number of unique 
+  shortest paths from \(a\) to \(b\) passing through the edge \(\alpha\beta\) while 
+  \(p_{ab}\) is the total number of unique shortest paths between \(a\) and \(b\).
+\end{definition}
+
+With this, we can think of a natural method for finding communities
+within a network, that is, removing the edges with highest centrality,
+and so, breaking the network into smaller partitions. This is called the
+Girvan-Newman community detection method. This is a powerful method as
+it allows us to easily find higher numbers of partitions, however, it is
+computationally expensive as we are required to compute the edge
+centrality for all of edges (time complexity of
+\(O(\left|V\right| (\left|V\right| + \left|E\right|))\) to compute the
+edge centrality of all edges).
+
+One obvious notion of centrality one might come up with is the degree
+centrality, that is, the centrality of a node in a network is simply its
+degree. This notion has some drawbacks as this notion will result in a
+node having 50 neighbours of degree 1 having the same centrality as a
+node with 50 neighbours of degree 50. To solve this problem while
+retaining the original idea of using a node's degree for its centrality,
+we can define the eigenvector centrality.
+
+\begin{definition}[Eigenvector Centrality]
+  Let \(G = (V, E)\) be an undirected connected graph with adjacency matrix \(A\), 
+  then the eigenvector centrality of some node is defined as \(c(x_i)\) for all 
+  \(x_i \in V\) such that,
+  \[c(x_i) = \alpha \sum_{j = 1}^N A_{ij} c(x_j),\]
+  is satisfied for some \(\alpha > 0\). 
+\end{definition}
+
+To see why this is called the eigenvector centrality, we observe that,
+by writing the equation in matrix form, the centrality equation becomes
+\(Ac(x) = \alpha^{-1}c(x)\) and so, becomes an eigenvalue problem (the
+existence of a solution is guaranteed by Perron-Frobenius).
+
+While the eigenvector centrality works reasonably well for undirected
+graphs, it works less well for directed graphs. In general, for directed
+graphs, we consider nodes with more edges pointing into it to be more
+important (say we would consider an influential webpage linking to my
+personal page to be more important and me linking to their page). The
+Katz centrality extends the eigenvalue centrality by assigning a base
+centrality to each node.
+
+\begin{definition}[Katz Centrality]
+  Taking the notations as before, the Katz centrality of a node \(x_i\) is 
+  simply \(c(x_i)\) satisfying 
+  \[c(x_i) = \alpha \sum_{j = 1}^N A_{ij} c(x_j) + \beta,\]
+  for some constants \(\alpha, \beta > 0\). In general, we take \(\beta = 1\).
+\end{definition}
+
+By writing the equation in matrix form, we have
+\((I - \alpha A) c(x) = \mathbf{1}\), and so, \(c(x)\) has a solution if
+and only if \(0 \neq \det(I - \alpha A) = \det(\alpha^{-1} I - A)\) that
+is \(\alpha^{-1}\) is not an eigenvalue of \(A\).
 
 \newpage
 
