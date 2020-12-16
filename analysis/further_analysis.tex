@@ -92,6 +92,8 @@
 \setcounter{tocdepth}{2}
 \tableofcontents
 }
+\newpage
+
 \hypertarget{euclidean-spaces}{%
 \section{Euclidean Spaces}\label{euclidean-spaces}}
 
@@ -598,6 +600,8 @@ dimensions.
   \(f(x, y) = 0\) if and only if \(y = g(x)\) for some \(x \in A\).
   Furthermore, \(g\) is continuously differentiable.
 \end{theorem}
+
+\newpage
 
 \hypertarget{metric-and-topological-spaces}{%
 \section{Metric and Topological
@@ -1542,7 +1546,293 @@ they are homeomorphic, by say \(f\), we have the restriction
 homeomorphism on the subspaces
 \(\mathbb{R}^2 \setminus \{0\} \cong \mathbb{R} \setminus \{f(0)\}\).
 But, we can easily see that while \(\mathbb{R}^2 \setminus \{0\}\) is
-path-connected, \(\mathbb{R} \setminus \{f(0)\}\) is not, \#.
+path-connected, \(\mathbb{R} \setminus \{f(0)\}\) is not \#.
+
+\hypertarget{compactness}{%
+\subsection{Compactness}\label{compactness}}
+
+\begin{definition}[Open Cover]
+  Let \((X, \mathcal{T})\) be a topological space and suppose \(Y \subseteq X\). 
+  Then, the collection of open sets \(\mathcal{C} \subseteq \mathcal{T}\) is 
+  called an open cover of \(Y\) if and only if 
+  \[Y \subseteq \bigcup_{U \in \mathcal{C}} U\]
+  and we write \(\bigcup \mathcal{C} = \bigcup_{U \in \mathcal{C}} U\) for shorthand. 
+  If there exists some \(\mathcal{D} \subseteq \mathcal{C}\) such that 
+  \(\mathcal{D}\) is also an open cover of \(Y\) then we call \(\mathcal{D}\) a 
+  subcover of \(\mathcal{C}\) for \(Y\).
+\end{definition}
+
+\begin{definition}[Compactness]
+  Let \((X, \mathcal{T})\) be a topological space and suppose \(Y \subseteq X\). 
+  Then we call \(Y\) compact if and only if every open cover of \(Y\) has a finite 
+  subcover.
+\end{definition}
+
+As with other definitions for topological spaces, the notion of
+compactness extends naturally to the metric spaces.
+
+\begin{prop}
+  In \((\mathbb{R}, d_1)\), closed intervals in the form of \([a, b]\) where 
+  \(a \le b\) are compact. 
+\end{prop}
+\proof
+
+Let \(\mathcal{C}\) be an open cover of \([a, b]\), then we would need
+to show that \(\mathcal{C}\) has an finite open subcover. Suppose that
+we define,
+\(I := \{s \in [a, b] \mid \exists \text{ finite open subcover for } [a, s]\}\),
+then, for all \(s \in I\) we have \(\mathcal{C}\) is an open cover of
+\([a, s]\) as \([a, s] \subseteq [a, b] \subseteq \bigcup \mathcal{C}\).
+Trivially, we have \(I \neq \varnothing\) since \(a \in I\) as
+\([a, a] = \{a\}\), and so, as \(\mathcal{C}\) covers \([a, b]\), there
+exists \(U \in \mathcal{C}\) such that \(a \in U\) and so
+\([a, a] \subseteq U\) implying \(\{U\}\) is a finite open subcover of
+\(\mathcal{C}\), and furthermore, \(I\) is bounded above by \(b\) as
+\(I \subseteq [a, b]\); hence, by completeness, there exists
+\(r \in \mathbb{R}\), \(r = \sup I\).
+
+Now, it suffices to show that \(r \in I\) and \(b = r\). First, we see
+that \(r > a\) since if \(a \in U \in \mathcal{C}\), then there exists
+some \(\delta > 0\) such that \([a, a + \delta) \subseteq U\) implying
+\(a + \delta \in I\). Now, let \(U \in \mathcal{C}\) such that
+\(r \in U\), then, as \(U\) is open, there exists some \(\delta > 0\)
+such that \((r - \delta, r + \delta) \cap [a, b] \subseteq U\). Then, as
+\(r - \delta < r\), by the definition of the supremum, there exists some
+\(p \in [r - \delta, r)\) such that \(p \in I\). Now, as \(p\) in \(I\),
+there exists a finite open subcover \(\mathcal{D}\) of \(\mathcal{C}\)
+for \([a, p]\) and so, \(\mathcal{D} \cup \{U\}\) is a finite open
+subcover of \([a, r]\) and so, \(r \in I\). However, by the same cover,
+if there exists \(p \in (r, b)\), then, \(\mathcal{D} \cup \{U\}\) is
+also a finite open subcover of \([a, p]\) and hence, \(p \in I\)
+contradicting the supremum condition. So \((r, b) = \varnothing\) and
+hence \(r = b\). \qed
+
+\begin{prop}\label{compact_of_closed}
+  Let \((X, \mathcal{T})\) be a topological space and \(Y \subseteq X\). 
+  If \(X\) is compact and \(Y\) is closed then \(Y\) is also compact.
+\end{prop}
+\proof
+
+Let \(\mathcal{C}\) be an open cover for \(Y\). Then
+\(\mathcal{C} \cup \{Y^c\}\) is an open cover for \(X\) as \(Y\) is
+closed and so \(Y^c\) is open and furthermore,
+\(X = Y \cup Y^c \subseteq \bigcup \mathcal{C} \cup Y\). Now, as \(X\)
+is compact, there is a finite subcover \(\mathcal{D}\) of
+\(\mathcal{C} \cup \{Y^c\}\) for \(X\). If \(Y^c \not\in \mathcal{D}\),
+then \(\mathcal{D}\) is simply a finite open subcover of \(\mathcal{C}\)
+for \(Y\). On the other hand, if \(Y^c \in \mathcal{D}\), I claim
+\(\mathcal{D} \setminus \{Y^c\}\) is a finite open subcover of
+\(\mathcal{C}\) for \(Y\). This is because, as \(\mathcal{D}\) covers of
+\(X\), we have, for all \(y \in Y\),
+\(y \in \bigcup \mathcal{D} =  \bigcup \mathcal{D} \setminus \{Y^c\} \cup \{Y^c\}\),
+and since \(y \not in Y^c\),
+\(y \in \bigcup \mathcal{D} \setminus \{Y^c\}\). So, \(Y\) is compact.
+\qed
+
+\begin{prop}\label{product_compact}
+  The product space of two compact (metric/topological) spaces is also compact.
+\end{prop}
+\proof
+
+See problem sheet. \qed
+
+We will now look at compactness specifically with relation to metric
+spaces and we shall generalise the result from Heine-Borel last year to
+higher dimensional Euclidean spaces.
+
+\begin{prop}\label{closed_of_compact}
+  Let \((X, d)\) be a metric space and let \(Y \subseteq X\). Then, if \(Y\) is 
+  compact then it is closed.
+\end{prop}
+\proof
+
+To show \(Y\) is closed, it suffices to show that \(X \setminus Y\) is
+open. Let \(x \in X \setminus Y\) and for all \(y \in Y\) let
+\(\delta(y) =  \frac{1}{2}d(x, y) > 0\) and so,
+\(B_{\delta(y)}(x) \cap B_{\delta(y)}(y) = \varnothing\). Now, as
+\(\mathcal{C} := \{B_{\delta(y)}(y) \mid y \in Y\}\) forms an open cover
+of \(Y\), by compactness of \(Y\), there exists a finite index set \(I\)
+such that \(\mathcal{D} := \{B_{\delta(y_i)}(y_i) \mid i \in I\}\) is a
+finite open subcover of \(\mathcal{C}\) for \(Y\). Now, by choosing
+\(\delta := \min \{\delta(y_i) \mid i \in I\}\), we have
+\(B_\delta(x) \subseteq X \setminus Y\) since if otherwise, there exists
+\(y \in Y \cap B_\delta(x) \subseteq \bigcup \mathcal{D} \cap B_\delta(x)\),
+so there exists some \(i \in I\) such that
+\(y \in B_{\delta(y_i)}(y_i)\). But, by construction
+\(\varnothing = B_{\delta(y_i)}(y_i) \cap B_{\delta(y_i)}(x)  \supseteq B_{\delta(y_i)}(y_i) \cap B_{\delta}(x)\)
+\#. \qed
+
+The above statement can be generalised such that compact subsets of any
+Hausdorff topological space is closed.
+
+\begin{definition}[Bounded]
+  Let \((X, d)\) be a metric space and suppose \(Y \subseteq X\). We say that 
+  \(Y\) is bounded in \(X\) if and only if there exists some \(M \in \mathbb{R}\), 
+  such that for all \(x, y \in Y\), \(d(x, y) \le M\). Furthermore, if 
+  \(f : S \to X\) be some arbitrary function, then we say \(f\) is bounded if 
+  and only if \(f(S)\) is bounded.
+\end{definition}
+
+\begin{lemma}
+  If \((X, d)\) is a compact metric space, then \(X\) is bounded.
+\end{lemma}
+\proof
+
+Wlog, \(X \neq \varnothing\). Let
+\(\mathcal{C} := \{B_1(x) \mid x \in X\}\). Trivially, \(\mathcal{C}\)
+is an open cover of \(X\) and so, there exists a finite subcover of
+\(\mathcal{C}\) for \(X\),
+\(\mathcal{D} := \{B_1(x_i) \mid i \in I \}\), where \(I\) is a finite
+index set. Since \(I\) is finite, let
+\(K := \max \{d(x_i, x_j) \mid (i, j) \in I^2\}\); then, for all
+\(x, y \in X\), as \(\mathcal{D}\) covers \(X\), there exists
+\(i, j \in I^2\) such that \(x \in B_1(x_i)\) and \(y \in B_1(x_j)\),
+and so,
+\[d(x, y) \le d(x, x_i) + d(x_i, x_j) + d(x_j, y) < 1 + K + 1 = K + 2.\]
+Hence, \(X\) is bounded by \(K + 2\). \qed
+
+\begin{theorem}[Heine-Borel]
+  Consider the Euclidean metric space \(\mathbb{R}^n, d_2\), and let 
+  \(X \subseteq \mathbb{R}^n\). Then \(X\) is compact if and only if \(X\) is 
+  bounded and closed.
+\end{theorem}
+\proof
+
+Suppose \(X\) is compact, then, by the above lemma, we have \(X\) is
+bounded. Furthermore, by proposition \ref{closed_of_compact}, it is also
+closed, and so, we have proved the forward direction.
+
+Suppose now that \(X\) is bounded and compact. Then, there exists some
+\(M \in \mathbb{R}\) such that \(X \subseteq [-N, N]^n\). As we have
+previously shown, \([-N, N] \subseteq \mathbb{R}\) is compact, and so,
+by proposition \ref{product_compact}, so is \([-N, N]^n\). Now, by
+proposition \ref{compact_of_closed}, we have \(X\) is compact. \qed
+
+With Heine-Borel, we have established an easy criterion to check whether
+or not a subset of an Euclidean space is compact. However, we would also
+like to examine arbitrary metric spaces, and so, we shall develop and an
+equivalent notion of compactness that are useful in certain situations.
+However, while this notion can be generalised to topological spaces, it
+is not necessarily equivalent to compactness in topological spaces.
+
+\begin{definition}[Sequential Compactness]
+  Let \((X, d)\) be a metric space. Then, we say \(X\) is sequentially compact 
+  if and only if every sequence within \(X\) has a convergent subsequence.
+\end{definition}
+
+Immediately, by recallying Bolzano-Weierstrass, we have any compact sets
+within an Euclidean space are sequentially compact. This is good new as
+we are looking for an equivalent notion of compactness. We will provide
+a formal proof of this now.
+
+\begin{lemma}
+  Let \((X, d)\) be a metric space and \((x_n)_{n \ge 1} \subseteq X\) be a 
+  sequence. Then, \((x_n)_{n \ge 1}\) has a subsequence which converges in \(X\) 
+  if and only if there exists \(x \in X\) such that for all \(\epsilon > 0\), 
+  \(B_\epsilon(x) \cap \{x_n \mid n \in \mathbb{N}\}\) is not finite.
+\end{lemma}
+\proof
+
+We see that if there exists an convergent subsequence of \((x_n)\), say
+\(x_{n_i} \to x \in X\), we have for all \(\epsilon > 0\), there exists
+\(I \in \mathbb{N}\), such that for all \(i \ge I\),
+\(x_{n_i} \in B_\epsilon(x)\) and so,
+\(\{x_{n_i} \mid i \ge I\} \subseteq B_\epsilon(x)  \cap \{x_n \mid n \in \mathbb{N}\}\)
+which is not finite.
+
+Now suppose there exists \(x \in X\) such that for all \(\epsilon > 0\),
+\(B_\epsilon(x) \cap \{x_n \mid n \in \mathbb{N}\}\) is not finite. Let
+us define the following subsequence. Let \(n_1 = 1\) and for all
+\(i \in \mathbb{N}\), choose the smallest \(n_i \in B_{\frac{1}{i}}(x)\)
+such that \(n_i > n_{i - 1}\). This \(n_i\) exists for all \(i\) since,
+if otherwise, then there exists some \(I \in \mathbb{N}\) such that for
+all \(i \ge I\), \(x_{n_i} \not\in B_{\frac{1}{n}}(x)\) and so,
+\(B_{\frac{1}{n}}(x) \cap \{x_n \mid n \in \mathbb{N}\} \subseteq  \{x_{n_i} \mid i \le I\}\)
+which is finite \#. Now, trivially \(x_{n_i} \to x\), so, we have found
+a subsequence of \((x_n)\) that converges in \(X\). \qed
+
+\begin{theorem}
+  Let \((X, d)\) be a metric space. Then, if \(X\) is compact, it is also 
+  sequentially compact.
+\end{theorem}
+\proof
+
+let \((a_n)_{n \ge 1}\) be a sequence in \(X\). Suppose that \(X\) is
+not sequentially compact, then by the above lemma, for all \(x\) in
+\(X\), there exists some \(\delta_x > 0\) such that
+\(B_{\delta_x}(x) \cap \{a_n \mid n \in \mathbb{N}\}\) is finite. Now,
+by defining the open cover of \(X\),
+\(\mathcal{C} :=  \{B_{\delta_x}(x) \mid x \in X\}\), by compactness,
+there exists some finite index set \(I\), such that
+\(\mathcal{D} := \{B_{\delta_{x_i}}(x_i) \mid i \in I\}\) is a finite
+open subcover of \(\mathcal{C}\) for \(X\). Since, \(\mathcal{D}\) is an
+open cover for \(X\), for all \(n \in \mathbb{N}\), there exists some
+\(i \in I\) such that \(a_n \in B_{\delta_{x_i}}(x_i)\), and so, the set
+\(\{B_{\delta_{x_i}}(x_i) \cap \{a_n \mid n \in \mathbb{N}\} \mid i \in I\}\)
+forms a finite partition of \(\{a_n \mid n \in \mathbb{N}\}\). However,
+as \(\{a_n \mid n \in \mathbb{N}\}\) is not finite, a finite partition
+must contain a infinite block \#. \qed
+
+As mentioned before, the reverse of the above theorem is also true.
+
+\begin{theorem}
+  Let \((X, d)\) be a metric space. Then, if \(X\) is sequentially compact, it 
+  is also compact.
+\end{theorem}
+\proof
+
+See problem sheet. \qed
+
+Let us now take a look at the behaviour of continuous maps between
+compact sets.
+
+\begin{prop}
+  Let \((X, \mathcal{T}_X)\), \((Y, \mathcal{T}_Y)\) be topological spaces and 
+  \(f : X \to Y\) is a continuous map. Then if \(Z \subseteq X\) is compact, 
+  so is \(f(Z)\).
+\end{prop}
+\proof
+
+Given a open cover on \(f(Z)\), by the continuity of \(f\), we can pull
+back the cover onto \(Z\) resulting in a open cover on \(Z\). Now, by
+compactness there exists a finite open subcover of this cover for \(Z\)
+so we simply have to choose the original sets corresponding to this
+finite subcover to receive the finite open subcover for \(f(Z)\). \qed
+
+With this proposition, we can conclude that compactness is also a
+topological property.
+
+From last year, we recall that the property that a continuous map on a
+closed interval is uniformly continuous. Now, with Heine-Borel, we know
+that the closed interval is compact so we wonder whether the result is
+true for arbitrary metric spaces. This turns out to be the case and we
+shall prove that here.
+
+\begin{prop}
+  Every continuous map \(f : X \to Y\) from a compact metric space to another 
+  metric space is uniformly continuous.
+\end{prop}
+\proof
+
+Let \(\epsilon > 0\), then as \(f\) is continuous, for all \(x \in X\),
+there exists some \(\delta_x\) such that for all
+\(y \in B_{\delta_x}(x)\), \(f(y) \in B_{\epsilon / 2}(f(x))\). Now, by
+defining the open cover of \(X\),
+\(\mathcal{C} := \{B_{\delta_x / 2}(x) \mid x \in X\}\), by compactness,
+there exists a finite index set \(I\), such that
+\(\mathcal{D} :=  \{B_{\delta_{x_i} / 2}(x_i) \mid i \in I\}\) is a
+finite open subcover of \(X\). So, by defining
+\(\delta = \frac{1}{2} \min_{i \in I} \delta_i\), we have for all
+\(x \in X\), \(y \in B_\delta(x)\), as \(\mathcal{D}\) is an open cover
+of \(X\), there exists some \(i \in I\) such that
+\(x \in B_{\delta_{x_i} / 2}(x_i)\), and so,
+\(d(x_i, y) \le d(x_i, x) + d(x, y) < \delta_{x_i} / 2 + \delta \le  \delta_{x_i} / 2 + \delta_{x_i} / 2 = \delta_{x_i}\)
+and so, \(d(f(y), f(x_i)) < \epsilon / 2\) and so,
+\(d(f(y), f(x)) \le d(f(y), f(x_i)) +  d(f(x_i), f(x)) < \epsilon / 2 + \epsilon / 2 = \epsilon\)
+where \(d(f(x_i), f(x)) < \epsilon / 2\) since
+\(d(x_i, x) < \delta_{x_i}\). \qed
+
+\newpage
 
 \hypertarget{extras}{%
 \section{Extras}\label{extras}}
