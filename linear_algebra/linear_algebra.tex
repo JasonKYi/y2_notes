@@ -2104,9 +2104,8 @@ The resulting basis is an orthonormal basis of \(V\) since
 fundamental theorem of algebra) and by part 2 of lemma
 \ref{spectral_lemma}.
 
-\hypertarget{bilinear-quadratic-forms}{%
-\subsection{Bilinear \& Quadratic
-Forms}\label{bilinear-quadratic-forms}}
+\hypertarget{bilinear-forms}{%
+\subsection{Bilinear Forms}\label{bilinear-forms}}
 
 We have so far examined geometric properties of vector spaces over real
 and complex fields with the inner product. We will now generalise this
@@ -2346,7 +2345,7 @@ So, as the characteristic of \(\mathbb{F}\) is not 2,
 \(\langle u, w \rangle = 0\) for all \(u, v \in V\). But this means that
 the bilinear form is degenerate. \# \qed
 
-\begin{theorem}
+\begin{theorem}\label{diag_symm_bform}
   Let \(V\) be a finite dimensional over the field \(\mathbb{F}\) where 
   \(\text{char}(\mathbb{F}) \neq 2\) and suppose \(\langle \cdot, \cdot \rangle\) 
   is a non-degenerate symmetric bilinear form on \(V\), then \(V\) has an orthogonal 
@@ -2367,5 +2366,148 @@ then, there exists \(\lambda \in \mathbb{F}\) such that
 Since \(\langle v_1, v_1 \rangle \neq 0\) we have \(\lambda = 0\) and so
 \(w = 0\) and \(W \cap W^\bot = \varnothing\) so
 \(V = W \oplus W^\bot\). \qed
+
+\hypertarget{quadratic-forms}{%
+\subsection{Quadratic Forms}\label{quadratic-forms}}
+
+As can be seen from the problem sheets, the classification of the
+congruence of bilinear forms is a subtle concept and depends on the
+field we are working with. To solve this problem, we shall consider the
+theory of quadratic forms. The quadratic forms can also be applied to
+study conics in arbitrary fields, however, this is beyond the scope of
+this course. Let us from this point forward assume that the field we are
+working with \(\mathbb{F}\) does not have characteristic 2.
+
+\begin{definition}[Quadratic Form]
+  Let \(V\) be a finite dimensional vector space over \(\mathbb{F}\). Then, 
+  \(Q : V \to \mathbb{F} : v \mapsto \langle v, v \rangle\) is a quadratic form 
+  on \(V\) if \(\langle \cdot, \cdot \rangle\) is a symmetric bilinear form. 
+  We say \(Q\) is non-degenerate if and only if \(\langle \cdot, \cdot \rangle\) 
+  is non-degenerate.
+\end{definition}
+
+With this, for every symmetric bilinear form on \(V\), there is a
+corresponding quadratic form. The reverse of this is also true -- there
+is a unique correspondence between symmetric bilinear forms and
+quadratic forms using the fact that
+\(\langle u, v \rangle = (Q(u + v) - Q(u) - Q(v)) / 2\).
+
+To see why the quadratic form is named as such, consider the general
+quadratic form on \(\mathbb{F}^n\). As we had shown before, we have
+every symmetric bilinear form can be represented by
+\(\langle u, v \rangle = u^T A v\) for some \(A \in M_n(\mathbb{F})\)
+such that \(A^T = A\). Hence,
+\(Q(x) = x^T A x = \sum_{i, j} a_{ij} X_i x_j = \sum_{i = 1}^n a_{ii} x_i^2 + 2\sum_{i < j} a_{ij} x_i x_j\),
+which is a homogeneous quadratic polynomial (over the variables
+\(\{x_1, \cdots, x_n\}\)).
+
+\begin{definition}
+  Let \(Q\) and \(Q'\) be quadratic forms on \(\mathbb{F}^n\) such that 
+  \(Q(x) = x^T A x\) for some symmetric \(A \in M_n(\mathbb{F})\) and 
+  \(Q'(x) = x^T P^TAP x\) for some invertible \(P \in M_n(\mathbb{F})\), then 
+  we call \(Q\) and \(Q'\) equivalent.
+\end{definition}
+
+As the name suggests, by checking, we see that this forms an equivalence
+relation on the quadratic forms.
+
+A result that immediately follows from theorem \ref{diag_symm_bform} is
+that, if a quadratic form \(Q\) on \(\mathbb{F}^n\) is non-degenerate,
+then it is equivalent to some quadratic form
+\(Q'(x_1, x_2, \cdots, x_n) = \sum_{i = 1}^n a_i x_i^2\). With this in
+mind, we will now try to classify (up to equivalence) all non-degenerate
+quadratic forms over \(\mathbb{C}\) and \(\mathbb{R}\) (and some
+information over \(\mathbb{Q}\)).
+
+\begin{theorem}
+  Let \(V = \mathbb{F}^n\), \(Q : V \to \mathbb{F}\) be a non-degenerate quadratic 
+  form. Then, 
+  \begin{itemize}
+    \item if \(\mathbb{F} = \mathbb{C}\), then, \(Q\) is equivalent to the form 
+      \(Q_0(x) = \sum_{i = 1}^n x_i^2\) for all \(x \in \mathbb{C}^n\);
+    \item if \(\mathbb{F} = \mathbb{R}\), then \(Q\) is equivalent to a unique 
+      quadratic form \(Q_{p, q}\) where \(Q_{p, q}(x) = (\sum_{i = 1}^p x_i^2) - 
+      (\sum_{i = p + 1}^n x_i^2)\) and \(p + q = n\) (this is known as 
+      Sylvester's law of inertia);
+    \item if \(\mathbb{F} = \mathbb{Q}\), then there are infinitely many inequivalent 
+      quadratic forms on \(\mathbb{Q}^n\).
+  \end{itemize}
+\end{theorem}
+\proof
+
+(Part 1) As mentioned before, we have \(Q\) is equivalent to some
+quadratic form \(Q'(x) = \sum_{i = 1}^n a_i x_i^2 = x^T A x\) where
+\(A = \mathop{\mathrm{diag}}(a_i)\). Then, by simply choosing
+\(P = \mathop{\mathrm{diag}}(\sqrt{a_i})\), we have \(P^T = P\) and
+furthermore, \(P^T I_n P = \mathop{\mathrm{diag}}(a_i) = A\) and hence,
+by transitivity, \(Q\) is equivalent to
+\(Q_0 = x \mapsto x^T x = \sum x_i^2\).
+
+(Part 2) Unlike working with \(\mathbb{C}\), it is not necessary that
+\(\sqrt{a_i}\) is in the reals, we we have to approach differently.
+Again, let us write \(Q'\) to be the equivalent quadratic form such that
+\(Q'(x) = \sum a_i x_i^2\) and suppose we order \(\{a_i \mid i\}\) such
+that \(a_1, \cdots, a_p > 0\) and
+\(a_{p + 1}, \cdots, a_{p + q = n} < 0\). Then,
+\[\mathop{\mathrm{diag}}(a_1, \cdots, a_n) = P^T (I_p \oplus - I_q) P,\]
+where \(P = \mathop{\mathrm{diag}}(\sqrt{\left| a_i \right|})\) and
+hence, the existence of the result by transitivity.
+
+Now, let us prove the uniqueness of this equivalence. Suppose otherwise,
+then there exists some \(p', q'\) such that \(Q \sim Q_{p, q}\) and
+\(Q \sim Q_{p', q'}\). Let \(\langle \cdot, \cdot \rangle\) be the
+symmetric bilinear form corresponding to \(Q\). Then, as
+\(Q \sim Q_{p, q}\), there exists an orthogonal basis of \(V\),
+\(B := \{v_i \mid i\}\), such that \(\langle v_i, v_i \rangle = 1\) if
+\(1 \le i \le p\) and \(-1\) if \(p + 1 \le i \le p + q = n\).
+Furthermore, as \(Q \sim Q_{p', q'}\), there exists another orthogonal
+basis of \(V\), \(B' := \{w_i \mid i\}\) such that
+\(\langle w_i, w_i \rangle = 1\) if \(1 \le i \le p'\) and \(-1\) if
+\(p' + 1 \le i \le p' + q' = n\). Then, by defining
+\(U := \text{sp}\{v_1, \cdots, v_p\}\), and
+\(W := \text{sp}\{w_{p' + 1}, \cdots, w_n\}\), for all
+\(u \in U \setminus \{0\}\), \(Q(u) > 0\) and similarly, for all
+\(w \in W \setminus \{0\}\), \(Q(w) < 0\), thus, \(U \cap W = \{0\}\).
+Hence, we have \(\dim U \cap W \le n\) and so \(p' \ge p\). By the same
+argument, we can show that \(p' \le p\) and thus \(p' = p\) and hence,
+the equivalence is unique.
+
+(Part 3) We call a positive integer \(d\) square-free if \(d\) is a
+product of distinct primes. For a square-free integers \(d\), we define
+the quadratic form
+\(Q_d : \mathbb{Q}^n \to \mathbb{Q} : x \mapsto  \sum_{i = 1}^{n - 1} x_i^2 + dx_n^2\).
+Then, suppose \(Q_d \sim Q_{d'}\) for some square-free \(d, d'\) and so
+\(A_d \equiv A_{d'}\) (we denote congruence by \(\equiv\)) where
+\(A_d = \mathop{\mathrm{diag}}(1, \cdots, 1, d)\), and thus, there
+exists some \(P \in GL_n(\mathbb{Q})\) such that \(A_{d'} = P^T A_d P\).
+With that, by taking the determinant on both sides, we have
+\(d' = (\det P^2) d\), implying \(d' = d\) as they are square-free. It
+is easy to see that there is a infinite sequence of square-free integers
+and so, we have constructed an infinite sequence of inequivalent
+quadratic forms. \qed
+
+Before ending this module, let us consider some applications of bilinear
+and quadratic forms. The theory of bilinear and quadratic forms occur
+naturally in many parts of mathematics most notably -- geometry, number
+theory and algebra. In special relativity, quadratic forms \(Q_{3, 1}\)
+occur in the Minkowski space-time (\(\mathbb{R}^4\)). In number theory,
+a classical question asks that, given a rational quadratic form,
+\(Q : \mathbb{Q}^n \to \mathbb{Q}\), and a rational number \(K\), does
+the equation \(Q(x) = K\) have a solution on \(\mathbb{Q}\). Indeed, if
+we restrict the equation to the integers, we are asking for the
+solutions to a quadratic homogeneous diophantine equation. In group
+theory, just as we have done for inner product, we can define isometries
+on bilinear forms and hence receiving isometry groups on these forms.
+
+\begin{definition}[Isometry]
+  Let \(f : V^2 \to \mathbb{F}\) be a non-degenerate symmetric/skew-symmetric 
+  bilinear form. Then, an isometry of \(f\) is a linear map \(T \in \mathop{\mathrm{End}}(V)\) 
+  such that for all \(u, v \in V\), \(f(u, v) = f(T(u), T(v))\).
+\end{definition}
+
+With this definition, the set of isometrics,
+\(I(V, f) := \{T \mid T \text{ is an isometry}\}\) forms a subgroup of
+\(GL(V)\) and in particular, if \(f\) is skew-symmetric, then this group
+is unique up to equivalence known as the symplectic group \(Sp(V, f)\).
 
 \end{document}
