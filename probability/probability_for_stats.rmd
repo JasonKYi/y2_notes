@@ -1478,3 +1478,131 @@ distributed with parameter \(1 - f_{ii}\), and so \(E(N_i \mid X_0 = i) < \infty
 
 With that, we can conclude that a state space is uniquely partitioned into 
 transient communicating classes and the closed irreducible sets.
+
+## Hitting Probabilities
+
+So far, we have classified Markov chains with recurrence and transience which 
+indicates whether or not whether or not a state would eventually return. However, 
+we would sometimes like to know this information quantitatively, that is, the 
+probability of returning to that state and furthermore, the expected duration 
+before returning. 
+
+\begin{definition}[Hitting Time]
+  If \((X_n)\) is a Markov chain on the state space \(\mathcal{E}\), then the 
+  hitting time of a set \(A \subseteq \mathcal{E}\) is the random variable 
+  \[H^A = \min \{n \ge 0 \mid X_n \in A\},\]
+  that is, the minimum amount of time before we reach \(A\). 
+\end{definition}
+
+By convention, we define the minimum of the empty set to by \(\infty\). 
+
+\begin{definition}[Hitting Probability]
+  If \((X_n)\) is a Markov chain on the state space \(\mathcal{E}\) and 
+  \(i \in \mathcal{E}\), then the hitting probability is defined to be 
+  \[h^A_i = \mathbb{P}(H^A < \infty \mid X_0 = i).\]
+\end{definition}
+
+Often we will only be interested in the hitting probability of a singular node, 
+that is \(h^{\{j\}}_i\) for some \(i, j \in \mathcal{E}\). In this case, for 
+shorthand we will simply write \(h^j_i\).
+
+\begin{prop}
+  If \(A \subseteq \mathcal{E}\), the vector \(h^A = (h^A_i)_{i \in \mathcal{E}}\) 
+  solves the system of linear equations 
+  \[h^A_i = \sum_{j \in \mathcal{E}} p_{ij}h_j^A,\]
+  for all \(i \not\in A\) (\(h^A_i = 1\) trivially for \(i \in A\)). Moreover, 
+  \(h^A\) is the minimal solution, i.e. if \(x = (x_i)_{i \in \mathcal{E}}\) is also 
+  a non-negative solution to this system, then \(h^A_i \le x_i\) for all 
+  \(i \in \mathcal{E}\).
+\end{prop}
+\proof
+  \(h^A\) satisfies this system follows straight away by the law of total 
+  probability.
+
+  To show minimality we will show by induction that 
+  \[x_i \ge \mathbb{P}\left(\bigcup_{n = 0}^N \{X_n \in A\} \mid X_0 = i\right),\]
+  for all \(N \in \mathbb{N}\). Certainly, this is true for \(n = 0\) so suppose 
+  the inequality for \(N = k\). We see that, 
+  \begin{align*}
+    \mathbb{P}\left(\bigcup_{n = 0}^{k + 1} \{X_n \in A\} \mid X_0 = i \right) 
+      & = \sum_{j \in \mathcal{E}} \mathbb{P}\left(\bigcup_{n = 0}^{k + 1} \{X_n \in A\}, X_1 = j \mid X_0 = i \right) \\
+      & = \sum_{j \in \mathcal{E}} \mathbb{P}\left(\bigcup_{n = 1}^{k + 1} \{X_n \in A\} \mid X_1 = j\right)p_{ij} \\
+      & = \sum_{j \in \mathcal{E}} \mathbb{P}\left(\bigcup_{n = 0}^{k} \{X_n \in A\} \mid X_1 = j\right)p_{ij} 
+        \le \sum_{j \in \mathcal{E}}p_{ij} x_j = x_i.
+  \end{align*}
+  So, the inequality is true for all \(N \in \mathbb{N}\), and hence, by taking 
+  the limit, 
+  \[x_i \ge \lim_{N \to \infty} \mathbb{P}
+    \left(\bigcup_{n = 0}^N \{X_n \in A\} \mid X_0 = i\right) = h^A_i.\]
+\qed
+
+## Stationary Distribution
+
+\begin{definition}[Stationary Distribution]
+  A vector \(\pi = (\pi_i)_{i \in \mathcal{E}}\) is said to be a stationary 
+  distribution for the Markov chain \((X_n)\) if and only if 
+  \(\pi_i\) is a probability distribution on \(\mathcal{E}\) (so \(\pi_i \ge 0\) 
+  for all \(i \in \mathcal{E}\) and \(\sum_{i \in \mathcal{E}} \pi_i) = 1\)) and 
+  \(\pi P = \pi\) where \(P\) is the transition matrix of \((X_n)\).    
+\end{definition}
+
+In some literatures, the stationary distribution of a Markov chain is refereed 
+as the invariant distribution. The idea of the stationary distribution is that 
+it allows us to consider the long run behaviour of a Markov chain. Of course, if 
+the distribution of a chain at some time step is the stationary distribution, then 
+the distribution of the next time step is also the stationary distribution. 
+However, this does not allow us to conclude that the Markov chain in general 
+converges to the stationary distribution. 
+
+\begin{definition}[Mean Recurrence Time]
+  If \(T_i\) is the random variable corresponding to the first passage time to a 
+  state \(i \in \mathcal{E}\), then the mean recurrence time of \(i\) is simply, 
+  \[\mu_i = E(T_i \mid X_0 = i) = \sum_{n = 1}^\infty n f_{ii}(n),\]
+  if \(i\) is recurrent. The mean recurrence time of a transient node is defined 
+  to be \(\infty\).
+\end{definition}
+
+\begin{prop}
+  An irreducible chain has a stationary distribution if and only if all states 
+  are positive recurrent (i.e. the mean recurrence time of all nodes are finite). 
+  If that is the case, then \(\pi_i = 1 / \mu_i\) for all 
+  \(i \in \mathcal{E}\) where \(\mu_i\) is the mean recurrent time of \(i\).
+\end{prop}
+
+With this proposition, we conclude that the stationary distribution of an 
+irreducible chain exists and is unique. 
+
+To prove this proposition, we shall use the ergodic theorem which proof is beyond 
+the scope of this course. 
+
+\begin{theorem}[The Ergodic Theorem]
+  Let \((X_n)\) be a irreducible Markov chain on the state space \(\mathcal{E}\). 
+  For all \(i \in \mathcal{E}\), we define 
+  \[V_i(n) = \sum_{r = 0}^n I_{\{X_r = i\}},\]
+  i.e. the number of visits to \(i\) before time \(n\). Then, for all initial 
+  distribution, 
+  \[\mathbb{P}\left(\frac{V_i(n)}{n} \to \frac{1}{\mu_i}\right) = 1.\]
+  In other words, \(\frac{V_i(n)}{n}\) converges to \(\frac{1}{\mu_i}\) almost 
+  surely.
+\end{theorem}
+
+Intuitively, the ergodic theorem tells us that the long-rum proportion of time 
+in some \(i \in \mathcal{E}\) is \(1 / \mu_i\) which physically makes sense 
+since the larger \(\mu_i\) is, the longer period of time it takes before 
+returning to \(i\) again, and hence, less time is spend inside \(i\).
+
+With that, given \(i, j \in \mathcal{E}\), consider the proportion of jumps from 
+\(i \to j\), that is, the probability of jumping from \(i\) to \(j\) times the 
+proportion of time in \(i\), \(p_ij / \mu_i\). Thus, by summing all possible 
+\(i \in \mathcal{E}\), the proportion of time in \(j\) is given by 
+\(\sum_{i \in \mathcal{E}} \frac{1}{\mu_i} p_{ij} = ((\frac{1}{\mu_i})_i P)_j\) 
+and hence, \((\frac{1}{\mu_i})_i\) is a stationary distribution.
+
+\begin{prop}
+  If \((X_n)\) is an irreducible, aperiodic Markov chain with stationary distribution 
+  \(\pi\), then for any initial distribution \(\lambda\), 
+  \[\lim_{n \to \infty} \mathbb{P}(X_n = i) = \pi_i,\]
+  for all \(i \in \mathcal{E}\). Furthermore, 
+  \[\lim_{n \to \infty} \mathbb{P}(X_n = i \mid X_0 = j) = \pi_i,\]
+  and so, the limiting probability is independent of \(j \in \mathcal{E}\).
+\end{prop}
