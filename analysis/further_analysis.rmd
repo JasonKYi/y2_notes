@@ -1550,7 +1550,7 @@ not necessarily equivalent to compactness in topological spaces.
   if and only if every sequence within \(X\) has a convergent subsequence.
 \end{definition}
 
-Immediately, by recallying Bolzano-Weierstrass, we have any compact sets within 
+Immediately, by recalling Bolzano-Weierstrass, we have any compact sets within 
 an Euclidean space are sequentially compact. This is good new as we are looking 
 for an equivalent notion of compactness. We will provide a formal proof of this 
 now.
@@ -1652,13 +1652,54 @@ spaces. This turns out to be the case and we shall prove that here.
   \(d(f(x_i), f(x)) < \epsilon / 2\) since \(d(x_i, x) < \delta_{x_i}\).
 \qed
 
-\newpage
-# Extras
+## Completeness
 
-This is a temporary section and all contents within this section will be moved 
-to their appropriate sections once the notes is complete.
+We recall the completion of the rationals resulting in the real numbers and we would 
+like to extend this to arbitrary metric spaces. However, we are unable to do this 
+straight away since we lack the ordering that is present on the rationals. Instead, 
+we look at the construction of the reals using Cauchy sequences and extend that 
+notion of convergence to metric spaces.
 
-### Completeness is not a Topological Property 
+\begin{definition}[Cauchy Sequence]
+  Let \((X, d)\) be a metric space and let \((x_n)_{n \in \mathbb{N}}\) be a sequence 
+  in \(X\). Then \((x_n)\) is said to be a Cauchy sequence if and only if for all 
+  \(\epsilon > 0\), there exists \(N \in \mathbb{N}\) such that for all 
+  \(n, m \ge N\), \(d(x_n, x_m) < \epsilon\).
+\end{definition}
+
+\begin{definition}[Complete]
+  A metric space \((X, d)\) is called complete if and only if every Cauchy sequence 
+  \((x_n)_{n \in \mathbb{N}}\) in \(X\) converges in \(X\).
+\end{definition}
+
+Equivalently, by the fact that every Cauchy sequence is convergent in \(X\) if 
+it has a convergent subsequence (see problem sheet), a metric space is complete 
+if and only if every Cauchy sequence has a convergent subsequence.
+
+\begin{theorem}
+  If \((X, d)\) is a compact metric space, then it is complete.
+\end{theorem}
+\proof
+  Since \(X\) is compact, it is sequentially compact, and so, if \((x_n)\) is a 
+  Cauchy sequence of \(X\), then \((x_n)\) has a convergent subsequence. However, 
+  every Cauchy sequence that contains a convergent subsequence is convergent, 
+  \((x_n)\) is convergent and so \(X\) is complete.
+\qed
+
+\begin{prop}
+  For all \(m \ge 1\), the metric space \((\mathbb{R}^m, d_2)\) is complete.
+\end{prop}
+\proof
+  Let \((x_n)\) be a Cauchy sequence in \(\mathbb{R}^m\).
+  As Cauchy sequences are bounded, we have by Heine-Borel, some compact set 
+  \(U\) containing \((x_n)\). Then, as compactness implies sequential compactness 
+  \((x_n)\) has a convergent subsequence, and hence \((x_n)\) is convergent.
+\qed
+
+Unlike all the previous properties we've examined before, while it is possible to 
+extend the definition of completeness to topological spaces, the notion of 
+completeness is not traverse over homeomorphisms and hence is not a topological 
+property.
 
 \begin{theorem}
   Completeness is not a Topological Property.
@@ -1678,14 +1719,143 @@ to their appropriate sections once the notes is complete.
   are both continuous, so we are done!
 \qed
 
-### Properties of the Quotient Map
+\begin{definition}[Banach Space]
+  A normed vector space \((V, \|\cdot\|)\) is a Banach space if and only if the 
+  induced metric space is complete.
+\end{definition}
 
-\begin{theorem}
-  Let \((X, \mathcal{T})\) be a topological space and let \(\sim\) be an equivalence 
-  relation on \(X\). Let us denote the quotient map from \(X\) to \(X / \sim\) as 
-  \(q\) where \(q(x) = [x] = \{x' \in X \mid x \sim x'\}\). Then, \(q\) is continuous
-  and surjective.
+\begin{prop}
+  The metric space \((\mathcal{C}([a, b]), d_2)\) is not complete and equivalently, 
+  \((\mathcal{C}([a, b]), \| \cdot \|_2)\) is not a Banach space.
+\end{prop}
+\proof
+  Wlog. suppose \(a = -1\) and \(b = 1\). Then, by defining 
+  \(\phi_n \in \mathcal{C}([a, b])\), such that 
+  \[\phi_n(t) = \begin{cases}
+      - 1, &\quad -1 \le t \le - 1 / n,\\
+      nt, &\quad -1 / n < t < 1 / n,\\
+      1, &\quad 1 / n \le t \le 1.  \end{cases}\]
+  We can show that \(\phi_n\) is Cauchy but is not convergent in \(\mathcal{C}([a, b])\).
+\qed
+
+On the other hand, \((\mathcal{C}([a, b]), d_\infty)\) is complete since 
+\[d_\infty(f_n, f) = \sup_{x \in [a, b]} \left| f_n(x) - f(x)\right| \to 0,\]
+if and only if \(f_n \to f\) uniformly, and so, a sequence of functions is 
+convergent with respect to \(d_\infty\) if and only if it is uniformly convergent, 
+and hence, its limit is also continuous.
+
+\begin{prop}
+  The metric space \((\mathcal{C}([a, b]), d_\infty)\) is complete.
+\end{prop}
+\proof
+  Let \((f_n) \subseteq \mathcal{C}([a, b])\) be a Cauchy sequence, then for all 
+  \(x \in [a, b]\), \((f_n(x))\) is a Cauchy sequence in \(\mathbb{R}\), and so, 
+  is convergent. Now, by defining \(f\) such that \(f_n \to f\) pointwise, it 
+  suffices to show \(f_n \to f\) uniformly. Since \((f_n)\) is Cauchy, for all 
+  \(\epsilon\), there exists \(N\) such that for all \(n, m \ge N\), 
+  \[d_\infty(f_n, f_m) = \sup_{x \in [a, b]} \left| f_n(x) - f_m(x) \right| < \epsilon / 2.\]
+  By taking \(m \to \infty\), we have 
+  \[\sup_{x \in [a, b]} \left| f_n(x) - f(x) \right| \le \epsilon / 2 < \epsilon,\]
+  and so, \(f_n \to f\) uniformly and hence, \((f_n)\) converges with respect to 
+  \(d_\infty\).
+\qed
+
+\begin{definition}
+  Let \(\mathcal{C}\) be a collection of functions \(f : [a, b] \to \mathbb{R}\). 
+  Then, 
+  \begin{itemize}
+    \item we say \(\mathcal{C}\) is uniformly bounded if there exists some 
+      \(M \in \mathbb{R}\) such that for all \(f \in \mathcal{C}\), for all 
+      \(x \in [a, b]\), \(\left| f(x) \right| < M\);
+    \item we say \(\mathcal{C}\) is uniformly equi-continuous, if for all 
+      \(\epsilon > 0\), there exists some \(\delta > 0\) such that for all 
+      \(f \in \mathcal{C}\) and all \(x_1, x_2 \in [a, b]\) satisfying 
+      \(\left| x_1 - x_2 \right| < \delta\), we have 
+      \(\left| f(x_1) - f(x_2) \right| < \epsilon\).
+  \end{itemize}
+\end{definition}
+
+\begin{theorem}[Arzela-Ascoli]
+  Let \(\mathcal{C}\) be a collection of continuous functions 
+  \(f : [a, b] \to \mathbb{R}\). If \(\mathcal{C}\) is uniformly bounded and 
+  uniformly equi-continuous, then every sequence in \(\mathcal{C}\) has a 
+  subsequence which converges in \((\mathcal{C}([a, b]), d_\infty)\).
 \end{theorem}
 \proof
-  Surjectivity is trivial while \(q\) being continuous is true by definition.
+  Let \((f_n)\) be a sequence in \(\mathcal{C}\) and let us consider the following 
+  three steps. 
+
+  (Step 1) We show there exists a subsequence \((f_{n_i})\) of \((f_n)\) which 
+  converges pointwise on \([a, b] \cap \mathbb{Q}\). Since \([a, b] \cap \mathbb{Q}\) 
+  is countable, we can write \([a, b] \cap \mathbb{Q} = \{x_1, x_2, \cdots\}\). Then 
+  by denoting \(f_{0, i} = f_i\) for all \(i\), we see that \((f_{0, i}(x_1))\)
+  is a bounded sequence in \(\mathbb{R}\), and so, by Bolzano-Weierstrass, 
+  \((f_{0, i}(x_1))\) has a convergent subsequence, say \((f_{1, i}(x_1))\). 
+  Inductively, by repeating this process, we define \((f_{j + 1, i})\) to be the 
+  sequence of functions such that \((f_{j + 1, i}(x_{j + 1}))\) is a convergent 
+  subsequence of \((f_{j, i}(x_{j + 1}))\). Thus, by defining \(g_i = f_{i, i}\), 
+  we have \(g_i\) is a subsequence of \(f_i\) that is convergent on 
+   \([a, b] \cap \mathbb{Q}\).
+
+  (Step 2) Now we show that \((g_i)\) is Cauchy with respect to \(d_\infty\).
+  Since \(\mathcal{C}\) is equi-continuous, for all \(\epsilon > 0\), there exists 
+  some \(\delta > 0\) such that for all \(x, y \in [a, b]\), 
+  \(\left| x - y \right < \delta\), \(\left| g_i(x) - g_i(y) \right| < \epsilon / 3\), 
+  for all \(i\). Furthermore, as \([a, b]\) is closed and bounded, it is compact 
+  by Heine-Borel, and so, by considering the open cover of \([a, b]\), 
+  \(\{(x - \delta, x + \delta) \mid [a, b] \cap \mathbb{Q}\}\) there exists rational 
+  numbers \(x_1, \cdots, x_k \in [a, b]\) such that 
+  \([a, b] \subseteq \bigcup_{i = 1}^k (x_i - \delta, x_i + \delta)\). Now, as 
+  \(g_i\) converges at the rational points in \([a, b]\), for each \(x_i\), 
+  there exists some \(N_i \in \mathbb{N}\) such that for all \(n, m \ge N_i\), 
+  \(\left| g_n(x_i) - g_m(x_i) \right| < \epsilon / 3\). So, by defining 
+  \(N := \max \{N_i \mid i = 1, \cdots, N\}\), we have, for all \(n, m \ge N\),
+  and for all \(x \in [a, b] \subseteq \bigcup_{i = 1}^k (x_i - \delta, x_i + \delta)\), 
+  there exists \(i\) such that \(x \in (x_i - \delta, x_i + \delta)\) and thus, 
+  \begin{align*}
+    \left| g_n(x) - g_m(x) \right| & \le \left| g_n(x) - g_n(x_i) \right| 
+    + \left| g_n(x_i) - g_m(x_i)\right| + \left| g_m(x_i) - g_m(x) \right| \\
+      & < \epsilon / 3 + \epsilon / 3 + \epsilon / 3 = \epsilon.
+  \end{align*}
+
+  (Step 3) With the proof that \((g_i)\) is Cauchy, since we have previously 
+  proved that \((\mathcal{C}([a, b]), d_\infty)\) is complete, we conclude that 
+  \((g_i)\) is convergent in \((\mathcal{C}([a, b]), d_\infty)\) and 
+  hence the result.
+\qed
+
+Lastly, as promised much earlier, we shall take a look and prove the fixed 
+point theorem and hence complete the inverse function.
+
+\begin{definition}[Contracting Map]
+  Let \((X, d_X)\), \((Y, d_Y)\) be metric spaces and let \(f : X \to Y\) be a map. 
+  Then, we say \(f\) is contracting if there exists some \(K \in (0, 1)\) such that 
+  for all \(x_1, x_2 \in X\), 
+  \[d_Y(f(x_1), f(x_2)) \le Kd_X(x_1, x_2).\]
+\end{definition}
+
+One can easily see that a contracting map is continuous and for a map 
+\(f : X \to X\), we call \(x \in X\) a fixed point of \(f\) if \(f(x) = x\).
+
+\begin{theorem}[Banach Fixed Point Theorem]
+  Let \((X, d)\) be a non-empty complete metric space and let \(f : X \to X\) be 
+  a contracting map. Then, \(f\) has a unique fixed point in \(X\).
+\end{theorem}
+\proof
+  Uniqueness is trivial since if there exists two distinct fixed points of \(f\), 
+  \(x_1, x_2\), then, as \(f\) is a contraction, \(K d(x_1, x_2) \ge 
+  d(f(x_1), f(x_2)) = d(x_1, x_2)\) \# since \(K \in (0, 1)\).
+
+  Now for existence, let \(x \in X\) and consider the sequence 
+  \((f^n(x))_{n \in \mathbb{N}}\). By induction, we see that 
+  \(d(f^n(x), f^{n + 1}(x)) \le K^nd(x, f(x))\) and so, by considering, for all 
+  \(m, n \in \mathbb{N}\), Wlog. \(m > n\), we have 
+  \begin{align*}
+    d(f^n(x), f^m(x)) & \le \sum_{i = n}^{m - 1} d(f^i(x), f^{i + 1}(x)) \\
+      & \le d(x, f(x)) \sum_{i = n}^{m - 1} K^i = K^n d(x, f(x)) \sum_{i = 0}^{m - n - 1} K^i\\
+      & = K^n d(x, f(x))\frac{1 - K^{m - n}}{1 - K} \le \frac{K^n d(x, f(x))}{1 - K},
+  \end{align*}
+  and so, we find that \((f^n(x))\) is Cauchy, and hence, by completeness, it is 
+  convergent. Let \(x_0 = \lim_{n \to \infty} f^n(x)\), then \(f(x_0) = x_0\) and 
+  hence \(x_0\) is a fixed point of \(f\).
 \qed
