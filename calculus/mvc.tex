@@ -1,0 +1,261 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames*,x11names*}{xcolor}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Multivariable Calculus \& Differential Equations},
+  pdfauthor={Kexing Ying},
+  colorlinks=true,
+  linkcolor=Maroon,
+  filecolor=Maroon,
+  citecolor=Blue,
+  urlcolor=red,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin = 1.5in]{geometry}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{tikz}
+\usepackage{amsthm}
+\usepackage{mathtools}
+\usepackage{lipsum}
+\usepackage[ruled,vlined]{algorithm2e}
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{prop}{Proposition}
+\newtheorem{corollary}{Corollary}[section]
+\newtheorem*{remark}{Remark}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newcommand{\diver}{\mathop{\mathrm{div}}}
+\newcommand{\curl}{\mathop{\mathrm{curl}}}
+
+\title{Multivariable Calculus \& Differential Equations}
+\author{Kexing Ying}
+\date{May 15, 2020}
+
+\begin{document}
+\maketitle
+
+\hypertarget{tensor-notation}{%
+\subsection{Tensor Notation}\label{tensor-notation}}
+
+\begin{itemize}
+  \item \(\epsilon_{ijk}\epsilon_{klm} = \delta_{il}\delta_{jm} - \delta_{im}\delta_{jl}\)  
+  \item \(\mathbf{A} \cdot \mathbf{B} = \mathbf{A}_i \mathbf{B}_i\)
+  \item \(\mathbf{A} \times \mathbf{B} = \epsilon_{ijk}\hat{e}_i\mathbf{A}_j\mathbf{B}_k\)
+  \item \(\mathop{\mathrm{div}}\mathbf{A} = \partial \mathbf{A}_i / \partial x_i\)
+  \item \(\nabla \phi = \hat{e}_i \partial \phi / \partial x_i\)
+  \item \(\mathop{\mathrm{curl}}\mathbf{A} = \epsilon_{ijk} \hat{e}_i \partial \mathbf{A}_k / \partial x_j\)
+\end{itemize}
+
+\hypertarget{identities}{%
+\subsection{Identities}\label{identities}}
+
+\begin{itemize}
+  \item \(\mathbf{a} \cdot (\mathbf{b} \times \mathbf{c}) = (\mathbf{a} \times 
+    \mathbf{b}) \cdot \mathbf{c}\)
+  \item \(\mathbf{a} \times (\mathbf{b} \times \mathbf{c}) = (\mathbf{a} \cdot 
+    \mathbf{c}) \mathbf{b} - (\mathbf{a} \cdot \mathbf{b})\mathbf{c}\)
+  \item \(\partial \phi / \partial s = \hat{s} \cdot \nabla \phi\)
+\end{itemize}
+
+\hypertarget{finding-equation-of-a-tangent-plane-to-phi-phip}{%
+\subsection{\texorpdfstring{Finding Equation of a Tangent Plane to
+\(\phi = \phi(P)\)}{Finding Equation of a Tangent Plane to \textbackslash phi = \textbackslash phi(P)}}\label{finding-equation-of-a-tangent-plane-to-phi-phip}}
+
+We have \(\nabla \phi\) evaluated at \(P\) is normal to the surface at
+\(P\), and so the equation of the tangent plane is
+\[(\mathbf{r} - \mathbf{r}_P) \cdot (\nabla \phi)_P = 0,\] where
+\(\mathbf{r} = x\mathbf{i} + y\mathbf{j} + z\mathbf{k}\) and
+\(\mathbf{r}_P = P_x\mathbf{i} + P_y\mathbf{j} + P_z\mathbf{k}\).
+
+\hypertarget{results-regarding-the-gradient-operator}{%
+\subsection{Results Regarding the Gradient
+Operator}\label{results-regarding-the-gradient-operator}}
+
+\begin{itemize}
+  \item \(\nabla(\phi \psi) = \phi \nabla \psi + \psi \nabla \phi\)
+  \item \(\mathop{\mathrm{div}}(\phi \mathbf{A}) = \phi \mathop{\mathrm{div}}\mathbf{A} + \nabla \phi \cdot \mathbf{A}\)
+  \item \(\mathop{\mathrm{curl}}(\phi\mathbf{A}) = \phi \mathop{\mathrm{curl}}\mathbf{A} + \nabla \phi \times \mathbf{A}\)
+  \item \(\mathop{\mathrm{div}}(\nabla \phi) = \nabla^2 \phi = \partial^2 \phi / \partial x_i^2\)
+  \item \(\mathop{\mathrm{curl}}(\nabla \phi) = 0\)
+  \item \(\mathop{\mathrm{div}}(\mathop{\mathrm{curl}}\mathbf{A}) = 0\)
+  \item \(\mathop{\mathrm{curl}}(\mathop{\mathrm{curl}}\mathbf{A}) = \nabla(\mathop{\mathrm{div}}\mathbf{A}) - \nabla^2 \mathbf{A}\)
+  \item \(\mathop{\mathrm{div}}(\mathbf{A} \times \mathbf{B}) = \mathbf{B} \cdot \mathop{\mathrm{curl}}\mathbf{A} - 
+    \mathbf{A} \cdot \mathop{\mathrm{curl}}\mathbf{B}\)
+  \item \(\nabla^2 (1 / r) = 0\)
+\end{itemize}
+
+\hypertarget{integration}{%
+\subsection{Integration}\label{integration}}
+
+Path integrals over some path \(\gamma\) on the field \(\mathbf{F}\):
+\[\int_\gamma \mathbf{F} \cdot d\mathbf{r} = \int_\gamma \mathbf{F} \cdot \hat{\mathbf{t}} ds,\]
+where \(\hat{\mathbf{t}}\) is the path element.
+
+If \(\mathbf{F} = \nabla \phi\) for some scalar field \(\phi\), then if
+\(\gamma\) is a path that joins points \(A\) to \(B\),
+\[\int_\gamma \mathbf{F} \cdot d\mathbf{r} = \phi(B) - \phi(A),\] and we
+call \(\mathbf{F}\) a conservative field. In this case if \(\gamma\)
+forms a loop, that is \(A = B\),
+\(\oint_\gamma \mathbf{F} \cdot d\mathbf{r} = 0\).
+
+In evaluating surface integrals, one can either integrate directly
+through (perhaps with the help with substitution) or one can use the
+projection theorem.
+
+\begin{theorem}[Projection Theorem]
+  Let \(S\) be a surface such that it does not contain a point at which it is 
+  orthogonal to \(\mathbf{k}\). Then, 
+  \[\int_S f(P) dS = \int_\Sigma f(P) \frac{dx \hspace{1mm} dy} 
+    {\left| \hat{\mathbf{n}}\cdot\mathbf{k} \right|},\]
+  where \(f\) is a function over \(S\) and \(\Sigma\) is the projection on to the 
+  plane \(z = 0\).
+\end{theorem}
+
+The projection theorem can be easily extended where we project onto
+another plane rather than \(z = 0\).
+
+\begin{theorem}[Green's Theorem]
+  Let \(R\) be a closed plane region bounded by the curve \(C\) and let \(L, M\) 
+  be continuous functions of \(x, y\) of type \(C^1(R)\), then 
+  \[\oint_C (L dx + M dy) = \int_R \left(\frac{\partial M}{\partial x} - 
+    \frac{\partial L}{\partial y}\right)dx \hspace{1mm} dy,\]
+  where \(C\) is integrated positively (counter-clockwise).
+\end{theorem}
+
+Green's theorem can be used to deduce the divergence and Stokes theorem
+in the 2-dimensional case.
+
+\begin{theorem}[Divergence Theorem]
+  If \(\tau\) is the volume enclosed by a closed surface \(S\) with unit outward normal 
+  \(\hat{\mathbf{n}}\) and \(\mathbf{A}\) is a vector field of type \(C^1(\tau)\), 
+  then, 
+  \[\int_S \mathbf{A} \cdot \hat{\mathbf{n}} dS = \int_\tau \mathop{\mathrm{div}}\mathbf{A} d\tau.\]
+  We in general refers the value of the integral \(\int_S \mathbf{A} \cdot \hat{\mathbf{n}} dS\) 
+  as the flux of \(\mathbf{A}\) across \(S\).
+\end{theorem}
+
+\begin{theorem}[Stokes Theorem]
+  Let \(S\) be an open surface with the boundary \(\gamma\) and let \(\mathbf{A}\) 
+  be a vector field with continuous partial derivatives, then 
+  \[\oint_\gamma \mathbf{A} \cdot d\mathbf{r} = \int_S \mathop{\mathrm{curl}}\mathbf{A} \cdot \hat{\mathbf{n}} dS.\]
+\end{theorem}
+
+A result of the Stokes theorem (in combination of considering the
+properties of a conservative field) is that, a necessary and sufficient
+condition for \(\oint_\gamma \mathbf{A} \cdot d\mathbf{r} = 0\) for any
+simply closed curve \(\gamma\) is that \(\mathop{\mathrm{curl}}A = 0\)
+within the region bounded by \(\gamma\).
+
+\hypertarget{curvilinear-coordinates}{%
+\subsection{Curvilinear Coordinates}\label{curvilinear-coordinates}}
+
+\begin{definition}
+  Let \(f_i : \mathbb{R}^n \to \mathbb{R}^n\) be a sequence of functions with 
+  continuous second derivatives, then, the coordinate system resulted from the 
+  transformation \(u_i = f_i(x_j \mid j = 1, \cdots, n)\) is called a curvilinear 
+  coordinate system.
+\end{definition}
+
+\begin{definition}[Jacobian Matrix]
+  The Jacobian matrix of a given curvilinear coordinate transformation is the matrix 
+  \(J(x_u)\) with entries \([J]_{ij} = \partial x_i / \partial u_i\) where \(\{x_i\}\) 
+  is the original coordinates and \(\{u_i\}\) is the transformed coordinates. 
+  We call the determinant of the Jacobian matrix \(\left| J \right|\) the Jacobian.
+\end{definition}
+
+From analysis we recall the inverse function theorem which states that
+the Jacobian at some point \(v\) is non-zero if and only if \(f_i\) is
+locally bijective at \(v\).
+
+Let \(u_i = u_i(x_j \mid j)\) be a curvilinear coordinate system, then,
+by conidering \(u_i = c_i\) for some constants, we have a system of
+families of surfaces. Let \(P(x, y, z)\) be some point such that there
+passes one surface of each family, then, we can define
+\(\hat{\mathbf{a}}_i\) be the unit normal of each surface. Clearly, we
+have
+\[\hat{\mathbf{a}}_i = \frac{\nabla u_i}{\left| \nabla u_i \right|}.\]
+If each \(\hat{\mathbf{a}}_i\) is orthogonal to one another, we say the
+coordinate system if an orthogonal curvilinear coordinate system.
+
+We find \(\partial \mathbf{r} / \partial u_i = \hat{e}_i h_i\), where
+\(h_i = \left| \partial \mathbf{r} / \partial u_i\right|\) and we call
+this quantity the length element for the coordinate system.
+
+For a curvilinear system, we have
+
+\begin{itemize}
+  \item \(d\mathbf{r} = \sum \hat{e}_i h_i du_i\)
+  \item \(d\tau = \prod h_i du_i\)
+  \item \(dS = \left| J \right| \prod du_i\)
+  \item \(\hat{e}_i = h_i \nabla u_i\)
+  \item \(\nabla \Phi = \sum \hat{e}_i \frac{1}{h_i} \frac{\partial\Phi}{\partial u_i}\)
+  \item \(\mathop{\mathrm{div}}\mathbf{A} = 1 / \prod h_i (\partial / \partial u_i (A_i \prod_{j \neq i} h_j))\)
+\end{itemize}
+
+\hypertarget{calculus-of-variations}{%
+\subsection{Calculus of Variations}\label{calculus-of-variations}}
+
+Euler-Lagrange equation with multiple variables: \[
+  \frac{\partial L}{\partial x_i} - \frac{d}{dx} \frac{\partial L}{\partial x_i'} = 0
+\] Euler-Lagrange equation with constraint: \[
+  \frac{\partial}{\partial x_i}(L + \lambda g) - \frac{d}{dx} \frac{\partial}{\partial x_i'}(L + \lambda g) = 0
+\] Suppose we denote the operator \(\hat{e}_i \partial / \partial p_i\)
+by \(\nabla_p\) for some vector \(p\), the Euler-Lagrange equation in
+higher dimensions becomes \[
+  \frac{\partial L}{\partial F} - \mathop{\mathrm{div}}(\nabla_{\nabla F} L) = 0
+\]
+
+\end{document}
