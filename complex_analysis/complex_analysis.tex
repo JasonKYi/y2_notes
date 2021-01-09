@@ -1,0 +1,224 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames*,x11names*}{xcolor}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Comple Analysis},
+  pdfauthor={Kexing Ying},
+  colorlinks=true,
+  linkcolor=Maroon,
+  filecolor=Maroon,
+  citecolor=Blue,
+  urlcolor=red,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin = 1.5in]{geometry}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{tikz}
+\usepackage{amsthm}
+\usepackage{mathtools}
+\usepackage{lipsum}
+\usepackage[ruled,vlined]{algorithm2e}
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{prop}{Proposition}
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem*{remark}{Remark}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newcommand{\diag}{\mathop{\mathrm{diag}}}
+\newcommand{\Arg}{\mathop{\mathrm{Arg}}}
+\newcommand{\hess}{\mathop{\mathrm{Hess}}}
+
+\title{Comple Analysis}
+\author{Kexing Ying}
+\date{January 11, 2021}
+
+\begin{document}
+\maketitle
+
+{
+\hypersetup{linkcolor=}
+\setcounter{tocdepth}{2}
+\tableofcontents
+}
+\newpage
+
+\hypertarget{complex-numbers}{%
+\section{Complex Numbers}\label{complex-numbers}}
+
+We recall some properties about the complex numbers \(\mathbb{C}\).
+
+From \textbf{Analysis II} we recall the topological properties of
+\(\mathbb{R}^2\). As there exists a natural homeomorphism from
+\(\mathbb{R}^2\) to \(\mathbb{C}\), we conclude that the complex numbers
+also has these properties.
+
+\begin{prop}
+  The set of complex numbers \(\mathbb{C}\) forms a metric space with the induced 
+  metric from the Pythagorean norm, that is, the metric
+  \[d : \mathbb{C} \times \mathbb{C} \to \mathbb{R} : (z, w) \mapsto \left| z - w \right|.\]
+\end{prop}
+\proof
+
+One can trivially show that the Pythagorean norm is a norm on
+\(\mathbb{C}\), and hence, the induced metric is a metric on
+\(\mathbb{C}\). \qed
+
+\begin{theorem}
+  The complex numbers equipped with the distance as defined above is homeomorphic 
+  to \(\mathbb{R}^2\) equipped with Euclidean metric.
+\end{theorem}
+\proof
+
+This is true following the homeomorphism \((x, y) \mapsto x + iy\). \qed
+
+\begin{corollary}
+  The complex numbers is complete and a subset of \(\mathbb{C}\) is compact if 
+  and only if \(\mathbb{C}\) is closed and bounded.
+\end{corollary}
+\proof
+
+Follows from the Heine-Borel theorem and the fact that \(\mathbb{R}^2\)
+is complete. \qed
+
+Certain definitions are also induced for the complex numbers by the fact
+that it is a metric space. We shall define them here again for
+referencing.
+
+\begin{definition}
+  An open disk (ball) in \(\mathbb{C}\) centred at \(z_0 \in \mathbb{C}\) with 
+  radius \(r > 0\) is the set 
+  \[D_r(z_0) := \{ z \in \mathbb{C} \mid \left| z - z_0 \right| < r\}.\]
+  The boundary of a disk is the set 
+  \[C_r(z_0) := \{z \in \mathbb{C} \mid \left | z - z_0 \right| = r\}.\]
+  Lastly, we write \(\mathbb{D} := D_1(0)\) for shorthand.
+\end{definition}
+
+\begin{definition}
+  Let \(S \subseteq \mathbb{C}\) and \(z_0 \in S\). We call \(z_0\) an interior 
+  point of \(S\) if and only if there exists some \(r > 0\) such that 
+  \(D_r(z_0) \subseteq S\). We call the set of interior points of \(S\), \(S^o\) 
+  -- the interior of \(S\) and we call \(S\) open if and only if every element of \(S\) 
+  is an interior point of \(S\), i.e. \(S = S^o\). 
+\end{definition}
+
+We see that the above definition for open is equivalent to that which is
+induced by the metric space.
+
+\begin{definition}
+  Let \(S\) be a subset of \(\mathbb{C}\), then
+  \begin{itemize}
+    \item \(S\) is closed if and only if \(S^c\) is open, or, 
+      equivalently, \(S\) is closed if and only if for all convergent sequences 
+      \((x_n) \subseteq S\), \((x_n)\) converges in \(S\).
+    \item the closure of \(S\), \(\overline{S}\) is the smallest closed set 
+      containing \(S\), or equivalently, the union of \(S\) and its limit points.
+    \item the boundary of \(S\) is defined to be \(\partial S = 
+      \overline{S} \setminus S^o\).
+    \item if \(S\) is bounded, then the diameter of \(S\) is 
+      \[\text{diam}(S) = \sup_{z, w \in S} \left| z - w \right|.\]
+    \item \(S\) is (path) connected if and only if for all \(z, w \in S\), there exists 
+      some continuous function \(\gamma : [0, 1] \to S\) such that \(\gamma(0) = z\) 
+      and \(\gamma(1) = w\).
+  \end{itemize}
+\end{definition}
+
+We remark that there is no confusion regarding the definition of
+connectedness in \(\mathbb{C}\) since path-connectedness is a stronger
+notion than connectedness in arbitrary topological spaces while in
+\(\mathbb{R}^n\), open sets are path-connected if they are connected,
+and so, by traversing the homeomorphism, an open set
+\(S \subseteq \mathbb{C}\) is connected if and only if it is
+path-connected.
+
+As \(\mathbb{C}\) is complete the following proposition follows as
+compact sets in \(\mathbb{C}\) are closed and bounded.
+
+\begin{prop}
+  Let \((S_n)\) be a sequence of non-empty decreasing subsets of \(\mathbb{C}\) 
+  such that \(\text{diam}(S_n) \to 0\) as \(n \to 0\), then there exists a unique 
+  point \(w \in \mathbb{C}\) such that \(w \in \bigcap_n S_n\).
+\end{prop}
+\proof
+
+This result was previously proved for closed and bounded sets in
+arbitrary complete metric spaces and so, this result follows as an
+application of that. \qed
+
+For good measure, let us also recall some lemmas from school regarding
+algebraic manipulations of the complex numbers.
+
+\begin{theorem}
+  Let \(z_1 = r_1(\cos \theta_1 + i\sin \theta_1)\) and let 
+  \(z_2 = r_2(\cos \theta_2 + i\sin \theta_2)\), then
+  \[z_1 z_2 = r_1 r_2(\cos(\theta_1 + \theta_2) + i\sin(\theta_1 + \theta_2)).\]
+\end{theorem}
+
+\begin{corollary}[De Moivre's Formula]
+  Let \(z = r(\cos \theta + i\sin \theta)\), then 
+  \[z^n = r^n(\cos n\theta + i\sin n\theta).\]
+\end{corollary}
+
+We note that the above implies \(\arg z_1 + \arg z_2 = \arg z_1 z_2\)
+but it is in general \textbf{not} true that
+\(\mathop{\mathrm{Arg}}z_1 + \mathop{\mathrm{Arg}}z_2 = \mathop{\mathrm{Arg}}z_1 z_2\)
+where \(\mathop{\mathrm{Arg}}z\) denote the principle argument of \(z\).
+
+\newpage
+
+\hypertarget{complex-functions}{%
+\section{Complex Functions}\label{complex-functions}}
+
+\end{document}
