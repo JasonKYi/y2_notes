@@ -48,11 +48,12 @@ conclude that the complex numbers also has these properties.
 \qed
 
 \begin{theorem}
-  The complex numbers equipped with the distance as defined above is homeomorphic 
-  to \(\mathbb{R}^2\) equipped with Euclidean metric.
+  The complex numbers equipped with the distance as defined above is Lipschitz 
+  equivalent to \(\mathbb{R}^2\) equipped with Euclidean metric; so, they are 
+  also homeomorphic.
 \end{theorem}
 \proof
-  This is true following the homeomorphism \((x, y) \mapsto x + iy\).
+  Trivial.
 \qed
 
 \begin{corollary}
