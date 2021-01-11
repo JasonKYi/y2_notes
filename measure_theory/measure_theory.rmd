@@ -1,0 +1,108 @@
+---
+title: Measure Theory
+author: Kexing Ying
+date: January 11, 2021
+output: 
+  pdf_document:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+geometry: margin = 1.5in
+urlcolor: red
+header-includes:
+  - \usepackage{tikz}
+  - \usepackage{amsthm}
+  - \usepackage{mathtools}
+  - \usepackage{lipsum}
+  - \usepackage[ruled,vlined]{algorithm2e}
+  - \theoremstyle{definition}
+  - \newtheorem{theorem}{Theorem}
+  - \newtheorem{prop}{Proposition}
+  - \newtheorem{corollary}{Corollary}[theorem]
+  - \newtheorem*{remark}{Remark}
+  - \theoremstyle{definition}
+  - \newtheorem{definition}{Definition}[section]
+  - \newtheorem{lemma}{Lemma}[section]
+  - \newcommand{\diag}{\mathop{\mathrm{diag}}}
+  - \newcommand{\Arg}{\mathop{\mathrm{Arg}}}
+  - \newcommand{\hess}{\mathop{\mathrm{Hess}}}
+---
+
+\newpage
+# Motivation
+
+We recall from **Analysis I** the definition of the Darboux integral. While this 
+notion of integration was sufficient for our use case last year, as we shall see, 
+there are some limitations with this notion of integration. These limitations will 
+be addressed by the means of measure theory.
+
+\begin{definition}[Darboux Integraable]
+  A function \(f : [a, b] \to \mathbb{R}\) is called Darboux integrable if for 
+  any partition \(\mathcal{P} = \{a = t_0 < t_1 < \cdots < t_{n - 1} < t_n = b \}\)
+  for some \(n \ge 1\) if \([a, b]\), by defining the lower and upper Darboux sums, 
+  \[L(f, \mathcal{P}) = \sum_{i = 1}^n (t_i - t_{i - 1}) \inf_{t \in [t_{i-1}, t_i]} f(t),\]
+  and
+  \[U(f, \mathcal{P}) = \sum_{i = 1}^n (t_i - t_{i - 1}) \sup_{t \in [t_{i-1}, t_i]} f(t),\]
+  one has 
+  \[\sup_{\mathcal{P}} L(f, \mathcal{P}) = \inf_{\mathcal{P}} U(f, \mathcal{P}).\]
+  If this is the case we define the integral of \(f\) over \([a, b]\) to be this 
+  value, i.e. 
+  \[\int_a^b f := \sup_{\mathcal{P}} L(f, \mathcal{P}) = \inf_{\mathcal{P}} U(f, \mathcal{P}).\]
+\end{definition}
+
+Many functions are Darboux integrable and in fact, as demonstrated last year, 
+all functions in \(C_{pw}^\circ([a, b])\), that is piecewise 
+continuous functions on \([a, b]\) are Darboux integrable. Nonetheless, however, 
+the class of Darboux integrable functions is also rather limited. 
+
+Consider the Dirichlet function 
+\[\mathbf{1}_{\mathbb{Q}}(x) := 
+  \begin{cases}
+    1, \hspace{2mm} x \in \mathbb{Q};\\
+    0, \hspace{2mm} x \in \mathbb{R}\setminus\mathbb{Q}.
+  \end{cases}\]
+That is, the indicator function for \(\mathbb{Q}\). We see that \(\mathbf{1}_\mathbb{Q}\) 
+is not Darboux integrable since both \(\mathbb{Q}\) and \(\mathbb{R}\setminus\mathbb{Q}\) 
+are dense in \(\mathbb{R}\) and so, for any partition \(\mathcal{P}\) of \([a, b]\),
+\(L(\mathbf{1}_\mathbb{Q}, \mathcal{P}) = 0\) while \(U(\mathbf{1}_\mathbb{Q}, \mathcal{P}) = 1\).
+This is not ideal, since, as \(\mathbb{Q}\) is countable while \(\mathbb{R}\setminus\mathbb{Q}\) 
+is not, we intuitively expect that a satisfactory theory of integrable would assign 
+\(\int_a^b \mathbf{1}_\mathbb{Q} = 0\).
+
+Moreover, by defining \(P = (q_n)_{n \in \mathbb{N}} \subseteq \mathbb{Q}\) be some 
+enumeration of \(\mathbb{Q} \cap [a, b]\), we can define the following sequence of 
+functions,
+\[f_n(x) := 
+  \begin{cases}
+    1, \hspace{2mm} x \in \{q_0, \cdots, q_n\};\\
+    0, \hspace{2mm} \text{otherwise}. 
+  \end{cases}\]
+It is not difficult to see that \(\int_a^b f_n = 0\) for all \(n\) and 
+\(f_n \to \mathbf{1}_\mathbb{Q}\) pointwise. However, this implies 
+\[0 = \lim_{n \to \infty} \int_a^b f_n \neq \int_a^b \lim_{n \to \infty} f_n = 
+  \int_a^b \mathbf{1}_\mathbb{Q},\]
+and in fact, the right hand side is not even defined (as \(\mathbf{1}_\mathbb{Q}\) 
+is not Darboux integrable)! 
+
+To solve this issue we will introduce the notion of the Lebesgue measure and 
+furthermore, its associated Lebesgue integral which extends our Darboux integral 
+such that it has the "nice" properties we desire. 
+
+We will in this course also look at \(L^p\) spaces. From the perspective of 
+analysis, it is often convenient to work in Banach spaces (complete normed 
+vector spaces) such that we can utilise many existing theorems we have proved 
+in **Analysis II**, e.g. Banach's fixed point theorem. For instance, one can 
+endow \(C_{pw}^\circ([a, b])\) with the (semi-)norm 
+\[\|f\|_{L^1} := \int_a^b \left| f \right|. \]
+Then, by considering the aforementioned sequence \((f_n) \subseteq C_{pw}^\circ([a, b])\), 
+one can easily show that \((f_n)\) is a Cauchy sequence with respect to \(\| \cdot \|_{L^1}\). 
+However, \(f_n \to \mathbf{1}_\mathbb{Q}\) pointwise. This motivates us to introduce 
+the Banach space \(L^1([a, b])\) of integrable functions, and more generally, 
+\(L^p\)-spaces later in the course.
+
+Lastly, as we have seen within last term's probability module, measure theory 
+lays below as the foundations for probability theory. As a quick reminder, 
+we recall that a probability space is a special type of measure space and random 
+variables defined on these probability spaces are simply measurable functions to 
+\(\mathbb{R}\) (or more exotic fields). This can be interpreted with connotations 
+to real world situations in several ways.
