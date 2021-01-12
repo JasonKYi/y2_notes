@@ -1738,9 +1738,9 @@ direction of \(w\).
   \[\pi_W(v) = \sum \langle v, v_i \rangle v_i.\]
 \end{prop}
 \proof
-  Let \(w \in W\), then \(\|v - w\| = \|(v - \pi_W(v)) + (\pi_W(v) - w)\|\). 
+  Let \(w \in W\), then \(\|v - w\|^2 = \|(v - \pi_W(v)) + (\pi_W(v) - w)\|^2\). 
   Since \(v - \pi_W(v) \in W^\bot\) and \(\pi_W(v) - w \in W\) we have 
-  \(\|v - w\| = \|v - \pi_W(v)\| + \|\pi_W(v) - w\| \ge  \|v - \pi_W(v)\|\).
+  \(\|v - w\|^2 = \|v - \pi_W(v)\|^2 + \|\pi_W(v) - w\|^2 \ge  \|v - \pi_W(v)\|^2\).
 
   For the second part, we consider that the decomposition of \(v = w + w'\) is 
   unique, thus, it suffices to show that \(v - \sum \langle v, v_i \rangle v_i \in W^\bot\).

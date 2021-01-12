@@ -36,7 +36,7 @@ notion of integration was sufficient for our use case last year, as we shall see
 there are some limitations with this notion of integration. These limitations will 
 be addressed by the means of measure theory.
 
-\begin{definition}[Darboux Integraable]
+\begin{definition}[Darboux Integrable]
   A function \(f : [a, b] \to \mathbb{R}\) is called Darboux integrable if for 
   any partition \(\mathcal{P} = \{a = t_0 < t_1 < \cdots < t_{n - 1} < t_n = b \}\)
   for some \(n \ge 1\) if \([a, b]\), by defining the lower and upper Darboux sums, 
@@ -66,7 +66,7 @@ is not Darboux integrable since both \(\mathbb{Q}\) and \(\mathbb{R}\setminus\ma
 are dense in \(\mathbb{R}\) and so, for any partition \(\mathcal{P}\) of \([a, b]\),
 \(L(\mathbf{1}_\mathbb{Q}, \mathcal{P}) = 0\) while \(U(\mathbf{1}_\mathbb{Q}, \mathcal{P}) = 1\).
 This is not ideal, since, as \(\mathbb{Q}\) is countable while \(\mathbb{R}\setminus\mathbb{Q}\) 
-is not, we intuitively expect that a satisfactory theory of integrable would assign 
+is not, we intuitively expect that a satisfactory theory of integration would assign 
 \(\int_a^b \mathbf{1}_\mathbb{Q} = 0\).
 
 Moreover, by defining \(P = (q_n)_{n \in \mathbb{N}} \subseteq \mathbb{Q}\) be some 
