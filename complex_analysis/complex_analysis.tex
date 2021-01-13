@@ -222,4 +222,181 @@ where \(\mathop{\mathrm{Arg}}z\) denote the principle argument of \(z\).
 \hypertarget{complex-functions}{%
 \section{Complex Functions}\label{complex-functions}}
 
+As with all spaces, we would like to study the properties of mappings
+between the complex numbers.
+
+\begin{definition}[Mapping]
+  Let \(\Omega_1, \Omega_2 \subseteq \mathbb{C}\). Then, 
+  \[f : \Omega_1 \to \Omega_2\]
+  is said to be a mapping from \(\Omega_1\) to \(\Omega_2\) if for any 
+  \(z = x + iy \in \Omega_1\), there exists only one complex number 
+  \(w = u + iv\) such that \(w = f(z)\).
+
+  In this case, we denote \(w = f(z) = u(x, y) + iv(x, y)\).
+\end{definition}
+
+We define a special mapping -- the Möbius transformation.
+
+\begin{definition}[The Möbius Transformation]
+  The Möbius transformation is a mapping such that 
+  \[w = f(z) = \frac{az + b}{cz + d},\]
+  for some \(a, b, c, d \in \mathbb{C}\) where \(cz + d \neq 0\) on the domain.
+\end{definition}
+
+As the complex plane is a metric space, we again have the induces notion
+of continuity.
+
+\begin{definition}[Continuity]
+  Let \(f : \Omega_1 \to \Omega_2\) be some complex mapping and let \(z_0 \in \Omega_1\). 
+  We say \(f\) is continuous at \(z_0\) if for every \(\epsilon > 0\) there exists 
+  some \(\delta >0\) such that for all \(z \in \mathbb{C}\), 
+  \(\left| z - z_0 \right| < \delta\), we have \(\left| f(z) - f(z_0) \right|\).
+
+  We say \(f\) is continuous on \(\Omega_1\) if it is continuous at every point 
+  in \(\Omega_1\).
+\end{definition}
+
+Since the complex plane is homeomorphic to the Euclidean space
+\(\mathbb{R}^2\), one might think to establish a notion of derivative on
+\(\mathbb{C}\). This is achieved, however, not through the definition on
+general Euclidean spaces, but through another definition.
+
+\begin{definition}[Holomorphic]
+  Let \(\Omega_1, \Omega_2 \subseteq \mathbb{C}\) be open sets and let 
+  \(f : \Omega_1 \to \Omega_2\). Then we say \(f\) is holomorphic (differentiable) 
+  at some \(z_0 \in \Omega_1\) if the limit 
+  \[\lim_{h \in \mathbb{C} \to 0} \frac{f(z_0 + h) - f(z_0)}{h}\]
+  exists. Here we restricts \(z_0 + h \in \Omega_1\) which is fine since \(\Omega_1\) 
+  is open, and hence, there exists some \(\delta > 0\) such that 
+  \(B_\delta(z_0) \subseteq \Omega_1\). If \(f\) is holomorphic at \(z_0\) then 
+  we call the quotient its derivative and denote it by \(f'(z_0)\). 
+  
+  Let \(S \subseteq \mathbb{C}\) be some complex set, then, we say \(f\) is 
+  holomorphic on \(S\) if 
+  \begin{itemize}
+    \item \(S\) is open and \(f\) is holomorphic on every point of \(S\);
+    \item \(S\) is closed and \(f\) is holomorphic on some open set containing \(S\).
+  \end{itemize}
+  If \(f\) is holomorphic on \(\mathbb{C}\) itself then we say \(f\) is entire.
+\end{definition}
+
+We note that we are allowed to make this definition as there exists a
+notion of division on \(\mathbb{C}\) while the same cannot be said for
+general Euclidean spaces.
+
+The function \(f(z) = \overline{z}\) is not holomorphic. Indeed, the
+quotient \[\frac{f(z_0 + h) - f(z_0)}{h} = \frac{\overline{h}}{h}\]
+doest not have a limit as \(n \to \infty\) and so our claim.
+
+\begin{prop}
+  A function \(f\) is holomorphic at \(z_0 \in \Omega\) if and only if there exists 
+  a complex number \(a\) such that 
+  \[f(z_0 + h) - f(z_0) - ah = o(h),\]
+  or equivalently (without the syntactic sugar), 
+  \[f(z_0 + h) - f(z_0) - ah = h\psi(h)\]
+  where \(\psi : D_\epsilon(0) \to \mathbb{C}\) is a function such that 
+  \(\lim_{h \to 0} \psi(h) = 0\) for some \(\epsilon > 0\).
+\end{prop}
+\proof
+
+Straight away, by dividing both side by \(h\), we have
+\[\frac{f(z_0 + h) - f(z_0)}{h} - a = \psi(h) \to 0\] as \(h \to 0\).
+\qed
+
+By taking \(h \to 0\) on both sides of the equation, we have
+\(f(z) \to f(z_0)\) as \(z \to z_0\) and so, the following corollary.
+
+\begin{corollary}
+  A holomorphic function \(f\) is continuous.
+\end{corollary}
+
+As one might imagine, the normal properties of derivatives hold for this
+definition as well.
+
+\begin{prop}
+  If \(f, g\) are holomorphic in \(\Omega\) then, 
+  \begin{itemize}
+    \item \(f + g\) is holomorphic in \(\Omega\) and \((f + g)' = f' + g'\);
+    \item \(fg\) is holomorphic in \(\Omega\) and \((fg)' = f'g + fg'\);
+    \item if \(g(z_0) \neq 0\), then \(f / g\) is holomorphic at \(z_0\) and 
+    \((f/g)' = \frac{f'g + fg'}{g^2};\)
+  \end{itemize}
+  Moreover, if \(f : \Omega \to U\) and \(g : U \to \mathbb{C}\) are both holomorphic, 
+  the chain rule holds, that is 
+  \[(g \circ f)'(z) = g'(f(z))f'(z).\]
+\end{prop}
+\proof
+
+Omitted. One can use the above proposition to make life easier. \qed
+
+\hypertarget{cauchy-riemann-equations}{%
+\subsection{Cauchy-Riemann Equations}\label{cauchy-riemann-equations}}
+
+Consider the limit
+\[f'(z_0) = \lim_{h = h_1 + ih_2 \to 0} \frac{f(z_0 + h) - f(z_0)}{h}.\]
+Assuming that \(h = h_1\), namely \(h_2 = 0\) and by writing,
+\[f(z_0) = f(x_0 + iy_0) = u(x_0, y_0) + iv(x_0, y_0),\] we have,
+\[ \begin{split}
+  f'(z_0) & = \lim_{h \to 0} \frac{f(z_0 + h) - f(z_0)}{h} \\
+    & = \lim_{h_1 \in \mathbb{R} \to 0} \frac{u(x_0 + h_1, y_0) + 
+      iv(x_0 + h_1, y_0) - u(x_0, y_0) - iv(x_0, y_0)}{h_1} \\
+    & = \frac{\partial u}{\partial x}(x_0, y_0) + i \frac{\partial v}{\partial x}{x_0, y_0} 
+      = u'_x(x_0, y_0) + i v'_x(x_0, y_0).
+\end{split} \] Similarly, if we let \(g = ih_2\) by letting \(h_1 = 0\),
+we have
+\[f'(z_0) = \frac{1}{i}\frac{\partial u}{\partial v}(x_0, y_0) + 
+  \frac{\partial v}{\partial y}(x_0, y_0) = -iu'_y(x_0, y_0) + v'_y(x_0, y_0).\]
+So, if \(f\) is holomorphic at \(z_0\), then the two limit should agree,
+and hence
+\[\frac{\partial u}{\partial x} = \frac{\partial v}{\partial y}, \hspace{2mm} 
+  \frac{\partial u}{\partial y} = - \frac{\partial v}{\partial x}.\]
+These two equations together are called the \emph{Cauchy-Riemann
+equations}.
+
+\begin{definition}[Cauchy-Riemann Equations]
+  Let \(f(z) = u(x, y) + iv(x, y)\) be a mapping, then the Cauchy-Riemann equations 
+  are the system of equations 
+  \[u'_x = v'_y; \hspace{2mm} u'_y = - v'_x.\] 
+\end{definition}
+
+With the Cauchy-Riemann equations, we have a necessary condition for a
+function to be holomorphic. As shown above, we have found that the
+conjugate function \(f = z \mapsto \overline{z}\) is not holomorphic,
+and we see that as well with its Cauchy-Riemann equations since
+\(u'_x = 1 \neq -1 = v'_y\).
+
+The Cauchy-Riemann equations links real and complex analysis in some
+sense. By defining the operators
+\[ \frac{\partial}{\partial z} = \frac{1}{2}\left(\frac{\partial}{\partial x} + 
+  \frac{1}{i} \frac{\partial}{\partial y}\right); \hspace{2mm} 
+\frac{\partial}{\partial \bar{z}} = \frac{1}{2}\left(\frac{\partial}{\partial x} - 
+  \frac{1}{i} \frac{\partial}{\partial y}\right), \hspace{2mm} \] we
+have the following theorem.
+
+\begin{theorem}
+  Let \(f = u + iv\). If \(f\) is holomorphic at \(z_0\), then 
+  \[\frac{\partial f}{\partial \bar{z}}(z_0) = 0,\]
+  and 
+  \[f'(z_0) = \frac{\partial f}{\partial z}(z_0) = 2 \frac{\partial u}{\partial z}(z_0).\]
+\end{theorem}
+\proof
+
+Trivially follows by using the Cauchy-Riemann equations (except perhaps
+for showing \(f'(z_0) = \partial u / \partial z\) which follows since we
+can write \(f'(z_0) = u'_x(z_0) + iv'_x(z_0)\) and so, the result
+follows by rewriting with the Cauchy-Riemann equations). \qed
+
+Similar to the necessary and sufficient conditions for the existence of
+derivatives for general Euclidean spaces, we would like a similar
+theorem for determining whether or not a complex valued function is
+holomorphic. This is achieved with the following theorem.
+
+\begin{theorem}
+  Suppose \(f = u + iv\) is a complex-valued function defined on some open set 
+  \(\Omega\). If \(u, v\) are continuously differentiable and satisfy the 
+  Cauchy-Riemann equations on \(\Omega\), then \(f\) is holomorphic on \(\Omega\) 
+  and 
+  \[f'(z) = \frac{\partial f}{\partial z}(z).\]
+\end{theorem}
+
 \end{document}
