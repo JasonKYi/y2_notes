@@ -1,0 +1,185 @@
+---
+title: Statistical Modelling I
+author: Kexing Ying
+date: January 11, 2021
+output: 
+  pdf_document:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+geometry: margin = 1.5in
+urlcolor: red
+header-includes:
+  - \usepackage{tikz}
+  - \usepackage{amsthm}
+  - \usepackage{mathtools}
+  - \usepackage{lipsum}
+  - \usepackage[ruled,vlined]{algorithm2e}
+  - \usepackage{physics}
+  - \theoremstyle{definition}
+  - \newtheorem{theorem}{Theorem}
+  - \newtheorem{prop}{Proposition}
+  - \newtheorem{corollary}{Corollary}[theorem]
+  - \newtheorem{example}{Example}
+  - \newtheorem*{remark}{Remark}
+  - \theoremstyle{definition}
+  - \newtheorem{definition}{Definition}[section]
+  - \newtheorem{lemma}{Lemma}[section]
+  - \newcommand{\diag}{\mathop{\mathrm{diag}}}
+  - \newcommand{\Arg}{\mathop{\mathrm{Arg}}}
+  - \newcommand{\hess}{\mathop{\mathrm{Hess}}}  
+  - \newcommand{\Var}{\mathop{\mathrm{Var}}}
+  - \newcommand{\bias}[1]{{\mathop{\mathrm{bias}}}_{#1}}
+  - \newcommand{\se}[1]{{\mathop{\mathrm{SE}}}_{#1}}
+  - \newcommand{\mse}[1]{{\mathop{\mathrm{MSE}}}_{#1}}
+---
+
+\newpage
+# Introduction
+
+In this module, we will consider and analyse the relationship between measurements 
+through the use of statistical models. This is realised in several ways including 
+quantifying distributions, comparing distributions and predicting observations. We 
+shall study these methods through deriving, evaluating and applying estimators, 
+confidence intervals and hypothesis tests based, first on parametric models, and 
+later based on the theory of linear models.
+
+\begin{definition}[Statistical Model]
+  A statistical model is a specification of the distribution of \(Y\) up to an 
+  unknown parameter \(\theta\).
+\end{definition}
+
+\begin{definition}[Parameter Space]
+  Given a statistical model \(Y\) up to some parameter \(\theta\), the set \(\Theta\) 
+  of all possible parameter values is called the parameter space.
+\end{definition}
+
+In this module we will assume \(\Theta \subseteq \mathbb{R}^p\) for some 
+\(p \in \mathbb{N}\) so that we consider *parametric models*. A 
+*semiparametric model* is a statistical model which parameters belong to a more 
+general space, e.g. functions spaces.
+
+As with last years **Probability and Statistics**, we will denote the data
+\(\mathbf{y} = (y_1, \cdots, y_n) \in \mathbb{R}^n\) as a vector and 
+\(\mathbf{Y} = (Y_1, \cdots, Y_n)\) a random vector. In this case, the statistical 
+model specifies the joint distribution of \(Y_1, \cdots, Y_n\) up to some unknown 
+parameter \(\theta\). If \(Y, \cdots, Y_n\) are independent and identically distributed 
+(iid.), then we call it a *random sample*.
+
+Furthermore, in some situations, the random vector \(\mathbf{Y} = (Y_1, \cdots, Y_n)\) 
+might be dependent on random or nonrandom values \(x_1, \cdots, x_n\). The \(x_i\)'s 
+are an example of covariates. An example of this could be that, in a clinical trial, 
+some patients are given a treatment while others received a placebo. If we would 
+like to model the outcome of the \(i\)-th patient by their survival time \(Y_i\), 
+it is clear that as covariate for the \(i\)-th patient, we may use the indicator 
+function for whether or not \(i\) received the treatment as a covariate.
+
+As another example, say we would like to ask whether or not taller people have a 
+higher income. To answer this question we might create a statistical model in which 
+\(Y_i\) is the income, \(x_i\) is the height and 
+\[Y_i = \beta_0 + x_i \beta_1 + \epsilon_i\]
+for \(i = 1, \cdots, n\), \(\epsilon \sim N(0, \sigma^2)\) iid. and 
+\(\theta = (\beta_0, \beta_1, \sigma^2)\), \(\Theta = \mathbb{R}^2 \times [0, \infty)\).
+
+Having formulated a model, we can draw inferences from the sample. By estimating 
+the unknown parameters we attempts to "fit the model". Through this, we receive a 
+model that can provide us with point estimates, or better yet, tools that can 
+help us make decisions through some combination of hypothesis tests and confidence 
+intervals. 
+
+However, with all statistical models, we have to accept that it will not perfectly 
+reflect reality. But, that is not the point of statistical models anyway. 
+Statistical models are meant to be useful and in general we would like a model to 
+\begin{itemize}
+  \item agree with the observed data reasonably;
+  \item be relatively simple;
+  \item interpretable, e.g. parameters have a physical interpretation.
+\end{itemize}
+With these aims in mind, we might conduct sensitivity analysis in which we 
+discard models that are not adequate for the data through a iterative process. 
+
+\newpage
+# Point Estimation
+
+From the introduction, we seen that during the process of fitting the model, we 
+need to estimate \(\theta\) in the statistical model, and furthermore, during the 
+inference process, we need to point estimate, interval estimate or hypothesis test 
+to address our question. We recall from first year that this can be achieved through 
+several methods and we shall quickly review them here.
+
+## Review
+
+We recall the following definitions. 
+\begin{definition}[Realisation, Statistic, Estimate, Estimator]
+~
+\begin{itemize}
+  \item Data \(y_1, \cdots, y_n\) is called a realisation of \(Y_1, \cdots, Y_n\).
+  \item A function \(t\) of observable random variables is called a statistic.
+  \item An estimate of \(\theta\) is \(t(y_1, \cdots, y_n)\).
+  \item An estimator of \(\theta\) is \(T = t(Y_1, \cdots, Y_n)\).
+\end{itemize}
+\end{definition}
+
+\begin{example}
+  Let \(Y_1, \cdots, Y_n \sim N(\mu, 1)\) iid. for some unknown \(\mu \in \mathbb{R}\).
+  There are many methods for estimating \(\mu\). 
+  \begin{itemize}
+    \item the sample mean \(\hat{\mu} = \frac{1}{n} \sum y_i\);
+    \item the sample median;
+    \item the \(k\)-trimmed mean where we discard the highest and lowest \(k\) observed \(y_i\)
+      before computing the mean;
+    \item \(\cdots\) 
+  \end{itemize}
+  For the sample mean estimate, the corresponding estimator is 
+  \(T = \bar{Y} = \frac{1}{n}\sum Y_i\).
+\end{example}
+As we can see from the example, there are many possible estimations for the same 
+parameter. To justify the use of a specific estimator, one might use a frequentist's 
+perspective and generate many data and tabulate the results of each estimator. 
+Through this process, one can justify a particular estimator through observed 
+data.
+
+As estimators are random variables, we can formalise this idea by considering properties 
+of its sampling distribution (that is the distribution of the estimator), e.g. 
+\[\mathbb{P}_\theta(T \in \mathcal{A}), \hspace{2mm} E_\theta(T), \hspace{2mm} {\Var}_\theta(T), \cdots\] 
+We saw this idea last year in the form of *bias* and *mean square error*. We recall 
+the definitions here.
+\begin{definition}[Bias]
+  Let \(T\) be an estimator of \(\theta \in \Theta \subseteq \mathbb{R}\). Then 
+  the bias of \(T\) is 
+  \[\bias{\theta}(T) = E_\theta(T) - \theta.\]
+  If \(\bias{\theta}(T) = 0\) for all \(\theta \in \Theta\), then we say \(T\) is 
+  unbiased for \(\theta\).
+\end{definition}
+If the parameter space is higher dimensional, say \(\Theta \subseteq \mathbb{R}^k\),
+we may be instead be interested in the value of \(g(\theta)\) for some 
+\(g : \Theta \to \mathbb{R}\). Then, we can naturally extend the definition of 
+bias to this by 
+\[\bias{\theta}(T) = E_\theta(T) - g(\theta).\]
+\begin{example}
+  Let \(Y_1, \cdots, Y_n \sim N(\mu, \sigma^2)\) iid. 
+  \(\theta = (\mu, \sigma^2) \in \Theta = \mathbb{R} \times (0, \infty)\). Then, 
+  say if we are in \(\mu\), we may define \(g : \Theta \to \mathbb{R} : 
+  (\mu, \sigma^2) \mapsto \mu\).
+\end{example}
+\begin{definition}[Mean Square Error]
+  Let \(T\) be an estimator of \(\theta \in \Theta \subseteq \mathbb{R}\). Then 
+  the mean square error of \(T\) is 
+  \[\mse{\theta}(T) = E_\theta[(T - \theta)^2].\]
+\end{definition}
+In addition to this, we have the standard error of a estimator 
+\begin{definition}[Standard Error]
+  Let \(T\) be an estimator of \(\theta \in \Theta \subseteq \mathbb{R}\). Then 
+  the standard error of \(T\) is 
+  \[\se{\theta}(T) = \sqrt{{\Var}_\theta(T)}.\]
+\end{definition}
+From last year, we saw the following proposition.
+\begin{prop}
+  Let \(T\) be an estimator of \(\theta \in \Theta \subseteq \mathbb{R}\). Then 
+  \[\mse{\theta}(T) = {\Var}_\theta(T) + (\bias{\theta}(T))^2.\]
+\end{prop}
+If we restrict out estimators to be unbiased, often times, we find that the remaining 
+possible estimators well-behaved and we can often find the best estimators by 
+minimising the MSE. However, a biased estimator might have a small MSE than 
+an unbiased estimator (recall sample variance), and it is not necessarily true 
+that such an estimator even exists.
