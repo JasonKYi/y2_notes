@@ -44,11 +44,11 @@ We will from this point forward write \(\sum \mu S\) as a shorthand for
 
 ## Algebraic & Geometric Multiplicities
 
-We recall some basic definitions and properties of Eigenvectors.
+We recall some basic definitions and properties of eigenvectors.
 
 \begin{definition}
   Let \(V\) be some vector space, \(T \in \End(V)\) a linear map and \(\lambda\) 
-  an Eigenvalue of \(T\). Then the \(\lambda\)-Eigenspace of \(T\) is the 
+  an eigenvalue of \(T\). Then the \(\lambda\)-eigenspace of \(T\) is the 
   subspace of \(V\),
   \[E_\lambda := \{ v \in V \mid (\lambda I_V - T)v = \mathbf{0} \}.\]
   We see that this is a subspace as it is the kernel of the linear map 
@@ -57,12 +57,12 @@ We recall some basic definitions and properties of Eigenvectors.
 
 \begin{theorem}\label{eigen_li}
   Let \(V\) be some vector space, \(T \in \End(V)\) a linear map. Suppose that 
-  \(\{v_1, \cdots, v_k\}\) are Eigenvectors corresponding to distinct 
-  Eigenvalues \(\lambda_1, \cdots, \lambda_k\), then it is linearly independent.
+  \(\{v_1, \cdots, v_k\}\) are eigenvectors corresponding to distinct 
+  eigenvalues \(\lambda_1, \cdots, \lambda_k\), then it is linearly independent.
 \end{theorem}
 \proof
   We will prove by contrapositive. Suppose that 
-  \(\{v_1, \cdots, v_k\}\) are Eigenvectors that are linearly independent. Then 
+  \(\{v_1, \cdots, v_k\}\) are eigenvectors that are linearly independent. Then 
   by definition, there exists a minimal set of \(\{\mu_i \mid i \in I\}\), 
   such that \(\sum_{i \in I} \mu_i v_i = 0\) (we see that \(\mu_i \neq 0\) for 
   all \(i\) as otherwise it is not minimal). Now, let \(j \in I\), then by 
@@ -86,11 +86,11 @@ We recall some basic definitions and properties of Eigenvectors.
   \(T\) is diagonalisable. 
 \end{corollary}
 
-We define *algebraic* and *geometric* multiplicity for Eigenvalues.
+We define *algebraic* and *geometric* multiplicity for eigenvalues.
 
 \begin{definition}[Algebraic and Geometric Multiplicity]
   Let \(T \in \End(V)\) be a linear map with characteristic polynomial \(\chi_T\),
-  such that \(\chi_T(\lambda) = 0\) (i.e. \(\lambda\) is an Eigenvalue of \(T\)).
+  such that \(\chi_T(\lambda) = 0\) (i.e. \(\lambda\) is an eigenvalue of \(T\)).
 
   The algebraic multiplicity of \(\lambda\) is the number \(a(\lambda)\) such 
   that
@@ -102,7 +102,7 @@ We define *algebraic* and *geometric* multiplicity for Eigenvalues.
 \end{definition}
 
 \begin{prop}
-  Let \(T \in \End(V)\) be a linear map with an Eigenvalue \(\lambda\), then 
+  Let \(T \in \End(V)\) be a linear map with an eigenvalue \(\lambda\), then 
   \(g(\lambda) \le a(\lambda)\).
 \end{prop}
 \proof
@@ -148,7 +148,7 @@ We define *algebraic* and *geometric* multiplicity for Eigenvalues.
 
 \begin{theorem}
   Let \(\dim V = n\) and \(T \in \End(V)\) be a linear map with distinct 
-  Eigenvalues \(\lambda_1, \cdots, \lambda_r\). Suppose that the characteristic 
+  eigenvalues \(\lambda_1, \cdots, \lambda_r\). Suppose that the characteristic 
   polynomial of \(T\) is 
   \[\chi_T = \prod_i (x - \lambda_i)^{a(\lambda_i)},\]
   (so, \(\sum_i a(\lambda_i) = n\)). Then the following are equivalent,
@@ -162,24 +162,24 @@ We define *algebraic* and *geometric* multiplicity for Eigenvalues.
   \(2 \iff 3\) is trivial so let us consider the other cases.
   
   \(1 \implies 2\). Suppose \(T\) is diagonalisable, then there exists some 
-  \(B\), a basis of \(V\) consisting of Eigenvectors of \(T\). Then, we can 
+  \(B\), a basis of \(V\) consisting of eigenvectors of \(T\). Then, we can 
   partition \(B\) into \(F_{\lambda_i} := \{v \in B \mid T(v) = \lambda_i v\}\) 
-  for all Eigenvalues of \(T\). By noting that the subspace induced by 
-  \(F_{\lambda_i}\) is a subspace of the \(\lambda_i\) Eigenspace 
+  for all eigenvalues of \(T\). By noting that the subspace induced by 
+  \(F_{\lambda_i}\) is a subspace of the \(\lambda_i\) eigenspace 
   \(E_{\lambda_i}\), we have, 
   \[\sum_i g(\lambda_i) = \sum_i \dim E_{\lambda_i} \ge \sum_i \dim F_{\lambda_i} = n.\]
   Now, as \(\sum_i g(\lambda_i) \le \sum_i a(\lambda_i) = n\) by the previous 
   proposition, it follows \(\sum_i g(\lambda_i) = n\).
 
   \(2 \implies 1\). Suppose \(\sum_i g(\lambda_i) = n\). Let \(B_i\) be the 
-  basis of \(E_{\lambda_i}\) for all \(\lambda_i\) an Eigenvalue and let 
+  basis of \(E_{\lambda_i}\) for all \(\lambda_i\) an eigenvalue and let 
   \(B = \bigcup B_i\). We can straight away see that \(\left| B \right| = n\) so 
   it suffices to show that \(B\) is linearly independent. Suppose otherwise, 
   then there exists an index set \(I \subseteq \{1, \cdots, r\}\),
   \[\sum_{i \in I} \sum \mu_i B_i = 0\]
   where \(\sum \mu_i B_i \neq 0\) for all \(i\). Now as 
-  \(\sum \mu_i B_i \in E_{\lambda_i}\), this is a sum of Eigenvectors with 
-  distinct Eigenvalues. However, by theorem \ref{eigen_li}, these Eigenvectors 
+  \(\sum \mu_i B_i \in E_{\lambda_i}\), this is a sum of eigenvectors with 
+  distinct eigenvalues. However, by theorem \ref{eigen_li}, these eigenvectors 
   are there fore linearly independent, so they must be zero. \#
 \qed
 
@@ -239,7 +239,7 @@ is a particular case of this and is closely linked to *block-diagonal* matrices.
   We write \(T_W : W \to W\) as the restriction of \(T\) to \(W\).
 \end{definition}
 
-A example of an invariant subspace is the Eigenspace of a linear map since 
+A example of an invariant subspace is the eigenspace of a linear map since 
 \(T(E_\lambda) = \{ T(v) \mid v \in E_\lambda \} = \{\lambda v \} 
 \subseteq E_\lambda\).
 
@@ -398,8 +398,8 @@ fields such as the real numbers.
   \(\dim V = 1\), so let us consider the case when \(\dim V = k + 1\) under 
   the inductive hypothesis. 
 
-  As \(\chi_T\) factorises, \(T\) has an Eigenvalue \(\lambda\) and some 
-  Eigenvector \(v \in V\). Let \(W = \text{sp}(v)\) be a \(T\)-invariant 
+  As \(\chi_T\) factorises, \(T\) has an eigenvalue \(\lambda\) and some 
+  eigenvector \(v \in V\). Let \(W = \text{sp}(v)\) be a \(T\)-invariant 
   subspace of \(V\). Then, by proposition \ref{dim_sub}, \(V / W\) has dimension 
   \(k\) and we have the induced quotient map \(\bar{T} : V / W \to V / W\). 
   Now, by corollary \ref{prod_char}, \(\prod (x - \lambda_i) = \chi_T(x) = 
@@ -411,12 +411,12 @@ fields such as the real numbers.
 \qed
 
 \begin{corollary}
-  Let \(A \in M_n(\mathbb{C})\) with Eigenvalues \(\lambda_i\). Then 
+  Let \(A \in M_n(\mathbb{C})\) with eigenvalues \(\lambda_i\). Then 
   \(\sum g(\lambda_i)\lambda_i = \mathop{\mathrm{tr}}(A)\).
 \end{corollary}
 \proof
   By the triangularisation theorem, \(A = PQP^{-1}\) where \(Q\) is triangular.
-  As \(A\) and \(Q\) have the same Eigenvalues, it suffices to show that 
+  As \(A\) and \(Q\) have the same eigenvalues, it suffices to show that 
   \(\mathop{\mathrm{tr}}(A) = \mathop{\mathrm{tr}}(Q)\). But this follows as 
   \(\mathop{\mathrm{tr}}(A) = \mathop{\mathrm{tr}}(PQP^{-1}) = 
   \mathop{\mathrm{tr}}(P^{-1}PQ) = \mathop{\mathrm{tr}}(Q)\).
@@ -720,11 +720,11 @@ compute the minimal polynomial. We will now develop some tools to help us find
 this minimal polynomial.
 
 \begin{theorem}
-  Let \(T \in \End(V)\), then \(\lambda\) is an Eigenvalue of \(T\) if and only 
+  Let \(T \in \End(V)\), then \(\lambda\) is an eigenvalue of \(T\) if and only 
   if \(m_T(\lambda) = 0\).
 \end{theorem}
 \proof
-  \((\implies)\) If \(\lambda\) is an Eigenvalue of \(T\) then there exists 
+  \((\implies)\) If \(\lambda\) is an eigenvalue of \(T\) then there exists 
   non-zero \(v \in V\), \(T(v) = \lambda v\), then 
   \(0 = m_T(T)(v) = \sum a_i T^i(v) = \sum a_i \lambda^i v = m_T(\lambda)v\).
   Now, as \(v\) is non-zero, \(m_T(\lambda) = 0\).
@@ -732,7 +732,7 @@ this minimal polynomial.
   \((\impliedby)\) Backwards direction follows straight away as if
   \(m_T(\lambda) = 0\), as \(m_T \mid \chi_T\) there exists some polynomial \(p\)
   such that \(\chi_T = m_T p\) and thus, \(\chi_T(\lambda) 
-  = m_T(\lambda)p(\lambda) = 0\), and hence, is an Eigenvalue.
+  = m_T(\lambda)p(\lambda) = 0\), and hence, is an eigenvalue.
 \qed
 
 With that, in order to find the minimal polynomial, it will be insightful to 
@@ -830,7 +830,7 @@ diagonalisability.
   Suppose we write \(p(x) = \prod(x - \lambda_i)\), then, it suffices to show 
   that \(\dim \ker (\prod(T - \lambda_i)) \le \sum \dim \ker(T - \lambda_i)\) as 
   the kernel of \(\prod(T - \lambda_i)\) is \(V\) while the latter is the sum 
-  of the dimensions of the Eigenspaces. This can be proved by showing 
+  of the dimensions of the eigenspaces. This can be proved by showing 
   \(\dim \ker T_1 T_2 \le \dim \ker T_1 + \dim \ker T_2\) and applying induction.
 \qed
 
@@ -898,7 +898,7 @@ theorem, so, we can call it a canonical decomposition. Furthermore, if all facto
 of \(m_T\) are linear, the factorisation becomes,
 \[m_T = \prod_{i = 1}^k (x - \lambda_i)^{n_i},\]
 for distinct \(\lambda_i\). In this cases, the individual decomposition becomes 
-\(\ker (T - \lambda I)^{n_i}\) which are the *generalised Eigenspace* of \(T\).
+\(\ker (T - \lambda I)^{n_i}\) which are the *generalised eigenspace* of \(T\).
 Lastly, we notice a direct corollary of this theorem is theorem \ref{diag_distinct}, 
 so we have alternatively an (arguably) easier proof of this.
 
@@ -964,7 +964,7 @@ straight away.
   Let \(J = J_n(\lambda)\) be some Jordan block, then 
   \begin{itemize}
     \item \(\chi_J(x) = (x - \lambda)^n = m_J\);
-    \item \(\lambda\) is the only Eigenvalue and \(a(\lambda) = n, g(\lambda) = 1\);
+    \item \(\lambda\) is the only eigenvalue and \(a(\lambda) = n, g(\lambda) = 1\);
     \item \((J - \lambda I)e_{i + 1} = e_i\) for \(i = 1, \cdots, n - 1\) 
       and \((J - \lambda I)e_1 = 0\).
   \end{itemize}
@@ -979,7 +979,7 @@ of block diagonal matrices. Let \(A_i\) have characteristic polynomial
 \begin{itemize}
   \item \(\chi_A = \prod \chi_i\);
   \item \(m_A = \lcm(m_i)\);
-  \item for all \(\lambda\) and Eigenvalue of \(A\), 
+  \item for all \(\lambda\) and eigenvalue of \(A\), 
     \(\dim E_\lambda(A) = \sum \dim E_\lambda(A_i)\);
   \item for all \(q \in \mathbb{F}[X]\), \(q(A) = \bigoplus q(A_i)\).
 \end{itemize}
@@ -1014,7 +1014,7 @@ the linear map version now.
 \proof
   We shall provide a proof for uniqueness first.
 
-  Suppose that \(T\) has only one Eigenvalue \(\lambda\) and 
+  Suppose that \(T\) has only one eigenvalue \(\lambda\) and 
   \[[T]_B \sim J = \bigoplus J_{n_i}(\lambda)\] 
   for some basis of \(V\), \(B\).
   Let us write \(J = \bigoplus_{i = 1}^r J_i(\lambda)^{a_i}\) where \(a_i\) is the number 
@@ -1032,8 +1032,8 @@ the linear map version now.
   as \(m_i\) is computable and is uniquely determined by \((J - \lambda I)^i\),
   we have \(a_i\) is unique.
   
-  Now, let us relax the number of Eigenvalues condition. Suppose \(T\) has 
-  at least two Eigenvalues with one of them being \(\lambda\), then we can write 
+  Now, let us relax the number of eigenvalues condition. Suppose \(T\) has 
+  at least two eigenvalues with one of them being \(\lambda\), then we can write 
   \[[T]_B \sim J = J_\lambda \oplus L,\]
   where \(L\) is the direct sum of all the other Jordan blocks. Now, as 
   \(L - \lambda I\) is invertible (easy to see as the determinant is non-zero), 
@@ -1051,7 +1051,7 @@ above to find the Jordan canonical form of a matrix.
   Suppose we write 
   \[J = (J_{n_1}(\lambda) \oplus \cdots \oplus J_{n_\alpha}(\lambda)) \oplus 
     (J_{m_1}(\mu) \oplus \cdots \oplus J_{m_\beta}(\mu)) \oplus \cdots,\]
-  where \(\lambda, \mu, \cdots\) are Eigenvalues of \(A\), then,
+  where \(\lambda, \mu, \cdots\) are eigenvalues of \(A\), then,
   \begin{itemize}
     \item the sum of the size of the \(\lambda\)-blocks equals the algebraic 
     multiplicity of \(\lambda\), i.e. \(n_1 + \cdots + n_\alpha = a(\lambda)\);
@@ -1066,7 +1066,7 @@ above to find the Jordan canonical form of a matrix.
   \begin{itemize}
     \item Obvious by considering the characteristic polynomial of \(J_k(\lambda)\).
     \item True by considering each \(\lambda\)-block has geometric multiplicity one, 
-      and that \(J\) and \(A\) share the same \(\lambda\)-Eigenspace.
+      and that \(J\) and \(A\) share the same \(\lambda\)-eigenspace.
     \item Since for all \(n\), \(J_n(\lambda)\) has minimal polynomial 
     \((x - \lambda)^n\), we have the power dividing \(m_J\) is 
     \(\lcm((x - \lambda)^{n_i}, \cdots, (x - \lambda)^{n_\alpha})\) which equals 
@@ -1078,7 +1078,7 @@ Now, let us finish the proof of the JCF theorem by proving that a linear map is
 similar to its JCF (we can say this since we had proved uniqueness).
 \proof
   First we reduce the proof to the case where \(T \in \End(V)\) has only one 
-  Eigenvalue. Suppose 
+  eigenvalue. Suppose 
   \[m_T(x) = \prod_{i = 1}^n(x - \lambda_i)^{n_i},\]
   where \(\lambda_i\) are distinct. By the primary decomposition theorem 
   \[V = \bigoplus_{i = 1}^n \ker (T - \lambda_i I).\]
@@ -1087,11 +1087,11 @@ similar to its JCF (we can say this since we had proved uniqueness).
   we can write 
   \[[T]_B = \bigoplus_{i = 1}^n [T_{V_i}]_{B_i},\]
   and for all \(i\), \([T_{V_i}]_{B_i}\) has minimal polynomial 
-  \((x - \lambda_i)^{n_i}\), that is \([T_{V_i}]_{B_i}\) has only one Eigenvalue. 
-  Hence, it suffices to show the theorem whenever \(T\) has only one Eigenvalue 
+  \((x - \lambda_i)^{n_i}\), that is \([T_{V_i}]_{B_i}\) has only one eigenvalue. 
+  Hence, it suffices to show the theorem whenever \(T\) has only one eigenvalue 
   \(\lambda\).
 
-  If \(T\) only has one Eigenvalue \(\lambda\), then \(\chi_T(x) = (x - \lambda)^n\) 
+  If \(T\) only has one eigenvalue \(\lambda\), then \(\chi_T(x) = (x - \lambda)^n\) 
   where \(n = \dim V\). Suppose we define \(S := T - \lambda I\), then straight 
   away, we see \(S^n = 0\) by Cayley-Hamilton so \(S\) is nilpotent, and hence, 
   it suffices to show that \(S\) is similar to a JCF with 0-Jordan blocks.
@@ -1158,7 +1158,7 @@ theorem.
 
 Straight away, we see that \(Z(v, T)\) is \(T\)-invariant and thus, we can 
 restrict \(T\) by \(Z(v, T)\) (denoted by \(T_v\)). Also, if \(v\) is an 
-Eigenvector of \(T\), then \(Z(v, T) = \text{sp}(v)\).
+eigenvector of \(T\), then \(Z(v, T) = \text{sp}(v)\).
 
 \begin{definition}[\(T\)-annihilator]
   The \(T\)-annihilator of \(v\) is the smallest degree, monic polynomial \(m_v(x)\) 
@@ -1519,8 +1519,8 @@ and we find \(\langle u, v \rangle = [u]_B^T A \overline{[v]}_B\).
 \end{definition}
 
 \begin{prop}
-  A Hermitian matrix \(A\) has only real Eigenvalues and it is positive definite 
-  if and only if every Eigenvalue of \(A\) is positive.
+  A Hermitian matrix \(A\) has only real eigenvalues and it is positive definite 
+  if and only if every eigenvalue of \(A\) is positive.
 \end{prop}
 \proof
   See problem sheet 8.
@@ -1867,7 +1867,7 @@ real symmetric or complex Hermitian.
 
 \begin{theorem}[The Spectral Theorem]
   Let \(V\) be a finite dimensional inner product space and let \(T \in \End(V)\) 
-  be self-adjoint, then \(V\) has an orthonormal basis of Eigenvectors of \(T\).
+  be self-adjoint, then \(V\) has an orthonormal basis of eigenvectors of \(T\).
 \end{theorem}
 
 This is a generalisation of last year's spectral theorem where we saw that real
@@ -1882,20 +1882,20 @@ lemma.
   Let \(V\) be a finite dimensional inner product space and let \(T \in \End(V)\) 
   be self-adjoint. Then, 
   \begin{itemize}
-    \item all Eigenvalues of \(T\) are real;
-    \item the Eigenvectors of distinct Eigenvalues are orthogonal to each other;
+    \item all eigenvalues of \(T\) are real;
+    \item the eigenvectors of distinct eigenvalues are orthogonal to each other;
     \item if \(W \le V\), is \(T\)-invariant, then so it \(W^\bot\).
   \end{itemize}
 \end{lemma}
 \proof \hfill
   \begin{enumerate}
-    \item Let \(\lambda\) be an Eigenvalue of \(T\) with the Eigenvector \(v\), then 
+    \item Let \(\lambda\) be an eigenvalue of \(T\) with the eigenvector \(v\), then 
       \(\lambda \langle v, v \rangle = \langle \lambda v, v \rangle = 
         \langle T(v), v \rangle = \langle v, T(v) \rangle = \langle v, \lambda v \rangle = 
-        \bar{\lambda} \langle v, v \rangle\). Now as \(v\) is an Eigenvector, 
+        \bar{\lambda} \langle v, v \rangle\). Now as \(v\) is an eigenvector, 
         \(v \neq 0\) so \(\lambda = \bar{\lambda}\) and hence, \(\lambda \in \mathbb{R}\).
-    \item Let \(\lambda, \mu \in \mathbb{R}\) be distinct Eigenvalues with
-      Eigenvectors \(v_1, v_2\). Then \(\lambda \langle v_1, v_2 \rangle = 
+    \item Let \(\lambda, \mu \in \mathbb{R}\) be distinct eigenvalues with
+      eigenvectors \(v_1, v_2\). Then \(\lambda \langle v_1, v_2 \rangle = 
       \langle \lambda v_1, v_2 \rangle = \langle T(v_1), v_2 \rangle = 
       \langle v_1, T(v_2) \rangle = \langle v_1, \mu v_2 \rangle = 
       \bar{\mu} \langle v_1, v_2 \rangle = \mu \langle v_1, v_2 \rangle\). Now 
@@ -1916,10 +1916,10 @@ With the above lemma, the spectral theorem follows straight away.
   and suppose \(n = k + 1\). 
   
   By the fundamental theorem of algebra, \(T\) must 
-  have some Eigenvalue in \(\mathbb{C}\) and by the above lemma, this Eigenvalue 
+  have some eigenvalue in \(\mathbb{C}\) and by the above lemma, this eigenvalue 
   is in fact real. So, suppose we denote this by \(\lambda\) and let \(E_\lambda\) 
-  the the Eigenspace corresponding to \(\lambda\). If \(\dim E_\lambda = k + 1\) 
-  then every vector is an Eigenvector of \(T\) so we can simply choose the 
+  the the eigenspace corresponding to \(\lambda\). If \(\dim E_\lambda = k + 1\) 
+  then every vector is an eigenvector of \(T\) so we can simply choose the 
   elementary basis; so, let us suppose otherwise -- \(\dim E_\lambda \le k\). 
   
   Then, as \(E_\lambda \le V\) is \(T\)-invariant, we have \(T \mid_{E_\lambda}\)
@@ -1939,8 +1939,8 @@ As the above proof is constructive, we can construct an algorithm to find
 such an orthonormal basis of a self-adjoint endomorphism. 
 
 \begin{enumerate}
-  \item Compute the Eigenspaces of \(T\);
-  \item Find an orthonormal basis of each Eigenspace (by Gram-Schmidt);
+  \item Compute the eigenspaces of \(T\);
+  \item Find an orthonormal basis of each eigenspace (by Gram-Schmidt);
   \item Union over all the orthonormal basis.
 \end{enumerate}
 
