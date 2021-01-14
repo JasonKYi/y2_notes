@@ -1,0 +1,143 @@
+---
+title: Differentiable Equations
+author: Kexing Ying
+date: January 11, 2021
+output: 
+  pdf_document:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+geometry: margin = 1.5in
+urlcolor: red
+header-includes:
+  - \usepackage{tikz}
+  - \usepackage{amsthm}
+  - \usepackage{mathtools}
+  - \usepackage{lipsum}
+  - \usepackage[ruled,vlined]{algorithm2e}
+  - \usepackage{physics}
+  - \theoremstyle{definition}
+  - \newtheorem{theorem}{Theorem}
+  - \newtheorem{prop}{Proposition}
+  - \newtheorem{corollary}{Corollary}[theorem]
+  - \newtheorem*{remark}{Remark}
+  - \theoremstyle{definition}
+  - \newtheorem{definition}{Definition}[section]
+  - \newtheorem{lemma}{Lemma}[section]
+  - \newcommand{\diag}{\mathop{\mathrm{diag}}}
+  - \newcommand{\Arg}{\mathop{\mathrm{Arg}}}
+  - \newcommand{\hess}{\mathop{\mathrm{Hess}}}
+---
+
+\newpage
+# Introduction
+
+While we have seen differential equations in year one, we have mostly focused on 
+the different methods of solving specific differential equations. This cannot be 
+expected for general differential equations and in this year, we will focus on 
+existence and uniqueness of solutions to differential equations and develop qualitative 
+tools to help us understand these solutions.
+
+We recall that an algebraic equation is an equation of the form \(f(x) = 0\) while 
+a differential equation is an equation of the form \(\dot x = f(x)\) for some 
+function \(f : \mathbb{R} \to \mathbb{R}\). That is, an algebraic equation has 
+real numbers as solutions while an differential equation has functions as its 
+solution. 
+
+As an example, let us consider the simple differentiable equation 
+\begin{equation}\label{simple}
+  \dot x = a x,
+\end{equation}
+for some \(a \in \mathbb{R}\). Then, a function \(\lambda : I \to \mathbb{R}\) solves 
+\ref{simple} if \(\dot \lambda = a \lambda\) for all \(t \in I\) where 
+\(I \subseteq \mathbb{R}\) is a interval. These types of differentiable equations 
+occurs often in relation in growth and decay and one can easily see that the 
+family of functions 
+\[\lambda_b : \mathbb{R} \to \mathbb{R} = t \mapsto b e^{at}, \hspace{2mm} b \in \mathbb{R},\]
+are solutions to \ref{simple}. Of course, we know this already, so an more interesting 
+question would be whether or not this family contains all the solutions to 
+\ref{simple}. It turns out to be true, and to show this we will assume 
+\(\mu : I \to \mathbb{R}\) is a solution to \(\dot x = a x\). Then, 
+\[\dv{t}\left(\mu e^{-at}\right) = \dot \mu e^{-at} - a\mu e^{-at} = 0,\]
+since \(\dot \mu = a \mu\) and so, \(\mu e^{-at}\) is constant, i.e. there exists 
+\(b \in \mathbb{R}\) such that \(\mu e^{-at} = b\) and hence,
+\[\mu = b e^{at}.\]
+This demonstrates that all solutions to \ref{simple} are members of the 
+aforementioned solution family and hence, we have found **all** of the solutions 
+to \ref{simple}.
+
+With the above example, we see that rather than working with solutions that are 
+in finite-dimensional vector spaces, our solution are in function spaces 
+which are typically infinite-dimensional. This is studied in more detail 
+in the next year's *functional analysis* course, and in general, infinite-dimensional 
+spaces are more difficult to grasp. However, for the vast majority of materials 
+in this course, a finite-dimensional thinking suffices while we will also cover 
+some material from functional analysis to understand the differentiable equations 
+as well.
+
+## Ordinary Differential Equations and Initial Value Problems
+
+There are two types of differential equations -- *autonomous differential equations* 
+and *nonautonomous differentiable equations*. Autonomous differential equations are 
+differentiable equations of the form \(\dot x = f(x)\) such as equation \ref{simple} 
+while nonautonomous differential equations are equations of the form \(\dot x = f(t, x)\).
+
+We note that this does not cover higher-order differential equations, but from 
+last year, we recall that one may reduce a higher-order differential equations 
+into a first-order differential equation in vector form and thus, the theories 
+we develop within this course will also apply to higher-order differential equations.
+
+\begin{definition}[Ordinary Differential Equation]
+  Let \(d \in \mathbb{N}\), \(D \subseteq \mathbb{R} \times \mathbb{R}^d\) be 
+  open, and a function \(f \to D \to \mathbb{R}^d\). Then, an equation of the form 
+  \[\dot x = f(t, x)\]
+  is called a \(d\)-dimensional (first-order) ordinary differential equation. 
+
+  A differentiable function \(\lambda : I \to \mathbb{R}^d\) on some interval 
+  \(I \subseteq \mathbb{R}\) is called a solution of the differential equation 
+  if and only if for all \((t, \lambda(t) \in D\), if \(t \in I\) then, 
+  \[\dot \lambda(t) = f(t, \lambda(t)).\]
+  We say that an ordinary differential equation is autonomous if \(f\) is 
+  independent of \(t\) and nonautonomous otherwise.
+\end{definition}
+
+We will only consider ordinary differential equations (ODE) in this course while 
+partial differential equations, that is differential equations which solutions are 
+functions which depends on multiple variables are covered in the second year course 
+**Partial Differential Equations in Action**.
+
+\begin{prop}[Constant solutions to autonomous differential euqations]
+  Let \(D \subseteq \mathbb{R}^d\) be an open set and \(f : D \to \mathbb{R}^d\) 
+  be a function where \(d \in \mathbb{N}\). Then, there exists a constant 
+  solution \(\lambda : \mathbb{R} \to \mathbb{R}^d : x \mapsto a\) to the 
+  autonomous differential
+  \[\dot x = f(x)\]
+  for some \(a \in \mathbb{R}^d\) if and only if \(f(a) = 0\).
+\end{prop}
+\proof
+  (\(\implies\)) Suppose that \(\lambda : I \to \mathbb{R}^d : x \mapsto a\) is a 
+  solution the \(\dot x = f(x)\). Then 
+  \[0 = \dot \lambda (t) = f(\lambda (t)) = f(a).\]
+  (\(\impliedby\)) Suppose there exists some \(a \in \mathbb{R}^d\) such that 
+  \(f(a) = 0\), then verifying, we find \(\lambda : \mathbb{R} \to \mathbb{R}^d : x \mapsto a\) 
+  is a solution to the differential equation.
+\qed
+
+This proposition allows us to find solutions to many autonomous ODEs as, indeed, 
+if \(f : D \to \mathbb{R}^d\) has a root \(a \in \mathbb{R}^d\), the above proposition 
+guarantees that \(\lambda : \mathbb{R} \to \mathbb{R}^d : x \mapsto a\) is a solution 
+to \(\dot x = f(x)\).
+
+\begin{definition}[Initial Value Problem]
+  Let \(d \in \mathbb{N}\), \(D \subseteq \mathbb{R} \times \mathbb{R}^d\) be an 
+  open set, and \(f : D \to \mathbb{R}^d\) be a function. The system of equations 
+  from combining the differential equation 
+  \[\dot x = f(t, x),\]
+  with the initial condition
+  \[x(t_0) = x_0\] 
+  where \((t_0, x_0) \in D\) is called an initial value problem.
+
+  A solution to the above initial value problem is a function 
+  \(\lambda : I \to \mathbb{R}^d\) that is a solution to the differential equation 
+  \(\dot x = f(t, x\) and \(\lambda(t_0) = x_0\).
+\end{definition}

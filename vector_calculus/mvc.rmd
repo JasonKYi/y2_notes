@@ -1,5 +1,5 @@
 ---
-title: Multivariable Calculus & Differential Equations
+title: Multivariable Calculus
 author: Kexing Ying
 date: May 15, 2020
 output: 
@@ -63,6 +63,7 @@ where \(\mathbf{r} = x\mathbf{i} + y\mathbf{j} + z\mathbf{k}\) and
   \item \(\diver(\phi \mathbf{A}) = \phi \diver \mathbf{A} + \nabla \phi \cdot \mathbf{A}\)
   \item \(\curl(\phi\mathbf{A}) = \phi \curl \mathbf{A} + \nabla \phi \times \mathbf{A}\)
   \item \(\diver(\nabla \phi) = \nabla^2 \phi = \partial^2 \phi / \partial x_i^2\)
+  \item \(\curl(\nabla \phi) = 0\)
   \item \(\curl(\nabla \phi) = 0\)
   \item \(\diver(\curl \mathbf{A}) = 0\)
   \item \(\curl(\curl\mathbf{A}) = \nabla(\diver\mathbf{A}) - \nabla^2 \mathbf{A}\)
