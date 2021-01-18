@@ -4,7 +4,7 @@ author: Kexing Ying
 date: May 15, 2020
 output: 
   pdf_document:
-    toc: false
+    toc: true
     toc_depth: 2
     number_sections: true
 geometry: margin = 1.5in
@@ -15,147 +15,184 @@ header-includes:
   - \usepackage{mathtools}
   - \usepackage{lipsum}
   - \usepackage[ruled,vlined]{algorithm2e}
+  - \theoremstyle{definition}
   - \newtheorem{theorem}{Theorem}
+  - \newtheorem{alg}{Algorithm}
   - \newtheorem{corollary}{Corollary}[theorem]
   - \newtheorem*{remark}{Remark}
-
   - \theoremstyle{definition}
   - \newtheorem{definition}{Definition}[section]
 ---
 
+\newpage
+# Introduction
+
+This course is an introduction to numerical analysis and is built on top 
+of last term's linear algebra on which many concepts will reappear. This time 
+however, we will mostly work in specific spaces rather than arbitrary inner product 
+spaces. We will also consider issues of implementing algorithms and their ability 
+to scale to large problems. This will be achieved by examining their efficiency, 
+accuracy and stability. We will also consider typical numerical concepts such as 
+iterations, conditioning, error analysis and operations count.
+
+As a outline, we will first delve into numerical linear algebra, in which we will 
+study orthogonalisation, least-squares problems, linear equations and factorisations. 
+We will the move on to gradients and hessians, interpolations with orthogonal and 
+non-orthogonal polynomials, Fourier series and lastly, numerical integration. 
+
+We will in this course mostly deal with the vector space \(\mathbb{R}^n\) while 
+unless mentioned otherwise, algorithms can easily extended to \(\mathbb{C}^n\).
+We will use inner product and dot product interchangeably and define the 
+outer product between two vectors \(\mathbf{a}, \mathbf{b}\) to be the matrix 
+\(\mathbf{a}\mathbf{b}^T = A \in M_n(\mathbb{R})\) where \(A_{ij} = a_ib_j\). 
+We also note that the dot product on the reals form a bilinear form, and so 
+all associated properties apply.
+
+Lastly, we define the \(i\)-th standard basis \(e_i \in \mathbb{R}^n\) as the 
+vector with the \(j\)-th entry equal to the \(ij\)-Kronecker delta. That is, 
+\([e_i]_j = 1\) is \(i = j\) and \(0\) otherwise. This is a nice set of basis 
+as it is orthonormal and given some vector \(\mathbf{v}\), the dot product 
+\(\langle e_i, \mathbf{v} \rangle\) is the \(i\)-th entry of \(\mathbf{v}\). 
+ 
+\newpage
 # Numerical Linear Algebra
 
-## Linear System of Equations
+## Orthogonalisation 
 
-The simplest problem we can consider in linear algebra is to solve an equation 
-that's in the form 
-\begin{equation} \label{linear_eq}
-A\mathbf{x} = \mathbf{b},
-\end{equation}
-where \(A \in \mathbb{R}^{n \times n}\), and \(\mathbf{x, b} \in \mathbb{R}^n\).
+We would like to find an orthogonal basis from a set of linearly independent 
+vectors. As, simply by normalising the resulting vectors, we also obtain an 
+orthonormal basis. From first year, we know that this can be achieved through 
+the Gram-Schmidt process while we will also take a look at another method which 
+utilises the Householder transformation. In both cases, the methods are related 
+to the QR-decomposition of a square matrix.
 
-Trivially, we know how the solve such a problem in general, to find the inverse 
-of \(A\) (if \(A\) is not singular). But this is inefficient and requires heavy 
-computing power, so we will seek better algorithms for solving such problems. 
+Suppose we have a set of \(n\) linearly independent vectors \(\{a_k\}_{k=1}^n\) 
+in the \(m\)-dimensional space \(\mathbb{R}^m\) where \(n \le m\). It is often 
+advantageous to convert this set of vectors into an orthonormal basis such that 
+the span of this basis is the same as the span of \(\{a_k\}_{k=1}^n\).
 
-### Triangular Matrices
+To achieve this, we propose the first procedural method -- the *classical Gram-Schmidt* 
+(cGS) procedure.
 
-Triangular matrices are nicer to work with than general matrices. One example of 
-this is that the determinant of a triangular matrix is just the product of its 
-diagonal, i.e. given an triangular matrix \(A \in \mathbb{R}^{n \times n}\) 
-(no matter upper of lower triangular), 
-\[\det A = \prod_{i = 1}^n A_{i, i}.\]
-Immediately, we can deduce that an triangular matrix is non-singular if and only 
-if it has no zero entries in its diagonal.
+\begin{alg}[Classical Gram-Schmidt Procedure]
+  Given a set of \(n\) linearly independent vectors \(\{\mathbf{a}_k\}_{k=1}^n\) 
+  in the \(m\)-dimensional space \(\mathbb{R}^m\), we obtain an orthonormal basis 
+  of \(\text{sp} \{\mathbf{a}_k\}_{k=1}^n\).
+  \begin{enumerate}
+    \item Let \(\mathbf{v}_1 := \mathbf{a}_1; \mathbf{q}_1 := 
+      \mathbf{v}_1 / \| \mathbf{v}_1 \|\). We call \(\mathbf{v}_1\) the preliminary vector.
+    \item For \(k = 2, \cdots, n\),
+      let \(\mathbf{v}_k := \mathbf{a}_k - \sum_{l = 1}^{k-1} \langle \mathbf{a}_k, 
+        \mathbf{q}_l \rangle \mathbf{q}_l\); \(\mathbf{q}_k := \mathbf{v}_k / \|\mathbf{v}_k\|\),
+        that is, we define \(\mathbf{v}_k\) such that it is orthogonal to all previous 
+        \(\mathbf{q}_l\) while we normalise \(\mathbf{v}_k\) resulting in \(\mathbf{q}_k\).
+  \end{enumerate}
+  Then, by the above procedure \(\{\mathbf{q}_k\}_{k = 1}^n\) is the required set 
+  of vectors.
+\end{alg}
 
-Let us consider equation \ref{linear_eq} where \(A\) is an upper triangular 
-matrix.
-\begin{equation}
-  \begin{bmatrix}
-    A_{1, 1} & A_{1, 2} & \cdots & A_{1, n} \\
-    0        & A_{2, 2} & \cdots & A_{2, n} \\
-    \vdots   & \vdots   & \ddots & \vdots   \\
-    0        & 0        & \cdots & A_{n, n}
-  \end{bmatrix}
-  \begin{bmatrix}
-    x_1 \\ x_2 \\ \vdots \\ x_n
-  \end{bmatrix}
-  =
-  \begin{bmatrix}
-    b_1 \\ b_2 \\ \vdots \\ b_n
-  \end{bmatrix}.
-\end{equation}
-We can immediately see that \(x_n = b_n / A_{n, n}\), and 
-\(x_{n - 1} = (b_{n - 1} - A_{n - 1, n} x_n) / A_{n - 1, n - 1}\). Indeed, 
-\[x_i = \frac{1}{A_{i, i}}\left(b_i - \sum_{j = 1 + i}^n A_{i, j} x_j\right),\]
-and similarly, for \(A\), a lower triangular matrix,
-\[x_i = \frac{1}{A_{i, i}}\left(b_i - \sum_{j = 1}^{i - 1} A_{i, j} x_j\right).\]
+Let us recall the proof for the correctness of the classical Gram-Schmidt procedure.
 
-This method can be used to find the inverse of matrices by considering 
-\(A \mathbf{x} = e_k\) gives us the \(k\)-th column of \(A^{-1}\).
-By considering that to calculate each \(x_i\), there is \(i - 1\) steps, we find 
-that to calculate \(\mathbf{x} \in \mathbb{R}^n\), there is \((n^2 - n) / 2\) 
-steps, so a complexity of \(O(n^2)\).
-
-### LU Factorisation
-
-Let \(A \in \mathbb{R}^{n \times n}\) (not necessarily triangular), 
-\(\mathbf{x, b} \in \mathbb{R}^n\) such that equation \ref{linear_eq} is 
-satisfied. If we can find lower and upper triangular matrices \(L, U\) such that 
-\(A = LU\), then 
-\[A \mathbf{x} = LU \mathbf{x} = \mathbf{b},\]
-which is easily solvable using the previous algorithm.
-
-However, such an Factorisation is not unique, so we impose the restriction that 
-\(L\) is unit, that is to say the diagonals of \(L\) are all ones.
-
-Suppose \(A = LU\) where 
-\[L = 
-  \begin{bmatrix}
-    \mathbf{l}_1 & \mathbf{l}_2 & \cdots & \mathbf{l}_n
-  \end{bmatrix}, 
-  \hspace{4mm}
-  U = 
-  \begin{bmatrix}
-    \mathbf{u}_1^T \\
-    \mathbf{u}_2^T \\
-    \vdots         \\
-    \mathbf{u}_n^T
-  \end{bmatrix}, \]
-so \(A = \sum_{i = 1}^n \mathbf{l}_i \mathbf{u}_i^T\), where 
-\(\mathbf{l}_i \mathbf{u}_i^T = 
-  \begin{bmatrix}
-    (\mathbf{l}_i)_1 \mathbf{u}_i^T & 
-    (\mathbf{l}_i)_2 \mathbf{u}_i^T & 
-    \cdots                          &
-    (\mathbf{l}_i)_n \mathbf{u}_i^T
-  \end{bmatrix}^T\). 
-As \(L\) is unit, \((\mathbf{l}_1)_1 = 1\), and as for all \(j > 1\), 
-\((\mathbf{l}_j)_1 = 0\) (since \(L\) is lower triangular), the first row of \(A\) 
-is \(\sum_{i = 1}^n (\mathbf{l}_i)_1 \mathbf{u}_i^T = 1 \times \mathbf{u}_1^T + 
-0 \times \mathbf{u}_2^T + \cdots + 0 \times \mathbf{u}_n^T = \mathbf{u}_1^T\). 
-Similarly, by considering the first column of \(A\) equals 
-\((\mathbf{u}_1^T)_1 \times \mathbf{l}_1\), we can find \(\mathbf{l}_1\).
-
-In general, we find the following algorithm for finding the LU factorisation,
-\begin{align*}
-  U_{k, j} & = A_{k, j}^{k - 1}    \\
-  L_{i, k} & = A_{i, k} / A_{k, k} \\
-  A_{i, j}^k & = A_{i, j}^{k - 1} - L_{i, k} U_{k, j}
-\end{align*}
-for \(k \in \{1, \cdots, n\}\) and \(i, j \ge k\) with \(A^0 = A\). From this, 
-we can easily see the algorithm breaks down whenever there is some \(k\) such 
-that \(A_{k, k} = 0\).
-
-\begin{definition}{(Positive definite matrix).}
-  A matrix \(A \in \mathbb{R}^{n \times n}\) is \textit{positive-definite} if 
-  and only if 
-  \[\mathbf{x}^T A \mathbf{x} > 0\]
-  for \(\mathbb{R}^n \ni \mathbf{x} \neq \mathbf{0}\).
-\end{definition}
-
-\begin{theorem}
-  Given a positive definite matrix \(A \in \mathbb{R}^{n \times n}\), its upper 
-  left \(k \times k\) sub-matrix is non-singular, i.e. 
-  \[\det(A_k) \neq 0\]
-  for all \(k \in \{1, \cdots, n\}\).
-\end{theorem}
 \proof
-  Let \(k \in {1, \cdots, n}\) and \(\mathbf{x} \in \mathbb{R}^k\) such that 
-  \(A_k \mathbf{x} = 0\). Now, as \(A_k\) is singular if and only if 
-  \(A_k \mathbf{x} = 0 \implies \mathbf{x} = 0\), it suffices to prove 
-  \(\mathbf{x} = 0\). We can construct \(\mathbf{y} \in \mathbb{R}^n\) by 
-  letting \(\mathbf{y}_i = \mathbf{x}_i\) for \(i \in \{1, \cdots, k\}\) and 
-  \(\mathbf{y}_i = 0\) for \(i \in \{k + 1, \cdots, n\}\) so 
-  \(A \mathbf{y} = 0\) and thus \(\mathbf{y}^T A \mathbf{y} = 0\). But \(A\) is 
-  positive definite, so \(\mathbf{y} = \mathbf{0}\) and hence 
-  \(\mathbf{x} = \mathbf{0}\).
+  Normality and span (as \(\mathbf{q}_k\) is a linear combination of \(\mathbf{a}_i\) 
+  where \(i \le k\)) is trivial so we shall show orthogonality.
+
+  We induction on \(n\). For \(n = 1\), orthogonality is trivial so let us assume 
+  the inductive hypothesis and suppose \(n = i + 1\). By the inductive hypothesis, 
+  the Gram-Schmidt procedure will result us with \(\{\mathbf{q}_k\}_{k = 1}^i\) 
+  -- an orthonormal basis of \(\text{sp} \{\mathbf{a}_k\}_{k = 1}^i\), and so, 
+  it suffices to show,
+  \[\langle \mathbf{q}_j, \mathbf{v}_{i + 1} \rangle = 
+    \left\langle \mathbf{q}_j, \mathbf{a}_{i + 1} - \sum_{l = 1}^{i} \langle \mathbf{a}_{i + 1}, 
+      \mathbf{q}_l \rangle \mathbf{q}_l \right\rangle = 0,\]
+  for all \(j = 1, \cdots, i\). But, this is true as,
+  \[\left\langle \mathbf{q}_j, \mathbf{a}_{i + 1} - \sum_{l = 1}^{i} \langle \mathbf{a}_{i + 1}, 
+      \mathbf{q}_l \rangle \mathbf{q}_l \right\rangle = 
+      \langle \mathbf{q}_j, \mathbf{a}_{i + 1}\rangle - \sum_{l = 1}^{i} \langle \mathbf{a}_{i + 1}, 
+      \mathbf{q}_l \rangle \langle \mathbf{q}_j, \mathbf{q}_l \rangle = 
+      \langle \mathbf{q}_j, \mathbf{a}_{i + 1}\rangle - 
+      \langle \mathbf{q}_j, \mathbf{a}_{i + 1}\rangle = 0,\]
+  where the second equality holds since by the inductive hypothesis 
+  \(\langle q_j, q_l \rangle = \delta_{jl}\). 
 \qed
 
-\begin{theorem}
-  A symmetric matrix \(A \in \mathbb{R}^{n \times n}\) is positive definite if 
-  and only if
-  \[A = L D L^T\]
-  for some \(L, D \in \mathbb{R}^{n \times n}\) where \(L\) is unit lower 
-  triangular and \(D\) diagonal with \(D_{k, k} > 0\) for all \(k\).
-\end{theorem}
+While we have proved the correctness of the algorithm, the question remains on 
+whether or not we can always perform such an procedure. We see that, by induction, 
+to see that the algorithm can always be performed, it suffices to show that there 
+does not exists a case where \(\mathbf{v}_2 \neq 0\) (we can then apply induction).
+
+Suppose \(\mathbf{v}_2 = 0\), then \(\mathbf{a}_2 - 
+  \langle \mathbf{a}_2, \mathbf{q}_1 \rangle \mathbf{q_1} = 0\). But this would 
+mean \(\mathbf{a}_2\) is a multiple of \(\mathbf{q}_1\) which is in turn a multiple 
+of \(\mathbf{a}_1\), contradicting the linearly independent assumption. So, this 
+cannot occur and so cGS can always be performed.
+
+While the cGS is mathematically correct, when implementing the algorithm on 
+computers, it is possible to find special cases where the cGS suffers from 
+accuracy and stability. As we shall see on in an exercise, it is possible to 
+construct a slightly different version of the Gram-Schmidt procedure --
+*modified Gram-Schmdit* (mGS) such that this is no longer a problem. 
+
+## QR-Decomposition I
+
+The QR-decomposition is a very important decomposition in numerical analysis and 
+we shall, in fact, look at two methods of achieving the QR-decomposition, hence 
+the name of this section. The QR-decomposition decomposes a matrix into the product 
+of two matrices \(Q\) and \(R\) where \(Q\) is orthogonal and \(R\) is upper 
+triangular. 
+
+Suppose we have the linearly independent sequence of vectors \(\{\mathbf{a}_k\}_{k = 1}^n\) 
+and the orthonormal basis of this resulted from Gram-Schmidt \(\{\mathbf{q}_k\}_{k = 1}^n\)
+in \(\mathbb{R}^m\).
+Then by defining 
+\[A := (\mathbf{a}_1, \mathbf{a}_2, \cdots, \mathbf{a}_n) \in \mathbb{R}^{m \times n},\]
+and similarly, 
+\[Q := (\mathbf{q}_1, \mathbf{q}_2, \cdots, \mathbf{q}_n) \in \mathbb{R}^{m \times n},\]
+we seek to establish the relation \(R \in \mathbb{R}^{n \times n}\) such that 
+\(A = QR\). Indeed, by considering the classical Gram-Schmidt procedure, where 
+\[\mathbf{v}_k := \mathbf{a}_k - \sum_{l = 1}^{k-1} \langle \mathbf{a}_k, 
+        \mathbf{q}_l \rangle \mathbf{q}_l,\]
+we see that \(\mathbf{a}_j\) is a linear combination of \(\mathbf{q}_i\) where 
+\(j \le i\), and so it follows that \(R\) is upper triangular.
+
+Suppose we denote the \(ij\)-th entry of \(R\) as \(r_{ij}\), then 
+\(\mathbf{a}_k = \sum_{l = 1}^k r_{lk}\mathbf{q}_l\),
+by the definition of matrix multiplication. Since \(\mathbf{q}_1 = 
+\mathbf{a}_1 / \|\mathbf{a}_1\|\), we have \(\mathbf{a}_1 = \|\mathbf{a}_1\| \mathbf{q}_1\),
+and so, \(r_{11} = \|\mathbf{a}_1\|\). Similarly, for \(\mathbf{a}_k\), we have 
+\[\mathbf{a}_k := \mathbf{v}_k + \sum_{l = 1}^{k-1} \langle \mathbf{a}_k, 
+        \mathbf{q}_l \rangle \mathbf{q}_l,\]
+where \(\mathbf{v}_k = \|\mathbf{v}_k\| \mathbf{q}_k\), so,
+\[\mathbf{a}_k := \|\mathbf{v}_k\|\mathbf{q}_k + \sum_{l = 1}^{k-1} \langle \mathbf{a}_k, 
+        \mathbf{q}_l \rangle \mathbf{q}_l.\]
+Thus, by comparing coefficients, we find \(\|\mathbf{v}_k\| = r_{kk}\) and 
+\(\langle \mathbf{a}_k, \mathbf{q}_l \rangle = r_{lk}\) for \(1 \le l < k\). With 
+this, using Gram-Schmdit, we have found a method to decompose a matrix as a 
+product of an orthogonal and an upper triangular matrix.
+
+However, the question of why this decomposition is importan remains. Suppose we 
+would like to solve the linear system \(A\mathbf{x} = \mathbf{b}\) (where \(A\) 
+has full rank). If we have a QR-decomposition on \(A\), say \(A = QR\), 
+then the problem becomes \(QR\mathbf{x} = \mathbf{b}\). As \(Q\) is orthogonal, 
+\(Q^T Q = I\) and so, 
+\[\mathbf{d} := Q^T\mathbf{b} = Q^TQ R\mathbf{x} = R\mathbf{x}.\]
+Now, as \(R\) is upper triangular, the linear system \(R\mathbf{x} = \mathbf{d}\) 
+becomes easy to solve by **backwards substitution**; that is, since 
+\(R\) is upper triangular, we have
+\[x_n = d_n / r_{nn},\]
+and 
+\[x_k = \frac{1}{r_{kk}} \left(d_k - \sum_{i = k + 1}^n r_{ki}x_i\right).\]
+We note that we claimed \(Q\) is orthogonal throughout the argument. This is 
+true as the column vectors are orthonormal, and hence, by the definition of 
+matrix multiplication, we have 
+\[[Q^T Q]_{ij} = \langle \mathbf{q}_i, \mathbf{q}_j \rangle = \delta_{ij},\] 
+and so \(Q^T Q = I\).
+
+Indeed, the orthogonal matrices are a nice set of matrices and and the dot product 
+and hence the norm is invariant under transformations by orthogonal matrices. 
+Indeed,
+\[\langle Q\mathbf{x}, Q\mathbf{y} \rangle = \mathbf{x}^T Q^T Q \mathbf{y} = 
+  \mathbf{x}^T \mathbf{y} = \langle \mathbf{x}, \mathbf{y} \rangle.\]
+By thinking in Euclidean spaces, we see that these types of transformations are 
+rotations and so, the transformations induced by an orthogonal matrix is often 
+refereed as a rotation. 

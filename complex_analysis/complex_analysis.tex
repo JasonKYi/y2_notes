@@ -69,6 +69,7 @@
 \usepackage{mathtools}
 \usepackage{lipsum}
 \usepackage[ruled,vlined]{algorithm2e}
+\usepackage{physics}
 \theoremstyle{definition}
 \newtheorem{theorem}{Theorem}
 \newtheorem{prop}{Proposition}
@@ -398,5 +399,307 @@ holomorphic. This is achieved with the following theorem.
   and 
   \[f'(z) = \frac{\partial f}{\partial z}(z).\]
 \end{theorem}
+
+The proof of this theorem is similar to the equivalent statement in
+\(\mathbb{R}^n\), namely, a function is differentiable if and only if
+it's partial derivatives are continuously differentiable and its
+derivative is the Jacobian. \proof Let \(h = h_1 + ih_2\), then,
+\[u(x + h_1, y + h_2) - u(x, y) = u_x'(x, y)h_1 + u_y'(x, y)h_2 + o(\left|h\right|),\]
+and
+\[v(x + h_1, y + h_2) - v(x, y) = v_x'(x, y)h_1 + v_y'(x, y)h_2 + o(\left|h\right|).\]
+By the Cauchy-Riemann equations,
+\[v_x' = -u_y'; \hspace{2mm} v_y'= u_x',\] we find that, \[\begin{split}
+      f(z + h) - f(z) & = u(x + h_1, y + h_2) + iv(x + h_1, y + h_2) - u(x, y) - iv(x, y)\\
+        & = (u(x + h_1, y + h_2) - u(x, y)) + i(v(x + h_1, y + h_2) - v(x, y))\\
+        & = u_x'(x, y)h_1 + u_y'(x, y)h_2 + o(\left|h\right|) + i(v_x'(x, y)h_1 + v_y'(x, y)h_2 + o(\left|h\right|))\\
+        & = u_x' h_1 + u_y' h_2 + i u_x' h_2- i u_y h_1 + o(\left|h\right|)\\
+        & = (u_x' - iu_y')(h_1 + ih_2) + o(\left|h\right|).
+    \end{split}\] This gives us
+\[f(z + h) - f(z) - (u_x' - iu_y')h = o(\left|h\right|),\] implying
+\(f\) is differentiable at \(z\) with derivative
+\[f'(z) = u_x' - iu_y' = 2\pdv{u}{z} = \pdv{f}{z}.\] \qed
+
+Lastly, by transforming the complex numbers into their polar forms, we
+have the following Cauchy-Riemann equations,
+\[u_r' = \frac{1}{r}v_\theta'; \hspace{2mm} v_r' = - \frac{1}{r}u_\theta'.\]
+The derivation of this is completely mundane so is omitted here (see
+lecture slides). This form of Cauchy-Riemann equations can be useful
+when dealing with certain functions where the function is easier to deal
+with in polar coordinates.
+
+\hypertarget{complex-exponentials}{%
+\subsection{Complex Exponentials}\label{complex-exponentials}}
+
+We recall the definition and properties of a complex power series.
+
+\begin{definition}
+  A power series is an expansion of the form 
+  \[\sum_{n = 0}^\infty a_n z^n,\]
+  where \(a_n \in \mathbb{C}\) for all \(n \in \mathbb{N}\).
+\end{definition}
+
+We call the aforementioned power series convergent at some
+\(z \in \mathbb{C}\) if the partial sum
+\(S_N(z) = \sum_{n = 0}^N a_n z^n\) has a limit in \(\mathbb{C}\),
+\(S(z) = \lim_{N \to \infty} S_N(z)\). If that is the case we write
+\(\sum_{n = 0}^\infty a_n z^n\).
+
+Furthermore, we define a power series \(\sum a_n z^n\) to be absolutely
+if \(sum \left| a_n \right| \left| z \right|^n\) converges. As we have
+seen from last year, absolute convergence implies converges, and
+furthermore, if \(S(z) = \sum a_n z^n\) then
+\(\lim_{N \to \infty} S(z) - S_N(z) = 0\).
+
+\begin{theorem}
+  Given \(\sum a_n z^n\) be a power series, then there exists some 
+  \(R \in \mathbb{R}^+\) such that for all \(z \in \mathbb{C}\), if 
+  \(\left| z \right| < R\) then the series converges absolutely and if 
+  \(\left| z \right| > R\) then the series diverges. Moreover, 
+  \[\frac{1}{R} = \limsup_{n \to \infty} \left| a_n \right|^{1 / n}.\]
+  The number \(R\) is called the radius of convergence and the domain 
+  \(D_R\) is refered as the disc of convergence. 
+\end{theorem}
+\proof
+
+See last year's notes. \qed
+
+The power series provide us with an important class of holomorphic
+functions.
+
+\begin{theorem}
+  The power series \(f(z) = \sum_{n = 0} a_n z^n\) defines a holomorphic function 
+  in its disc of convergence. In fact the derivative of \(f\) is simply the sum of 
+  the derivative of its individual terms, that is, 
+  \[f'(z) = \sum_{n = 1}^\infty n a_n z^{n - 1}.\]
+  Moreover, \(f\) has the same 
+  radius of convergence as \(f\).
+\end{theorem}
+\proof
+
+We note that \(\sum_{n = 1}^\infty a_n z^{n - 1}\) and
+\(\sum_{n = 1}^\infty na_n z^n\) have the same radius of convergence by
+considering the above proposition. Indeed, if
+\(\sum_{n = 1}^\infty a_n z^{n - 1}\) has radius of convergence \(R\),
+then
+\(R = (\limsup_{n \to \infty} \left| a_n \right|^{1 / n})^{-1}  = (\limsup_{n \to \infty} \left| n a_n \right|^{1 / n})^{-1}\),
+which is the radius of convergence of \(\sum_{n = 1}^\infty na_n z^n\).
+Beware that we used the fact that
+\[\lim_{n \to \infty} n^{1 / n} = \lim_{n \to \infty} \exp \left(\frac{\log n}{n}\right) = 1.\]
+Thus, it remains to show that
+\(f'(z) = \sum_{n = 1}^\infty n a_n z^{n - 1}\).
+
+Let \(R\) be the radius of convergence of \(f\),
+\(\left| z_0 \right| < r < R\) and define
+\(g(z) = \sum_{n = 1}^\infty n a_n z^{n - 1}\) and,
+\[S_N(z) = \sum_{n = 0}^N a_n z^n; \hspace{2mm} E_N(z) = \sum_{n = N + 1}^\infty a_n z^n.\]
+Then, Wlog. assume \(\left| z_0 + h \right| < r\), so \[\begin{split}
+    \frac{f(z_0 + h) - f(z_0)}{h} - g(z_0) & = 
+    \left(\frac{S_N(z_0 + h) - S_N(z_0)}{h} - S'_N(z_0)\right)\\ 
+      & + (S'_N(z_0) - g(z_0)) + \left(\frac{E_N(z_0 + h) - E_N(z_0)}{h}\right),
+    \end{split}\] for arbitrary \(N \in \mathbb{N}\). Thus, by taking
+\(N \to \infty, h \to 0\), we see that the first two term of the right
+hand side vanished while further examination is required for the last
+term. Indeed, by the triangle inequality,
+\[\left|\frac{E_N(z_0 + h) - E_N(z_0)}{h}\right| \le 
+    \sum_{n = N + 1}^\infty \left|a_n\right| \left|\frac{(z_0 + h)^n - z_0^n}{h}\right| 
+    \le \sum_{n = N + 1}^\infty \left| a_n \right| n r^{n - 1},\] where
+the last term tends to \(0\) as \(N \to \infty\). Hence,
+\[\frac{f(z_0 + h) - f(z_0)}{h} - g(z_0) \to 0,\] as \(h \to 0\) and the
+result is complete. \qed
+
+As the term-wise derivate of a power series is also a power series, the
+above theorem results in the following corollary.
+
+\begin{corollary}
+  A power series is infinitely differentiable within its disc of convergence, and 
+  its higher derivatives are also power series obtained by term-wise differentiation.
+\end{corollary}
+
+This reason for this revision and seemingly digression from complex
+functions is because we would like to introduce complex exponentials. We
+recall from last year that we defined the exponential function as
+\[\exp : \mathbb{R} \to \mathbb{R} : x \mapsto \sum_{n = 0}^\infty \frac{x^n}{n!},\]
+and we write \(e^x := \exp(x)\). We define the complex exponential on
+top of this definition.
+
+\begin{definition}
+  Given \(z = x + iy \in \mathbb{C}\), we define the complex exponential, 
+  \[e^z := e^x \cos y + i e^x \sin y.\]
+\end{definition}
+
+As with the real exponential, the complex exponential has several nice
+properties.
+
+\begin{prop}
+  Let us denote \(e^{(\cdot)}\) for the complex exponential, then, 
+  \begin{itemize}
+    \item if \(z = x + 0i\), then \(e^z = e^x\);
+    \item \(e^{(\cdot)}\) is entire (holomorphic for all \(z \in \mathbb{C})\);
+    \item \(\pdv{z}e^z = e^z\);
+    \item if \(g(z)\) is holomorphic, then \(\pdv{z}e^{g(z)} = e^{g(z)}g'(z)\);
+    \item \(e^{z_1 + z_2} = e^{z_1} e^{z_2}\);
+    \item \(\left| e^z \right| = e^x\);
+    \item \((e^{z})^n = e^{nz}\);
+    \item \(\arg e^z = y + 2\pi k\) for \(k = 0, \pm 1, \pm 2, \cdots\).
+  \end{itemize} 
+\end{prop}
+\proof
+
+Straight forward either by definition or by the Cauchy-Riemann
+equations. \qed
+
+From the definition of the complex exponential function, we define the
+complex trigonometric functions.
+
+\begin{definition}[Complex Trigonometric Functions]
+  For any \(z \in \mathbb{C}\), we define 
+  \[\sin z = \frac{1}{2i}(e^{iz} - e^{-iz}); \hspace{2mm} \cos z = \frac{1}{2}(e^{iz} + e^{-iz}).\]
+\end{definition}
+
+To see why the trigonometric functions are extended in such a way, one
+can simply consider Euler's identity where we have
+\[e^{i \theta} = \cos \theta + i \sin \theta; \hspace{2mm} e^{-i\theta} = cos \theta - i \sin \theta,\]
+for any \(\theta \in \mathbb{R}\). Thus, by assuming
+\(\theta \in \mathbb{C}\), and solving the system of equations, we have
+the definition of the complex trigonometric functions.
+
+As the complex trigonometric functions are simply linear combinations of
+the complex exponential, we again get many nice properties for free.
+
+\begin{prop}
+  Let \(z = x + iy \in \mathbb{C}\), then 
+  \begin{itemize}
+    \item \(\sin (\cdot)\) and \(\cos (\cdot)\) are entire functions;
+    \item \(\pdv{z}\sin z = \cos z\) and \(\pdv{z}\cos z = -\sin z\);
+    \item \(\sin^2 z + \cos^2 z = 1\);
+    \item \(\sin(z_1 \pm z_2) = \sin z_1 \cos z_2 \pm \cos z_1 \sin z_2\) and 
+      \(\cos(z_1 \pm z_2) = \cos z_1 \cos z_2 \mp \sin z_1 \sin z_2\);
+  \end{itemize}
+\end{prop}
+
+Lastly, we define the complex logarithmic functions.
+
+\begin{definition}[Complex Logarithm]
+  Let \(z = r(\cos\theta + i\sin\theta) = re^{i\theta}\), then 
+  \[\log z = \log \left|z\right| + i \arg z = \log r + i(\theta + 2\pi k),\]
+  for \(k = 0, \pm 1, \pm 2, \cdots\).
+\end{definition}
+
+Clearly,
+\(e^{\log z} = e^{\log r + i(\theta + 2\pi k)} = r e^{i (\theta + 2\pi k)} = re^{i\theta} = z\)
+so it behaves as we would expect. However, as \(\log\) results in an
+infinite family of values, and so, is not a function. To account for
+this, we consider the principle logarithmic function.
+
+\begin{definition}[Principle Logarithm]
+  The principle logarithmic function is 
+  \[\text{Log} : \mathbb{C} \to \mathbb{C} : z \mapsto \log\left| z \right| + i\mathop{\mathrm{Arg}}z.\]
+\end{definition}
+
+Again, we find that the complex logarithms behave as one might expect.
+
+\begin{prop}
+  Let \(z \in \mathbb{C}\), then 
+  \begin{itemize}
+    \item \(\log(z_1 z_2) = \log z_1 + \log z_2\);
+    \item  the principle logarithm is holomorphic on \(\mathbb{C} \setminus (-\infty, 0]\).
+  \end{itemize}
+\end{prop}
+
+With these definitions in place, we may finally define complex powers.
+
+\begin{definition}
+  For all \(\alpha \in \mathbb{C}\), we define 
+  \[z^\alpha = e^{\alpha \log z}\]
+  as a multi-valued function and we define its principle value to be 
+  \[z^\alpha = e^{\alpha \text{Log} z}.\]
+\end{definition}
+\begin{prop}
+  Let \(z, \alpha_1, \alpha_2 \in \mathbb{C}\), then 
+  \(z^{\alpha_1 + \alpha_2} = z^{\alpha_1}z^{\alpha_2}\).
+\end{prop}
+
+\hypertarget{parametrised-curve}{%
+\subsection{Parametrised Curve}\label{parametrised-curve}}
+
+As we shall study integration along curves in the next section, let us
+first look at parametrised curves.
+
+\begin{definition}[Parametrised Curve]
+  A parametrised curve is a function \(z : [a, b] \subseteq \mathbb{R} \to \mathbb{C}\).
+  We say that the parametrised curve is smooth if \(z'\) exists and is continuous 
+  on \([a, b]\) and \(z'(t) \neq 0\) for all \(t \in [a, b]\). At the points 
+  \(t = a\) and \(t = b\), the derivative of \(z\) at \(t\) is defined to be the 
+  one-sided limits 
+  \[z'(a) = \lim_{h \to 0, h > 0} \frac{z(a + h) - z(a)}{h}, \hspace{2mm} 
+    z'(b) = \lim_{h \to 0, h < 0} \frac{z(b + h) - z(b)}{h}.\]
+  Similarly, we say that the parameterised curve is piecewise smooth if \(z\) is 
+  continuous on \([a, b]\) and there exist a finite number of points 
+  \(a = a_0 < a_1 < \cdots < a_n = b\) such that \(z\) is smooth on \([a_k, a_{k + 1}]\). 
+  In particular, the right-hand and the left-hand derivative of \(z\) at \(a_k\) need not 
+  to agree.
+\end{definition}
+
+\begin{definition}[Equivalence of Parametrisations]
+  Let \(z : [a, b] \to \mathbb{C}\) and \(\hat{z} : [c, d] \to \mathbb{C}\) be two 
+  parametrisations: Then, we say \(z\) is equivalent to \(hat{z}\) if there exists a 
+  continuous bijective \(t : [c, d] \to [a, b]\) such that \(t' > 0\) on \([c, d]\) 
+  and 
+  \[\hat{z}(s) = z(t(s)),\]
+  for all \(s \in [c, d]\).
+\end{definition}
+
+The requirement for \(t' > 0\) says precisely that the orientation is
+preserved, since as \(s\) travels from \(c\) to \(d\), \(t(s)\) travels
+from \(a\) to \(b\).
+
+Parametrising curves allows us more easily integrate functions along
+curves.
+
+\begin{definition}[Complex Integration]
+  Given a smooth curve \(\gamma \subseteq \mathbb{C}\) is parameterised by 
+  \(z : [a, b] \to \mathbb{C}\), and \(f : \gamma \to \mathbb{C}\) is a 
+  continuous function, we define 
+  \[\int_\gamma f(z) \dd z = \int_a^b f(z(t)) z'(t) \dd t.\]
+\end{definition}
+
+In order for this definition to be meaningful, we must show that the
+integration along \(\gamma\) is independent from the parametrisation.
+That is, if \(\hat{z}\) is an equivalent parametrisation to \(z\),
+then\\
+\[\int_\gamma f(z) \dd z = \int_a^b f(z(t)) z'(t) \dd t = \int_c^d f(\hat{z}(t)) \hat{z}'(t) \dd t.\]
+However, this is easy to see by the chain rule:
+\[\int_c^d f(\hat{z}(s)) \hat{z}'(s) \dd s
+  = \int_c^d f(z(t(s)) z'(t(s)) t'(s) \dd t = \int_a^b f(z(t)) z'(t) \dd t.\]
+As one might expect, if \(\gamma \subseteq \mathbb{C}\) is a piecewise
+smooth curve and if \(z\) is a piecewise smooth parametrisation of
+\(\gamma\), then
+\[\int_\gamma f(z) \dd z = \sum_{k = 0}^{n - 1} \int_{a_k}^{a_{k + 1}} f(z(t)) z'(t) \dd t.\]
+
+Intuitively, if we have a curve in space, it is obvious that we can
+reverse the orientation to obtain a new curve. We formalise this notion
+by defining \(\gamma^-\) for any curve \(\gamma\) such that \(\gamma\)
+and \(\gamma^-\) consists of the same points. Then, if
+\(z : [a, b] \to \mathbb{C}\) is any parametrisation of \(\gamma\),
+there is a corresponding parametrisation of \(\gamma^-1\) defined by
+\[z^- : [a, b] \to \mathbb{C} : t \mapsto z(b + a - t).\]
+
+\begin{definition}[Closed]
+  A smooth or piecewise smooth curve is closed if \(z(a) = z(b)\) for any of 
+  its parametrisations \(z : [a, b] \to \mathbb{C}\).
+\end{definition}
+\begin{definition}[Simple]
+  A smooth or piecewise smooth curve is simple if for all \(s, t \in [a, b]\), 
+  \(s \neq t\) implies \(z(s) \neq z(t)\) for any of its parametrisations 
+  \(z : [a, b] \to \mathbb{C}\).
+\end{definition}
+
+We see that a curve is simple if and only if all of its parametrisations
+are injective. Indeed, if \(z(x) = z(y)\), then \(x = y\) by
+contrapositive.
+
+\begin{definition}[Contour]
+  A contour is a simple closed curve which is piecewise continuously differentiable.
+\end{definition}
 
 \end{document}
