@@ -72,6 +72,7 @@
 \usepackage{physics}
 \theoremstyle{definition}
 \newtheorem{theorem}{Theorem}
+\newtheorem{example}{Example}
 \newtheorem{prop}{Proposition}
 \newtheorem{corollary}{Corollary}[theorem]
 \newtheorem*{remark}{Remark}
@@ -181,7 +182,7 @@ equations which solutions are functions which depends on multiple
 variables are covered in the second year course \textbf{Partial
 Differential Equations in Action}.
 
-\begin{prop}[Constant solutions to autonomous differential euqations]
+\begin{prop}[Constant solutions to autonomous differential equations]\label{const_sol}
   Let \(D \subseteq \mathbb{R}^d\) be an open set and \(f : D \to \mathbb{R}^d\) 
   be a function where \(d \in \mathbb{N}\). Then, there exists a constant 
   solution \(\lambda : \mathbb{R} \to \mathbb{R}^d : x \mapsto a\) to the 
@@ -217,7 +218,272 @@ the above proposition guarantees that
 
   A solution to the above initial value problem is a function 
   \(\lambda : I \to \mathbb{R}^d\) that is a solution to the differential equation 
-  \(\dot x = f(t, x\) and \(\lambda(t_0) = x_0\).
+  \(\dot x = f(t, x)\) and \(\lambda(t_0) = x_0\).
 \end{definition}
+
+While, previously, we have seen a differential equation which always has
+a solution. This, however, is not always the case.
+
+\begin{example}
+  Consider the differential equation \(\dot x = f(x)\), where 
+  \[f(x) = \begin{cases}
+    1, & x < 0;\\
+    -1, & x \ge 0,
+  \end{cases}\]
+  with the boundary condition \(x(0) = 0\). As we will see on the problem sheet, 
+  this differential equation indeed does not have a solution.
+\end{example}
+
+\begin{example}
+  Consider the initial value problem \(\dot x = f(x) = \sqrt{|x|}\) with the 
+  boundary condition \(x(0) = 0\).
+
+  Since \(f(0) = 0\) we have \(x(t) = 0\) is a constant solution by 
+  proposition \ref{const_sol}. Furthermore, by consider the function 
+  \[\lambda_b(t) = 
+  \begin{cases}
+    0, & t \le b;\\
+    \frac{1}{4}(t - b)^2, & t > b,
+  \end{cases}\]
+  we find \(\lambda_b\) to also be a solution for any \(b \in \mathbb{R}^+_0\).
+  However, as for all \(t \le b\), \(\lambda_b(t) = 0\), we see that \(x\) is 
+  not unique given values of \(x\) at \(t\).
+\end{example}
+
+Before moving on, let us quickly recall the \emph{separation of
+variables} procedure for solving differential equations. Suppose we are
+to solve a differential equation of the form, \[\dot x = g(t) h(x),\]
+with the boundary condition \(x(t_0) = x_0\) where
+\(g : I \to \mathbb{R}\) and \(h : J \to \mathbb{R}\) are continuous
+functions. Then, we have
+\[\int_{x_0} ^x\frac{\dd y}{h(y)} = \int_{t_0}^t g(s) \dd s.\] Thus, by
+evaluating the integral, we can express \(x\) in \(t\). We see that this
+procedure does indeed provide us with a correct solution by simply
+applying FTC on both sides of the equation.
+
+\begin{example}
+  Consider the initial value problem \(\dot x = t x^2\) with the boundary condition 
+  \(x(t_0) = x_0\) where \(x_0 \neq 0\). By the separation of variables, we find 
+  \[x = \frac{2x_0}{2 + x_0(t_0^2 - t^2)}.\]
+  However, we see that for this solution, \(x\) does not necessarily exist for 
+  all \(t\). Indeed, if \(t_0 = 0, x_0 = 1\), we find 
+  \[x = \frac{2}{2 - t^2},\]
+  which does not have a solution for \(t = \pm\sqrt{2}\), and so, the solution 
+  does not exist globally.
+\end{example}
+
+\hypertarget{visualisations}{%
+\subsection{Visualisations}\label{visualisations}}
+
+Visualisations are very important for differential equations as it
+provides us a mental image of how to think about differential equations.
+In general, there are two main methods to visualise differential
+equations:
+
+\begin{itemize}
+  \item nonautonomous differential equations \(\dot x = f(t, x)\) via the 
+    \textit{solution portrait} in the extended phase space;
+  \item autonomous differential equations \(\dot x = f(x)\) via the 
+    \textit{phase portrait} in the phase space.
+\end{itemize}
+
+Suppose we have the nonautonomous differential equations
+\(\dot x = f(t, x)\) where
+\(f : D \subseteq \mathbb{R} \times \mathbb{R}^d \to \mathbb{R}^d\),
+have a solution \(\lambda : I \to \mathbb{R}^d\), i.e.~for all
+\(t \in I\), \(\dot \lambda(t) = f(t, \lambda(t))\). Thus, we see that
+the vector \((1, f(t_0, \lambda(t_0))\) for some \(t_0 \in I\) is
+tangential to the solution which passes through \((t_0, \lambda(t_0))\).
+This can be done for all \(p \in \mathbb{R} \times \mathbb{R}^d\) and
+so, by drawing these vectors at a sufficient number of points, we can
+have a mental image of what the solution looks like. A plot of these
+vectors is refereed to as a \textbf{vector field}.
+
+A \textbf{solution portrait} is given by a visualisation of several
+solution curves in the \((t, x)\)-space, the so called \emph{extended
+phase space}. This is called as such since the \(x\)-space is normally
+refereed as the phase space, and so, we are extending it by the time
+axis.
+
+On the other hand, suppose we have the autonomous differential equation
+\(\dot x = f(x)\) where
+\(f : D \subseteq \mathbb{R}^d \to \mathbb{R}^d\) has a solution
+\(\lambda : I \to \mathbb{R}^d\). By considering that \(f\) is
+independent of \(t\), we see that translating \(\lambda\) along \(t\) is
+also a valid solution. Indeed, at \(x = \lambda(t_0)\), if \(\lambda'\)
+is another solution such that \(\lambda'(t_1) = \lambda(t_0)\), then
+\(\dot \lambda'(t_1) = \dot \lambda(t_0)\). This property is refereed to
+as \emph{translation invariance} and all solutions of autonomous
+differential equations are translation invariant.
+
+\begin{prop}
+  let \(\dot x = f(x)\) be an autonomous differential equation. Then, if 
+  \(\lambda : I \to \mathbb{R}^d\) is a solution to this differential equation, 
+  so is
+  \[\mu : \bar{I} \to \mathbb{R}^d : t \mapsto \lambda(t + \tau),\]
+  where \(\tau \in \mathbb{R}\), \(\bar{I} := I + \tau\).
+\end{prop}
+\proof
+
+Follows straight away by chain rule. \qed
+
+\begin{example}
+  Consider the harmonic oscillator \(\ddot x = -x\). By converting it into 
+  a first order differential equation, we have 
+  \[\dot{\mathbf{x}} = 
+  \begin{bmatrix}
+    \dot x\\ \dot y
+  \end{bmatrix} = 
+  \begin{bmatrix}
+    0 & 1 \\
+    -1 & 0
+  \end{bmatrix}\mathbf{x}.\]
+  By solving the system, we find 
+  \[\lambda(t) = \begin{bmatrix}
+    \cos(t)\sin(t)\\ -\sin(t)\cos(t)
+  \end{bmatrix}
+  \begin{bmatrix}
+    x_0\\ y_0
+  \end{bmatrix}\]
+  is a solution. Indeed, this describes a oscillatory motion in the phase space 
+  where the position is circular.
+\end{example}
+
+With consideration with the example above, we see that we may project a
+solution portrait \((t, x) \mapsto (1, f(x))\) onto \(x \mapsto f(x)\)
+resulting in a \textbf{phase portrait}.
+
+\hypertarget{existence-and-uniqueness}{%
+\section{Existence and Uniqueness}\label{existence-and-uniqueness}}
+
+As we have seen, differential equations need not have unique solutions
+given an initial value. Indeed, we have also seen that it is not
+guaranteed to have a solution at all. We will in this chapter resolve
+the question on whether or not a solution exists by presenting a theory
+that guarantees existence and uniqueness for solutions to initial value
+problems.
+
+\hypertarget{picard-iterates}{%
+\subsection{Picard iterates}\label{picard-iterates}}
+
+We observe that often times, to solve an differential equation, we need
+to reformulate it as an integral equation.
+
+\begin{prop}\label{alt_repr}
+  Consider the initial value problem 
+  \[\dot x = f(t, x); \hspace{2mm} x(t_0) = x_0,\]
+  where \(f : D \subseteq \mathbb{R} \times \mathbb{R}^d \to \mathbb{R}^d\) is 
+  continuous. Let \(\lambda : I \to \mathbb{R}^d\), \(\lambda\) solves the IVP 
+  if and only if \(\lambda\) is continuous and solves the integral 
+  equation\footnote{We recall that the integral of a vector valued function is 
+  simply the integral of the components.} 
+  \[\lambda(t) = x_0 + \int_{t_0}^t f(s, \lambda(s)) \dd s.\]
+\end{prop}
+\proof
+
+Follows from FTC. \qed
+
+However, as \(f\) depends on \(\lambda\), we in general cannot compute
+the integral on the right hand side. Nonetheless, this brings us closer
+to the formulation of the Picard iterates.
+
+\begin{prop}
+  Let \(f\) be a continuous function. Then by defining \(a_0\) for some value and 
+  \(a_{n + 1} = f(a_n)\), if \((a_n)_{n = 1}^\infty\) converges to some value 
+  \(a\), then \(a = f(a)\).
+\end{prop}
+\proof
+
+We see that if \((a_n)_{n = 1}^\infty\) converges to some value \(a\),
+\(f(a_n) \to f(a)\) by sequential continuity. However, as
+\(\lim_{n \to \infty} f(a_n) = \lim_{n \to \infty} a_{n + 1} = a\), by
+uniqueness of limits on Hausdorff spaces, we have \(a = f(a)\). \qed
+
+With this proposition in mind, we may apply a similar iteration on the
+integral equation resulting in the Picard iterates.
+
+\begin{definition}[Picard Iterates]
+  Given an IVP, the Picard iterates is the sequence of functions 
+  \((\lambda_n : J \to \mathbb{R}^d)_{n = 1}^\infty\) be defined such that 
+  \(\lambda_0(t) = x_0\), and 
+  \[\lambda_{n + 1}(t) = x_0 + \int_{t_0}^t f(s, \lambda_n(s)) \dd s.\]
+\end{definition}
+
+With connotation to the motivating proposition, we hope that
+\((\lambda_n)\) converges to the solution \(\lambda_\infty\) in some
+notion. As we shall see, the Picard iterates needs to converge to
+\(\lambda_\infty\) uniformly in order for \(\lambda_\infty\) to be a
+solution.
+
+\begin{prop}
+  Given an IVP, if the Picard iterates \((\lambda_n)_{n = 0}^\infty\) converges 
+  uniformly to \(\lambda_\infty\), then \(\lambda_\infty\) is a solution to the 
+  IVP.
+\end{prop}
+\proof
+
+Consider the following chain of equalities, \[\begin{split}
+    \lambda_\infty(t) = \lim_{n \to \infty} \lambda_{n + 1}(t) & = 
+    \lim_{n \to \infty} x_0 + \int_{t_0}^t f(s, \lambda_n(s)) \dd s\\ &= 
+    x_0 + \int_{t_0}^t f(s, \lim_{n \to \infty} \lambda_n(s)) \dd s = 
+    x_0 + \int_{t_0}^t f(s, \lambda_\infty(s)) \dd s,
+  \end{split}\] where the third equality is true as
+\(\lambda_n \to \lambda_\infty\) uniformly (see first year analysis for
+proof). Thus, by proposition \ref{alt_repr}, \(\lambda_\infty\) solves
+the IVP. \qed
+
+With this proposition in mind, it is \emph{sometimes} possible to show
+that a particular Picard iterates converges uniformly towards some
+function resulting in a solution to the corresponding IVP.
+
+\hypertarget{lipschitz-continuity}{%
+\subsection{Lipschitz Continuity}\label{lipschitz-continuity}}
+
+We recall from first year analysis the definition of Lipschitz
+continuity. We are interested in Lipschitz continuity since it is very
+helpful when showing the existence and uniqueness of solutions of IVPs.
+Indeed, by reformulating the Picard iterates as an operator \(P\) on the
+Banach space \(\mathcal{C}^\circ(J, \mathbb{R}^d)\), we find that \(P\)
+is a contraction (i.e.~\(P\) has Lipschitz constant \(< 1\)) if \(f\)
+satisfies certain Lipschitz condition, and hence, by Banach's fixed
+point theorem, has a fixed point.
+
+We recall that a normed vector space is a vector space \(V\) equipped
+with a norm \(\| \cdot \|\) such that the norm satisfies positive
+definiteness, absolute homogeneity and the triangle inequality. Indeed,
+we recall the chain of induced structure: Inner product space
+\(\implies\) Normed vector space \(\implies\) (Metric space \(\implies\)
+Topological space) \(\vee\) Vector space.
+
+\begin{definition}[Lipschitz Continuity]
+  Let \((V, \| \cdot \|_V)\), \((W, \| \cdot \|_W)\) be two normed vector spaces 
+  and suppose \(X \subset V\) and \(Y \subseteq W\), then \(f : X \to Y\) is 
+  Lipschitz continuous if there exists some \(K > 0\) (a Lipschitz constant) 
+  such that for all \(x, y \in X\),
+  \[\| f(x) - f(y) \|_W \le K \|x - y\|_V.\]
+\end{definition}
+
+We recall the sufficient conditions for which a function is Lipschitz
+continuous.
+
+\begin{prop}
+  Let \(f : I \to \mathbb{R}\) be differentiable with bounded derivative on some 
+  interval \(I\), then \(f\) is Lipschitz continuous.
+\end{prop}
+\proof
+
+By MVT, for all \(x, y \in I\), there exists some \(c \in (x, y)\) such
+that \[f(x) - f(y) = f'(c) (x - y).\] So by taking absolute value on
+both sides, and by choosing the Lipschitz constant as the supremum of
+\(|f'|\) we have found some \(K := \sup_{c \in I} \|f'(c)\|\), so
+\[|f(x) - f(y)| \le K \|x - y\|.\] \qed
+
+We see that, if \(f\) is continuously differentiable, \(f'\) is
+continuous on the compact set \(I\), and so \(f'\) is uniformly
+continuous, and so is bounded. Thus, if \(f : I \to \mathbb{R}\) is
+continuously differentiable, then it is Lipschitz continuous.
+
+For higher dimensions, we require the mean value inequality and so an
+similar result is achieved.
 
 \end{document}
