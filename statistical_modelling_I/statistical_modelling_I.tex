@@ -275,4 +275,222 @@ best estimators by minimising the MSE. However, a biased estimator might
 have a small MSE than an unbiased estimator (recall sample variance),
 and it is not necessarily true that such an estimator even exists.
 
+\hypertarget{cramuxe9r-rao-lower-bound}{%
+\subsection{Cramér-Rao Lower Bound}\label{cramuxe9r-rao-lower-bound}}
+
+As the mean square error provide us with a method of quantifying how
+good an estimator is, we are motivated by minimising the mean square
+error for a family of estimators. That is, if \(\theta \in \Theta\) is a
+parameter, then is there an estimator \(T\) of \(\theta\) such that for
+all estimators of \(\theta\), \(S\),
+\[{\mathop{\mathrm{MSE}}}_{\theta}(T) \le {\mathop{\mathrm{MSE}}}_{\theta}(S).\]
+Unfortunately, the answer to this question is in general, no, however,
+for unbiased estimators, the answer is often yes. Indeed, if \(T\) is an
+unbiased estimator, then,
+\[{\mathop{\mathrm{MSE}}}_{\theta}(T) = {\mathop{\mathrm{Var}}}_\theta(T) = {\mathop{\mathrm{bias}}}_{\theta}(T)^2 = {\mathop{\mathrm{Var}}}_\theta(T),\]
+so it suffices to minimise the variance.
+
+\begin{theorem}[Cramér-Rao Lower Bound]
+  Suppose \(T = T(X)\) is an unbiased estimator for \(\theta \in \Theta \subseteq \mathbb{R}\) 
+  based on \(X = (X_1, \cdots, X_n)\) with joint pdf \(f_\theta(x)\). Then under 
+  mild regularity conditions (which is elaborated on in the proof below),
+  \[{\mathop{\mathrm{Var}}}_{\theta}(T) \ge \frac{1}{I(\theta)},\]
+  where 
+  \[I(\theta) = E_\theta\left[\left\{\pdv{\theta} \log f_\theta(X)\right\}^2\right],\]
+  and we call \(I(\theta)\) the \textit{Fisher information} of the sample.
+\end{theorem}
+
+By computing, we find the Fisher information to equal the following.
+\[I(\theta) = -E_\theta\left[\pdv[2]{\theta} \log f_\theta(X) \right].\]
+Indeed, \[\begin{split}
+  E_\theta\left[\pdv[2]{\theta} \log f_\theta(X) \right] 
+    & = E_\theta\left[\pdv{\theta} \frac{f'_\theta(X)}{f_\theta(X)}\right]\\
+    & = E_\theta\left[- \frac{f'_\theta(X)}{f^2_\theta(X)}f'_\theta(X) + \frac{f''_\theta(X)}{f_\theta(X)}\right]\\
+    & = E_\theta\left[-\left(\pdv{\theta} \log f_\theta(X)\right)^2\right] + E_\theta\left[ \frac{f''_\theta(X)}{f_\theta(X)}\right].   
+\end{split}\] So, the result follows as, \[\begin{split}
+  E_\theta\left[ \frac{f''_\theta(X)}{f_\theta(X)}\right] 
+    & = \int_{x \in A} \frac{f''_\theta(x)}{f_\theta(x)}f_\theta(x) \dd x\\
+    & = \int_{x \in A} f''_\theta(x) \dd x = \pdv[2]{\theta} \int_{x \in A} f_\theta(x) \dd x = 0,
+\end{split}\] where we denoted \(A\) as the support of \(f_\theta\).
+This is a useful identity whenever the second derivative is easy to
+compute.
+
+\begin{corollary}
+  Suppose \(X_1, \cdots, X_n\) is a random sample. Then, is \(f_\theta^{(1)}\) is 
+  the pdf of single observation, then 
+  \[I_f(\theta) = n I_{f_\theta^{(1)}}(\theta).\]
+\end{corollary}
+\proof
+
+Since a random sample is iid. \(f_\theta(x) = \prod f_\theta^{(1)}\) and
+so
+\[I_{f}(\theta) = -E_\theta\left[\pdv[2]{\theta}\log f_\theta(X) \right] 
+    = \sum_{i = 1}^n - E_\theta\left(\pdv[2]{\theta} \log f_\theta^{(1)}(X_i)\right)
+    = n I_{f_\theta^{(1)}}(\theta).\] \qed
+
+From this, we can conclude that the Fisher information is proportional
+to the sample size.
+
+\begin{example}
+  Let us find the Fisher information for the random sample 
+  \(X_1, \cdots, X_n \sim \text{Bern}(\theta)\).
+  
+  By the above corollary, we have \(I_f(\theta) = n I_{f_\theta^{(1)}}(\theta)\).
+  So, since the pmf of a Bernoulli random variable is 
+  \(f_{\theta}^{(1)}(x) = \theta^x(1 - \theta)^{1 - x}\), we have 
+  \[\pdv{\theta} \log f_\theta^{(1)}(x) = \frac{x}{\theta} - \frac{1 - x}{1 - \theta} 
+    = \frac{x - \theta}{\theta(1 - \theta)},\]
+  hence,
+  \[I_{f_\theta^{(1)}}(\theta) = E\left[\left(\frac{x - \theta}{\theta(1 - \theta)}\right)^2\right] 
+    = \frac{1}{\theta^2(1 - \theta)^2} \mathop{\mathrm{Var}}(X) = \frac{1}{\theta(1 - \theta)}.\]
+  Thus, the Fisher information of the random sample is just 
+  \(I_f(\theta) = n / \theta(1 - \theta)\).
+
+  With the Fisher information, we can apply the Cramér-Rao lower bound theorem 
+  allowing us to conclude that an unbiased estimator \(T\) for \(\theta\) has variance 
+  \(\mathop{\mathrm{Var}}(T) \ge \theta(1 - \theta) / n = \mathop{\mathrm{Var}}(\bar{X})\). This allows us to conclude 
+  that the sample mean \(\bar{X}\) minimises the mean square error among unbiased 
+  estimators for \(\theta\). 
+\end{example}
+
+Let us now prove the Cramér-Rao lower bound theorem.
+
+\proof (Cramér-Rao lower bound theorem). Let us first specify the
+regularity conditions for the Cramér-Rao lower bound theorem.
+
+\begin{itemize}
+    \item Assume that the set \(A := \text{supp} f_\theta = \{x \in \mathbb{R}^n \mid f_\theta(x) > 0\}\)
+      is independent of \(\theta\).
+    \item \(\Theta\) is an open interval in \(\mathbb{R}\).
+    \item For all \(\theta \in \Theta\) there exists \(\pdv{f_\theta}{\theta}\).
+    \item Differentiation and integration commutes (for the specific cases where it 
+      is used).
+  \end{itemize}
+
+As we saw last year, the space of random variables form an inner product
+space with the inner product \[\langle X, Y \rangle = E[XY],\] and so,
+the Cauchy-Schwarz inequality applies. That is for all random variables
+\(X, Y\) \[[E(XY)]^2 \le E(X^2)E(Y^2).\] So, we have \[\begin{split}
+    {\mathop{\mathrm{Var}}}_\theta(T) I_f(\theta) & = E_\theta[(T - E_\theta T)^2] 
+      E_\theta\left[\left(\pdv{\theta}\log f_\theta(X)\right)^2\right]\\
+      & \ge \left(E_\theta\left[(T - E_\theta(T)) \pdv{\theta}\log f_\theta(X) \right]\right)^2.
+    \end{split}\] Thus, it suffices to show that the expectation on the
+right hand side evaluates to 1. \[\begin{split}
+    E_\theta\left[(T - E_\theta(T)) \pdv{\theta}\log f_\theta(X) \right] & =
+      E_\theta\left[(T - E_\theta(T)) \frac{\pdv{\theta}f_\theta(X)}{f_\theta(X)}\right]\\
+      & = \int_{x \in A} (T(x) - E_\theta(T))\frac{\pdv{\theta}f_\theta(x)}{f_\theta(X)} f_\theta(x) \dd x\\
+      & = \int_{x \in A} T(x) \pdv{\theta}f_\theta(x) \dd x - \int_{x \in A} E_\theta(T) \pdv{\theta}f_\theta(x) \dd x\\
+      & = \pdv{\theta} \int_{x \in A} T(x) f_\theta(x) \dd x - E_\theta(T) \pdv{\theta} \int_{x \in A} f_\theta(x) \dd x\\
+      & = \pdv{\theta} E_\theta(T) - 0 = \pdv{\theta}\theta = 1.
+   \end{split}\] \qed
+
+\hypertarget{asymptotic-properties-of-estimators}{%
+\subsection{Asymptotic Properties of
+Estimators}\label{asymptotic-properties-of-estimators}}
+
+While the Cramér-Rao lower bound theorem provides us with a lower bound
+for the variance for non-biased estimators, as we have previously seen,
+it is not always true that there exists an unbiased estimator. So,
+rather than giving up, we instead study the estimators as the sample
+size becomes large.
+
+As we have seen, evaluating an estimator \(T = T(X_1, \cdots, X_n)\) of
+\(\theta\) depends on its \emph{sampling distribution}. From the
+sampling distribution, one can possibly find properties about the
+estimator such as is bias, mean square error and so on. However, it is
+not necessarily true that an estimator has a closed form. Indeed, often
+times, the estimator is defined as a solution to some equation.
+
+To simplify this, one often consider \(T_n = T_n(X_1, \cdots, X_n)\) as
+a sequence of random variables indexed by \(n \in \mathbb{N}\) and
+consider the stochastic convergence of the variables in question. We
+recall from last term's probability course, there are three different
+notions of convergence for random variables,
+
+\begin{itemize}
+  \item convergence in probability;
+  \item convergence almost surely (almost everywhere);
+  \item convergence in distribution.
+\end{itemize}
+
+Let us quickly define them here again.
+
+\begin{definition}[Convergence in Probability]
+  Let \((X_n)_{n = 1}^\infty\) be a sequence of random variables. Then, \((X_n)\) 
+  converges to the random variable \(X\) in probability if for all \(\epsilon > 0\),
+  \[\lim_{n \to \infty} \mathbb{P}(|X_n - X| > \epsilon) = 0.\]
+\end{definition}
+\begin{definition}[Convergence Almost Surely]
+  Let \((X_n)_{n = 1}^\infty\) be a sequence of random variables. Then, \((X_n)\) 
+  converges to the random variable \(X\) almost surely if 
+  \[\mathbb{P}\left(\lim_{n \to \infty} X_n = X\right) = 1,\]
+  where \(\lim_{n \to \infty} X_n = X\) is denoting the event 
+  \[\{\omega \in \Omega \mid X_n(\omega) \to X(\omega)\}.\]
+  With other words, \(X_n \to X\) almost surely, if the set of points \(\omega\) 
+  such that \(X_n(\omega)\) does not converge to \(X(\omega)\) has measure 0.
+\end{definition}
+\begin{definition}
+  Let \((X_n)_{n = 1}^\infty\) be a sequence of random variables. Then, \((X_n)\) 
+  converges to the random variable \(X\) with cdf \(F_X\) in distribution if 
+  \[\lim_{n \to \infty} \mathbb{P}(X_n \le x) = F_X(x),\]
+  for all \(x\) at which \(F_X\) is continuous.
+\end{definition}
+
+We also recall the following chain of implications,
+\[X_n \to_\text{as} X \implies X_n \to_\text{p} X \implies X_n \to_\text{d} X.\]
+If \(X = c\) is a constant, then
+\[X_n \to_\text{p} X \iff X_n \to_\text{d} X.\] We apply this notion
+onto estimators.
+
+\begin{definition}[Consistency]
+  A sequence of estimators \((T_n)_{n = 1}^\infty\) for \(g(\theta)\) is called 
+  (weakly) consistent if for all \(\theta \in \Theta\), \(\epsilon > 0\)
+  \[\lim_{n \to \infty} \mathbb{P}(|T_n - g(\theta)| > \epsilon) = 0.\]
+\end{definition}
+
+While it is possible to prove consistency for certain estimators, it is
+often a non-trivial task. Instead, we often look at whether a sequence
+of estimators are asymptotically unbiased and prove the a special class
+of these estimators are consistent.
+
+\begin{definition}[Asymptotically Unbiased Estimators]
+  A sequence of estimators \((T_n)_{n = 1}^\infty\) for \(g(\theta)\) is called 
+  asymptotically unbiased if for all \(\theta \in \Theta\), 
+  \[E_\theta(T_n) \to g(\theta).\]
+\end{definition}
+
+We see that \(E_\theta(T_n)\) is simply a value and this is simply the
+convergence for real sequences.
+
+Before moving on to prove results about estimators, let us quickly
+recall the Markov inequality.
+
+\begin{prop}
+  Let \(X\) be a random variable with \(X(\Omega) \subseteq [0, \infty)\), then 
+  for all \(a \in \mathbb{R}\),
+  \[\mathbb{P}(|X| \ge a) \le \frac{E(|X|)}{a}.\]
+\end{prop}
+\proof
+
+See first year notes. \qed
+
+\begin{lemma}[MSE Consistency]
+  Let \((T_n)_{n = 1}^\infty\) be asymptotically unbiased for \(g(\theta)\) for 
+  all \(\theta \in \Theta\). Then, if \({\mathop{\mathrm{Var}}}_\theta \to 0\) as \(n \to \infty\), 
+  \(T_n\) is consistent for \(g(\theta)\).
+\end{lemma}
+\proof
+
+Let \(\epsilon > 0\), then, by Markov's inequality, \[\begin{split}
+    \mathbb{P}_\theta(|T_n - g(\theta)| & \ge \epsilon) 
+    = \mathbb{P}_\theta((T_n - g(\theta))^2 \ge \epsilon^2)
+    \le \frac{1}{\epsilon^2} E_\theta(T_n - g(\theta))^2 \\
+    & = \frac{{\mathop{\mathrm{MSE}}}_{\theta}(T_n)}{\epsilon^2} = 
+    \frac{1}{\epsilon}({\mathop{\mathrm{Var}}}_\theta(T_n) + (E_\theta(T_n) - g(\theta))^2). 
+  \end{split}\] Since the right hand side tends to 0 as
+\(n \to \infty\), so is the left hand side. \qed
+
+Thus, to show that a sequence of estimators is consistent, it suffices
+to show that it is asymptotically unbiased and its variance tends to 0.
+
 \end{document}
