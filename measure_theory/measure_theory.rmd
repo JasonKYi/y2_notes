@@ -285,3 +285,148 @@ is a measure on \((X, \mathcal{A})\).
 
   (Part 5) Exercise.
 \qed
+
+## Constructing Measures
+
+While it is fun to work with abstract measures in general, it is also useful to 
+consider specific measures. In this section we will look at how to construct 
+measures on arbitrary spaces. The general idea for constructing measures is that, 
+given a *premeasure* \(\tilde{\mu}\), we may extend it to an *outer measure* \(\mu^*\), 
+and finally with the outer measure, we may restrict it to a measure \(\mu\).
+
+\begin{definition}[Premeasure]
+  Let \(\mathcal{A}\) be an algebra on \(X\). A function \(\mu : \mathcal{A} \to [0, \infty]\) 
+  is a premeasure if it satisfies \(\mu(\varnothing) = 0\) and countable additivity; 
+  that is, given \((A_n)_{n = 1}^\infty \subseteq \mathcal{A}\) that is pairwise disjoint, 
+  \[\mu\left(\bigcup_{n = 1}^\infty A_n\right) = \sum_{n = 1}^\infty \mu(A_n),\]
+  provided \(\bigcup_{n = 1}^\infty A_n \in \mathcal{A}\).
+\end{definition}
+\begin{definition}[Outer Measure]
+  A function \(\mu : \mathcal{P}(X) \to [0, \infty]\) is an outer measure if it 
+  satisfies \(\mu(\varnothing) = 0\) and sub-additivity, that is, 
+  if \((A_k)_{k = 1}^\infty\) is a sequence of subsets of \(X\), and 
+  \(A \subseteq \bigcup A_k\) then 
+  \[\mu(A) \le \sum_{k = 1}^\infty \mu(A_k).\]
+\end{definition}
+
+In order to prove the aforementioned argument, we will require some proposition. 
+However, as will be demonstrated below, the notion of premeasure is in fact, too 
+strict. Thus, for that reason, let us introduce the following definition.
+\begin{definition}[Cover]
+  A family of sets \(\mathcal{K} \subseteq \mathcal{P}(X)\) is called a cover 
+  of \(X\) if \(\varnothing \in \mathcal{K}\) and there exists a sequence 
+  \((K_n)_{n = 1}^\infty\) in \(\mathcal{K}\) such that 
+  \[X \subseteq \bigcup_{n = 1}^\infty K_n.\]
+\end{definition}
+\begin{remark}
+  We note that this is a different definition of covers than that we had learnt 
+  for the definition compactness of topological spaces.
+\end{remark}
+
+Straight away, we see that every algebra \(\mathcal{A}\) of \(X\) is a cover of 
+\(X\) as \(X \in \mathcal{A}\) and so we can simply let the the countable sequence 
+be \(K_n = X\). Thus, every proposition we prove about covers apply also to 
+algebras.
+
+\begin{prop}\label{cath_mea}
+  Let \(\mathcal{K}\) be a cover of \(X\), and \(\tilde{\mu} : \mathcal{K} \to [0, \infty]\) 
+  be a map such that \(\tilde{\mu}(\varnothing) = 0\). Then  
+  \[\mu^* : \mathcal{P}(X) \to [0, \infty] := A \mapsto 
+    \inf \left\{\sum_{j = 1}^\infty \tilde{\mu}(K_j) \mid (K_j)_{j = 1}^\infty 
+    \subseteq \mathcal{K} \wedge A \subseteq \bigcup_{j = 1}^\infty K_j \right\}\]
+  is an outer measure on \(X\).
+\end{prop}
+\proof
+  \(\mu^*\) is well defined since for all \(A \subseteq X\), by the definition of 
+  covers, there exists some \((K_n)_{n = 1}^\infty\), \(\bigcup K_n \supseteq X \supseteq A\), 
+  and so, we are taking the infimum of a non-empty set. Clearly \(\mu^*(\varnothing) = 0\) 
+  since we can choose \(K_n = \varnothing\) and so, it remains to show sub-additivity.
+
+  Let \((A_n)_{n = 1}^\infty\) be a sequence of subsets of \(X\), and suppose 
+  \(A \subseteq \bigcup A_n\). For each \(n \in \mathbb{N}\) and \(\epsilon > 0\), 
+  by the definition of infimum, there exists some 
+  \((K_{n, j})_{j = 1}^\infty \subseteq \mathcal{K}\) such that 
+  \(A_n \subseteq \bigcup K_{n, j}\) and 
+  \[\sum_{j = 1}^\infty \tilde{\mu}(K_{n, j}) < \mu^*(A_n) + 2^{-n} \epsilon.\]
+  Now, by the fact that \(A \subseteq \bigcup A_n\), we have 
+  \(A \subseteq \bigcup_n \bigcup_j K_{n, j}\), and so, again by the definition 
+  of \(\mu^*\), we have
+  \[\mu^*(A) \le \sum_{n = 1}^\infty \sum_{j = 1}^\infty\tilde{\mu}(K_{n, j})
+    < \sum_{n = 1}^\infty (\mu^*(A_n) + 2^{-n}\epsilon) 
+    = \sum_{n = 1}^\infty \mu^*(A_n) + \epsilon.\]
+  As \(\epsilon > 0\) was arbitrary, 
+  \[\mu^*(A) \le \sum_{n = 1}^\infty \mu^*(A_n),\]
+  so \(\mu^*\) is a outer measure.
+\qed
+
+With that, we can naturally construct a outer measure from a premeasure (and 
+in fact, weaker notions suffices). This, outer measure however, in some sense 
+overshoots measures as it is defined on all subsets of \(X\), and does not 
+attain \(\sigma\)-additivity but only \(\sigma\)-sub-additivity. 
+
+\begin{lemma}\label{cath_sig}
+  Let \(\mu^*\) be an outer measure on \(X\), then 
+  \[\Sigma := \{A \subseteq X \mid \mu^*(B) = \mu^*(B \cap A) + \mu^*(B \cap A^c)\}\]
+  is a \(\sigma\)-algebra on \(X\).
+\end{lemma}
+\begin{remark}
+  By sub-additivity, we see that \(\Sigma\) is equivalently defined by requiring 
+  \(\mu^*(B) \ge \mu^*(B \cap A) + \mu^*(B \cap A^c)\).
+\end{remark}
+\proof
+  \(\varnothing \in \Sigma\) since for all \(B \subseteq X\), 
+  \(B \cap \varnothing = \varnothing\) and \(B \cap \varnothing^c = B\) and so 
+  \[\mu^*(B \cap \varnothing) + \mu^*(B \cap \varnothing^c) 
+    = \mu^*(\varnothing) + \mu^*(B) = \mu^*(B).\]
+  Let \(A \in \Sigma\), then for all \(B \subseteq X\), 
+  \[\mu^*(B) = \mu^*(B \cap A) + \mu^*(B \cap A^c) 
+    = \mu^*(B \cap (A^c)^c) + \mu^*(B \cap A^c),\]
+  and so, \(A^c \in \Sigma\).
+
+  To show that \(\Sigma\) is closed under union, let us first show that \(\Sigma\) 
+  is closed under finite intersections. Let \(A_1, A_2 \in \Sigma\), then for all 
+  \(B \subseteq X\), 
+  \[\begin{split}
+    \mu^*(B) & = \mu^*(B \cap A_1) + \mu^*(B \cap A_1^c)\\
+      & = \mu^*(B \cap A_1 \cap A_2) + \mu^*(B \cap A_1 \cap A_2^c) + \mu^*(B \cap A_1^c)\\
+      & = \mu^*(B \cap (A_1 \cap A_2)) + \mu^*(B \cap (A_1 \cap A_2)^c \cap A_1)
+         + \mu^*(B \cap (A_1 \cap A_2)^c \cap A_1^c)\\
+      & = \mu^*(B \cap (A_1 \cap A_2)) + \mu^*(B \cap (A_1 \cap A_2)^c),
+  \end{split}\]
+  and so \(A_1 \cap A_2 \in \Sigma\). Now, suppose \((A_n)\) is a sequence of 
+  disjoint sets in \(\Sigma\), it suffices to show 
+  \(\bigcup_{n = 1}^\infty A_n \in \Sigma\) (we can assume this since given a sequence 
+  of sets, we may define another disjoint sequence such that their union are equal).
+  Since the sequence is pairwise disjoint, we have 
+  \[\begin{split}
+    \mu^*(B) & = \mu^*(B \cap A_1) + \mu^*(B \cap A_1^c)\\
+      & = \mu^*(B \cap A_1) + \mu^*(B \cap A_1^c \cap A_2) + \mu^*(B \cap A_1^c \cap A_2^c).
+  \end{split}\]
+  Indeed, as \(A_1 \cap A_2 = \varnothing\), \(A_1^c \cap A_2 = A_2\) and so, 
+  \[\begin{split}
+    \mu^*(B) & = \mu^*(B \cap A_1) + \mu^*(B \cap A_2) + \mu^*(B \cap A_1^c \cap A_2^c)\\
+      & = \cdots\\
+      & = \sum_{j = 1}^n \mu^*(B \cap A_j) + \mu^*\left(B \cap \bigcap_{j = 1}^n A_j^c\right)\\
+      & = \sum_{j = 1}^n \mu^*(B \cap A_j) + \mu^*\left(B \cap \overline{\bigcup_{j = 1}^n A_j}\right)
+  \end{split}\]
+  for all \(n \in \mathbb{N}\). By sub-additivity, we have 
+  \[\mu^*\left(B \cap \bigcup_{j = 1}^n A_j\right) \le \sum_{j = 1}^n \mu^*(B \cap A_j),\]
+  and so, by taking \(n \to \infty\), we have 
+  \[\mu^*(B) \ge \mu^*\left(B \cap \bigcup_{j = 1}^\infty A_j\right) + 
+    \mu^*\left(B \cap \overline{\bigcup_{j = 1}^\infty A_j}\right),\]
+  implying \(\bigcup A_n \in \Sigma\).
+\qed
+\begin{theorem}[Hahn-Carathéodory Extension Theorem]
+  Let \(X\) be an arbitrary set, \(\mathcal{A}\) an algebra over \(X\) and 
+  \(\tilde{\mu} : \mathcal{A} \to [0, \infty]\) a premeasure on \(X\). Then by 
+  defining \(\mu^*\) as in proposition \ref{cath_mea}, \(\Sigma\) as in
+  lemma \ref{cath_sig}, and by defining \(\mu = \mu^* \mid_\Sigma\), then,
+  \begin{itemize}
+    \item \((X, \Sigma, \mu)\) is a measure space;
+    \item \(\mathcal{A} \subseteq \Sigma\);
+    \item for all \(A \in \mathcal{A}\), \(\mu(A) := \mu^*(A) = \tilde{\mu}(A)\).
+  \end{itemize}
+\end{theorem}
+\proof
+  
+\qed
