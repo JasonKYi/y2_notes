@@ -16,6 +16,7 @@ header-includes:
   - \usepackage{lipsum}
   - \usepackage[ruled,vlined]{algorithm2e}
   - \usepackage{physics}
+  - \usepackage{esint}
   - \theoremstyle{definition}
   - \newtheorem{theorem}{Theorem}
   - \newtheorem{prop}{Proposition}
@@ -512,7 +513,10 @@ With these definitions in place, we may finally define complex powers.
   \(z^{\alpha_1 + \alpha_2} = z^{\alpha_1}z^{\alpha_2}\).
 \end{prop}
 
-## Parametrised Curve
+\newpage
+# Integration Along Curves
+
+## Parametrised Curves
 
 As we shall study integration along curves in the next section, let us 
 first look at parametrised curves.
@@ -583,3 +587,241 @@ injective. Indeed, if \(z(x) = z(y)\), then \(x = y\) by contrapositive.
 \begin{definition}[Contour]
   A contour is a simple closed curve which is piecewise continuously differentiable.
 \end{definition}
+
+Integration along curves satisfy some intuitive properties.
+
+\begin{theorem}
+  Let \(f, g : \Omega \to \mathbb{C}\) be continuous, \(\alpha, \beta \in \mathbb{C}\), 
+  and \(\gamma\) a curve in \(\mathbb{C}\) such that \(\gamma \subseteq \Omega\), then 
+  \begin{itemize}
+    \item \[\int_\gamma (\alpha f(z) + \beta g(z)) \dd z 
+      = \alpha \int_\gamma f(z) \dd z + \beta \int_\gamma g(z) \dd z;\]
+    \item if \(\gamma^{-}\) is \(\gamma\) in the reverse orientation, then 
+      \[\int_\gamma f(z) \dd z = - \int_{\gamma^-} f(z) \dd z;\]
+    \item (ML-inequality)
+      \[\left| \int_\gamma f(z) \dd z \right| \le 
+        \sup_{z \in \gamma}|f(z)| \cdot \text{length}(\gamma),\]
+      where \(\text{length}(\gamma) = \int_a^b |z'(t)| \dd t\) for some parametrisation 
+      of \(\gamma\), \(z : [a, b] \to \mathbb{C}\).
+  \end{itemize}
+\end{theorem}
+\begin{remark}
+  For continuous \(f\), we have \(f\) achieves the maximum, and so the supremum 
+  can be replaced by the maximum.
+\end{remark}
+\proof
+  (Part 1) Linearity follows by the definition and results from last year.
+
+  (Part 2) Say we parametrise \(\gamma\) as \(z : [0, 1] \to \mathbb{C}\), then 
+  \(\gamma^-\) can be parametrised as \(z^- : [0, 1] \to \mathbb{C} : x \mapsto z(1 - x)\), 
+  and so 
+  \[\int_{\gamma^-}f(z) \dd z = \int_0^1 f(z^-(t)) \dot z^- (t) \dd t
+    = - \int_0^1 f(z(1 - t)) z'(1 - t) \dd t.\]
+  By substituting \(u = 1 - t\), 
+  \[- \int_0^1 f(z(1 - t)) z'(1 - t) \dd t = \int_1^0 f(z(u)) z'(u) \dd u
+    = - \int_0^1 f(z(u))z'(u) \dd u = - \int_\gamma f(z) \dd z.\]
+
+  (Part 3) Follows readily as, if \(z : [a, b] \to \mathbb{C}\) is a parametrisation 
+  of \(\gamma\), then,
+  \[\left| \int_\gamma f(z) \dd z \right| = \left| \int_a^b f(z(t)) z'(t) \dd t \right|
+    \le \int_a^b |f(z(t))| |z'(t)| \dd t 
+    \le \sup_{z \in \gamma}|f(z)| \int_a^b |z'(t)| \dd t.\]
+\qed
+
+## Primitive Function
+
+\begin{definition}[Primitive]
+  Let \(f : \Omega \to \mathbb{C}\) be some function, then the primitive of \(f\) 
+  on \(\Omega\) is a holomorphic function \(F : \Omega \to \mathbb{C}\) such that 
+  for all \(z \in \Omega\), \(F'(z) = f(z)\).
+\end{definition}
+
+We see that the definition of primitive is essentially that of the antiderivative 
+for Euclidean function, and so, similar versions of the fundamental theorem of 
+calculus applies.
+
+\begin{theorem}
+  If a continuous function \(f : \Omega \to \mathbb{C}\) has a primitive 
+  \(F : \Omega \to \mathbb{C}\) on \(\Omega\) and \(\gamma\) is a curve in 
+  \(\Omega\) that begins at \(w_1\) and ends as \(w_2\), then 
+  \[\int_\gamma f(z) \dd z = F(w_1) - F(w_2).\]
+\end{theorem}
+\proof
+  If \(\gamma\) is smooth, then let \(z : [a, b] \to \mathbb{C}\) be a parametrisation 
+  of \(\gamma\). Then 
+  \[\int_\gamma f(z) \dd z = \int_a^b f(z(t)) z'(t) \dd t = \int_a^b F'(z(t)) z'(t) \dd t
+    = \int_a^b \dv{t} F(z(t)) \dd t = F(z(b)) - F(z(a)).\]
+  Since \(z\) is a parametrisation of \(\gamma\), we have \(z(a) = w_1\) and 
+  \(z(b) = w_2\) and hence the result.
+
+  On the other hand, if \(\gamma\) is only piecewise smooth, we can parametrised 
+  the individual smooth curves resulting in telescoping sum, achieving the same 
+  result.
+\qed
+
+While this theorem seems intuitive at first, upon closer examination, we see that while 
+the left hand side is dependent on the curve \(\gamma\), the right hand side is 
+only dependent on the start an end point. Furthermore, if \(\gamma\), is closed, 
+the above theorem will imply that the integral evaluates to zero.
+
+\begin{corollary}
+  If \(\gamma\) is a closed curve in an open set \(\Omega \subseteq \mathbb{C}\), 
+  and \(f : \Omega \to \mathbb{C}\) is continuous and has a primitive on \(\Omega\),
+  then
+  \[\oint_\gamma f(z) \dd z = 0.\]
+\end{corollary}
+
+This is not necessarily true for functions that does not have a primitive. Consider 
+\(f(z) = 1 / z\) over \(\gamma = C_1(0)\) the unit circle in the positive direction. 
+We see that \(f\) does 
+not have a primitive on \(\mathbb{C}\setminus \{0\}\) and indeed, if we parametrise 
+\(\gamma\) by \(z : [0, 2\pi] \to \mathbb{C} : t \mapsto e^{it}\), we have 
+\[\ointctrclockwise_\gamma f(z) \dd z = \int_0^{2\pi} \frac{i e^{it}}{e^{it}} \dd t = 2\pi i \neq 0.\]
+
+\begin{corollary}
+  If \(f : \Omega \to \mathbb{C}\) is holomorphic on the open connected set \(\Omega\) 
+  with \(f' = 0\), then \(f\) is a constant.
+\end{corollary}
+\proof
+  Suppose otherwise, then there exists \(w_1, w_2 \in \Omega\) such that 
+  \(f(w_1) \neq f(w_2)\). So, as \(\Omega\) is (path)-connected, there exists some 
+  \(\gamma\) connecting from \(w_1\) to \(w_2\). Now, as \(f\) is the primitive 
+  function to \(f' = 0\), we have 
+  \[0 = \int_\gamma 0\hspace{1mm} \dd z = \int_\gamma f'(z) \dd z = f(w_2) - f(w_1) \neq 0,\]
+  a contradiction. \#
+\qed
+
+Let us now consider a similar but different result for holomorphic functions.
+
+\begin{theorem}[Cauchy's Theorem for Triangles]
+  Let \(\Omega \subseteq \mathbb{C}\) be an open set and let \(T \subseteq \Omega\) 
+  be a triangle whose interior is also contained in \(\Omega\), then, 
+  \[\oint_T f(z) \dd z = 0,\]
+  whenever \(f\) is holomorphic on \(\Omega\).
+\end{theorem}
+
+\proof
+
+Let \(T^{(0)}\) be our original triangle with some fixed orientation which we define 
+to be positive and let \(d^{(0)}\) and \(p^{(0)}\) be the diameter and perimeter of 
+\(T^{(0)}\) respectively. By dividing \(T^{(0)}\) as the diagram below demonstrates, 
+we can introduce four triangles \(T_1^{(1)}, T_2^{(1)}, T_3^{(1)}\) and \(T_4^{(1)}\) 
+all of which are similar to \(T^{(0)}\).
+
+\begin{center}
+\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+%uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
+
+%Shape: Polygon Curved [id:ds3386289484488558] 
+\draw   (133,115) .. controls (153,105) and (213,78) .. (223,115) .. controls (233,152) and (256,144) .. (223,175) .. controls (190,206) and (157,191) .. (133,175) .. controls (109,159) and (113,125) .. (133,115) -- cycle ;
+%Shape: Circle [id:dp40593013333768546] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (144,125) .. controls (144,123.34) and (145.34,122) .. (147,122) .. controls (148.66,122) and (150,123.34) .. (150,125) .. controls (150,126.66) and (148.66,128) .. (147,128) .. controls (145.34,128) and (144,126.66) .. (144,125) -- cycle ;
+%Shape: Circle [id:dp8516576087175576] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (151,178) .. controls (151,176.34) and (152.34,175) .. (154,175) .. controls (155.66,175) and (157,176.34) .. (157,178) .. controls (157,179.66) and (155.66,181) .. (154,181) .. controls (152.34,181) and (151,179.66) .. (151,178) -- cycle ;
+%Shape: Circle [id:dp1140813492392001] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (225,154) .. controls (225,152.34) and (226.34,151) .. (228,151) .. controls (229.66,151) and (231,152.34) .. (231,154) .. controls (231,155.66) and (229.66,157) .. (228,157) .. controls (226.34,157) and (225,155.66) .. (225,154) -- cycle ;
+%Straight Lines [id:da32271189201063355] 
+\draw    (147,125) -- (154,178) ;
+%Straight Lines [id:da9881466923959998] 
+\draw    (147,125) -- (228,154) ;
+%Straight Lines [id:da33756092924141434] 
+\draw    (154,178) -- (228,154) ;
+\draw   (152.77,146.56) -- (150.57,151.93) -- (146.91,147.42) ;
+\draw   (180.91,166.43) -- (186.58,167.68) -- (182.76,172.06) ;
+\draw   (185.48,142.12) -- (181.87,137.57) -- (187.6,136.59) ;
+%Straight Lines [id:da547604343128484] 
+\draw    (318.77,96.83) -- (332.23,184) ;
+%Straight Lines [id:da7089081413603506] 
+\draw    (318.77,96.83) -- (474.5,144.53) ;
+%Straight Lines [id:da6210680788690337] 
+\draw    (332.23,184) -- (474.5,144.53) ;
+%Shape: Circle [id:dp2445074927611688] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (329.23,184) .. controls (329.23,182.34) and (330.57,181) .. (332.23,181) .. controls (333.88,181) and (335.23,182.34) .. (335.23,184) .. controls (335.23,185.66) and (333.88,187) .. (332.23,187) .. controls (330.57,187) and (329.23,185.66) .. (329.23,184) -- cycle ;
+%Shape: Circle [id:dp17785732571793123] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (315.77,96.83) .. controls (315.77,95.17) and (317.11,93.83) .. (318.77,93.83) .. controls (320.42,93.83) and (321.77,95.17) .. (321.77,96.83) .. controls (321.77,98.49) and (320.42,99.83) .. (318.77,99.83) .. controls (317.11,99.83) and (315.77,98.49) .. (315.77,96.83) -- cycle ;
+%Shape: Circle [id:dp21699409783697265] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (471.5,144.53) .. controls (471.5,142.87) and (472.84,141.53) .. (474.5,141.53) .. controls (476.16,141.53) and (477.5,142.87) .. (477.5,144.53) .. controls (477.5,146.18) and (476.16,147.53) .. (474.5,147.53) .. controls (472.84,147.53) and (471.5,146.18) .. (471.5,144.53) -- cycle ;
+%Straight Lines [id:da7735198491738475] 
+\draw    (396.63,120.68) -- (325.5,140.41) ;
+%Straight Lines [id:da5945755907993049] 
+\draw    (325.5,140.41) -- (403.36,164.26) ;
+%Straight Lines [id:da020720299680464294] 
+\draw    (396.63,120.68) -- (403.36,164.26) ;
+%Curve Lines [id:da5375121582011133] 
+\draw    (392.5,107) .. controls (375.22,110.84) and (371.76,127.58) .. (379.48,140.42) ;
+\draw [shift={(380.5,142)}, rotate = 235.3] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Curve Lines [id:da5821001759734961] 
+\draw    (419.5,135) .. controls (408.5,131) and (401.5,141) .. (415.5,148) .. controls (429.01,154.76) and (447.18,148.47) .. (433.15,139.04) ;
+\draw [shift={(431.5,138)}, rotate = 390.47] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Curve Lines [id:da8496780735582994] 
+\draw    (370.5,147) .. controls (362.5,146) and (356.5,138) .. (368.5,134) .. controls (380.26,130.08) and (414.11,150.17) .. (384.4,150.03) ;
+\draw [shift={(382.5,150)}, rotate = 361.74] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Curve Lines [id:da10315513416205713] 
+\draw    (347.5,155) .. controls (336.5,151) and (329.5,161) .. (343.5,168) .. controls (357.01,174.76) and (375.18,168.47) .. (361.15,159.04) ;
+\draw [shift={(359.5,158)}, rotate = 390.47] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Curve Lines [id:da00390300926240128] 
+\draw    (342.5,111) .. controls (331.5,107) and (324.5,117) .. (338.5,124) .. controls (352.01,130.76) and (370.18,124.47) .. (356.15,115.04) ;
+\draw [shift={(354.5,114)}, rotate = 390.47] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+
+% Text Node
+\draw (193,104.4) node [anchor=north west][inner sep=0.75pt]    {$\Omega $};
+% Text Node
+\draw (110,89.4) node [anchor=north west][inner sep=0.75pt]    {$\mathbb{C}$};
+% Text Node
+\draw (161,112.4) node [anchor=north west][inner sep=0.75pt]    {$T^{( 0)}$};
+% Text Node
+\draw (283.6,113.65) node [anchor=north west][inner sep=0.75pt]    {$T^{( 1)}_{1}$};
+% Text Node
+\draw (294.6,181.65) node [anchor=north west][inner sep=0.75pt]    {$T^{( 1)}_{2}$};
+% Text Node
+\draw (456.6,157.65) node [anchor=north west][inner sep=0.75pt]    {$T^{( 1)}_{3}$};
+% Text Node
+\draw (393.6,96.65) node [anchor=north west][inner sep=0.75pt]    {$T^{( 1)}_{4}$};
+
+
+\end{tikzpicture}
+\end{center}
+
+Then, 
+\[\ointctrclockwise_{T^{(0)}} f(z) \dd z = 
+  \ointctrclockwise_{T_1^{(1)}} f(z) \dd z + \ointctrclockwise_{T_2^{(1)}} f(z) \dd z
+  + \ointctrclockwise_{T_3^{(1)}} f(z) \dd z + \ointctrclockwise_{T_4^{(1)}} f(z) \dd z.\]
+By choosing \(j\) such that \(\left|\ointctrclockwise_{T_j^{(1)}} f(z) \dd z\right|\) 
+is the maximum among the four integrals, we have 
+\[\left|\ointctrclockwise_{T^{(0)}} f(z) \dd z\right| 
+  \le 4\left|\ointctrclockwise_{T_j^{(1)}} f(z) \dd z\right|.\]
+Now, by renaming \(T_j^{(1)} = T^{(1)}\), we observe that 
+\[d^{(1)} = \frac{1}{2}d^{(0)}; \hspace{2mm} p^{(1)} = \frac{1}{2}p^{(0)}.\]
+So, by repeating this process, we obtain a sequence of triangles 
+\(T^{(0)}, T^{(1)}, T^{(2)}, \cdots, T^{(n)}, \cdots\) such that 
+\[\left|\ointctrclockwise_{T^{(0)}} f(z) \dd z\right| 
+  \le 4^n\left|\ointctrclockwise_{T^{(n)}} f(z) \dd z\right|,\]
+and 
+\[d^{(n)} = 2^{-n} d^{(0)}; \hspace{2mm} p^{(n)} = 2^{-n} p^{(0)},\]
+where \(d^{(n)}, p^{(n)}\) denote the diameter and perimeter of \(T^{(n)}\) 
+respectively.
+
+Now, by denoting \(\Omega^{(n)}\) be the closed region enclosed by \(T^{n}\) 
+so that \(\partial \Omega^{(n)} = T^{(n)}\), we have a sequence of nested 
+nonempty compact sets \(\Omega^{(0)} \supseteq \Omega^{(1)} \supseteq \cdots\) 
+whose diameter tends to 0. So, due to results from metric spaces, there exists a 
+unique point \(z_0\) belonging to \(\bigcap \Omega^{(n)}\). Since \(f\) is 
+holomorphic, 
+\[f(z) = f(z_0) + f'(z_0)(z - z_0) + (z - z_0) \psi(z)\]
+where \(\psi\) is a function such that \(\psi(z) \to 0\) as \(z \to z_0\).
+
+Since \(f(z_0) + f'(z_0)(z - z_0)\) is simply a linear function, and thus has a 
+primitive, integrating it over a closed curve will result in 0, and so,
+\[\ointctrclockwise_{T^{(n)}} f(z) \dd z = \ointctrclockwise_{T^{(n)}}\psi(z)(z - z_0) \dd z.\]
+Now as \(z_0 \in \bigcap \Omega^{(n)}\), \(|z - z_0| \le d^{(n)}\), and so, by 
+ML-inequality, 
+\[\left| \ointctrclockwise_{T^{(n)}} f(z) \dd z \right| \le \epsilon_n d^{(n)}p^{(n)},\]
+where \(\epsilon := \sup_{z \in T^{(n)}}|\psi(z)| \to 0\) as \(n \to \infty\). 
+Therefore 
+\[\left|\ointctrclockwise_{T^{(0)}} f(z) \dd z\right| 
+  \le 4^n\left|\ointctrclockwise_{T^{(n)}} f(z) \dd z\right|
+  \le \epsilon_n 4^n 2^{-n}d^{(0)} 2^{-n}p^{(0)} \to 0,\]
+as \(n \to 0\).
+\qed
