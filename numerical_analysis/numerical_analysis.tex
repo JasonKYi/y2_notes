@@ -112,11 +112,11 @@ Fourier series and lastly, numerical integration.
 We will in this course mostly deal with the vector space
 \(\mathbb{R}^n\) while unless mentioned otherwise, algorithms can easily
 extended to \(\mathbb{C}^n\). We will use inner product and dot product
-interchangeably and define the outer product between two vectors
-\(\mathbf{a}, \mathbf{b}\) to be the matrix
-\(\mathbf{a}\mathbf{b}^T = A \in M_n(\mathbb{R})\) where
-\(A_{ij} = a_ib_j\). We also note that the dot product on the reals form
-a bilinear form, and so all associated properties apply.
+interchangeably and define the outer product (tensor product) between
+two vectors \(\mathbf{a}, \mathbf{b}\) to be the matrix
+\(\mathbf{a}\otimes\mathbf{b = }\mathbf{a}\mathbf{b}^T = A \in M_n(\mathbb{R})\)
+where \(A_{ij} = a_ib_j\). We also note that the dot product on the
+reals form a bilinear form, and so all associated properties apply.
 
 Lastly, we define the \(i\)-th standard basis \(e_i \in \mathbb{R}^n\)
 as the vector with the \(j\)-th entry equal to the \(ij\)-Kronecker
@@ -219,9 +219,9 @@ longer a problem.
 
 The QR-decomposition is a very important decomposition in numerical
 analysis and we shall, in fact, look at two methods of achieving the
-QR-decomposition, hence the name of this section. The QR-decomposition
-decomposes a matrix into the product of two matrices \(Q\) and \(R\)
-where \(Q\) is orthogonal and \(R\) is upper triangular.
+QR-decomposition, and hence the name of this section. The
+QR-decomposition decomposes a matrix into the product of two matrices
+\(Q\) and \(R\) where \(Q\) is orthogonal and \(R\) is upper triangular.
 
 Suppose we have the linearly independent sequence of vectors
 \(\{\mathbf{a}_k\}_{k = 1}^n\) and the orthonormal basis of this
@@ -280,5 +280,341 @@ orthogonal matrices. Indeed,
 thinking in Euclidean spaces, we see that these types of transformations
 are rotations and so, the transformations induced by an orthogonal
 matrix is often refereed as a rotation.
+
+\hypertarget{projectors-and-qr-decomposition-ii}{%
+\subsection{Projectors and QR-decomposition
+II}\label{projectors-and-qr-decomposition-ii}}
+
+Having established one algorithm for computing the QR-decomposition, we
+will now design a second and complementary method to accomplish the same
+task. The second method will depend on \emph{projectors} and
+\emph{reflectors} so we will discuss them first.
+
+\begin{definition}[Projector]
+  A matrix \(P \in M_n(\mathbb{R})\) is a projector if 
+  \[P^2 = P.\]
+  A projector matrix is refereed to as being idempotent.
+\end{definition}
+
+Given a projector \(P\), the matrix \(I - P\) is also a projector.
+Indeed, \[(I - P)^2 = I^2 - 2P + P^2 = 1 - P.\] The matrix \(I - P\) is
+refereed to as the \emph{complementary projector} to \(P\).
+
+Straight away, we see that if a projector has full rank, than
+\(P^2 = P \implies P^{-1} P^2 = P^{-1}P \implies P = I\), resulting in
+the trivial projector with the complementary projector the zero map
+\(\mathbf{0}\). So, assuming a projector is non-trivial, then as \(P\)
+maps the vector space onto \(\text{Im} P\), we may interpret
+geometrically that \(P\) \emph{projects} vectors onto its image.
+
+\begin{definition}[Orthogonal Projector]
+  A projector \(P\) is called an orthogonal projector if \(P^T = P\).
+\end{definition}
+
+As the name might suggest, if \(P\) is an orthogonal projector, then
+\(P\) projects vectors onto its image orthogonally. Indeed, if
+\(\langle \cdot, \cdot \rangle\) is the dot product, then
+\[\langle P\mathbf{v}, P\mathbf{v} - \mathbf{v} \rangle 
+  = \langle P\mathbf{v}, P\mathbf{v} \rangle - \langle P\mathbf{v}, \mathbf{v} \rangle 
+  = \mathbf{v}^T P^T P \mathbf{v} - \mathbf{v}^T P^T \mathbf{v} 
+  = \mathbf{v}^T P^2 \mathbf{v} - \mathbf{v}^T P \mathbf{v} = 0.\]
+Furthermore, for an orthogonal projector \(P\), its image and the image
+of its complementary projector are perpendicular. Say, if
+\(\mathbf{x}, \mathbf{y}\) are vectors, then
+\[\langle P\mathbf{x}, (I - P)\mathbf{y} \rangle = \mathbf{x}^T P^T (I - P) \mathbf{y} 
+  = \mathbf{x}^T (P - P^2) \mathbf{y} = 0.\] There are many methods to
+construct orthogonal projectors. One simple method is to realise that,
+for all normalised vector \(\mathbf{q}\), the outer product of
+\(\mathbf{q}\) with itself is in fact an orthogonal projector. To see
+this, we have, for all \(\mathbf{v}\), if
+\(P = \mathbf{q} \otimes \mathbf{q}\),
+\[P^2 = \mathbf{q} \mathbf{q}^T \mathbf{q} \mathbf{q}^T 
+  = \mathbf{q} \langle \mathbf{q}, \mathbf{q} \rangle \mathbf{q}^T = \mathbf{q} \mathbf{q}^T = P,\]
+and \[P \mathbf{v} = \mathbf{q} \mathbf{q}^T \mathbf{v} 
+  = \langle \mathbf{v}, \mathbf{q} \rangle \mathbf{q}.\] Using this
+concept of projectors, we can find an different method for computing the
+QR-decomposition of an arbitrary matrix. Specifically, the method uses
+the \emph{Householder reflectors}. As a general outline, this second
+method achieves the QR-decomposition by sequentially applying orthogonal
+matrices onto \(A\), eventually resulting in a upper triangular matrix.
+\[A = 
+  \begin{pmatrix}
+    \times & \times & \times \\
+    \times & \times & \times \\ 
+    \times & \times & \times \\
+    \times & \times & \times \\
+  \end{pmatrix} \xrightarrow{Q_1}
+  \begin{pmatrix}
+    \times & \times & \times \\
+    0 & \times & \times \\ 
+    0 & \times & \times \\
+    0 & \times & \times \\
+  \end{pmatrix}\xrightarrow{Q_2}
+  \begin{pmatrix}
+    \times & \times & \times \\
+    0 & \times & \times \\ 
+    0 & 0 & \times \\
+    0 & 0 & \times \\
+  \end{pmatrix}\xrightarrow{Q_3}
+  \begin{pmatrix}
+    \times & \times & \times \\
+    0 & \times & \times \\ 
+    0 & 0 & \times \\
+    0 & 0 & 0 \\
+  \end{pmatrix} = R\] With this in mind, we see that the orthogonal
+matrices \(Q_k\) does not change the first \(k - 1\) rows, and so
+\(Q_k = I_{k - 1} \oplus F_{n - k + 1}\) where \(F_{n - k + 1}\)
+introduces zeros in the lower \(n - k\) rows and are refereed to as the
+\emph{Householder reflectors}.
+
+Since the Householder reflectors are constrained by the fact that they
+are orthogonal, they must preserve the lengths of the vectors it acts
+on. So, as we require the Householder reflectors to introduce zeros, the
+vectors it acted on is therefore in the form
+\[F \mathbf{x} = F (\times, \times, \times, \cdots)^T = 
+  (\| \mathbf{x} \|, 0, 0, \cdots)^T.\]
+
+Geometrically consider the following diagram where we have labelled the
+first basis on one axis and the remaining bases on the other. We would
+like to find a mapping \(F\) such that \(\mathbf{v}\) is mapped onto the
+horizontal axis. Since \(F\) needs to be orthogonal, the natural
+candidate for \(F\) is a rotation. To achieve this, we may construct a
+hyperplane \(\Sigma\), between \(\mathbf{v}\) and \(F\mathbf{v}\), and
+by reflecting \(\mathbf{v}\) by \(\Sigma\), the transformation is
+equivalent to a single rotation.
+
+\begin{center}
+
+\tikzset{every picture/.style={line width=0.75pt}}       
+
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+%uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
+
+%Straight Lines [id:da348568157801016] 
+\draw    (176,191) -- (387.5,191.42) ;
+\draw [shift={(389.5,191.43)}, rotate = 180.12] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Straight Lines [id:da4079481249226018] 
+\draw    (282.75,191.21) -- (282.51,123.93) ;
+\draw [shift={(282.5,121.93)}, rotate = 449.79] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Shape: Circle [id:dp39340928707014067] 
+\draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][fill={rgb, 255:red, 1; green, 1; blue, 1 }  ,fill opacity=1 ] (327,146.21) .. controls (327,144.68) and (328.25,143.43) .. (329.79,143.43) .. controls (331.32,143.43) and (332.57,144.68) .. (332.57,146.21) .. controls (332.57,147.75) and (331.32,149) .. (329.79,149) .. controls (328.25,149) and (327,147.75) .. (327,146.21) -- cycle ;
+%Shape: Circle [id:dp3909060606451584] 
+\draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][fill={rgb, 255:red, 1; green, 1; blue, 1 }  ,fill opacity=1 ] (357,191.21) .. controls (357,189.68) and (358.25,188.43) .. (359.79,188.43) .. controls (361.32,188.43) and (362.57,189.68) .. (362.57,191.21) .. controls (362.57,192.75) and (361.32,194) .. (359.79,194) .. controls (358.25,194) and (357,192.75) .. (357,191.21) -- cycle ;
+%Curve Lines [id:da32886361031606026] 
+\draw    (338.5,146.2) .. controls (337.52,146.2) and (366.61,144.26) .. (361.75,181.47) ;
+\draw [shift={(361.5,183.2)}, rotate = 278.75] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+
+% Text Node
+\draw (395,180.4) node [anchor=north west][inner sep=0.75pt]    {$e_{1}$};
+% Text Node
+\draw (205,125.4) node [anchor=north west][inner sep=0.75pt]    {$e_{2} ,e_{3} ,\cdots $};
+% Text Node
+\draw (324,124.4) node [anchor=north west][inner sep=0.75pt]    {$\mathbf{v}$};
+% Text Node
+\draw (319.5,200.6) node [anchor=north west][inner sep=0.75pt]    {$F\mathbf{v} =\| \mathbf{v} \| e_{1}$};
+
+\end{tikzpicture}
+
+\end{center}
+
+Suppose we define \(\mathbf{w} = \|\mathbf{v}\| e_1 - \mathbf{v}\),
+then, we have \(\mathbf{w}\) is orthogonal to the hyperplane \(\Sigma\).
+With that in mind, we see that the image of the projector defined by
+\[P' = \frac{\mathbf{w} \mathbf{w}^T}{\mathbf{w}^T \mathbf{w}}\] is the
+plane orthogonal to \(\Sigma\). Hence, the projector to \(\Sigma\) is
+simply the complementary projector to \(P'\), \(P = I - P'\).
+
+\begin{center}
+
+\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+%uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
+
+%Straight Lines [id:da348568157801016] 
+\draw    (176,191) -- (387.5,191.42) ;
+\draw [shift={(389.5,191.43)}, rotate = 180.12] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Straight Lines [id:da4079481249226018] 
+\draw    (282.75,191.21) -- (282.51,123.93) ;
+\draw [shift={(282.5,121.93)}, rotate = 449.79] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Shape: Circle [id:dp39340928707014067] 
+\draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][fill={rgb, 255:red, 1; green, 1; blue, 1 }  ,fill opacity=1 ] (327,146.21) .. controls (327,144.68) and (328.25,143.43) .. (329.79,143.43) .. controls (331.32,143.43) and (332.57,144.68) .. (332.57,146.21) .. controls (332.57,147.75) and (331.32,149) .. (329.79,149) .. controls (328.25,149) and (327,147.75) .. (327,146.21) -- cycle ;
+%Shape: Circle [id:dp3909060606451584] 
+\draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][fill={rgb, 255:red, 1; green, 1; blue, 1 }  ,fill opacity=1 ] (357,191.21) .. controls (357,189.68) and (358.25,188.43) .. (359.79,188.43) .. controls (361.32,188.43) and (362.57,189.68) .. (362.57,191.21) .. controls (362.57,192.75) and (361.32,194) .. (359.79,194) .. controls (358.25,194) and (357,192.75) .. (357,191.21) -- cycle ;
+%Straight Lines [id:da0874932667980326] 
+\draw    (282.75,191.21) -- (386.7,153.2) ;
+%Shape: Circle [id:dp34536838295442895] 
+\draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][fill={rgb, 255:red, 1; green, 1; blue, 1 }  ,fill opacity=1 ] (342,168.71) .. controls (342,167.18) and (343.25,165.93) .. (344.79,165.93) .. controls (346.32,165.93) and (347.57,167.18) .. (347.57,168.71) .. controls (347.57,170.25) and (346.32,171.5) .. (344.79,171.5) .. controls (343.25,171.5) and (342,170.25) .. (342,168.71) -- cycle ;
+%Straight Lines [id:da12375469389911808] 
+\draw    (329.79,146.21) -- (343.68,167.05) ;
+\draw [shift={(344.79,168.71)}, rotate = 236.31] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Straight Lines [id:da7562346398871844] 
+\draw    (344.79,168.71) -- (358.68,189.55) ;
+\draw [shift={(359.79,191.21)}, rotate = 236.31] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+
+% Text Node
+\draw (395,180.4) node [anchor=north west][inner sep=0.75pt]    {$e_{1}$};
+% Text Node
+\draw (205,125.4) node [anchor=north west][inner sep=0.75pt]    {$e_{2} ,e_{3} ,\cdots $};
+% Text Node
+\draw (324,124.4) node [anchor=north west][inner sep=0.75pt]    {$\mathbf{v}$};
+% Text Node
+\draw (319.5,200.6) node [anchor=north west][inner sep=0.75pt]    {$F\mathbf{v} =\| \mathbf{v} \| e_{1}$};
+% Text Node
+\draw (392.7,142.4) node [anchor=north west][inner sep=0.75pt]    {$\Sigma $};
+
+\end{tikzpicture}
+
+\end{center}
+
+However, we do not wish to project into \(\Sigma\) but to reflect around
+it. Thus, to reflect around \(\Sigma\) we projecting twice as the
+distance in the same direction. This results in the desired Householder
+reflector,
+\[F = I - 2 \frac{\mathbf{w} \mathbf{w}^T}{\mathbf{w}^T \mathbf{w}},\]
+where \(\mathbf{w} = \|\mathbf{v}\| e_1 - \mathbf{v}\).
+
+We note that this is not the only possible reflection as we may reflect
+around the hyperplane \(\Sigma_2\) as demonstrated in the figure below.
+
+\begin{center}
+  \tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+%uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
+
+%Straight Lines [id:da348568157801016] 
+\draw    (176,191) -- (387.5,191.42) ;
+\draw [shift={(389.5,191.43)}, rotate = 180.12] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Straight Lines [id:da4079481249226018] 
+\draw    (282.75,191.21) -- (282.51,123.93) ;
+\draw [shift={(282.5,121.93)}, rotate = 449.79] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Shape: Circle [id:dp39340928707014067] 
+\draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][fill={rgb, 255:red, 1; green, 1; blue, 1 }  ,fill opacity=1 ] (327,146.21) .. controls (327,144.68) and (328.25,143.43) .. (329.79,143.43) .. controls (331.32,143.43) and (332.57,144.68) .. (332.57,146.21) .. controls (332.57,147.75) and (331.32,149) .. (329.79,149) .. controls (328.25,149) and (327,147.75) .. (327,146.21) -- cycle ;
+%Shape: Circle [id:dp3909060606451584] 
+\draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][fill={rgb, 255:red, 1; green, 1; blue, 1 }  ,fill opacity=1 ] (357,191.21) .. controls (357,189.68) and (358.25,188.43) .. (359.79,188.43) .. controls (361.32,188.43) and (362.57,189.68) .. (362.57,191.21) .. controls (362.57,192.75) and (361.32,194) .. (359.79,194) .. controls (358.25,194) and (357,192.75) .. (357,191.21) -- cycle ;
+%Straight Lines [id:da0874932667980326] 
+\draw    (282.75,191.21) -- (386.7,153.2) ;
+%Shape: Circle [id:dp34536838295442895] 
+\draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][fill={rgb, 255:red, 1; green, 1; blue, 1 }  ,fill opacity=1 ] (342,168.71) .. controls (342,167.18) and (343.25,165.93) .. (344.79,165.93) .. controls (346.32,165.93) and (347.57,167.18) .. (347.57,168.71) .. controls (347.57,170.25) and (346.32,171.5) .. (344.79,171.5) .. controls (343.25,171.5) and (342,170.25) .. (342,168.71) -- cycle ;
+%Straight Lines [id:da12375469389911808] 
+\draw    (329.79,146.21) -- (343.68,167.05) ;
+\draw [shift={(344.79,168.71)}, rotate = 236.31] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Straight Lines [id:da7562346398871844] 
+\draw    (344.79,168.71) -- (358.68,189.55) ;
+\draw [shift={(359.79,191.21)}, rotate = 236.31] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Straight Lines [id:da8768367612062469] 
+\draw    (258.7,150.2) -- (282.75,191.21) ;
+%Straight Lines [id:da7861570902013968] 
+\draw    (328.87,146.23) -- (194.47,190.59) ;
+\draw [shift={(192.57,191.21)}, rotate = 341.73] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Shape: Circle [id:dp7818054470996165] 
+\draw  [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][fill={rgb, 255:red, 1; green, 1; blue, 1 }  ,fill opacity=1 ] (189.79,191.21) .. controls (189.79,189.68) and (191.03,188.43) .. (192.57,188.43) .. controls (194.11,188.43) and (195.36,189.68) .. (195.36,191.21) .. controls (195.36,192.75) and (194.11,194) .. (192.57,194) .. controls (191.03,194) and (189.79,192.75) .. (189.79,191.21) -- cycle ;
+
+% Text Node
+\draw (395,180.4) node [anchor=north west][inner sep=0.75pt]    {$e_{1}$};
+% Text Node
+\draw (205,125.4) node [anchor=north west][inner sep=0.75pt]    {$e_{2} ,e_{3} ,\cdots $};
+% Text Node
+\draw (324,124.4) node [anchor=north west][inner sep=0.75pt]    {$\mathbf{v}$};
+% Text Node
+\draw (319.5,200.6) node [anchor=north west][inner sep=0.75pt]    {$F\mathbf{v} =\| \mathbf{v} \| e_{1}$};
+% Text Node
+\draw (392.7,142.4) node [anchor=north west][inner sep=0.75pt]    {$\Sigma $};
+% Text Node
+\draw (254.7,172.4) node [anchor=north west][inner sep=0.75pt]    {$\Sigma _{2}$};
+% Text Node
+\draw (151.5,200.6) node [anchor=north west][inner sep=0.75pt]    {$F\mathbf{v} =-\| \mathbf{v} \| e_{1}$};
+
+\end{tikzpicture}
+\end{center}
+
+Mathematically, the choice does not matter as both transformations
+results in the vector with only components in \(e_1\), however, as often
+times in numerical analysis, we need to consider the computers in
+computing these values. Indeed, by considering that if we reflect by a
+plane which is almost parallel to the \(e_1\)-axis, the computer is
+required to work with large numbers and so, could possible encounter
+cancellation errors. Thus, it is usually better to choose the shallow
+plane to reflect around.
+
+With that, we arrive at the Householder-based QR-decomposition.
+
+\begin{alg}[Householder-based QR-decomposition]
+  If \(A \in M_{m \times n}(\mathbb{R})\) be the matrix we are decomposing, then,
+  for \(k = 1,\cdots n\), we define 
+  \begin{itemize}
+    \item \(\mathbf{x} := A_{k : m, k}\) that is, the \(k\) to \(m\)-th 
+      entry of the \(k\)-th row of \(A\);
+    \item \(\mathbf{v}_k := \text{sign}(x_1) \| \mathbf{x} \|e_1 + \mathbf{x}\);
+    \item \(\mathbf{v}_k := \mathbf{v}_k / \| \mathbf{v}_k \|\);
+    \item \(A_{k:m, k:n} := A_{k:m, k:n} - 2\mathbf{v}_k(\mathbf{v}_k^T A_{k:m, k:n})\).
+  \end{itemize}
+
+\end{alg}
+
+Thus, by successively applying the Householder reflection, we achieve
+the QR-decomposition.
+
+\begin{center}
+\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+%uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
+
+%Shape: Rectangle [id:dp5208320846231114] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (492.5,61.08) -- (541.94,61.08) -- (541.94,159.2) -- (492.5,159.2) -- cycle ;
+%Shape: Rectangle [id:dp8949758616800922] 
+\draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (577.26,61.08) -- (626.7,61.08) -- (626.7,159.2) -- (577.26,159.2) -- cycle ;
+%Shape: Right Triangle [id:dp06276901677064406] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (626.43,110.24) -- (577.26,61.08) -- (626.7,61.29) -- cycle ;
+%Shape: Square [id:dp8062846556416521] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (385.3,61) -- (483.5,61) -- (483.5,159.2) -- (385.3,159.2) -- cycle ;
+%Shape: Square [id:dp5607518636916182] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (278.3,61) -- (376.5,61) -- (376.5,159.2) -- (278.3,159.2) -- cycle ;
+%Shape: Rectangle [id:dp6236451543115944] 
+\draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (290.5,61) -- (376.5,61) -- (376.5,73.2) -- (290.5,73.2) -- cycle ;
+%Shape: Rectangle [id:dp5004590223579148] 
+\draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (290.5,73.2) -- (290.5,159.2) -- (278.3,159.2) -- (278.3,73.2) -- cycle ;
+%Shape: Square [id:dp8828339790523514] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (171.3,61) -- (269.5,61) -- (269.5,159.2) -- (171.3,159.2) -- cycle ;
+%Shape: Rectangle [id:dp763626399594441] 
+\draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (191.5,61) -- (269.5,61) -- (269.5,81.6) -- (191.5,81.6) -- cycle ;
+%Shape: Rectangle [id:dp417925154559905] 
+\draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (191.5,81.6) -- (191.5,159.2) -- (171.3,159.2) -- (171.3,81.6) -- cycle ;
+
+% Text Node
+\draw (507.93,104.31) node [anchor=north west][inner sep=0.75pt]  [color={rgb, 255:red, 255; green, 255; blue, 255 }  ,opacity=1 ]  {$A$};
+% Text Node
+\draw (547.61,103.73) node [anchor=north west][inner sep=0.75pt]    {$=$};
+% Text Node
+\draw (595.1,104.68) node [anchor=north west][inner sep=0.75pt]    {$R$};
+% Text Node
+\draw (427.5,104.4) node [anchor=north west][inner sep=0.75pt]  [color={rgb, 255:red, 255; green, 255; blue, 255 }  ,opacity=1 ]  {$F_{1}$};
+% Text Node
+\draw (321.5,105.4) node [anchor=north west][inner sep=0.75pt]  [color={rgb, 255:red, 255; green, 255; blue, 255 }  ,opacity=1 ]  {$F_{2}$};
+% Text Node
+\draw (214.5,105.4) node [anchor=north west][inner sep=0.75pt]  [color={rgb, 255:red, 255; green, 255; blue, 255 }  ,opacity=1 ]  {$F_{3}$};
+% Text Node
+\draw (140,102.4) node [anchor=north west][inner sep=0.75pt]    {$\cdots $};
+
+\end{tikzpicture}
+\end{center}
+
+By recalling the Gram-Schmdit QR-decomposition where we can consider the
+algorithm as sequentially applying upper triangular matrices to \(A\)
+until it becomes orthogonal, so, \[A R_1 R_2 \cdots R_n = Q,\] and thus,
+\(\prod R_i = R^{-1}\). With that, we can describe the Gram-Schmidt
+process as a \emph{triangular orthogonalisation} while, on the other
+hand, the Householder algorithm is a \emph{orthogonal
+triangularisation}. Indeed, the two process are not equivalent and
+consequentially, the resulting QR-decompositions are different. We
+notice that the Gram-Schmidt procedure results in \(R\) being square
+while \(Q\) rectangular, that is, it yields the \emph{reduced form} of
+the QR-decomposition. The Householder decomposition, on the other hand,
+results in \(Q\) being square while \(R\) being rectangular. This is
+refereed as the \emph{full form} of the QR-decomposition and by noticing
+that the additional parts of \(Q\) are multiplied by 0, we have that the
+full form provides us with information about the null-space of \(A\).
 
 \end{document}
