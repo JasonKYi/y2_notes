@@ -372,7 +372,7 @@ Markov inequality.
 \qed
 \begin{lemma}[MSE Consistency]
   Let \((T_n)_{n = 1}^\infty\) be asymptotically unbiased for \(g(\theta)\) for 
-  all \(\theta \in \Theta\). Then, if \({\Var}_\theta \to 0\) as \(n \to \infty\), 
+  all \(\theta \in \Theta\). Then, if \({\Var}_\theta(T_n) \to 0\) as \(n \to \infty\), 
   \(T_n\) is consistent for \(g(\theta)\).
 \end{lemma}
 \proof

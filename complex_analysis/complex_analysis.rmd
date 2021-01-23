@@ -628,7 +628,7 @@ Integration along curves satisfy some intuitive properties.
     \le \sup_{z \in \gamma}|f(z)| \int_a^b |z'(t)| \dd t.\]
 \qed
 
-## Primitive Function
+## Primitive Functions and Cauchy's Theorem
 
 \begin{definition}[Primitive]
   Let \(f : \Omega \to \mathbb{C}\) be some function, then the primitive of \(f\) 
@@ -824,4 +824,313 @@ Therefore
   \le 4^n\left|\ointctrclockwise_{T^{(n)}} f(z) \dd z\right|
   \le \epsilon_n 4^n 2^{-n}d^{(0)} 2^{-n}p^{(0)} \to 0,\]
 as \(n \to 0\).
+\qed
+
+From this theorem, we see that all curves whose shapes are polygons also satisfy 
+Cauchy's theorem. That is, if \(\Omega \subseteq \mathbb{C}\) is a open set, 
+\(\gamma \subseteq \Omega\) is a curve describing a polygon, and \(\Omega\) 
+contains the interior of \(\gamma\), then, if \(f\) is holomorphic on \(\Omega\), 
+\[\oint_\gamma f(z) \dd z = 0.\]
+Indeed, this is true since we can partition any polygon into smaller triangles 
+such that the values from the inner edges cancel, resulting in the total 
+integral to become zero. In fact, a stronger statement is true -- the integral 
+of a holomorphic function over any piecewise \(C^1\) curve on a simply connected 
+domain (which we will discuss in the next section) vanishes.
+
+\begin{theorem}[Local Existence of Primitives]
+  A holomorphic function in an open disc has a primitive in that disc.
+\end{theorem}
+\proof
+  Wlog. let us assume that the disc \(D\) is centred at the origin. Then, for 
+  all \(z \in D\), we consider the curve \(\gamma_z := 
+  [0, \text{Re}(z)] \cup \{\text{Re}(z) + ti \mid t \in [0, \text{Im}(z)] \}\), 
+  that is the right-angled curve connecting the origin with \(z\) following the 
+  real axis. Now, as \(\gamma_z\) is piecewise continuous, we may define
+  \[F(z) := \int_{\gamma_z} f(w) \dd w.\]
+  Consider the difference,
+  \[F(z + h) - F(z) = \int_{\gamma_{z + h}} f(w) \dd w - \int_{\gamma_z} f(w) \dd w,\]
+  by the diagram below, we find that the difference is in fact the integral along 
+  the straight line from \(z\) to \(z + h\).
+  
+\begin{center}
+\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+%uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
+
+%Shape: Circle [id:dp027258775303021787] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (197,94) .. controls (197,92.34) and (198.34,91) .. (200,91) .. controls (201.66,91) and (203,92.34) .. (203,94) .. controls (203,95.66) and (201.66,97) .. (200,97) .. controls (198.34,97) and (197,95.66) .. (197,94) -- cycle ;
+%Shape: Circle [id:dp4860880282387001] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (164,135) .. controls (164,133.34) and (165.34,132) .. (167,132) .. controls (168.66,132) and (170,133.34) .. (170,135) .. controls (170,136.66) and (168.66,138) .. (167,138) .. controls (165.34,138) and (164,136.66) .. (164,135) -- cycle ;
+%Shape: Circle [id:dp659691031475939] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (127,241) .. controls (127,239.34) and (128.34,238) .. (130,238) .. controls (131.66,238) and (133,239.34) .. (133,241) .. controls (133,242.66) and (131.66,244) .. (130,244) .. controls (128.34,244) and (127,242.66) .. (127,241) -- cycle ;
+%Straight Lines [id:da9161997899342504] 
+\draw    (130,241) -- (200.5,241) ;
+%Straight Lines [id:da4628328210283985] 
+\draw    (200,94) -- (200.5,241) ;
+%Straight Lines [id:da24531528857425577] 
+\draw    (167,135) -- (166.5,241) ;
+%Straight Lines [id:da06293938710161817] 
+\draw    (145,249) -- (186.5,249) ;
+\draw [shift={(188.5,249)}, rotate = 180] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Straight Lines [id:da7020229409080956] 
+\draw    (160.5,178) -- (160.5,212) ;
+\draw [shift={(160.5,214)}, rotate = 270] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Straight Lines [id:da016203751378052855] 
+\draw    (192,232) -- (192.49,104) ;
+\draw [shift={(192.5,102)}, rotate = 450.22] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Straight Lines [id:da07762869882674939] 
+\draw    (159.5,231) -- (143.5,231) ;
+\draw [shift={(141.5,231)}, rotate = 360] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Shape: Circle [id:dp5305095359029792] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (301,94) .. controls (301,92.34) and (302.34,91) .. (304,91) .. controls (305.66,91) and (307,92.34) .. (307,94) .. controls (307,95.66) and (305.66,97) .. (304,97) .. controls (302.34,97) and (301,95.66) .. (301,94) -- cycle ;
+%Shape: Circle [id:dp8680672367699809] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (268,135) .. controls (268,133.34) and (269.34,132) .. (271,132) .. controls (272.66,132) and (274,133.34) .. (274,135) .. controls (274,136.66) and (272.66,138) .. (271,138) .. controls (269.34,138) and (268,136.66) .. (268,135) -- cycle ;
+%Straight Lines [id:da2520438705650401] 
+\draw    (270.5,241) -- (304.5,241) ;
+%Straight Lines [id:da9600987515534023] 
+\draw    (304,94) -- (304.5,241) ;
+%Straight Lines [id:da6867762927944552] 
+\draw    (271,135) -- (270.5,241) ;
+%Straight Lines [id:da4506690694374482] 
+\draw    (280.5,248) -- (294.5,248) ;
+\draw [shift={(296.5,248)}, rotate = 180] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Straight Lines [id:da3493360904429266] 
+\draw    (264.5,178) -- (264.5,212) ;
+\draw [shift={(264.5,214)}, rotate = 270] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Straight Lines [id:da6622622626510641] 
+\draw    (296,232) -- (296.49,104) ;
+\draw [shift={(296.5,102)}, rotate = 450.22] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Shape: Circle [id:dp8416922817175956] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (389,94) .. controls (389,92.34) and (390.34,91) .. (392,91) .. controls (393.66,91) and (395,92.34) .. (395,94) .. controls (395,95.66) and (393.66,97) .. (392,97) .. controls (390.34,97) and (389,95.66) .. (389,94) -- cycle ;
+%Shape: Circle [id:dp37453124478890865] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (356,135) .. controls (356,133.34) and (357.34,132) .. (359,132) .. controls (360.66,132) and (362,133.34) .. (362,135) .. controls (362,136.66) and (360.66,138) .. (359,138) .. controls (357.34,138) and (356,136.66) .. (356,135) -- cycle ;
+%Straight Lines [id:da8764037381694731] 
+\draw    (358.5,241) -- (392.5,241) ;
+%Straight Lines [id:da7292251610568219] 
+\draw    (392,94) -- (392.5,241) ;
+%Straight Lines [id:da16338914034450203] 
+\draw    (359,135) -- (358.5,241) ;
+%Straight Lines [id:da21913175509822036] 
+\draw    (359,135) -- (392.5,135) ;
+%Straight Lines [id:da6532179622634124] 
+\draw    (359,135) -- (392,94) ;
+%Curve Lines [id:da660412204704919] 
+\draw    (373.5,150) .. controls (356.5,163) and (359.5,234) .. (375.5,234) .. controls (391.1,234) and (394.34,162.7) .. (378.74,145.24) ;
+\draw [shift={(377.5,144)}, rotate = 401.41999999999996] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Curve Lines [id:da5400526552371321] 
+\draw    (374,128) .. controls (370.66,118.75) and (377.11,115.48) .. (383.5,117) .. controls (389.48,118.42) and (389.52,123.3) .. (382.96,128.84) ;
+\draw [shift={(381.5,130)}, rotate = 323.13] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Straight Lines [id:da35921857214953556] 
+\draw    (365.5,117) -- (375.21,105.53) ;
+\draw [shift={(376.5,104)}, rotate = 490.24] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Shape: Circle [id:dp21005530913264558] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (471,94) .. controls (471,92.34) and (472.34,91) .. (474,91) .. controls (475.66,91) and (477,92.34) .. (477,94) .. controls (477,95.66) and (475.66,97) .. (474,97) .. controls (472.34,97) and (471,95.66) .. (471,94) -- cycle ;
+%Shape: Circle [id:dp6756758733196562] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (438,135) .. controls (438,133.34) and (439.34,132) .. (441,132) .. controls (442.66,132) and (444,133.34) .. (444,135) .. controls (444,136.66) and (442.66,138) .. (441,138) .. controls (439.34,138) and (438,136.66) .. (438,135) -- cycle ;
+%Straight Lines [id:da17476796984102316] 
+\draw    (441,135) -- (474,94) ;
+%Straight Lines [id:da013336567431659896] 
+\draw    (447.5,117) -- (457.21,105.53) ;
+\draw [shift={(458.5,104)}, rotate = 490.24] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+
+% Text Node
+\draw (112,245.4) node [anchor=north west][inner sep=0.75pt]    {$\mathbf{0}$};
+% Text Node
+\draw (152,138.4) node [anchor=north west][inner sep=0.75pt]    {$z$};
+% Text Node
+\draw (183,71.4) node [anchor=north west][inner sep=0.75pt]    {$z+h$};
+% Text Node
+\draw (256,138.4) node [anchor=north west][inner sep=0.75pt]    {$z$};
+% Text Node
+\draw (287,71.4) node [anchor=north west][inner sep=0.75pt]    {$z+h$};
+% Text Node
+\draw (344,138.4) node [anchor=north west][inner sep=0.75pt]    {$z$};
+% Text Node
+\draw (375,71.4) node [anchor=north west][inner sep=0.75pt]    {$z+h$};
+% Text Node
+\draw (426,138.4) node [anchor=north west][inner sep=0.75pt]    {$z$};
+% Text Node
+\draw (457,71.4) node [anchor=north west][inner sep=0.75pt]    {$z+h$};
+
+\end{tikzpicture}
+\end{center}
+
+By denoting the straight line segment by \(\eta\), we have 
+\[F(z + h) - F(z) = \int_\eta f(w) \dd w.\]
+Now, as \(f\) is holomorphic at \(z\), it is also continuous at \(z\), and 
+so \(f(w) = f(z) + \psi(w)\) for some function \(\psi\) where \(\psi(w) \to 0\) 
+as \(w \to z\). So,
+\[F(z + h) - F(z) = \int_\eta f(z) \dd w + \int_\eta \psi(w) \dd w = 
+  f(z) h + \int_\eta \psi(w) \dd w.\]
+Thus, by using the ML-inequality, 
+\[\left| \int_\eta \psi(w) \dd w \right| \le |h| \sup_{w \in \eta} |\psi(w)|,\]
+where the right hand side tends to \(0\) as \(w \to z\). So, 
+\[\lim_{h \to 0} \frac{F(z + h) - F(z)}{h} = \lim_{h \to 0}\frac{f(z)h}{h} = f(z),\]
+and hence, \(F\) is the primitive of \(f\).
+\qed
+
+A direct corollary of this is the following.
+\begin{corollary}[Cauchy-Goursat Theorem for a Disk]
+  If \(f\) is holomorphic on a disc \(D\), then 
+  \[\oint_\gamma f(z) \dd z = 0,\]
+  for all closed curve \(\gamma \subseteq D\).
+\end{corollary}
+Similarly, the same can be said about a holomorphic function whose domain contains 
+a disc. That is, if \(f\) is holomorphic on the open set \(\Omega\) which contains 
+the circle \(C\) and its interior, then 
+\[\oint_C f(z) \dd z = 0.\]
+To see why this is true, we see that, as \(\Omega\) is open, there exists a larger disk 
+containing \(C\) which \(f\) is holomorphic on, and so, the result follows.
+
+## Homotopies
+
+\begin{definition}[Homotopic]
+  Let \(\gamma_0, \gamma_1\) be curves in \(\Omega \subseteq \mathbb{C}\) with 
+  common end-points, that is if \(\gamma_0\) and \(\gamma_1\) are two parametrisations 
+  defined on \([a, b]\), then \(\gamma_0(a) = \gamma_1(a) = \alpha\) and 
+  \(\gamma_0(b) = \gamma_0(b) = \beta\). Then, we say \(\gamma_0\) and \(\gamma_1\) are 
+  homotopic in \(\Omega\), if for all \(s \in [0, 1]\) there exists some curve 
+  \(\gamma_s \subseteq \Omega\) with parametrisation \(\gamma_s : [a, b] \to \Omega\) 
+  such that 
+  \[\gamma_s(a) = \alpha; \hspace{2mm} \gamma_s(b) = \beta,\]
+  and for all \(t \in [a, b]\), 
+  \[\gamma_s(t) \mid_{s = 0} = \gamma_0(t); \hspace{2mm} \gamma_s(t) \mid_{s = 1} = \gamma_1(t).\]
+  Moreover, \(\gamma_s(t)\) is jointly continuous with respect to \(s\) and \(t\).
+\end{definition}
+
+Homotopic curves forms an equivalence relations on the set of curves and processes 
+some very "nice" properties.
+\begin{prop}
+  If \(\gamma_0\) and \(\gamma_1\) are two homotopic curves, and 
+  \(f : \Omega \to \mathbb{C}\) is holomorphic on the open set \(\Omega\), then 
+  \[\int_{\gamma_0} f(z) \dd z = \int_{\gamma_1} f(z) \dd z.\]
+\end{prop}
+\proof
+  If \(\gamma_s(t)\) is the homotopy between \(\gamma_0\) and \(\gamma_1\), then 
+  we can define the continuous function 
+  \[F(s, t) : [0, 1] \times [a, b] \to \Omega : (s, t) \mapsto \gamma_s(t).\]
+  Since \(F\) is continuous, and by Heine-Borel \([0, 1] \times [a, b]\) is 
+  compact, the image of \(F\) is also compact and we shall denote it by 
+  \(\mathcal{K} \subseteq \Omega\).
+
+  Now, since \(\Omega\) is open, for all \(p \in \mathcal{K}\), there exists some 
+  \(\epsilon_p > 0\) such that \(D_{\epsilon_p}(p) \subseteq \Omega\). Thus, 
+  we may construct the open cover \(\mathcal{C} := \{D_{\epsilon_p}(p) \mid p \in \mathcal{K}\}\),
+  and so, by compactness, we may find a finite subcover of \(\mathcal{C}\) 
+  allowing us to choose \(\epsilon > 0\) such that for all \(p \in \mathcal{K}\),
+  \(D_{3\epsilon}(p) \subseteq \Omega\).
+
+  Furthermore, as \(F\) is uniformly continuous, there exists some \(\delta\), 
+  such that for all \(s_1, s_2 \in \Omega\), \(|s_1 - s_2| < \delta\), then 
+  \[\sup_{t \in [a, b]} |\gamma_{s_1}(t) - \gamma_{s_2}(t)| < \epsilon.\]
+  So, we may choose discs \(\{D_0, \cdots, D_n\}\) of radius \(2\epsilon\) 
+  and points \(\{z_0, \cdots, z_{n + 1}\} \subseteq \gamma_{s_1}\) 
+  and \(\{w_0, \cdots, w_{n + 1}\} \subseteq \gamma_{s_2}\) such that 
+  \(\gamma_{s_1} \cup \gamma_{s_2} \subseteq \bigcup D_i\) and 
+  \[z_i, z_{i + 1}, w_i, w_{i + 1} \in D_i.\]
+
+\begin{center}
+  
+\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+%uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
+
+%Curve Lines [id:da8047429829011434] 
+\draw    (235.5,193) .. controls (290,167) and (261.5,117) .. (285.5,74) ;
+%Curve Lines [id:da3790761664602649] 
+\draw    (235.5,193) .. controls (247.5,140) and (245.5,104) .. (285.5,74) ;
+%Shape: Circle [id:dp7582243054036091] 
+\draw   (215,184) .. controls (215,170.19) and (226.19,159) .. (240,159) .. controls (253.81,159) and (265,170.19) .. (265,184) .. controls (265,197.81) and (253.81,209) .. (240,209) .. controls (226.19,209) and (215,197.81) .. (215,184) -- cycle ;
+%Shape: Circle [id:dp07975248214180919] 
+\draw   (226,160) .. controls (226,146.19) and (237.19,135) .. (251,135) .. controls (264.81,135) and (276,146.19) .. (276,160) .. controls (276,173.81) and (264.81,185) .. (251,185) .. controls (237.19,185) and (226,173.81) .. (226,160) -- cycle ;
+%Shape: Circle [id:dp3504063032449949] 
+\draw   (236,132) .. controls (236,118.19) and (247.19,107) .. (261,107) .. controls (274.81,107) and (286,118.19) .. (286,132) .. controls (286,145.81) and (274.81,157) .. (261,157) .. controls (247.19,157) and (236,145.81) .. (236,132) -- cycle ;
+%Shape: Circle [id:dp6901897328600055] 
+\draw   (241,106) .. controls (241,92.19) and (252.19,81) .. (266,81) .. controls (279.81,81) and (291,92.19) .. (291,106) .. controls (291,119.81) and (279.81,131) .. (266,131) .. controls (252.19,131) and (241,119.81) .. (241,106) -- cycle ;
+%Shape: Circle [id:dp1676188138277661] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (233,193) .. controls (233,191.62) and (234.12,190.5) .. (235.5,190.5) .. controls (236.88,190.5) and (238,191.62) .. (238,193) .. controls (238,194.38) and (236.88,195.5) .. (235.5,195.5) .. controls (234.12,195.5) and (233,194.38) .. (233,193) -- cycle ;
+%Shape: Circle [id:dp347239256875163] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (238.5,166.5) .. controls (238.5,165.12) and (239.62,164) .. (241,164) .. controls (242.38,164) and (243.5,165.12) .. (243.5,166.5) .. controls (243.5,167.88) and (242.38,169) .. (241,169) .. controls (239.62,169) and (238.5,167.88) .. (238.5,166.5) -- cycle ;
+%Shape: Circle [id:dp945891608957599] 
+\draw   (255,83) .. controls (255,69.19) and (266.19,58) .. (280,58) .. controls (293.81,58) and (305,69.19) .. (305,83) .. controls (305,96.81) and (293.81,108) .. (280,108) .. controls (266.19,108) and (255,96.81) .. (255,83) -- cycle ;
+%Shape: Circle [id:dp6219629034666561] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (253.5,177.5) .. controls (253.5,176.12) and (254.62,175) .. (256,175) .. controls (257.38,175) and (258.5,176.12) .. (258.5,177.5) .. controls (258.5,178.88) and (257.38,180) .. (256,180) .. controls (254.62,180) and (253.5,178.88) .. (253.5,177.5) -- cycle ;
+%Shape: Circle [id:dp6907929228820959] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (266.5,151.5) .. controls (266.5,150.12) and (267.62,149) .. (269,149) .. controls (270.38,149) and (271.5,150.12) .. (271.5,151.5) .. controls (271.5,152.88) and (270.38,154) .. (269,154) .. controls (267.62,154) and (266.5,152.88) .. (266.5,151.5) -- cycle ;
+%Shape: Circle [id:dp29296285573610015] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (243.5,142.5) .. controls (243.5,141.12) and (244.62,140) .. (246,140) .. controls (247.38,140) and (248.5,141.12) .. (248.5,142.5) .. controls (248.5,143.88) and (247.38,145) .. (246,145) .. controls (244.62,145) and (243.5,143.88) .. (243.5,142.5) -- cycle ;
+%Shape: Circle [id:dp7152580667384663] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (250.5,116.5) .. controls (250.5,115.12) and (251.62,114) .. (253,114) .. controls (254.38,114) and (255.5,115.12) .. (255.5,116.5) .. controls (255.5,117.88) and (254.38,119) .. (253,119) .. controls (251.62,119) and (250.5,117.88) .. (250.5,116.5) -- cycle ;
+%Shape: Circle [id:dp8822342438230766] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (271.5,119.5) .. controls (271.5,118.12) and (272.62,117) .. (274,117) .. controls (275.38,117) and (276.5,118.12) .. (276.5,119.5) .. controls (276.5,120.88) and (275.38,122) .. (274,122) .. controls (272.62,122) and (271.5,120.88) .. (271.5,119.5) -- cycle ;
+%Shape: Circle [id:dp06160409361528063] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (263.5,92.5) .. controls (263.5,91.12) and (264.62,90) .. (266,90) .. controls (267.38,90) and (268.5,91.12) .. (268.5,92.5) .. controls (268.5,93.88) and (267.38,95) .. (266,95) .. controls (264.62,95) and (263.5,93.88) .. (263.5,92.5) -- cycle ;
+%Shape: Circle [id:dp2542021967684036] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (274.5,96.5) .. controls (274.5,95.12) and (275.62,94) .. (277,94) .. controls (278.38,94) and (279.5,95.12) .. (279.5,96.5) .. controls (279.5,97.88) and (278.38,99) .. (277,99) .. controls (275.62,99) and (274.5,97.88) .. (274.5,96.5) -- cycle ;
+%Shape: Circle [id:dp09005339368588361] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (283,74) .. controls (283,72.62) and (284.12,71.5) .. (285.5,71.5) .. controls (286.88,71.5) and (288,72.62) .. (288,74) .. controls (288,75.38) and (286.88,76.5) .. (285.5,76.5) .. controls (284.12,76.5) and (283,75.38) .. (283,74) -- cycle ;
+
+% Text Node
+\draw (207,106.4) node [anchor=north west][inner sep=0.75pt]    {$\gamma _{s_{1}}$};
+% Text Node
+\draw (283,150.4) node [anchor=north west][inner sep=0.75pt]    {$\gamma _{s_{2}}$};
+% Text Node
+\draw (176,201.4) node [anchor=north west][inner sep=0.75pt]    {$z_{0} =\alpha $};
+% Text Node
+\draw (297.5,100.9) node [anchor=north west][inner sep=0.75pt]    {$z_{n + 1} =\beta $};
+
+\end{tikzpicture}
+
+\end{center}
+
+  Now, by the local existence of primitives, for each disc \(D_i\), there exists 
+  some \(F_i\) such that \(F_i\) is the primitive of \(f\) on \(D_i\). By observing 
+  that on \(D_i \cap D_{i + 1}\), \(F_i\) and \(F_{i + 1}\) are both primitives to 
+  \(f\), they can only differ by a constant (on \(D_i \cap D_{i + 1}\)). So,
+  \[F_{i + 1}(z_{i + 1}) - F_i(z_{i + 1}) = F_{i + 1}(w_{i + 1}) - F_i(w_{i + 1}),\]
+  and hence, 
+  \[\begin{split}
+    \int_{\gamma_{s_1}}f(z) \dd z - \int_{\gamma_{s_2}} f(z) \dd z & = 
+      \sum_{i = 0}^{n}(F_i(z_{i + 1}) - F_i(z_i)) - \sum_{i = 0}^n(F_i(w_{i + 1}) - F_i(w_i))\\
+      & = \sum_{i = 0}^n(F_i(z_{i + 1}) - F_i(w_{i + 1}) - (F_i(z_i) - F_i(w_i)))\\
+      & = F_n(z_{n + 1}) - F_n(w_{n + 1}) - (F_0(z_0) - F_0(w_0))\\
+      & = F_n(\beta) - F_n(\beta) - (F_0(\alpha) - F_0(\alpha)) = 0
+  \end{split}\]
+  Finally, by dividing the interval \([0, 1]\) into subintervals with size less 
+  than \(\delta\), we see that 
+  \[\int_{\gamma_0} f(z) \dd z = \int_{\gamma_1} f(z) \dd z.\]
+\qed
+
+\begin{definition}[Simply Connected]
+  An open set \(\Omega \subseteq \mathbb{C}\) is simply connected if any two pairs 
+  of curves with the same end points in \(\Omega\) are homotopic.
+\end{definition}
+Straight away, we see that a disc is connected as given two curves in a disc 
+\(\gamma_1, \gamma_2\), we have to homotopy \(\gamma_s(t) = (1- s)\gamma_0(t) + s\gamma_1(t)\). 
+Furthermore, by the same argument we have any convex sets are also simply connected. 
+On the other hand, we see that any sets which contains a hole is not simply 
+connected. 
+
+As mentioned previously, the integral of a holomorphic function over any closed 
+curve on a simply connected set vanishes. This follows straight way from the following 
+theorem.
+
+\begin{theorem}
+  Any holomorphic function in a simply connected domain has a primitive.
+\end{theorem}
+\proof
+  Suppose \(f : \Omega \to \mathbb{C}\) is holomorphic with the simply connected 
+  domain \(\Omega\). Then, let us fix a 
+  point \(z_0 \in \Omega\) and define 
+  \[F(z) = \int_\gamma f(w) \dd w,\]
+  where \(\gamma\) is any curve in \(\Omega\) joining \(z_0\) to \(z\). We note 
+  that this definition is independent of the specific choice of \(\gamma\) since 
+  \(\Omega\) is simply connected. Consider, 
+  \[F(z + h) - F(z) = \int_\eta f(w) \dd w,\]
+  where \(\eta\) is the straight line joining \(z\) and \(z + h\). By the same 
+  argument as our proof for local existence of primitives, we find 
+  \[\lim_{h \to 0} \frac{F(z + h) - F(h)}{h} = f(z),\]
+  implying \(F\) is the primitive of \(f\).
 \qed
