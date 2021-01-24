@@ -1267,4 +1267,232 @@ proof for local existence of primitives, we find
 \[\lim_{h \to 0} \frac{F(z + h) - F(h)}{h} = f(z),\] implying \(F\) is
 the primitive of \(f\). \qed
 
+\begin{corollary}[Cauchy-Goursat Theorem]
+  Let \(\Omega\) be a simply connected domain and \(f : \Omega \to \mathbb{C}\) 
+  be holomorphic on \(\Omega\). Then, if \(\gamma\) is a closed, piecewise-smooth 
+  curve in \(\Omega\), 
+  \[\oint_\gamma f(z) \dd z = 0.\]
+\end{corollary}
+\proof
+
+Indeed, without using the existence of primitives, we see that we may
+partition \(\gamma\) into two curves with the same end points, and so,
+as \(\Omega\) is simply connected, they are also homotopic. Thus, the
+integral over these two curves result in the same value. Now, by
+reversing the orientation of one of these curves, we obtain our result.
+\qed
+
+\begin{theorem}[Deformation Theorem]
+  Let \(\gamma_1, \gamma_2 \subseteq \Omega\) be two simple, closed, 
+  piecewise-smooth curves with \(\gamma_2\) lying wholly inside \(\gamma_1\). 
+  If \(f : \Omega \to \mathbb{C}\) is holomorphic in the domain containing the 
+  region between \(\gamma_1\) and \(\gamma_2\), then 
+  \[\ointctrclockwise_{\gamma_1} f(z) \dd z = \ointctrclockwise_{\gamma_2} f(z) \dd z.\]
+\end{theorem}
+
+\proof
+
+We note that we cannot directly apply the Cauchy-Goursat theorem as
+\(f\) is not necessarily holomorphic in the region enclosed by
+\(\gamma_2\). Instead, we construct a bridge between \(\gamma_1\) and
+\(\gamma_2\).
+
+\begin{center}
+  
+\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+%uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
+
+%Shape: Polygon Curved [id:ds4133997265054681] 
+\draw   (121,114) .. controls (141,104) and (194.5,95) .. (211,114) .. controls (227.5,133) and (191,144) .. (211,174) .. controls (231,204) and (141,204) .. (121,174) .. controls (101,144) and (101,124) .. (121,114) -- cycle ;
+%Shape: Polygon Curved [id:ds7005624339900847] 
+\draw   (134.5,133) .. controls (154.5,123) and (152.5,128) .. (159.5,135) .. controls (166.5,142) and (155.5,151) .. (145.5,149) .. controls (135.5,147) and (114.5,143) .. (134.5,133) -- cycle ;
+%Straight Lines [id:da5284031136917495] 
+\draw    (106,139) -- (126.5,140) ;
+%Straight Lines [id:da7840043899366151] 
+\draw    (159.5,135) -- (214.5,120) ;
+%Straight Lines [id:da11905633800020321] 
+\draw    (204.5,131) -- (176.43,138.48) ;
+\draw [shift={(174.5,139)}, rotate = 345.07] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Curve Lines [id:da7328876171745344] 
+\draw    (165.5,145) .. controls (163.61,154.45) and (152.79,154.97) .. (141.48,155) ;
+\draw [shift={(139.5,155)}, rotate = 360] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Straight Lines [id:da2966290564718628] 
+\draw    (124.5,147) -- (114.49,146.17) ;
+\draw [shift={(112.5,146)}, rotate = 364.76] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Straight Lines [id:da3595647541786302] 
+\draw    (113.5,132) -- (124.01,132.84) ;
+\draw [shift={(126,133)}, rotate = 184.57] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Curve Lines [id:da31305351619211286] 
+\draw    (131.5,128) .. controls (141.1,120.32) and (140.56,119.09) .. (154.66,121.66) ;
+\draw [shift={(156.5,122)}, rotate = 190.62] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Straight Lines [id:da0871922023706333] 
+\draw    (171.5,124) -- (199.07,116.52) ;
+\draw [shift={(201,116)}, rotate = 524.8299999999999] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+
+% Text Node
+\draw (87,149.4) node [anchor=north west][inner sep=0.75pt]    {$\gamma _{1}$};
+% Text Node
+\draw (167.5,148.4) node [anchor=north west][inner sep=0.75pt]    {$\gamma _{2}$};
+
+
+\end{tikzpicture}
+
+\end{center}
+
+By considering the slices, we see that the sum of the integrals of \(f\)
+over the top and bottom closed curves is simply
+\[\ointctrclockwise_{\gamma_1} f(z) \dd z - \ointctrclockwise_{\gamma_2} f(z) \dd z.\]
+However, as the region covered by the two curves are the same region
+between \(\gamma_1\) and \(\gamma_2\), \(f\) is holomorphic on the
+region enclosed by the two curves, and so, the integrals evaluates to
+zero by Cauchy-Goursat's theorem and hence,
+\[\ointctrclockwise_{\gamma_1} f(z) \dd z - \ointctrclockwise_{\gamma_2} f(z) \dd z = 0.\]
+\qed
+
+The deformation theorem is very useful whenever we are able to restrict
+a difficult curve onto a simpler curve (such as a circle) and thus, have
+a easier time to parametrise the integral. As an example consider the
+following integral over the curve
+\(\gamma = \{z \in \mathbb{C} \mid |z - 1| = 2\}\).
+\[\oint_\gamma \frac{\dd z}{z^2 - 4} = \oint_\gamma \frac{\dd z}{(z - 2)(z + 2)} 
+  = \frac{1}{4}\oint_\gamma \frac{1}{z - 2} - \frac{1}{z + 2} \dd z.\]
+Since \(\frac{1}{z + 2}\) is holom orphic except at \(-2\) which is
+outside of \(\gamma\), we have \[\oint_\gamma \frac{\dd z}{z + 2} = 0.\]
+On the other hand, to evaluate \(\frac{1}{z - 2}\), by the deformation
+theorem, we have
+\[\oint_\gamma \frac{\dd z}{z - 2} = \oint_{\{z \mid |z - 2| = 1\}} \frac{\dd z}{z - 2} 
+  = \oint_{C_1(0)} \frac{\dd w}{w} = 2\pi i.\] Thus,
+\[\oint_\gamma \frac{\dd z}{z^2 - 4} = i \frac{\pi}{2}.\]
+
+As another example, consider that we would like to show for all
+\(\xi \in \mathbb{R}\),
+\[e^{-\pi \xi^2} = \int_{-\infty}^\infty e^{-\pi x^2}e^{-2\pi i x \xi^2} \dd x.\]
+
+Suppose \(\xi > 0\) (the argument for \(\xi <0\) is similar) and let
+\(\gamma_R\) be the following curve as described in the diagram below
+for some \(R \in \mathbb{R}^+\). As \(f(z) = e^{-\pi z^2}\) is entire,
+by the Cauchy-Goursat theorem, we have
+\[\oint_{\gamma_R} f(z) \dd z = 0.\]
+
+\begin{center}
+
+\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+%uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
+
+%Shape: Axis 2D [id:dp07563419905194713] 
+\draw  (111.5,133) -- (308.5,133)(210.5,64) -- (210.5,143) (301.5,128) -- (308.5,133) -- (301.5,138) (205.5,71) -- (210.5,64) -- (215.5,71)  ;
+%Straight Lines [id:da7174628546578379] 
+\draw    (270.5,90) -- (270.5,133) ;
+%Straight Lines [id:da5322584315739751] 
+\draw    (270.5,90) -- (151.5,90) ;
+%Straight Lines [id:da6768293830789123] 
+\draw    (151.5,90) -- (151.5,133) ;
+%Straight Lines [id:da9919844180463244] 
+\draw    (235.5,133) -- (247.5,133) ;
+\draw [shift={(249.5,133)}, rotate = 180] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Straight Lines [id:da8963917719506822] 
+\draw    (172.5,133) -- (184.5,133) ;
+\draw [shift={(186.5,133)}, rotate = 180] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Straight Lines [id:da2552279489294458] 
+\draw    (270.5,119) -- (270.5,108) ;
+\draw [shift={(270.5,106)}, rotate = 450] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Straight Lines [id:da5361951267994474] 
+\draw    (151.5,104) -- (151.5,117) ;
+\draw [shift={(151.5,119)}, rotate = 270] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Straight Lines [id:da4731194124837399] 
+\draw    (250.5,90) -- (236.5,90) ;
+\draw [shift={(234.5,90)}, rotate = 360] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Straight Lines [id:da5725652743270169] 
+\draw    (189.5,90) -- (175.5,90) ;
+\draw [shift={(173.5,90)}, rotate = 360] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+
+% Text Node
+\draw (139,137.4) node [anchor=north west][inner sep=0.75pt]    {$-R$};
+% Text Node
+\draw (264,137.4) node [anchor=north west][inner sep=0.75pt]    {$R$};
+% Text Node
+\draw (191,68.4) node [anchor=north west][inner sep=0.75pt]    {$\xi $};
+% Text Node
+\draw (309,124.4) node [anchor=north west][inner sep=0.75pt]    {$\Re $};
+% Text Node
+\draw (203,44.4) node [anchor=north west][inner sep=0.75pt]    {$\Im $};
+
+\end{tikzpicture}
+
+\end{center}
+
+On the other hand, we have
+\[\oint_{\gamma_R} f(z) \dd z = \int_{-R}^R f(x) \dd x + 
+  \int_0^\xi f(R + iy) \dd y + \int_R^{-R} f(x + i\xi) \dd x
+  + \int_\xi^0 f(-R + iy) \dd y.\] Consider \[\begin{split}
+  \left| \int_0^\xi f(R + iy) \dd y \right| 
+    & = \left|\int_0^\xi e^{-\pi(R + iy)^2} \dd y\right|
+      = \left|\int_0^\xi e^{-\pi (R^2 - y^2 + 2iRy)} \dd y\right|\\
+    & = |e^{-\pi R^2}| \left|\int_0^\xi e^{\pi y^2}e^{- 2i\pi Ry} \dd y\right|
+      \le e^{-\pi R^2} \int_0^\xi |e^{\pi y^2}e^{- 2i\pi Ry}| \dd y\\
+    & = e^{-\pi R^2} \int_0^\xi |e^{\pi y^2}| \dd y 
+      \le  e^{-\pi R^2} \xi e^{\pi \xi^2}
+\end{split}\] where the last inequality is due to the ML-indequality.
+So, the integral tends to 0 as \(R \to \infty\). Similarly,
+\(\left| \int_\xi^0 f(R + iy) \dd y \right| \to 0\) and so since
+\(\lim_{R \to \infty} \int_{-R}^R f(x) \dd x = 1\) (the standard
+Gaussian integral), \[\begin{split}
+  0 & = \lim_{R \to \infty} \oint_{\gamma_R} f(z) \dd z 
+      = 1 + \lim_{R \to \infty}\int_R^{-R} f(x + i\xi) \dd x 
+      = 1 - \lim_{R \to \infty}\int_{-R}^{R} f(x + i\xi) \dd x \\
+    & = 1 - \int_{-\infty}^\infty e^{-\pi(x + i\xi)^2}\dd x 
+      = 1 - \int_{-\infty}^\infty e^{-\pi(x^2 + 2ix\xi - \xi^2)}\dd x
+      = 1 - e^{\pi \xi^2}\int_{-\infty}^\infty e^{-\pi x^2} e^{-2\pi i x\xi}\dd x.
+\end{split}\] So,
+\[e^{-\pi \xi^2} = \int_{-\infty}^\infty e^{-\pi x^2} e^{-2\pi i x\xi}\dd x,\]
+as required.
+
+\newpage
+
+\hypertarget{cauchys-integral-formula}{%
+\section{Cauchy's Integral Formula}\label{cauchys-integral-formula}}
+
+Cauchy's integral formulae is an amazing theorem that relates the value
+of a holomorphic function with a special formula. Indeed, with the
+Cauchy's integral formula, it is possible to find the value of \(f\) as
+some point \(z_0\) just from the value of \(f\) on some neighbourhood.
+We shall in this chapter investigate Cauchy's integral formula and some
+of its applications.
+
+\begin{theorem}[Cauchy's Integral Formula]
+  Let \(f\) be holomorphic inside and on a simple, closed, piecewise-smooth 
+  curve \(\gamma\). Then for any \(z_0\) interior to \(\gamma\), we have 
+  \[f(z_0) = \frac{1}{2\pi i} \ointctrclockwise_\gamma \frac{f(z)}{z - z_0} \dd z.\]
+\end{theorem}
+\proof
+
+As \(z_0 \in \partial \gamma\) where \(\partial \gamma\) is open, there
+exists some \(r' > 0\) such that
+\(B_{r'}(z_0) \subseteq \partial \gamma\). Furthermroe, as \(f\) is
+holomorphic as \(z_0\), we have \(f\) is continuous as \(z_0\). So by
+fixing \(\epsilon > 0\), there exists some \(\delta > 0\), such that the
+continuity criterion applies. So, by letting
+\(r :< \min\{r', \delta\}\), \(C := C_r(z_0)\) is a closed curve fully
+inside of \(\gamma\) such that for all \(z \in D_r(z_0)\),
+\[| f(z) - f(z_0) | < \epsilon.\] So, by the deformation theorem, we
+have
+\[\oint_\gamma \frac{f(z)}{z - z_0} \dd z = \oint_C \frac{f(z)}{z - z_0} \dd z.\]
+Then, \[\begin{split}
+    \frac{1}{2\pi i}\oint_C \frac{f(z)}{z - z_0} \dd z 
+      & = \frac{f(z_0)}{2\pi i}\oint_C \frac{1}{z - z_0} \dd z 
+        + \frac{1}{2\pi i}\oint_C \frac{f(z) - f(z_0)}{z - z_0} \dd z \\
+      & = f(z_0) + \frac{1}{2\pi i}\oint_C \frac{f(z) - f(z_0)}{z - z_0} \dd z.
+  \end{split}\] Now, consider, by the ML-inequality,
+\[\left| \frac{1}{2\pi i}\oint_C \frac{f(z) - f(z_0)}{z - z_0} \dd z\right|
+    \le \frac{1}{2\pi} \oint_C \left| \frac{f(z) - f(z_0)}{z - z_0} \right| \dd z
+    = \frac{1}{2\pi} \oint_C \frac{\epsilon}{r} \dd z
+    = \frac{1}{2\pi} \frac{\epsilon}{r} 2\pi r = \epsilon.\] Since
+\(\epsilon\) was arbitrary,
+\[\frac{1}{2\pi i}\oint_C \frac{f(z) - f(z_0)}{z - z_0} \dd z = 0\] and
+hence the result. \qed
+
 \end{document}
