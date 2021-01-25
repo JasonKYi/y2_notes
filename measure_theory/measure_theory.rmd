@@ -286,7 +286,7 @@ is a measure on \((X, \mathcal{A})\).
   (Part 5) Exercise.
 \qed
 
-## Constructing Measures
+## Hahn-Carathéodory Extension Theorem
 
 While it is fun to work with abstract measures in general, it is also useful to 
 consider specific measures. In this section we will look at how to construct 
@@ -308,6 +308,18 @@ and finally with the outer measure, we may restrict it to a measure \(\mu\).
   \(A \subseteq \bigcup A_k\) then 
   \[\mu(A) \le \sum_{k = 1}^\infty \mu(A_k).\]
 \end{definition}
+
+\begin{lemma}[Monoticity of Outer Measures]
+  Let \(\mu : \mathcal{P}(X) \to [0, \infty]\) be an outer measure on \(X\). Then 
+  for all \(A \subseteq B \subseteq X\), 
+  \[\mu(A) \le \mu(B).\]
+\end{lemma}
+\proof
+  By defining the sequence \(A_1 = B\) and \(A_n = \varnothing\) for all \(n > 1\), 
+  by the sub-additivity property of outer measure, we have \(A \subseteq B = \bigcup A_n\), 
+  and so 
+  \[\mu(A) \le \sum\mu(A_n) = \mu(B) + \mu(\varnothing) + \cdots = \mu(B).\]
+\qed
 
 In order to prove the aforementioned argument, we will require some proposition. 
 However, as will be demonstrated below, the notion of premeasure is in fact, too 
@@ -428,5 +440,107 @@ attain \(\sigma\)-additivity but only \(\sigma\)-sub-additivity.
   \end{itemize}
 \end{theorem}
 \proof
+  By construction, we have \(\mu^*\) is an outer measure on \(X\) and 
+  \(\Sigma\) is a \(\sigma\)-algebra on \(X\), and so, for the first part of 
+  the proof, it remains to show that \(\mu = \mu^*\mid_\Sigma\) is a measure 
+  on the measurable space \((X, \Sigma)\). 
   
+  Indeed, \(\mu(\varnothing) = 0\) as \(\mu^*(\varnothing) = 0\) since it is an 
+  outer measure, so let us consider \(\sigma\)-additivity. 
+  Let \(A, B \in \Sigma\), \(A \cap B = \varnothing\), then 
+  \[\begin{split}
+    \mu(A \cup B) & = \mu^*(A \cup B) = \mu^*((A \cup B) \cap A) + \mu^*((A \cup B) \cap A^C) \\
+      & = \mu^*(A) + \mu^*(B),
+  \end{split}\]
+  and so, by induction \(\mu\) is finitely additive. So, if \((A_n)_{n = 1}^\infty\) 
+  is a sequence of pairwise disjoint measurable sets, then, for all \(m \in \mathbb{N}\), 
+  \[\sum_{n = 1}^m \mu(A_n) = \mu\left(\bigcup_{n = 1}^m A_n\right) 
+    \le \mu\left(\bigcup_{n = 1}^\infty A_n\right),\]
+  where the inequality is due to the monotonicity of outer measures.
+  So, by taking \(m \to \infty\) we have 
+  \[\sum_{n = 1}^\infty \mu(A_n) \le \mu\left(\bigcup_{n = 1}^\infty A_n\right).\]
+  However, by the sub-additivity of outer measures, 
+  \[\sum_{n = 1}^\infty \mu(A_n) \ge \mu\left(\bigcup_{n = 1}^\infty A_n\right),\]
+  and so \(\sum \mu(A_n) \ge \mu\left(\bigcup A_n\right)\) resulting in \(\mu\) 
+  being a measure.
+
+  For the second part of the theorem, it suffices to show that for all 
+  \(A \in \mathcal{A}\), for all \(B \subseteq X\),
+  \[\mu^*(B) \ge \mu^*(B \cap A) + \mu^*(B \cap A^c).\]
+  By recalling the definition of \(\mu^*\), for all \(\epsilon > 0\), there exists 
+  some sequence \((K_j)_{j = 1}^\infty \subseteq \mathcal{A}\), \(B \subseteq \bigcup K_j\), 
+  \[\sum_{j = 1}^\infty \tilde{\mu}(K_j) \le \mu^*(B) + \epsilon.\]
+  Now, as \(B \subseteq \bigcup K_j\), \(B \cap A \subseteq \bigcup (K_j \cap A)\) 
+  and \(B \cap A^c \subseteq \bigcup (K_j \cap A^c)\), and so, by sub-additivity
+  \[\begin{split}
+    \mu^*(B \cap A) + \mu^*(B \cap A^c) 
+      & \le \sum \mu^*(K_j \cap A) + \sum \mu^* (K_j \cap A^c)\\
+      & = \sum (\tilde{\mu} (K_j \cap A) + \tilde{\mu} (K_j \cap A^c))\\
+      & = \sum \tilde{\mu}(K_j) \le \mu^*(B) + \epsilon,
+  \end{split}\]
+  where we used the last part of the theorem to exchange \(\mu^*\) for \(\tilde{\mu}\).
+  Thus, as \(\epsilon > 0\) was arbitrary, the inequality follows. 
+
+  Lastly, to show that \(\mu^*\) agrees with \(\tilde{\mu}\) on \(\mathcal{A}\), 
+  let \(A \in \mathcal{A}\). By the monotonicity of outer measures, we have 
+  \(\mu^*(A) \ge \tilde{\mu}(A)\) and so, it suffices to show there exists some 
+  \((K_j) \subseteq \mathcal{A}\) such that \(A \subseteq \bigcup K_j\) and 
+  \(\sum \tilde{\mu}(K_j) = \tilde{\mu}(A)\). But, this is trivial by simply 
+  choosing \(A_1 = A\) and \(A_n = \varnothing\) for all \(n > 1\) and so, we 
+  are done!
+\qed
+
+With the Hahn-Carathéodory extension theorem, we can obtain a measure (and also 
+a measurable space), just from a premeasure on some algebra. This is a very useful 
+theorem as algebras and premeasures are rather weak notions and can be easily 
+constructed through many means. However, this theorem does not yet guarantee the 
+uniqueness, so one might ask whether or not there are other extensions. We shall 
+take a look at that now.
+
+\begin{definition}[\(\sigma\)-additivity for Premeasures]
+  A premeasure \(\tilde{\mu}\) on the algebra \(\mathcal{A}\) on \(X\) is \(\sigma\)-additive 
+  if there exists disjoint sets \((S_n)_{n = 1}^\infty \subseteq \mathcal{A}\) such 
+  that \(X = \bigcup_{n = 1}^\infty S_n\) and \(\tilde{\mu}(S_n) < \infty\) for all 
+  \(n \ge 1\). 
+\end{definition}
+
+\begin{theorem}[Uniqueness of the Hahn-Carathéodory Extension]
+  Under the assumption of the Hahn-Carathéodory extension theorem, and if 
+  \(\tilde{\mu}\) is \(\sigma\)-additive. Then, for all outer measures 
+  \(\nu : \mathcal{P}(X) \to [0, \infty]\), 
+  \[\nu\mid_\Sigma = \mu,\]
+  where \(\mu\) is the outer measure obtained from the Hahn-Carathéodory extension.
+\end{theorem}
+\proof
+  Let \(A \in \Sigma\), and we will first show \(\nu(A) \le \mu(A)\). Let 
+  \((A_n)_{n = 1}^\infty \subseteq \mathcal{A}\) be some sequence such that 
+  \(A \subseteq \bigcup A_n\). Then, by the sub-additivity of \(\nu\), 
+  \[\nu(A) \le \sum \nu(A_n) = \sum \tilde{\mu}(A_n).\]
+  So, by taking the infimum over all possible \((A_n)\), the inequality is achieved.
+
+  To show the reverse inequality, let us suppose \((*)\) that there exists some 
+  \(S \in \mathcal{A}\) such that \(A \subseteq S\) and \(\mu(S) < \infty\). Then, 
+  \[\nu(A) + \nu(S \cap A^c) \le \mu(A) + \mu(S \cap A^c) = \mu(S) = \tilde{\mu}(S) = \nu(S).\]
+  Now, by sub-additivity, 
+  \[\nu(S) \le \nu(A) + \nu(S \cap A^c),\]
+  and so, \(\nu(A) + \nu(S \cap A^c) \ge \mu(A) + \mu(S \cap A^c)\), hence\footnote{
+    Wlog. \(\mu(A) < \infty\) since if otherwise, \(\infty < \nu(A) + \nu(S \cap A^c)\). 
+    Since \(\nu(S \cap A^c) \le \nu(S) \le \mu(S) < \infty\), \(\nu(A) = \infty\) 
+    and hence \(\nu(A) \ge \mu(A)\).}, 
+  \[\nu(A) - \mu(A) \ge \mu(S \cap A^c) - \nu(S \cap A^c) \ge 0,\]
+  as \(\mu \ge \nu\) as shown previously. Thus, \(\nu(A) \ge \mu(A)\) and so, 
+  \(\nu\mid_\Sigma = \mu\).
+
+  Now, to relax the assumption that such \(S\) exists, we shall use the 
+  \(\sigma\)-additivity of \(\tilde{\mu}\). Let \((S_n) \subseteq \mathcal{A}\) be 
+  the sequence as described by the \(\sigma\)-additivity of \(\tilde{\mu}\), 
+  and define \(A_n = A \cap S_n\). Then, by construction, the sets \(A_n\) are 
+  pairwise disjoint and \(A = \bigcup A_n\). Since \(\mu = \nu\) on sets, 
+  which \((*)\) is satisfied, we have 
+  \[\mu\left(\bigcup_{n = 1}^m A_n\right) = \nu\left(\bigcup_{n = 1}^m A_n\right),\]
+  for all \(m \ge 1\) (since we can choose \(S = \bigcup_{n = 1}^m S_n\)). Now, 
+  by monotonicity, 
+  \[\nu(A) = \nu\left(\bigcup_{n = 1}^\infty A_n\right) \ge \nu\left(\bigcup_{n = 1}^m A_n\right)
+    = \mu\left(\bigcup_{n = 1}^m A_n\right),\]
+  for all \(m\), the inequality is achieved by taking \(m \to \infty\).
 \qed

@@ -483,7 +483,191 @@ continuous on the compact set \(I\), and so \(f'\) is uniformly
 continuous, and so is bounded. Thus, if \(f : I \to \mathbb{R}\) is
 continuously differentiable, then it is Lipschitz continuous.
 
-For higher dimensions, we require the mean value inequality and so an
-similar result is achieved.
+For higher dimensions, we require the mean value inequality for higher
+dimensions and so an similar result is achieved. To look at the mean
+value theorem for higher dimensions, let us first introduce the operator
+norm for linear maps.
+
+\begin{definition}[Operator Norm]
+  Let \(f : \mathbb{R}^n \to \mathbb{R}^m\) be a linear map, then the operator 
+  norm of \(f\) is 
+  \[\| f\|_\text{op} := \sup_{x \in \mathbb{R}^n \setminus \{0\}} \frac{\| f(x) \|}{\|x\|}
+  \equiv \sup_{x \in \mathbb{R}^n, \|x\| = 1} \|f(x)\|,\]
+  where \(\| \cdot \|\) are the Euclidean norms.
+\end{definition}
+
+As we saw in linear algebra last term, the operator norm form norms on
+the space of linear maps as the name suggests. By considering that the
+set \(S_1 := \{x \in \mathbb{R}^n, \|x\| = 1\}\) is closed and bounded,
+and hence compact by Heine-Borel, as linear maps are continuous, \(f\)
+attains its maximum as on \(S_1\), so we may in fact write the operator
+norm as
+\[\| f\|_\text{op} := \max_{x \in \mathbb{R}^n, \|x\| = 1} \|f(x)\| < \infty.\]
+
+\begin{prop}
+  If \(f : \mathbb{R}^n \to \mathbb{R}^m\) is a linear map and \(x \in \mathbb{R}^n\),
+  then, 
+  \[\|f(x)\|  \le \|f\|_\text{op} \|x\|.\]
+\end{prop}
+\proof
+
+If \(x = 0\) then both sides are zero so suppose otherwise. If
+\(x \neq 0\), then \(\|x\| > 0\) and so it suffices to show
+\[\frac{\|f(x)\|}{\|x\|} \le \|f\|_\text{op}.\] But, this follows
+directly from the definition so we are done. \qed
+
+\begin{prop}
+  If \(f : \mathbb{R}^n \to \mathbb{R}^m\) be a linear map, then \(f\) is Lipschitz 
+  continuous with the Lipschitz constant \(\|f\|_\text{op}\).
+\end{prop}
+\proof
+
+This follows as, for all \(x, y \in \mathbb{R}^n\)
+\[\|f(x) - f(y)\| = \| f(x - y) \| \le \|f\|_\text{op} \|x - y\|.\] \qed
+
+\begin{definition}[Closed Line Segment]
+  For convenience, for all \(x, y \in \mathbb{R}^n\), we define the closed line 
+  segment 
+  \[[x, y] := \{\alpha x + (1 - \alpha)y \mid \alpha \in [0, 1]\}.\]
+\end{definition}
+
+\begin{theorem}[Mean Value Inequality]
+  Let \(D \subseteq \mathbb{R}^n\) be open and \(f : D \to \mathbb{R}^m\) be a 
+  function which is continuously differentiable. Then, for all \(x, y \in D\) 
+  with \([x, y] \subseteq D\), there exists some \(\xi \in [x, y]\) such that 
+  \[\| f(x) - f(y)\| \le \|f'(\xi)\|_\text{op} \|x - y\|.\]
+\end{theorem}
+\proof
+
+Let
+\(g : [0, 1] \to \mathbb{R}^m : \alpha \mapsto f(\alpha x + (1 - \alpha) y)\)
+and we see that \(g\) is continuously differentiable as it is the
+composition of two continuous differentiable functions. Consider,
+\[\| f(x) - f(y)\| = \|g(1) - g(0)\| = \left\| \int_0^1 g'(\alpha) \dd \alpha\right\|.\]
+By the chain rule, we have
+\(g'(\alpha) = (x - y) f'(\alpha x +(1 - \alpha)y)\) and so,
+\[\begin{split}
+    \left\| \int_0^1 g'(\alpha) \dd \alpha\right\| 
+      & = \left\| \int_0^1 f'(\alpha x +(1 - \alpha)y) (x - y) \dd \alpha \right\|\\
+      & = \int_0^1 \| f'(\alpha x +(1 - \alpha)y) (x - y) \| \dd \alpha\\
+      & \le \|x - y\| \int_0^1 \| f'(\alpha x +(1 - \alpha)y) \|_\text{op} \dd \alpha\\
+      & \le \|x - y\| \max_{\alpha \in [0, 1]} \| f'(\alpha x +(1 - \alpha)y) \|_\text{op}.
+  \end{split}\] So, by defining \(\xi = \alpha x +(1 - \alpha)y\) where
+\(\alpha\) maximises \(\| f'(\alpha x +(1 - \alpha)y) \|_\text{op}\), we
+have \[\| f(x) - f(y)\| \le \|f'(\xi)\|_\text{op} \|x - y\|.\] \qed
+
+We note that in the proof above, we assumed
+\(\|\int f\| \le \int \|f\|\). We shall prove this claim now.
+
+\begin{prop}
+  Let \(I \subseteq \mathbb{R}\) be a interval and let \(f : I \to \mathbb{R}^m\) 
+  be continuous. Then, 
+  \[\left\|\int_{t_0}^{t_1} f(s) \dd s\right\| \le \left|\int_{t_0}^{t_1} \|f(s)\| \dd s\right|,\]
+  for all \(t_0, t_1 \in I\).
+\end{prop}
+\proof
+
+We use Riemann rather than Darboux sums for this occasion. Since, as we
+have shown in first year analysis that Riemann and Darboux sums are
+equivalent, this does not matter.
+
+Wlog. assume \(t_0 < t_1\), and let us consider the \(n\)-th Riemann sum
+of \(\left\|\int_{t_0}^{t_1} f(s) \dd s\right\|\),
+\[\left\| \frac{t_1 - t_0}{n} 
+    \sum_{i = 0}^{n - 1}f\left(t_0 + \frac{i}{n}(t_1 - t_0)\right)\right\| 
+    \le \frac{t_1 - t_0}{n} 
+    \left\|\sum_{i = 0}^{n - 1}f\left(t_0 + \frac{i}{n}(t_1 - t_0)\right)\right\|.\]
+Thus, by taking \(n \to \infty\), the inequality is achieved. \qed
+
+Now, with the mean value inequality under our belt, we may generalise
+the result about Lipschitz continuity for higher dimensions.
+
+\begin{corollary}
+  Let \(U \subseteq \mathbb{R}^n\) be open, \(f : U \to \mathbb{R}^m\) be 
+  continuously differentiable and \(C \subseteq U\) be compact and convex. 
+  Then, \(f \mid_C : C \to \mathbb{R}^m\) is Lipschitz continuous.
+\end{corollary}
+\proof
+
+Follows straight away from the mean value inequality. \qed
+
+We note the restriction to a convex subset \(C\) since, if otherwise,
+for all \(x, y \in \mathbb{R}^n\), it is not necessarily true that
+\([x, y] \subseteq U\), and so, the mean value inequality does not
+apply.
+
+\hypertarget{picard-lindeluxf6f-theorem}{%
+\subsection{Picard-Lindelöf Theorem}\label{picard-lindeluxf6f-theorem}}
+
+We have now come to a very important theorem in this course -- the
+Picard-Lindelöf theorem. The Picard-Lindelöf theorem is a strong
+statement providing us the existence and uniqueness of solutions to
+particular IVPs.
+
+As we have seen previously, we shall approach this using the Banach's
+fixed point theorem. By considering the Banach space
+\(C^\circ(J, \mathbb{R}^d\)) equipped with the supremum norm, and by
+showing a particular mapping is a contraction, we may apply Banach's
+fixed point theorem resulting in the existence of a solution to the IVP.
+
+\begin{theorem}[Picard-Lindelöf Theorem (global version)]
+  Consider a nonautonomous differential equation 
+  \[\dot x = f(t, x),\]
+  where \(f : \mathbb{R} \times \mathbb{R}^d \to \mathbb{R}^d\) is continuous 
+  and satisfy the global Lipschitz condition, that is, there exists some 
+  \(K \in \mathbb{R}^+\), such that,
+  \[\| f(t, x) - f(t, y)\| \le K \|x - y\|,\]
+  for all \(t \in \mathbb{R}\), \(x, y \in \mathbb{R}^d\). Then, the IVP 
+  \[\dot x = f(t, x); \hspace{2mm} x(t_0) = x_0,\]
+  has a unique solution on \([t_0 - h, t_0 + h]\), given by 
+  \(\lambda : [t_0 - h, t_0 + h] \to \mathbb{R}^d\), where \(h := 1 / 2K\).
+\end{theorem}
+
+To prove this theorem, let us first prove the following lemma in which
+we shall simply use the same notations as established for convenience.
+
+\begin{lemma}
+  Let \(X\) be the Banach space \(C^\circ([t_0 - h, t_0 + h], \mathbb{R}^d)\) 
+  equipped with the supremum norm \(\|\cdot\|_\infty\). Then the function,
+  \[P : X \to X : \lambda \mapsto \left(t \mapsto x_0 + \int_{t_0}^t f(s, \lambda(s)) \dd s\right)\]
+  is a contraction on \(X\).
+\end{lemma}
+\proof
+
+To show \(P\) is a contraction, it suffices to show that \(P\) is
+Lipschitz continuous with some Lipschitz constant
+\(K \in \mathbb{R}_{< 1}^+\); in this case, we shall show \(P\) has
+Lipschitz constant \(1 / 2\).
+
+Let \(u_1, u_2 \in X\), by the definition of the suprmum norm, it
+suffices to show that for all \(t \in [t_0 - h, t_0 + h]\),
+\[\|P(u_1)(t) - P(u_2)(t)\| \le \frac{1}{2} \|u_1 - u_2\|_\infty.\] This
+follows as, \[\begin{split}
+    \|P(u_1)(t) - P(u_2)(t)\| 
+    & = \left\|\int_{t_0}^t f(s, u_1(s)) \dd s - \int_{t_0}^t f(s, u_2(s)) \dd s\right\|\\
+    & = \left\|\int_{t_0}^t f(s, u_1(s)) - f(s, u_2(s)) \dd s \right\|\\
+    & \le \left|\int_{t_0}^t \| f(s, u_1(s)) - f(s, u_2(s)) \| \dd s\right|
+  \end{split}\] Since \(f\) satisfy the Lipschitz condition,
+\(\|f(s, u_1(s)) - f(s, u_2(s))\| \le K \|u_1(s) - u_2(s)\| \le K\|u_1 - u_2\|_\infty\)
+and so, \[\begin{split}
+     \left|\int_{t_0}^t \| f(s, u_1(s)) - f(s, u_2(s)) \| \dd s\right|
+      & \le K\|u_1 - u_2\|_\infty \left|\int_{t_0}^t \dd s\right|\\
+      & \le K h \|u_1 - u_2\|_\infty = \frac{1}{2} \|u_1 - u_2\|_\infty.
+  \end{split}\] \qed
+
+With that, we can apply the Banach fixed point theorem.
+
+\proof (Picard-Lindelöf theorem). Let \(P\) to be the function as
+before, then by the Banach fixed point theorem, there exists a unique
+\(\lambda \in X\) such that \(P(\lambda) = \lambda\). So, \(\lambda\) is
+the unique local solution to our IVP. \qed
+
+We remark that we have proven the global version of the Picard-Lindelöf
+theorem in contrast to the local version which we shall look at later.
+The global version requires \(f\) is globally defined and is also the
+Lipschitz condition is held globally. Furthermore, while the theorem
+only provides us with a local solution, the solution can be easily
+extended on the whole space by reapplying the theorem at the end points
+of the local unique solution (see problem sheet).
 
 \end{document}
