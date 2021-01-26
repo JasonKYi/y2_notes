@@ -493,4 +493,89 @@ Let \(\epsilon > 0\), then, by Markov's inequality, \[\begin{split}
 Thus, to show that a sequence of estimators is consistent, it suffices
 to show that it is asymptotically unbiased and its variance tends to 0.
 
+However, while consistency is a nice property for a sequence of
+estimators to have, it is a very minimal requirement. So, in order to
+derive hypothesis tests and confidence intervals, we also need the
+sampling distribution of \(T_n\). As we have seen previously, the sample
+mean estimators \(T_n\) for a normal distribution \(N(\theta, 1)\) has
+distribution \(T_n \sim N(\theta, 1 / n)\), and so, by centring and
+scaling, we have \[\sqrt{n}(T_n - \theta) \sim N(0, 1),\] for all
+\(n \ge 1\). This means we can work with the CDF of \(T_n\) allowing us
+to easily analyse the behaviours of these estimators. However, this is
+in general not the case and in most cases, we cannot derive easily the
+distributions of the estimators. Nonetheless, often, we may approximate
+their distribution with a normal distribution.
+
+\begin{definition}[Asymptotically Normal]
+  A sequence of estimators \(T_n\) for \(\theta \in \mathbb{R}\) is asymptotically 
+  normal if, for some \(\sigma^2(\theta)\), 
+  \[\sqrt{n}(T_n - \theta) \to N(0, \sigma^2(\theta)),\]
+  in distribution.
+\end{definition}
+
+From last term, we recall the central limit theorem (CLT).
+
+\begin{theorem}[Central Limit Theorem]
+  Let \(Y_1, \cdots, Y_n\) be iid. random variables with \(E(Y_i) = \mu\) and 
+  \(\mathop{\mathrm{Var}}(Y_i) = \sigma^2 < \infty\). Then the sequence \(\sqrt{n}(\bar{Y} - \mu)\) 
+  converges in distribution to a \(N(0, \sigma^2)\) distribution.
+\end{theorem}
+\proof
+
+See the \emph{probability for statistics} course. \qed
+
+The central limit theorem allows us to conclude that a large class of
+estimators are asymptotically normal. Indeed, sample means and
+estimators which can be written as a combination of sample means under
+weak conditions are certainly asymptotically normal. However, we would
+also consider other estimators.
+
+\begin{lemma}[Slutsky's lemma]
+  Let \(X_n, X\) and \(Y_n\) be random variables (or random vectors). If \(X_n \to X\) 
+  in distribution and \(Y_n \to c\) in probability for some constant \(c\), then 
+  \begin{itemize}
+    \item \(X_n + Y_n \to X + c\) in distribution;
+    \item \(Y_n X_n \to cX\) in distribution;
+    \item \(Y^{-1}_n X_n \to c^{-1} X\) in distribution if \(c \neq 0\).
+  \end{itemize}
+\end{lemma}
+\proof
+
+See the \emph{probability for statistics} course. \qed
+
+Another useful result for determining whether or not a sequence of
+estimators are asymptotically normal is the \(\delta\)-method. The
+\(\delta\)-method allows us to consider whether or not the
+transformation of a asymptotically normal estimator remains
+asymptotically normal.
+
+\begin{theorem}[\(\delta\)-Method]
+  Suppose that \(T_n\) is an asymptotically normal estimator of \(\theta\) with 
+  \[\sqrt{n}(T_n - \theta) \to_\text{d} N(0, \sigma^2(\theta)),\]
+  and \(g : \Theta \subseteq \mathbb{R} \to \mathbb{R}\) is a differentiable 
+  function with \(g'(\theta) \neq 0\). Then 
+  \[\sqrt{n}(g(T_n) - g(\theta)) \to_\text{d} N(0, g'(\theta)^2 \sigma^2(\theta)).\]
+\end{theorem}
+\proof
+
+Since \(g\) is differentiable,
+\[g(T_n) = g(\theta) + g'(\theta)(T_n - \theta) + o((T_n - \theta)^2),\]
+where \(R\) is the remainder. So
+\[\sqrt{n}(g(T_n) - g(\theta)) = g'\sqrt{n}(\theta)(T_n - \theta) + o((T_n - \theta)^2).\]
+Thus, assuming the remainder is negligible, we have
+\[\sqrt{n}(g(T_n) - g(\theta)) \to_\text{d} N(0, g'(\theta)^2 \sigma^2(\theta)).\]
+\qed
+
+Lastly, a useful result we will often use (perhaps implicitly) is the
+continuous mapping theorem. Alike sequential continuity for metric
+spaces, the continuous mapping theorem will allow us to preserve
+stochastic convergence under continuous mappings.
+
+\begin{theorem}[Continuous Mapping Theorem]
+  Let \(g : \mathbb{R}^k \to \mathbb{R}^m\) be continuous at every point of a set 
+  \(C\) such that \(\mathbb{P}(X \in C) = 1\). Then if \(X_n \to X\), 
+  then \(g(X_n) \to g(X)\) for all three notions of convergence, i.e. 
+  convergence in distribution, in probability and almost surely.
+\end{theorem}
+
 \end{document}
