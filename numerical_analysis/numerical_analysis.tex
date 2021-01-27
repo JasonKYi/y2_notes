@@ -617,4 +617,115 @@ refereed as the \emph{full form} of the QR-decomposition and by noticing
 that the additional parts of \(Q\) are multiplied by 0, we have that the
 full form provides us with information about the null-space of \(A\).
 
+\hypertarget{least-square-problems}{%
+\subsection{Least Square Problems}\label{least-square-problems}}
+
+Least square problems are often found in data fitting, statistics,
+computational modelling and many other fields, e.g.~minimising the mean
+square error for an estimator. Least square problems are also
+significant historically as they constitute one of the earliest problems
+formulated in matrix form by Gauss.
+
+A least square problem aims at the solution of an overdetermined system
+of equations, that is, we have the linear system of the form
+\[A\mathbf{x} = \mathbf{b},\] where \(A \in \mathbb{R}^{m \times n}\)
+for some \(m > n\).
+
+In general, we do not have a solution to this problem, however, we may
+minimise the 2-norm of the residual given by
+\[\mathbf{r} = \mathbf{b} - A\mathbf{x}.\] Straight away, we see that,
+since we have more equations than unknowns, there exists a solution to
+our linear system of equations if and only if
+\(\mathbf{b} \in \text{Im}A\) and in this case, the residual
+\(\mathbf{r} = 0\). On the other hand, if
+\(\mathbf{b} \notin \text{Im}A\), then we are tasked with finding
+\(\mathbf{x} \in \mathbb{R}^n\) such that
+\[\mathbf{x} = \text{argmin}_\mathbf{x} \| \mathbf{b} - A\mathbf{x} \|_2,\]
+where we uses the 2-norm as its derivative yields a linear system, and
+so, can be solved using standard linear algebra techniques.
+
+Geometrically, we see that the residual vector \(\mathbf{r}\) is
+orthogonal to the image of \(A\) whenever it is minimized, so we have
+the restriction that, for all \(\mathbf{v} \in \mathbb{R}^n\),
+\[0 = \langle A\mathbf{v}, \mathbf{r} \rangle = \mathbf{v}^TA^T\mathbf{r},\]
+and so, \(A^T \mathbf{r} = 0\). Indeed, by considering that, for all
+\(\mathbf{x} \in \mathbb{R}^n\), \(A\mathbf{x}\) is the orthogonal
+projection \(P\) of \(\mathbf{b}\) onto the image of \(A\), we have
+\(A\mathbf{x} = P\mathbf{b}\). So, the least square problem is rephrased
+such that we need to find such a projection \(P\).
+
+We shall look at two methods for finding such a projection the first of
+which follows straight away when we impose the orthogonality condition.
+As we require the residual to be orthogonal to the image, we have
+\[A^T(\mathbf{b} - A\mathbf{x}) = 0\] and so,
+\[A^TA \mathbf{x} = A^T \mathbf{b}.\] This equation is known as the
+normal equation, and with this, we see that, since \(A^T A\) is
+nonsingular if and only if \(A\) has full rank, the least square problem
+has a unique solution \(\mathbf{x}\) if and only if \(A\) has full rank.
+Thus, if \(A\) has full rank, we have
+\[\mathbf{x} = (A^T A)^{-1} A^T \mathbf{b},\] and in some sense, the
+triple product \((A^T A)^{-1} A^T\) is a kind of (pseudo)-inverse.
+
+\begin{definition}[Pseudo-inverse]
+  Given a matrix \(A \in \mathbb{R}^{n \times m}\), if \(A\) has full rank then, 
+  the pseudo-inverse of \(A\) is 
+  \[A^+ = (A^T A)^{-1} A^T.\]
+\end{definition}
+
+This naive approach to the least square problem can produce
+ill-conditioned matrices and is expensive since it required the
+computation of a inverse and therefore is rarely used to solve least
+square problems. A better approach is to use the QR-decomposition.
+Rather than orthogonalising the residual onto the image of \(A\), we
+instead form the projector directly.
+
+Suppose we have decomposed the matrix \(A\) in to \(A = QR\), and let us
+define \(P = Q Q^T\). Then, by considering
+\(P\mathbf{b} = QQ^T \mathbf{b}\), we have
+\[QR \mathbf{x} = QQ^T \mathbf{b},\] and so, by multiplying both side by
+\(Q^T\), by the orthogonality of \(Q\), we have
+\(R\mathbf{x} = Q^T\mathbf{b}\). Thus, by backwards substitution, we may
+find \(\mathbf{x}\) given \(R\) is full rank (which is true if and only
+if \(A\) is full rank). Furthermore, by comparing the two methods, since
+the solution is unique (provided \(A\) if full rank), we find
+\[A^+ = R^{-1} Q^T,\] and \(\mathbf{x} = A^+\mathbf{b}\).
+
+We note that in the second method above, we have used the reduced form
+of the QR-decomposition. Using the full form instead, we may obtain more
+information about the residual of the least square problem. Suppose we
+decompose \(A = QR\) where \(Q \in \mathbb{R}^{m \times m}\) and
+\(R \in \mathbb{R}^{m \times n}\). As before, we project \(\mathbf{b}\)
+onto the image of \(A\) by \(Q^T\). However, since the full form also
+represents the kernel of \(A\), we can decompose \(Q^T\mathbf{b}\),
+\[Q^T \mathbf{b} = \alpha + \beta =  
+\begin{pmatrix}
+  (Q^T \mathbf{b})_1 \\ \vdots\\ (Q^T \mathbf{b})_n\\ 0\\ \vdots\\ 0
+\end{pmatrix} + 
+\begin{pmatrix}
+  0\\ \vdots\\ 0\\ (Q^T \mathbf{b})_{n + 1} \\ \vdots\\ (Q^T \mathbf{b})_m
+\end{pmatrix},\] where \(Q^T\beta \in \ker A\) and
+\(Q^T\alpha \in \text{Im}\hspace{1mm} A\). Consider the case when
+\(\beta = 0\). Indeed, if \(\beta = 0\) then we have,
+\[R\mathbf{x} = Q^TQR \mathbf{x} = Q^TA\mathbf{x} = Q^T\mathbf{b} = \alpha.\]
+So, \(0 = R\mathbf{x} - Q^T\mathbf{b}\) and hence,
+\[0 = QR\mathbf{x} - QQ^T\mathbf{b} = A\mathbf{x} - \mathbf{b}.\] We
+note that in the full QR-decomposition, \(Q\) is a square orthogonal
+matrix and so \(Q Q^T = I\). Now, if \(\beta \neq 0\), we have
+\(R\mathbf{x} = Q^T\mathbf{b}\) is a inconsistent system. Since
+\(Q^T\alpha \in \text{Im}\hspace{1mm} A\), we have
+\(\alpha \in \text{Im}\hspace{1mm} R\) and so, there exists some
+\(\mathbf{x}^* \in \mathbb{R}^n\) such that \(R\mathbf{x}^* = \alpha\).
+This is in fact the solution to the least square problem since
+\[\begin{split}
+  \|A\mathbf{x} - b\|^2 & = \|Q^T(A \mathbf{x} - b)\|^2\\
+    & = \|R\mathbf{x} - (\alpha + \beta)\|^2\\
+    & = \langle (R\mathbf{x} - \alpha) - \beta, (R\mathbf{x} - \alpha) - \beta \rangle\\
+    & = \|R\mathbf{x} - \alpha\|^2 - 2\langle R\mathbf{x} - \alpha, \beta \rangle + \|\beta\|^2.
+\end{split}\] Thus, by considering
+\(\langle R\mathbf{x} - \alpha, \beta \rangle = \langle R(\mathbf{x} - \mathbf{x}^*), \beta \rangle = 0\)
+we have
+\(\|A\mathbf{x} - b\|^2 = \|R\mathbf{x} - \alpha\|^2 + \|\beta\|^2 = \|\beta\|^2\)
+whenever \(x = x^*\). So, \(x^*\) is the solution and \(\|\beta\|\) is
+the norm of the residual.
+
 \end{document}

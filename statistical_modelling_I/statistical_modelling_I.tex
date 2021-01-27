@@ -578,4 +578,88 @@ stochastic convergence under continuous mappings.
   convergence in distribution, in probability and almost surely.
 \end{theorem}
 
+\hypertarget{maximum-likelihood-estimation}{%
+\subsection{Maximum Likelihood
+Estimation}\label{maximum-likelihood-estimation}}
+
+We recall from first year the maximum likelihood estimator, that is the
+estimator that maximises the probability of observing the given
+realisations.
+
+\begin{definition}[Likelihood Function]
+  Given the realisation \(\mathbf{x}\) of the random object \(\mathbf{X}\), the 
+  likelihood function for \(\theta\) is 
+  \[L(\theta) = L(\theta \mid \mathbf{x}) = f_\mathbf{X}(\mathbf{x} \mid \theta).\]
+\end{definition}
+
+\begin{definition}[Maximum Likelihood Estimator]
+  The maximum likelihood estimator of \(\theta \in \Theta^n\) is an estimator 
+  \(\hat{\theta}\) such that 
+  \[L(\hat{\theta}) = \sup_{\theta \in \Theta} L(\theta)\]
+  where \(L\) is the likelihood function.
+\end{definition}
+
+The maximum likelihood estimator is often well defined. However, it is
+possible to construct situations in which the MLE does not exist or is
+not unique. We also recall that given a strictly increasing function
+\(f\), the maximum likelihood estimator can also be obtained by
+maximising \(f \circ L\). This is most commonly seen in the
+log-likelihood function where we maximise \(\log L\).
+
+Maximum likelihood estimators has some nice properties. In short,
+maximum likelihood estimators are functionally invariant, consistent and
+asymptotically normal.
+
+\begin{prop}
+  If \(g\) is a bijective function and if \(\hat{\theta}\) is a MLE of \(\theta\), 
+  then \(\hat{\phi} = g(\hat{\theta})\) is a MLE of \(\phi = g(\theta)\).
+\end{prop}
+\proof
+
+Let us denote \(\tilde{L}\) for the likelihood function of \(\phi\),
+then \(\tilde{L} = L \circ g^{-1}\) and so,
+\[\tilde{L}(\hat{\phi}) = L(g^{-1}(\hat{\phi})) = L(g^{-1}(g(\hat{\theta})))
+    = L(\hat{\theta}) \ge L(g^{-1}(\phi)) = \tilde{L}(\phi).\] \qed
+
+Suppose we now relax the bijective condition on \(g\). If \(g\) is not
+surjective, then there exists \(\phi \in \psi\) such that
+\(\phi \notin g(\Theta)\), and so, for these values no model is defined.
+If this is the case it does not make sense to speak of the likelihood of
+these parameters and so, we define their likelihood to be 0. With that,
+we see that the original proposition remains true.
+
+On the other hand, if \(g\) is not injective, then \(\phi\) does not
+uniquely identify \(\theta\) and so, there might exists multiply
+\(\theta\) such that \(g(\theta) = \phi\). However, by defining the
+induced likelihood for all \(\theta\),
+\[\tilde{L} : \mathbb{R} \to \mathbb{R} : \phi \mapsto \sup\{L(\theta) \mid g(\theta) = \phi\},\]
+we see that the invariance over functions is retained.
+
+\begin{prop}
+  Let \(X_1, \cdots\) be iid. observations with pdf \(f_\theta(x)\) where 
+  \(\theta \in \Theta\) and \(Theta\) is an open interval. Furthermore, let 
+  \(\theta_0 \in \Theta\) be some parameter. Then under regularity conditions, 
+  \begin{itemize}
+    \item there exists a consistent sequence \((\hat{\theta}_n)_{n = 1}^\infty\) 
+      of maximum likelihood estimators;
+    \item if \((\hat{\theta}_n)_{n = 1}^\infty\) is a consistent sequence of MLEs, 
+    then 
+    \[\sqrt{n}(\hat{\theta}_n - \theta_0) \to_\text{d} N(0, I_f(\theta_0)^{-1}),\]
+    where \(I_f(\theta)\) is the Fisher information of a sample of size 1.
+  \end{itemize}
+\end{prop}
+
+We note that this proposition requires the Fisher information of a
+distribution which is often not known in practical situations. So, to
+use this result we need to estimate \(I_f(\theta_0)\). In general, this
+can be approximated by
+
+\begin{itemize}
+  \item \(I_f(\hat{\theta})\);
+  \item \(\frac{1}{n}\sum_{i = 1}^n \left(\pdv{\theta} 
+    \log(f(x_i \mid \theta))\mid_{\theta = \hat{\theta}}\right)^2\);
+  \item \(- \frac{1}{n}\sum_{i = 1}^n \pdv[2]{\theta} 
+    \log(f(x_i \mid \theta))\mid_{\theta = \hat{\theta}}\).
+\end{itemize}
+
 \end{document}
