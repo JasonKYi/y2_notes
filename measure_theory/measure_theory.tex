@@ -594,8 +594,8 @@ this theorem does not yet guarantee the uniqueness, so one might ask
 whether or not there are other extensions. We shall take a look at that
 now.
 
-\begin{definition}[\(\sigma\)-additivity for Premeasures]
-  A premeasure \(\tilde{\mu}\) on the algebra \(\mathcal{A}\) on \(X\) is \(\sigma\)-additive 
+\begin{definition}[\(\sigma\)-Finite]
+  A premeasure \(\tilde{\mu}\) on the algebra \(\mathcal{A}\) on \(X\) is \(\sigma\)-finite 
   if there exists disjoint sets \((S_n)_{n = 1}^\infty \subseteq \mathcal{A}\) such 
   that \(X = \bigcup_{n = 1}^\infty S_n\) and \(\tilde{\mu}(S_n) < \infty\) for all 
   \(n \ge 1\). 
@@ -603,7 +603,7 @@ now.
 
 \begin{theorem}[Uniqueness of the Hahn-Carathéodory Extension]
   Under the assumption of the Hahn-Carathéodory extension theorem, and if 
-  \(\tilde{\mu}\) is \(\sigma\)-additive. Then, for all outer measures 
+  \(\tilde{\mu}\) is \(\sigma\)-finite. Then, for all outer measures 
   \(\nu : \mathcal{P}(X) \to [0, \infty]\), 
   \[\nu\mid_\Sigma = \mu,\]
   where \(\mu\) is the outer measure obtained from the Hahn-Carathéodory extension.
@@ -632,9 +632,9 @@ hence\footnote{
 \(\nu\mid_\Sigma = \mu\).
 
 Now, to relax the assumption that such \(S\) exists, we shall use the
-\(\sigma\)-additivity of \(\tilde{\mu}\). Let
+\(\sigma\)-finiteness of \(\tilde{\mu}\). Let
 \((S_n) \subseteq \mathcal{A}\) be the sequence as described by the
-\(\sigma\)-additivity of \(\tilde{\mu}\), and define
+\(\sigma\)-finiteness of \(\tilde{\mu}\), and define
 \(A_n = A \cap S_n\). Then, by construction, the sets \(A_n\) are
 pairwise disjoint and \(A = \bigcup A_n\). Since \(\mu = \nu\) on sets,
 which \((*)\) is satisfied, we have
@@ -644,5 +644,149 @@ Now, by monotonicity,
 \[\nu(A) = \nu\left(\bigcup_{n = 1}^\infty A_n\right) \ge \nu\left(\bigcup_{n = 1}^m A_n\right)
     = \mu\left(\bigcup_{n = 1}^m A_n\right),\] for all \(m\), the
 inequality is achieved by taking \(m \to \infty\). \qed
+
+\hypertarget{the-lebesgue-measure}{%
+\subsection{The Lebesgue Measure}\label{the-lebesgue-measure}}
+
+With the Hahn-Carathéodory extension theorem in mind, we may construct
+the Lebesgue measure on Euclidean spaces. As with the proof of the
+extension theorem, we shall construct a premeasure assigning \(b - a\)
+to every interval \((a, b)\) and then, extend that to a general measure.
+
+\begin{definition}
+  For \(a = (a_1, \cdots, a_n) \in \mathbb{R}^n\), \(b = (b_1, \cdots, b_n) \in \mathbb{R}^n\),
+  we define the interval between \(a\) and \(b\) to be the set 
+  \[(a, b) := \prod_{k = 1}^n(a_k, b_k) = 
+    \{(x_1, \cdots, x_n) \mid a_k < x_k < b_k \hspace{2mm} 1 \le k \le n \},\]
+  if \(a_k < b_k\) for all \(k\) and \((a, b) = \varnothing\) otherwise.
+\end{definition}
+
+Similarly, we define the half open and closed intervals in
+\(\mathbb{R}^n\) with \((a, b] := \prod_{k = 1}^n(a_k, b_k]\),
+\([a, b) := \prod_{k = 1}^n[a_k, b_k)\) and
+\([a, b] := \prod_{k = 1}^n[a_k, b_k]\). Indeed, we also allow
+\(\pm \infty\) as an endpoint and we shall from this point forward refer
+to such sets as intervals in \(\mathbb{R}^n\).
+
+\begin{definition}[Elementary Figure]
+  A set \(I \subseteq \mathbb{R}^n\) is an elementary figure if its the union 
+  of finitely many disjoint intervals; and in this section, we shall denote 
+  \(\mathcal{A} \subseteq \mathcal{P(}\mathbb{R}^n)\) for the set of elementary 
+  figures in \(\mathbb{R}^n\).
+\end{definition}
+
+We see that \(\mathcal{A}\) is an algebra on \(X = \mathbb{R}^n\) and
+so, we may define a premeasure on \(\mathcal{A}\). Let
+\(\tilde{\lambda} : \mathcal{A} \to [0, \infty]\) be the function such
+that for all \(a, b \in \mathbb{R}^n\),
+\[\tilde{\lambda}((a, b)) = \tilde{\lambda}((a, b]) = 
+  \tilde{\lambda}([a, b)) = \tilde{\lambda}([a, b]) := \prod_{k = 1}^n(b_k - a_k),\]
+if \(a_k < b_k\) and 0 otherwise. Furthermore, for
+\(\bigcup_{k = 1}^m I_k \in \mathcal{A}\),
+\[\tilde{\lambda}\left(\bigcup_{k = 1}^m I_k \right) = \sum_{k = 1}^m \tilde{\lambda}(I_k),\]
+where \(I_1, \cdots, I_k\) are disjoint intervals.
+
+\begin{lemma}
+  The map \(\tilde{\lambda}\) is a premeasure on \(\mathcal{A}\).
+\end{lemma}
+\proof
+
+As it is trivially true that \(\tilde{\lambda}(\varnothing) = 0\) to
+show that \(\tilde{\lambda}\) is a premeasure, it suffices to show
+\(\sigma\)-additivity within \(\mathcal{A}\).
+
+We note that \(\tilde{\lambda}\) is finitely additive by definition,
+hence monotone on \(\mathcal{A}\), and therefore if
+\(I = \bigcup_{k = 1}^\infty\) where \(I_k\) are disjoint intervals,
+\[\tilde{\lambda}(I) \ge \tilde{\lambda}\left(\bigcup_{k = 1}^m I_k\right) = 
+    \sum_{k = 1}^m\tilde{\lambda}(I_k),\] for all \(m \in \mathbb{N}\).
+Thus, by taking \(m \to \infty\),
+\[\tilde{\lambda}(I) \ge \sum_{k = 1}^\infty \tilde{\lambda}(I_k).\] For
+the reverse inequality, we use the what is called a \emph{compactness
+argument} to reduce to finite additivity. Wlog. we may assume
+\(\sum \tilde{\lambda}(I_k) < \infty\) (since if otherwise the reverse
+inequality is trivial) and that \(I\) is a single interval with end
+points \(a, b\) (since if the inequality is true for a single interval,
+it is also true for the sum of finitely many intervals).
+
+Let \(\bar{I}\) be the closure of \(I\) and for all \(L > 0\) we define
+\(\bar{I}_L := \bar{I} \cap [-L, L]^n\). By Heine-Borel, \(\bar{I}_L\)
+is compact and moreover, by taking \(L \to \infty\),
+\[\tilde\lambda(\bar{I}_L) \to \tilde\lambda(\bar{I}) = \tilde\lambda(I).\]
+Now, for all intervals \(J\) with end points \(\alpha, \beta\), we
+define the interval \(J^\epsilon \supseteq J\) with endpoints
+\(\alpha^\epsilon \neq \alpha\), \(\beta^\epsilon \neq \beta\) such that
+\[\tilde\lambda(J^\epsilon) \le (1 + \epsilon)^n \tilde\lambda(J).\]
+Lastly, for all \(k \in \mathbb{N}\), we define the open intervals
+\(\tilde I_k\) with \(\tilde I_k \supseteq I_k^\epsilon\) satisfying
+\[\tilde\lambda(\tilde I_k) < (1 + \epsilon)^n \lambda(I_k) + \epsilon 2^{-k}.\]
+So
+\(\bar{I}_L \subseteq \bar{I} \subseteq \bigcup_{k = 1}^\infty I_k^\epsilon  \subseteq \bigcup_{k = 1}^\infty \tilde I_k\),
+and \(\{\tilde I_k\}\) forms an open cover of \(\bar{I}_L\), and hence,
+by compactness, there exists a finite subcover for \(\bar{I}_L\), that
+is, there exists some \(m\) such that (by reordering),
+\(\bar{I}_L \subseteq \bigcup_{k = 1}^m I_k\). It follows that
+\[\tilde\lambda(\bar{I}_L) \le \tilde\lambda\left(\bigcup_{k = 1}^m \tilde I_k\right) 
+    \le \sum_{k = 1}^m \tilde\lambda(\tilde I_k) 
+    \le (1 + \epsilon)^n \sum_{k = 1}^\infty \lambda(I_k) + \epsilon.\]
+Thus, by taking \(\epsilon \to 0\) and then \(L \to \infty\) we have the
+reverse inequality and so \(\tilde\lambda\) is a premeasure on
+\(\mathcal{A}\). \qed
+
+With this lemma, one can immediately apply the Hahn-Carathéodory
+extension theorem resulting in the Lebesgue measure on Euclidean spaces,
+and furthermore, by considering
+\(\tilde\lambda((z, z + 1]) = 1 < \infty\), and
+\(\bigcup_{z \in \mathbb{Z}^n}(z, z + 1] = \mathbb{R}^n\), we have
+\(\tilde\lambda\) is \(\sigma\)-finite, and hence, the Lebesgue measure
+is unique.
+
+\begin{lemma}
+  Let \(\mathcal{B}(\mathbb{R}^n)\) be the Borel \(\sigma\)-algebra on \(\mathbb{R}^n\), 
+  then \(\mathcal{B}(\mathbb{R}^n) \subseteq \Sigma\) where \(\Sigma\) is the 
+  \(\sigma\)-algebra induced by the Lebesgue measure.
+\end{lemma}
+\proof
+
+Since \(\mathcal{B}(\mathbb{R}^n)\) is the \(\sigma\)-algebra generated
+by the set of open sets of \(\mathbb{R}^n\), it suffices to show that
+for all open sets \(O \subseteq \mathbb{R}^n\),
+\(O \in \sigma(\mathcal{A}) \subseteq \Sigma\).
+
+For all \(m \in \mathbb{N}\), define
+\[C_m := \{[z, z + 2^{-m}) \mid z \in 2^{-m}\mathbb{Z}^n\} \subseteq \mathcal{A},\]
+that is the grid of half open cubes covering \(\mathbb{R}^n\) with
+individual cubes having length \(2^{-m}\). Then, by letting
+\(C_m' := \{U \in C_m \mid U \subseteq O\}\), we have
+\(C = \bigcup_{m \in \mathbb{N}} C_m'\) which is a countable set of half
+open cubes. Now, we see that \(C = O\) since \(C \subseteq O\) trivially
+and for all \(o \in O\), as \(O\) is open, there exists some
+\(\epsilon > 0\) such that \(B_\epsilon(o) \subseteq O\) and so, \(o\)
+is contained in one of the cubes with length \(< 2^{-m}\) where
+\(m > 2 / \epsilon\) and so
+\(O \in \sigma(\mathcal{A}) \subseteq \Sigma\). \qed
+
+With that, we see that all Borel sets in \(\mathbb{R}^n\) are Lebesgue
+measurable and restricting \(\tilde\lambda\) onto
+\(\mathcal{B}(\mathbb{R}^n)\), we have the following measure space on
+\(\mathbb{R}^n\).
+
+\begin{definition}
+  The Lebesgue measure \(\lambda : \mathcal{B}(\mathbb{R}^n) \to [0, \infty]\) is 
+  the Hahn-Carathéodory extension of \(\tilde\lambda\) restricted onto 
+  \(\mathcal{B}(\mathbb{R}^n)\).
+\end{definition}
+
+We note that, if \((X, \mathcal{F}, \mu)\) is a measure space and
+\(A \in \mathcal{F}\), then by defining
+\(\mathcal{F}\mid_A := \{A \cap B \mid B \in \mathcal{F}\}\) and
+\(\mu\mid_A(B) := \mu(B)\) for all \(B \in \mathcal{F}\),
+\(B \subseteq A\), it is easy to see that \(\mathcal{F}\mid_A\) is a
+\(\sigma\)-algebra on \(A\) and \(\mu\mid_A\) is a measure on
+\((A, \mathcal{F}\mid_A)\) and is called the restriction of \(\mu\) to
+\(A\). Indeed, with this in mind, we see that the Lebesgue measure can
+be restricted on small sets such as intervals; in particular, by
+restricting the Lebesgue measure on \([0, 1]\), the resulting measure
+\(\lambda\mid_{[0, 1]}\) is a probability measure.
 
 \end{document}
