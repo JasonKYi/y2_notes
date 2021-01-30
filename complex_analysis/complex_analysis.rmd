@@ -1335,8 +1335,8 @@ chapter investigate Cauchy's integral formula and some of its applications.
   \[f(z_0) = \frac{1}{2\pi i} \ointctrclockwise_\gamma \frac{f(z)}{z - z_0} \dd z.\]
 \end{theorem}
 \proof
-  As \(z_0 \in \partial \gamma\) where \(\partial \gamma\) is open, there exists 
-  some \(r' > 0\) such that \(B_{r'}(z_0) \subseteq \partial \gamma\). 
+  As \(z_0 \in \gamma^\circ\) where \(\gamma^\circ\) is open, there exists 
+  some \(r' > 0\) such that \(B_{r'}(z_0) \subseteq \gamma^\circ\). 
   Furthermroe, as \(f\) is holomorphic as \(z_0\), we have \(f\) is continuous 
   as \(z_0\). So by fixing \(\epsilon > 0\), there exists some \(\delta > 0\), such 
   that the continuity criterion applies.
