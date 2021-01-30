@@ -1377,7 +1377,7 @@ chapter investigate Cauchy's integral formula and some of its applications.
 A corollary of the generalised Cauchy's integral formula is that, if \(f\) is 
 holomorphic on \(\Omega\), then so is \(f', f'', \cdots\).
 
-## Applications of Cauchy's Integral Formula
+## Applications of the Cauchy's Integral Formula
 
 The Cauchy's integral formula is used in many places in complex analysis, 
 we shall take a look at some of its applications.
@@ -1439,4 +1439,102 @@ statement since the reverse statement follows by Cauchy-Goursat's theorem.
   \(D\), \(F\) such that \(F' = f\). Now, by the generalised Cauchy's integral 
   formula, we have \(F\) is infinitely differentiable, and so \(f\) is 
   holomorphic on \(D\).
+\qed
+
+\begin{theorem}[Taylor Expansion Theorem]
+  Let \(f\) be holomorphic in an open set \(\Omega\) and let \(z_0 \in \Omega\). 
+  Then, 
+  \[f(z) = f(z_0) + f'(z_0)(z - z_0) + \frac{f''(z_0)}{2!}(z - z_0)^2 + \cdots, \]
+  for all \(z \in B_r(z_0)\) for some \(r > 0\) such that \(B_r(z_0) \subseteq \Omega\).
+\end{theorem}
+We remark that we do not require \(f\) to be infinitely differentiable since this 
+follows from the fact that \(f\) is holomorphic.
+
+\proof
+  Let \(\gamma := \{\eta \mid |\eta - z_0| = r\} \subseteq \Omega\) and suppose 
+  \(z \in \gamma^\circ\). Then, by Cauchy's integral formula, 
+  \[\begin{split}
+    f(z) & = \frac{1}{2\pi i} \ointctrclockwise_\gamma \frac{f(\eta)}{\eta - z} \dd \eta
+        = \frac{1}{2\pi i} \ointctrclockwise_\gamma \frac{f(\eta)}{(\eta - z_0) - (z - z_0)} \dd \eta\\
+      & = \frac{1}{2\pi i} \ointctrclockwise_\gamma \frac{f(\eta)}{\eta - z_0} 
+        \frac{1}{1 - \frac{z - z_0}{\eta - z_0}} \dd \eta\\
+      & = \frac{1}{2\pi i} \ointctrclockwise_\gamma \frac{f(\eta)}{\eta - z} 
+        \left(\sum_{i = 0}^{n - 1} \left(\frac{z - z_0}{\eta - z_0}\right)^i + 
+        \frac{\left(\frac{z - z_0}{\eta - z_0}\right)^n}{1 - \frac{z - z_0}{\eta - z_0}} \right) \dd \eta\\
+      & = \frac{1}{2\pi i} \sum_{i = 0}^{n - 1} \ointctrclockwise_\gamma \frac{f(\eta)}{\eta - z} 
+        \left(\frac{z - z_0}{\eta - z_0}\right)^i \dd \eta + 
+        \frac{1}{2\pi i} \ointctrclockwise_\gamma \frac{f(\eta)}{\eta - z} 
+        \frac{\left(\frac{z - z_0}{\eta - z_0}\right)^n}{1 - \frac{z - z_0}{\eta - z_0}} \dd \eta
+  \end{split}\]
+  So, by recalling the generalised Cauchy's integral formula, we have 
+  \[f(z) = f(z_0) + f'(z_0)(z - z_0) + \cdots + \frac{f^{(n - 1)}(z_0)}{(n - 1)!}(z - z_0) 
+    + R_n,\]
+  where 
+  \[R_n = \frac{(z - z_0)^n}{2\pi i} \ointctrclockwise_\gamma 
+      \frac{f(\eta)}{(\eta - z)(\eta - z_0)^n} \dd \eta.\]
+  Now, by defining \(M = \sup_{\eta \in \overline{\gamma^\circ}} |f(\eta)|\), 
+  by the ML-inequality, 
+  \[|R_n| \le \frac{|z - z_0|^n}{2\pi}\frac{M}{(r - |z - z_0|)r^n(2\pi r)} 
+    = \frac{rM}{r - |z - z_0|}\left(\frac{|z - z_0|}{r}\right)^n.\]
+  Since \(|z - z_0| < r\), we have \(R_n \to 0\) as \(n \to \infty\).
+\qed
+
+As with real analysis, we call such an expansion of a function \(f\) the Taylor 
+expansion of \(f\) and in the specific case that \(z_0 = 0\), we call such 
+an expansion the Maclaurin expansion of \(f\).
+
+## Sequences of Holomorphic Functions
+
+\begin{theorem}
+  If \((f_n)_{n = 1}^\infty\) is a sequence of holomorphic functions that converges 
+  uniformly to a function \(f\) in every compact subset of \(\Omega\), then 
+  \(f\) is holomorphic on \(\Omega\).
+\end{theorem}
+
+We note that this is not necessarily true for real variables, that is, the uniform 
+limit of continuously differentiable functions need not be differentiable. Indeed, 
+by the Weierstrass approximation theorem, every continuous function is the uniform 
+limit of some sequences of polynomials, however, we can easily construct a non-differentiable 
+continuous function.
+
+\proof
+  Let \(D\) be any disc whose closure is contained in \(\Omega\) and \(T\) any 
+  triangle in \(D\). Then, since each \(f_n\) is holomorphic, Cauchy-Goursat's theorem 
+  implies 
+  \[\oint_T f_n(z) \dd z = 0,\]
+  for all \(n\). Furthermore, as \(f_n \to f\) uniformly in the closure \(D\), so 
+  \(f\) is continuous and 
+  \[\oint_T f_n(z) \dd z = \oint_T f(z) \dd z,\]
+  and so 
+  \[\oint_T f(z) \dd z  = 0,\]
+  hence, by Morera's theorem, we find that \(f\) is holomorphic in \(D\). Since 
+  \(D\) was chosen arbitrarily, \(f\) is holomorphic on \(\Omega\).
+\qed
+
+\begin{corollary}
+  If  \((f_n)_{n = 1}^\infty\) is a sequence of holomorphic functions on \(\Omega\) 
+  such that 
+  \[F(z) = \sum_{n = 1}^\infty f_n(z)\]
+  converges uniformly for all compact subsets of \(\Omega\), then \(F\) is also 
+  holomorphic on \(\Omega\).
+\end{corollary}
+
+\begin{prop}
+  Let \((f_n)_{n = 1}^\infty\) be a sequence of holomorphic functions that converges 
+  uniformly to \(f\) in every compact subset of \(\Omega\). Then the sequence 
+  \((f'_n)_{n = 1}^\infty\) converges to \(f'\) on every compact subset of \(\Omega\).
+\end{prop}
+\proof
+  Let \(U \subseteq \Omega\) such that \(\overline{U} \subseteq \Omega\) and for 
+  all \(\delta > 0\), we define \(U_\delta\) such that 
+  \[U_\delta := \{z \in U \mid \overline{B_\delta}(z) \subseteq U\}.\]
+  Then, by the previous theorem, it suffices to show \((f'_n)_{n = 1}^\infty\) 
+  converges uniformly to \(f'\) on \(\overline{U_\delta}\). For any holomorphic function \(F\) 
+  on \(U_\delta\) we have, 
+  \[|F'(z)| = \left|\frac{1}{2\pi i} \oint_{|\eta - z| = 
+    \delta}\frac{F(z)}{(\eta - z)^2} \dd \eta \right| 
+    \le \frac{1}{2\pi}\max_{\eta \in U}|F(\eta)| \frac{1}{\delta^2} 2\pi\delta \le 
+    \frac{1}{\delta}\max_{\eta \in U}|F(\eta)|,\]
+  by the generalised Cauchy's integral formula. Applying this inequality to 
+  \(F = f_n - f\) completes the proof.
 \qed
