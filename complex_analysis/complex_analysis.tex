@@ -1494,4 +1494,88 @@ Then, \[\begin{split}
 \[\frac{1}{2\pi i}\oint_C \frac{f(z) - f(z_0)}{z - z_0} \dd z = 0\] and
 hence the result. \qed
 
+\begin{theorem}[Generalised Cauchy's Integral Formula]
+  Let \(f\) be holomorphic in an open set \(\Omega\), then \(f\) has infinitely 
+  differentiable in \(\Omega\). Moreover, for a simple closed piecewise-smooth 
+  curve \(\gamma \subseteq \Omega\), and for any \(z \in \gamma^\circ\), 
+  we have 
+  \[\dv[n]{f(z)}{z} = \frac{n!}{2\pi i} 
+    \ointctrclockwise_\gamma \frac{f(\eta)}{(\eta - z)^{n + 1}}\dd\eta.\]
+\end{theorem}
+\proof
+
+Follows by induction on \(n\). \qed
+
+A corollary of the generalised Cauchy's integral formula is that, if
+\(f\) is holomorphic on \(\Omega\), then so is \(f', f'', \cdots\).
+
+\hypertarget{applications-of-cauchys-integral-formula}{%
+\subsection{Applications of Cauchy's Integral
+Formula}\label{applications-of-cauchys-integral-formula}}
+
+The Cauchy's integral formula is used in many places in complex
+analysis, we shall take a look at some of its applications.
+
+\begin{theorem}[Liouville's Theorem]
+  If an entire function is bounded, then it is constant.
+\end{theorem}
+\proof
+
+Suppose \(f\) is bounded by \(M \in \mathbb{R}\), i.e.~for all
+\(z \in \mathbb{C}\), \(|f(z)| \le M\). So, for all
+\(z_0 \in \mathbb{C}\), by the generalised Cauchy's integral formula,
+\[|f'(z_0)| = \left|\frac{1}{2\pi i} \ointctrclockwise_{C_r(z_0)} 
+    \frac{f(z)}{(z - z_0)^2} \dd z\right|
+    \le \frac{M}{r} \to 0,\] as \(r \to \infty\). So, for all
+\(z_0 \in \mathbb{C}\), \(f'(z_0) = 0\), hence \(f\) is constant. \qed
+
+Unexpectedly, Liouville's theorem results in the fundamental theorem of
+algebra.
+
+\begin{theorem}[Fundamental Theorem of Algebra]
+  Every complex polynomial of degree greater than zero has at least one root.
+\end{theorem}
+\proof
+
+Suppose there exists some \(f \in \mathbb{C}[z]\) such that for all
+\(z \in \mathbb{C}\), \(f(z) \neq 0\). Since \(f\) is a polynomial, it
+is entire, and so, as \(f(z) \neq 0\) for all \(z\), \(1 / f\) is also
+entire. Furthermore, \(1 / f\) is bounded since \(|1 / f(z)| \to 0\) as
+\(|z| \to \infty\), and so, there exists some \(R_1 > 0\) such that for
+all \(|z| > R_1\), \(|1 / f(z)| < M_1\) for some \(M_1 \in \mathbb{R}\).
+Moreover, since \(1 / f\) is entire, it is continuous, and so, it is
+bounded on the compact set \(\{z \in \mathbb{C} \mid |z| \le R_1\}\) by
+some \(M_2 \in \mathbb{R}\). So, \(1 / f\) is bounded by
+\(\max\{M_1, M_2\}\) and hence, by Liouville's theorem, \(1 / f\) is a
+constant, and so is \(f\) \# since \(\deg f \neq 0\). \qed
+
+\begin{corollary}
+  Every polynomial \(f \in \mathbb{C}[z]\) of degree \(n\) has precisely 
+  \(n\) roots \(w_1, \cdots, w_n\) such that 
+  \[p(z) = \sum_{i = 0}^n a_i z^i = a_n\prod_{i = 1}^n (z - w_i).\]
+\end{corollary}
+\proof
+
+By FTA, we know \(f\) has at least one root \(w_1\), and so, we may
+factor \(f(z) = (z - w_1)g(z)\), where \(g \in \mathbb{C}[z]\) and
+\(\deg g = n - 1\). Thus, the result follows by induction. \qed
+
+\begin{theorem}[Morera's Theorem]
+  Suppose \(f\) is a continuous function in the open disc \(D\) such that for any 
+  triangle \(T \subseteq D\), 
+  \[\oint_T f(z) \dd z = 0,\]
+  then \(f\) is holomorphic.
+\end{theorem}
+
+Straight away, we see that the theorem may be extended so its an if and
+only if statement since the reverse statement follows by
+Cauchy-Goursat's theorem.
+
+\proof
+
+We recall that, since \(f\) is continuous on a disk, it has a primitive
+on \(D\), \(F\) such that \(F' = f\). Now, by the generalised Cauchy's
+integral formula, we have \(F\) is infinitely differentiable, and so
+\(f\) is holomorphic on \(D\). \qed
+
 \end{document}
