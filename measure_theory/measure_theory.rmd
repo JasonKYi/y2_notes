@@ -108,7 +108,7 @@ variables defined on these probability spaces are simply measurable functions to
 to real world situations in several ways.
 
 \newpage
-# Abstract Measure Theory
+# Measures and Measure Spaces
 
 ## Measures and Measure Spaces
 
@@ -673,3 +673,111 @@ restriction of \(\mu\) to \(A\). Indeed, with this in mind, we see that the
 Lebesgue measure can be restricted on small sets such as intervals; in particular, 
 by restricting the Lebesgue measure on \([0, 1]\), the resulting measure 
 \(\lambda\mid_{[0, 1]}\) is a probability measure.
+
+## Lebesgue Measurable Sets
+
+We investigate which real sets are Lebesgue measurable.
+
+\begin{prop}
+  For all \(A \in \mathcal{B}(\mathbb{R}^n)\), 
+  \[\lambda(A) = \inf_{G \supseteq A; G \text{open}} \lambda(G).\]
+\end{prop}
+\proof
+  Since measures are monotone, \((\le)\) is established. By recalling the 
+  construction of the Lebesgue measure, and by the properties of \(\inf\), 
+  for all \(\epsilon > 0\), there exists some \((K_n)_{n = 1}^\infty \subseteq \mathcal{A}\),
+  such that \(A \subseteq \bigcup K_n\) and 
+  \[\lambda(A) + \epsilon = \lambda^*(A) + \epsilon \ge 
+    \sum_{n = 1}^\infty \tilde\lambda (K_n) \ge 
+    \tilde\lambda\left(\bigcup K_n\right) = \lambda\left(\bigcup K_n\right)
+    \ge \inf_{G \supseteq A; G \text{open}} \lambda(G).\]
+  since the union of open sets is open, \(\bigcup K_n\) is open and contains 
+  \(A\). So, as \(\epsilon > 0\) was arbitrary, \((\ge)\) is established.
+\qed
+
+By inspection of the proof, we find the statement to be true for any real sets 
+provided with change \(\lambda\) to the outer measure \(\lambda^*\) on the 
+left hand side. This *regularity* of measurable sets is expressed in the 
+following.
+
+\begin{prop}\label{exist_open_near}
+  If \(A \in \mathcal{B}(\mathbb{R}^n)\), then for all \(\epsilon > 0\), there 
+  exists some \(G \supseteq A\), \(G\) open such that \(\lambda(G \setminus A) < \epsilon\).
+\end{prop}
+\proof
+  One can of course prove it using the construction of the Lebesgue measure, 
+  however, a stronger proposition holds.
+\qed
+
+\begin{prop}
+  Let \(\mathcal{A}\) be an algebra and \(\mu\) an measure on \(\sigma(\mathcal{A})\) 
+  which is \(\sigma\)-finite on \(\mathcal{A}\). Then, for all \(A \in \sigma(\mathcal{A})\), 
+  and \(\epsilon > 0\), there exist disjoint sets \((A_n)_{n = 1}^\infty \in \mathcal{A}\) 
+  such that \(A \subseteq \bigcup A_n\) and 
+  \(\mu\left(\bigcup A_n \setminus A\right) < \epsilon\).
+\end{prop}
+\proof
+  See problem sheet 4.
+\qed
+
+Furthermore, by applying proposition \ref{exist_open_near} to \(A^c\) for 
+some \(A \in \mathcal{B}(\mathbb{R}^n)\), there exists some \(\tilde G\) open, 
+containing \(A^c\) such that \(\lambda(\tilde G \setminus A^c) < \epsilon\) 
+for all \(\epsilon > 0\). Then, by defining \(F := \tilde G^c\), we have 
+\(F \subseteq A\) closed, such that 
+\[\lambda(A \setminus F) = \lambda(A \cap F^c) = \lambda (A \cap \tilde G) 
+  = \lambda(\tilde G \setminus A^c) < \epsilon.\]
+Thus, 
+\[\lambda(G \setminus F) = 
+  (\lambda(G) - \lambda(A)) + (\lambda(A) - \lambda(F)) 
+  = \lambda(G \setminus A) + \lambda(A \setminus F) < 2 \epsilon.\]
+So, for all \(A \in \mathcal{B}(\mathbb{R}^n)\), there exists some open \(G \supseteq A\) 
+and some closed \(F \subseteq A\) such that \(\lambda(G \setminus F) < \epsilon\) 
+for all \(\epsilon > 0\).
+
+\begin{prop}[Transitional Invariance of \(\lambda\)]
+  Let \(\Phi_{x_0} : \mathbb{R}^n \to \mathbb{R}^n : x \mapsto x + x_0\) for 
+  some \(x_0 \in \mathbb{R}^n\). Then, 
+  \[\lambda(\Phi_{x_0}(A)) = \lambda(A),\]
+  for all \(A \in \mathcal{B}(\mathbb{R}^n)\).
+\end{prop}
+\proof
+  Since, for all \(A \in \mathcal{B}(\mathbb{R}^n)\), there exists some open 
+  \(G \supseteq A\) such that \(\lambda(G) - \lambda(A) < \epsilon\), it suffices 
+  to show transitional invariance for open sets. Now, as shown previously, any 
+  open sets in \(\mathbb{R}^n\) can be written as a disjoint union of countable 
+  intervals, the result follows since Lebesgue measures are transitional invariant 
+  on intervals by definition.
+\qed
+
+\begin{prop}
+  \(\mathcal{B}(\mathbb{R}) \neq \mathcal{P}(\mathbb{R})\).
+\end{prop}
+\proof
+  As we have seen last term, the Vitali set is a classical example of a 
+  non-measurable real set. 
+
+  Define the equivalence relation \(\sim\) such that, for all \(x, y \in (0, 1]\), 
+  \(x \sim y \iff x - y \in \mathbb{Q}\). Then, with axiom of choice, for each 
+  equivalence class \([x] \in (0, 1] \setminus \sim\), we choose exactly one 
+  \(v \in [x]\) and we define the Vitali set \(V\) to be the set of these 
+  choices.
+
+  Now, let \(A := \mathbb{Q} \cap (-1, 1]\) and then, 
+  \[(0, 1] \subseteq \bigcup_{q \in A} (q + V) \subseteq [-1, 2],\]
+  where the first inclusion is true since, for all \(x \in (0, 1]\), \(x\) belongs 
+  to an equivalence class \([x']\) where \(x' \in V\). Now, as \(x \in [x']\) 
+  implies \(x - x' \in \mathbb{Q}\), we can simply choose \(q = x - x'\) and so 
+  \(x = q + x' \in \bigcup q + V\).
+
+  Thus, if \(V\) is measurable, then \(1 \le \lambda(\bigcup(q + V)) \le 3\). Now, 
+  by observing that for all \(p, q \in \mathbb{Q}\), if \(p \neq q\) then 
+  \(p + V \cap q + V = \varnothing\), 
+  \[\lambda\left(\bigcup_{q \in A}(q + V)\right) = \sum_{q \in A} \lambda(q + V)
+    = \sum_{q \in A} \lambda(V),\]
+  since \(\lambda\) is transitional invariant. However, as \(\lambda(V)\) is bounded 
+  above by 3, \(\lambda(V) = 0\) \# as \(\lambda(V) \ge 1\). 
+
+  So \(V \not\in \mathcal{B}(\mathbb{R})\) and hence 
+  \(\mathcal{B}(\mathbb{R}) \neq \mathcal{P}(\mathbb{R})\).
+\qed
