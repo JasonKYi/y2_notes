@@ -662,12 +662,159 @@ before, then by the Banach fixed point theorem, there exists a unique
 \(\lambda \in X\) such that \(P(\lambda) = \lambda\). So, \(\lambda\) is
 the unique local solution to our IVP. \qed
 
+While the theorem only provides us with a local solution, the solution
+can be easily extended on the whole space by reapplying the theorem at
+the end points of the local unique solution (see problem sheet).
+
 We remark that we have proven the global version of the Picard-Lindelöf
-theorem in contrast to the local version which we shall look at later.
-The global version requires \(f\) is globally defined and is also the
-Lipschitz condition is held globally. Furthermore, while the theorem
-only provides us with a local solution, the solution can be easily
-extended on the whole space by reapplying the theorem at the end points
-of the local unique solution (see problem sheet).
+theorem in contrast to the local version. The global version requires
+\(f\) is globally defined and is also the Lipschitz condition is held
+globally; these conditions will be relaxed for the local version.
+Indeed, it is not difficult to see that the global Lipschitz condition
+is too strong by considering the differential equations such as
+\(\dot x = tx^2\).
+
+Let us now differentiate between the functions that are globally and
+locally Lipschitz continuous.
+
+\begin{definition}[Globally Lipschitz Continous]
+  \(f : D \subseteq \mathbb{R} \times \mathbb{R}^d \to \mathbb{R}^d\) is said 
+  to be globally Lipschitz continuous with respect to \(x\) if there exists some 
+  \(K > 0\) such that for all \(t \in \mathbb{R}\), \(x, y \in \mathbb{R}^d\),
+  \[\|f(t, x) - f(t, y)\| \le K\|x - y\|.\]
+\end{definition}
+
+\begin{definition}[Locally Lipschitz continuous]
+  \(f : D \subseteq \mathbb{R} \times \mathbb{R}^d \to \mathbb{R}^d\) is said 
+  to be locally Lipschitz continuous with respect to \(x\) if for all 
+  \((t_0, x_0) \in D\), there exists some neighbourhood \(U\) of \((t_0, x_0)\)
+  and some \(K > 0\) such that 
+  \[\|f(t, x) - f(t, y)\| \le K\|x - y\|,\]
+  for all \((t, x), (t, y) \in U\).
+\end{definition}
+
+\begin{theorem}[Picard-Lindelöf Theorem (local version)]
+  Let \(D \subseteq \mathbb{R} \times \mathbb{R}^d\) be open and 
+  \(f : D \to \mathbb{R}^d\) be continuous and locally Lipschitz continuous. 
+  Then, for all \((t_0, x_0) \in D\), the IVP 
+  \[\dot x = f(t, x); \hspace{2mm} x(t_0) = x_0\]
+  has a unique solution on an interval of the form \([t_0 - h, t_0 + h]\) where 
+  \(h = h(t_0, x_0)\) (Qualitative version). Furthermore, if we denote \(U\) for 
+  the neighbourhood of \((t_0, x_0)\) on which the Lipschitz condition is held 
+  with the Lipschitz constant \(K > 0\), by defining 
+  \[W^{\tau, \delta}(t_0, x_0) := [t_0 - \tau, t_0 + \tau] \times 
+    \overline{B_\delta(x_0)} \subseteq U,\]
+  for some sufficent \(\tau, \delta > 0\), and \(M :\ge \|f(t, x)\|\) on 
+  \(W^{\tau, \delta}(t_0, x_0)\), there exists a unique solution on the 
+  interval \([t_0 - h, t_0 + h]\), where \(h := \min\{\tau, 1 / 2K, \delta / M\}\) 
+  (Quantitative version). 
+\end{theorem}
+\proof
+
+See extra meterials. \qed
+
+\begin{prop}
+  Let \(\Omega \subseteq \mathbb{R}^d\) be open and \(f : \Omega \to \mathbb{R}^d\) 
+  be continuously differentiable. Then \(f\) is locally Lipschitz continuous.
+\end{prop}
+\proof
+
+For al \(x \in \Omega\), let \(U \subseteq \Omega\) be a compact set
+containing \(x\) (\(U\) exists as \(\Omega\) is open, there exists some
+\(\delta > 0\) such that \(B_\delta(x) \subseteq \Omega\), and so, we
+can simply take \(U = \overline{B_{\delta / 2}(x)}\)). Then, since
+\(f'\) is continuous, it is bounded by some \(M > 0\). Thus, for all
+\(x, y \in U\), by the mean value inequality, there exists some
+\(\xi \in [x, y]\) such that
+\[\|f(x) -f(y)\| \le \|f(\xi)\|_{\text{op}}\|x - y\| \le M \|x - y\|.\]
+Thus, \(f\) is locally Lipschitz at \(x\) on \(U\) with the Lipschitz
+constant \(M\). \qed
+
+\begin{lemma}
+  Let \(f : D \subseteq \mathbb{R} \times \mathbb{R}^d \to \mathbb{R}^d\) be continuous 
+  and locally Lipschitz where \(D\) is open. Then, given two solutions 
+  \(\lambda : I \to \mathbb{R}^d\) and \(\mu : J \to \mathbb{R}^d\) of 
+  the differential equation \(\dot x = f(t, x)\), either \(\lambda(t) = \mu(t)\) 
+  or \(\lambda(t) \neq \mu(t)\) for all \(t \in I \cap J\).
+\end{lemma}
+\proof
+
+Suppose there exists some \(t_0, t_1 \in I \cap J\) such that
+\(\lambda(t_0) = \mu(t_0)\) and \(\lambda(t_1) \neq \mu(t_1)\), and
+furthermore, Wlog. assume \(t_1 > t_0\). Then, by defining
+\[\tilde t := \sup \{t > t_0 \mid \lambda(t') = \mu(t'), 
+    \hspace{1mm} \forall t' \in [t_0, t]\},\] by the continuity of
+\(\lambda\) and \(\mu\), \(\lambda - \mu\) is continuous, and so, by
+considering
+\(0 = \lim_{n \to \infty} (\lambda - \mu)(\tilde t - 1 / n) =  (\lambda - \mu)(\tilde t)\),
+we have \(\lambda(\tilde t) = \mu(\tilde t)\). Then, by applying the
+local version of the Picard-Lindelöf theorem with the initial value
+\((\tilde t, \lambda(\tilde t) = \mu(\tilde t))\), we see that there
+exists two different solutions \#. \qed
+
+\hypertarget{maximal-solutions}{%
+\subsection{Maximal Solutions}\label{maximal-solutions}}
+
+As we have seen, the local version of Picard-Lindelöf provides us with a
+unique solution on some interval around the initial value. We would now
+like to maximise the size of this interval around the initial value and
+such solutions are called maximal solutions.
+
+\begin{definition}[Maximal Existence Interval]
+  Given a initial value problem \(\dot x = f(t, x)\), \(x(t_0) = x_0\), 
+  we define 
+  \[I_+(t_0, x_0) := \sup \{t \ge t_0 \mid \exists \text{ solution on } [t_0, t]\},\]
+  \[I_-(t_0, x_0) := \inf \{t \le t_0 \mid \exists \text{ solution on } [t, t_0]\},\]
+  and the maximal existence interval,
+  \[I_{\max} (t_0, x_0) := (I_-(t_0, x_0), I_+(t_0, x_0)).\]
+\end{definition}
+
+\begin{theorem}
+  There exists a maximal solution\footnote{Any solution is defined on a subset of
+  \(I_{\max}(t_0, x_0)\).} 
+  \[\lambda_{\max} : I_{\max} (t_0, x_0) \to \mathbb{R}^d\]
+  of the IVP \(\dot x = f(t, x)\), \(x(t_0) = x_0\) where \(f\) is continuous 
+  and locally Lipschitz. Furthermore, if \(I_+(t_0, x_0) < \infty\), then 
+  either the maximal solution is unbounded for \(t \supseteq t_0\), that is,
+  \[\sup_{t \ge t_0}\|\lambda_{\max}(t)\| = \infty,\]
+  or \(\partial D \neq \varnothing\), and 
+  \[\lim_{t \uparrow I_+(t_0, x_0)} \text{dist}((t, \lambda_{\max}(t)), \partial D) = 0,\]
+  where \(\text{dist}(y, A) := \inf\{\|x - y\| \mid x \in A\}\).
+  Analogous case for \(I_- (t_0, x_0) > -\infty\).
+\end{theorem}
+\proof
+
+Let \(\bar{t} \in I_{\max}(t_0, x_0)\), then, by the definition of the
+maximal existence interval, there exists some solution
+\(\mu : I \to \mathbb{R}^d\) such that \(\bar{t}, t_0 \in I\). Now, by
+considering that the solutions cannot cross each other, we see that all
+solutions of the IVP on \([t_0, \bar{t}]\) must coincide as they crosses
+at \((t_0, x_0)\). Thus, the definition
+\[\lambda_{\max}(\bar{t}) := \mu(\bar{t})\] is well-defined. Indeed,
+\(\lambda_{\max}\) is a solution at \(\bar{t}\) since
+\[\dot \lambda_{\max}(\bar{t}) = \dot \mu(\bar{t}) = f(\bar{t}, \mu(\bar{t})) = 
+    f(\bar{t}, \lambda_{\max}(\bar{t})).\] Now, by the construction of
+\(I_{\max}\), the only possible case on which the the theorem does not
+hold is that \(I_+(t_0, x_0) \in I_{\max}(t_0, x_0)\). So, for
+contradiction, assume that there exists some solution
+\(\mu : [t, I_{\max}(t_0, x_0)] \to \mathbb{R}^d\) to the IVP. However,
+by the local version of Picard-Lindelöf, there exists some open \(U\)
+containing \(I_{\max}(t_0, x_0)\) such that there exists a unique
+solution \(\eta\) of the IVP on the interval
+\((I_{\max}(t_0, x_0) - h, I_{\max}(t_0, x_0) + h)\), and hence, we may
+extend \(\mu\) to be a solution on \([t, I_{\max}(t_0, x_0) + h]\)
+contradicting the maximum condition \#.
+
+For the second part of the theorem, assume \(I_+(t_0, x_0) < \infty\).
+Then, we may find some sequence \((t_n)_{n = 1}^\infty\subseteq D\) that
+converges to \(I_-(t_0, x_0)\) and assume, for contradiction, there
+exists some \(M > 0\), such that \(\|\lambda_{\max}(t_n)\| \le M\) and
+\(\text{dist}((t_n, \lambda_{\max}(t_n)),  \partial D) \ge 1 / M\) for
+all \(n \in \mathbb{N}\).
+
+By assumption, we have \((t_n, \lambda_{\max}(t_n))\) is a bounded
+sequence, and so, by Bolzano-Weierstrass, it has a convergent
+subsequence \((t_{n_i}, \lambda_{\max}(t_{n_i}))\) which converges to
+\((t^*, x^*) \in D\)\ldots{} \qed
 
 \end{document}
