@@ -57,7 +57,7 @@ as it is orthonormal and given some vector \(\mathbf{v}\), the dot product
 \newpage
 # Numerical Linear Algebra
 
-## Orthogonalisation 
+## Gram-Schmidt and QR-Decomposition I
 
 We would like to find an orthogonal basis from a set of linearly independent 
 vectors. As, simply by normalising the resulting vectors, we also obtain an 
@@ -133,8 +133,9 @@ accuracy and stability. As we shall see on in an exercise, it is possible to
 construct a slightly different version of the Gram-Schmidt procedure --
 *modified Gram-Schmdit* (mGS) such that this is no longer a problem. 
 
-## QR-Decomposition I
-
+The Gram-Schmidt procedure can be use to decompose a matrix into a product 
+of an orthogonal matrix and a upper-triangular matrix. This process is 
+refereed to as QR-decomposition.
 The QR-decomposition is a very important decomposition in numerical analysis and 
 we shall, in fact, look at two methods of achieving the QR-decomposition, 
 and hence the name of this section. The QR-decomposition decomposes a matrix 
@@ -626,3 +627,67 @@ Thus, by considering \(\langle R\mathbf{x} - \alpha, \beta \rangle =
 \(\|A\mathbf{x} - b\|^2 = \|R\mathbf{x} - \alpha\|^2 + \|\beta\|^2 = \|\beta\|^2\) 
 whenever \(x = x^*\). So, \(x^*\) is the solution and \(\|\beta\|\) is the norm 
 of the residual.
+
+## LU-Decomposition
+
+As we have seen, the QR-decomposition provides us with a method for solving 
+a system of equation with more equations than unknowns and this decomposition 
+can also be used when ever we would like to solve a system with equal number 
+of equations as unknowns. However, this problem can be solved more efficiently 
+through the LU-decomposition.
+
+Similar to the QR-decomposition, the LU-decompostion shall manipulate the matrix 
+column by column in order to reduce the matrix to upper-triangular form. In contrast 
+to the Householder QR-decomposition however, we shall achieve this through a 
+sequence of lower-triangular matrices, i.e. 
+\[L_{m - 1} \cdots L_2 L_1 A = U,\]
+where \(A \in \mathbb{R}^{m \times n}\), \(U\) upper-triangular and 
+\((\prod L_i)^{-1}\) lower-triangular.
+
+This decomposition is helpful in solving the linear equation \(A\mathbf{x} = \mathbf{b}\) 
+since if \(A = LU\), we have \(\mathbf{b} = L (U\mathbf{x}) = L\mathbf{y}\). 
+Thus, by using forward substitution, we can solve \(\mathbf{y}\) resulting in the system
+\(U\mathbf{x} = \mathbf{y}\) which can be solved using backwards substitution.
+
+Consider for each step, we require the operator \(L_k\) to turn a general vector 
+into a vector with 0 below the \(k\)-th entries, i.e.
+\[\begin{pmatrix}
+  x_{1, k} \\ \vdots \\ x_{k, k} \\ x_{k + 1, k} \\ \vdots \\ x_{m, k}
+  \end{pmatrix} 
+  \xrightarrow[]{L_k} 
+  \begin{pmatrix}
+  x_{1, k} \\ \vdots \\ x_{k, k} \\ 0 \\ \vdots \\ 0
+  \end{pmatrix},\]
+and so, we see that 
+\[L_k = 
+\begin{pmatrix}
+  1 & & & & & \\
+  & \ddots & & & & \\
+  & & 1 & & & \\
+  & & -l_{k + 1, k} & 1 & & \\
+  & & \vdots & & \ddots & \\
+  & & -l_{m, k} & & & 1
+\end{pmatrix},\]
+where \(l_{j, k} = x_{j, k} / x_{k, k}\) for \(k < j \le m\). However, this 
+algorithm as it stands is numerically unstable. Indeed, if there exists a \(0\) 
+on the diagonal then the algorithm will need to divide by zero! To combat this, 
+we will introduce an additional step called *partial pivoting*.
+
+Consider instead, when acting on the \(k\)-th column of \(A\), we denote \(i\) for the 
+entry of \(A_{k:m, k}\) with maximum absolute value. Then, by multiplying by a 
+permutation matrix \(P\), we may swap the \(i\)-th entry with the \(k\)-th entry of 
+\(A_{k:m, k}\) and we may proceed with the standard LU-step. Thus, the full 
+decomposition becomes
+\[L_{m - 1}P_{m -1} \cdots L_2 P_2 L_1 P_1 A = U.\]
+Now, (as seen on the problem sheet) we have, 
+\[L_{m - 1}P_{m -1} \cdots L_2 P_2 L_1 P_1 
+  = L_{m - 1}' \cdots L_2' L_1' P_{m - 1} \cdots P_2 P_1,\]
+where \(L_i'\) are also lower-triangular matrices. Thus, this modified procedure 
+results in the linear system 
+\[PA = LU,\]
+where \(P = \prod P_i\) is a permutation matrix. In other words, to achieve 
+the LU-decomposition with partial pivoting all we have to do is to permute the 
+rows of \(A\) before hand such that for each \(k\), the maximum entry of 
+\(A_{k:m, k}\) is swapped with \(A_{k, k}\) and then proceeding as usual.
+
+

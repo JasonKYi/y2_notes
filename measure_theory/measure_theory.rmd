@@ -781,3 +781,173 @@ for all \(\epsilon > 0\).
   So \(V \not\in \mathcal{B}(\mathbb{R})\) and hence 
   \(\mathcal{B}(\mathbb{R}) \neq \mathcal{P}(\mathbb{R})\).
 \qed
+
+\newpage
+# Functions and Integration
+
+## Measurable Functions
+
+\begin{definition}
+  Let \((X, \mathcal{A})\) and \((Y, \mathcal{A}')\) be measurable spaces and 
+  \(f : X \to Y\) be a function. Then \(f\) is \(\mathcal{A} - \mathcal{A}'\) 
+  measurable if for all \(A \in \mathcal{A}'\), 
+  \[f^{-1}(A) := \{x \in X \mid f(x) \in A\} \in \mathcal{A}.\]
+  In the special case that \(Y = \mathbb{R}\) and \(\mathcal{A}' = \mathcal{B}(\mathbb{R})\) 
+  we say \(f\) is Borel-measurable.
+\end{definition}
+
+In applications to probability theory, we recall that one work with the measure 
+space \((\Omega, \mathcal{A}, \mathcal{P})\), and in particular, if 
+\(X : \Omega \to \mathbb{R}\) is \(\mathcal{A} - \mathcal{B}(\mathbb{R})\) measurable, 
+then \(X\) is refereed to as a real-valued random variable.
+
+While we may check the measurability of a function directly from definition, 
+the following lemma provides us with a easier method. 
+
+\begin{lemma}\label{measurable_gen}
+  Let \(X, Y\), \(\mathcal{E} \subseteq \mathcal{P}(Y)\) be sets and 
+  \(\mathcal{A}\) a \(\sigma\)-algebra on \(X\). Then a function 
+  \(f : X \to Y\) is \(\mathcal{A} - \sigma(\mathcal{E})\) measurable 
+  if and only if for all \(A \in E\), \(f^{-1}(A) \in \mathcal{A}\).
+\end{lemma}
+\proof
+  The forward direction is trivial so let us consider the reverse. 
+
+  Consider the set \(\mathcal{Q} := \{ S \in \sigma(\mathcal{E}) \mid f^{-1}(S) \in \mathcal{A}\}\).
+  It suffices to show \(\mathcal{Q}\) is a \(\sigma\)-algebra since, since if that 
+  is the case, as \(\mathcal{E} \subseteq \mathcal{Q}\), we have 
+  \(\sigma(\mathcal{E}) \subseteq \mathcal{Q}\). 
+
+  Straight away, we have \(\varnothing \in \mathcal{Q}\) since 
+  \(f^{-1}(\varnothing) = \varnothing \in \mathcal{A}\). Furthermore, if \(A \in \mathcal{Q}\),
+  then \(f^{-1}(A) \in \mathcal{A}\) and so \(f^{-1}(A^c) = f^{-1}(A)^c \in \mathcal{A}\); 
+  and hence, \(A^c \in \mathcal{Q}\). Lastly, if \((A_n)_{n = 1}^\infty \subseteq \mathcal{Q}\), 
+  then \(f^{-1}\left(\bigcup A_n \right) = \bigcup f^{-1}(A_n) \in \mathcal{A}\), 
+  and so, \(\bigcup A_n \in \mathcal{Q}\). Thus, \(\mathcal{Q}\) is a \(\sigma\)-algebra.
+\qed
+
+With this lemma in mind, on can check the measurability of a function by simply 
+insuring the measurable of the preimage of sets belonging to the generating set. 
+As an example, we may show a function \(f\) to be Borel-measurable by simply showing 
+that for all \(U \subseteq \mathbb{R}\), if \(U\) is open then 
+\(f^{-1}(U) \in \mathcal{B}(\mathbb{R})\). Indeed, we may further relax this 
+constraint by recalling that \(\mathcal{B}(\mathbb{R}) = \sigma(\{(-\infty, y] \mid y \in \mathbb{R}\})\), 
+and so, it suffices to ensure the measurability of \((-\infty, y]\) ofr all \(y \in \mathbb{R}\).
+
+\begin{definition}
+  If \(f : X \to \overline{\mathbb{R}} = [-\infty, \infty]\) be a function where 
+  \((X, \mathcal{A})\) is a measurable space. Then \(f\) is 
+  measurable if \(f^{-1}(\mathcal{B}(\mathbb{R})) \subseteq \mathcal{A}\) and 
+  \(f^{-1}(\{\infty\}), f^{-1}(\{- \infty\}) \in \mathcal{A}\).
+\end{definition}
+
+With this definition in mind, let us consider some functions that are measurable.
+
+\begin{prop}
+  Any continuous function \(f : X \to Y\) where \((X, \mathcal{T}_X), (Y, \mathcal{T}_Y)\) 
+  are topological spaces is \(\mathcal{B}(X) - \mathcal{B}(Y)\) measurable.
+\end{prop}
+\proof
+  Follows directly by the definition of continuity and lemma \ref{measurable_gen}.
+\qed
+
+\begin{corollary}
+  Any continuous function \(f : \mathbb{R}^n \to \mathbb{R}^m\) is Borel-measurable.
+\end{corollary}
+
+\begin{prop}
+  Let \((X, \mathcal{A})\) be a measurable space and \(A \subseteq X\). Then 
+  the indicator function of \(A\), defined as 
+  \[\mathbf{1}_A : X \to \mathbb{R} : x \mapsto 
+  \begin{cases}
+    1, \hspace{1mm} x \in A\\
+    0, \hspace{1mm} x \in A^c
+  \end{cases}\]
+  is measurable if and only if \(A \in \mathcal{A}\).
+\end{prop}
+\proof
+  Indeed, if \(A \not\in \mathcal{A}\), then, while \(\{1\}\) is Borel-measurable, 
+  \(f^{-1}(\{1\}) = A \not\in \mathcal{A}\), and so \(\mathbf{1}_A\) is not measurable. 
+
+  On the other hand, if \(A \in \mathcal{A}\), then, for all \(S \subseteq \mathbb{R}\), 
+  either \(0 \in S\), \(1 \in S\), both are in \(S\), or neither are in \(S\) 
+  resulting in \(f^{-1}(S) = A, A^c, X\) or \(\varnothing\), all of which 
+  are members of \(\mathcal{A}\). So \(f\) is measurable since 
+  \(\mathcal{B}(\mathbb{R}) \subseteq \mathcal{P}(\mathbb{R})\).
+\qed
+
+With this proposition, we have \(\mathbf{1}_\mathbb{Q}\) is measurable since 
+\(\mathbb{Q}\) is countable and so, is a countable union of singletons and hence 
+is measurable. 
+
+\begin{prop}
+  Let \((X, \mathcal{A}_X), (Y, \mathcal{A}_Y), (Z, \mathcal{A}_Z)\) be measurable 
+  spaces. Then, if \(f : X \to Y\) and \(g : Y \to Z\) are both measurable, 
+  then \(g \circ f : X \to Z\) is also measurable.
+\end{prop}
+\proof
+  This follows directly since for all \(U \in \mathcal{A}_Z\), 
+  \((g \circ f)^{-1}(U) = f^{-1}(g^{-1}(U))\), and as \(g^{-1}(U)\) is measurable 
+  as \(g\) is, \(f^{-1}(g^{-1}(U)) \in \mathcal{A}_X\) and so
+  \(g \circ f : X \to Z\) is measurable.
+\qed
+
+\begin{theorem}
+  Let \((X, \mathcal{A})\) be a measurable space and \(f, g : X \to \mathbb{R}\) 
+  are \(\mathcal{A} - \mathcal{B}(\mathbb{R})\) measurable functions. Then, 
+  \[f + g, \hspace{1mm} fg, \hspace{1mm} |f|, \hspace{1mm} f \wedge g := \min\{f, g\}, 
+    \hspace{1mm} f \vee g := \max\{f, g\}, \hspace{1mm} \frac{1}{f},\]
+  are all measurable (where the last function is measurable provided \(f(x) \neq 0\) 
+  for all \(x\)). Furthermore, if \((f_n) : \mathbb{N} \to X \to \mathbb{R}\) 
+  is a sequence of measurable functions, then 
+  \[\inf_{n \in \mathbb{N}} f_n, \hspace{1mm} \sup_{n \in \mathbb{N}} f_n, 
+    \hspace{1mm} \liminf_{n \to \infty} f_n, \hspace{1mm} \limsup_{n \to \infty} f_n\]
+  are also measurable. 
+\end{theorem}
+
+As we shall see later, the construction of the Lebesgue integral allows us to 
+integral measurable function. Thus, with this theorem, we see the limit of integrable 
+functions are also integrable. This contrasts with the Darboux integral where this 
+is not necessarily the case (see motivation).
+
+\proof
+  \((f + g)\). 
+  It is not hard to see that
+  \[(f + g)^{-1}(- \infty, a) = \bigcup_{r \in \mathbb{Q}_{\le a}} 
+    \bigcup_{s \in \mathbb{Q}_{\le a - r}} f^{-1} (-\infty, r) \cap g^{-1}(-\infty, s),\]
+  where the right hand side is measurable, and so \(f + g\) is measurable.
+
+  \((fg)\).
+  We use the identity that \(fg = \frac{1}{2}[(f + g)^2 - f^2 - g^2]\). Since 
+  \(f^2 = (x \mapsto x^2 : \mathbb{R} \to \mathbb{R}) \circ f\) where 
+  \(x \mapsto x^2 : \mathbb{R} \to \mathbb{R}\) is continuous and hence, 
+  measurable, we have \(fg\) as a linear combination of measurable functions, and 
+  so, by our previous result, \(fg\) is measurable. 
+
+  \((|f|)\) \((f \wedge g)\) \((f \vee g)\). 
+  We define \((\cdot)^+ : \mathbb{R} \to \mathbb{R} := s \mapsto \max\{s, 0\}\) 
+  and \((\cdot)^- : \mathbb{R} \to \mathbb{R} := s \mapsto \max\{-s, 0\} = (-s)^+\). 
+  Now, as both \((\cdot)^+\) and \((\cdot)^-\) are continuous, they are measurable. 
+  So, since \(|f| = ((\cdot)^+ \circ f) + ((\cdot)^- \circ f))\), we have 
+  \(|f|\) is measurable. Similarly we see that
+  \[f \wedge g = f - (g - f)^-,\]
+  and 
+  \[f \vee g = f + (g - f)^+,\]
+  and so, both \((f \wedge g)\) and \((f \vee g)\) are also measurable.
+
+  \((1 / f)\). Follows as \((1 / f)^{-1}(\infty, a)\) is \(f^{-1}(1 / a, 0)\) for 
+  \(a < 0\), \(f^{-1}(- \infty, 0)\) for \(a = 0\) and \(f^{-1}((-\infty, 0) \cup (1 / a, \infty))\) 
+  for \(a > 0\).
+
+  \((\inf_{n \in \mathbb{N}} f_n)\) \((\sup_{n \in \mathbb{N}} f_n)\). 
+  Follows straight way as,  
+  \[(\inf_{n \in \mathbb{N}} f_n)^{-1}(-\infty, a) = 
+    \bigcup_{n \in \mathbb{N}} f_n^{-1}(-\infty, a),\] 
+  and \(\sup f_n = - \inf (- f_n)\).
+  
+  \((\liminf_{n \to \infty} f_n)\) \((\limsup_{n \to \infty} f_n)\). 
+  Follows as, by definition,
+  \[\liminf_{n \to \infty} f_n = \sup_{l \ge 1}\left(\inf_{k \ge l} f_k\right),\]
+  and 
+  \[\limsup_{n \to \infty} f_n = \inf_{l \ge 1}\left(\sup_{k \ge l} f_k\right).\]
+\qed
