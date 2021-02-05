@@ -524,7 +524,7 @@ we see that the invariance over functions is retained.
 
 \begin{prop}
   Let \(X_1, \cdots\) be iid. observations with pdf \(f_\theta(x)\) where 
-  \(\theta \in \Theta\) and \(Theta\) is an open interval. Furthermore, let 
+  \(\theta \in \Theta\) and \(\Theta\) is an open interval. Furthermore, let 
   \(\theta_0 \in \Theta\) be some parameter. Then under regularity conditions, 
   \begin{itemize}
     \item there exists a consistent sequence \((\hat{\theta}_n)_{n = 1}^\infty\) 
@@ -546,3 +546,169 @@ to estimate \(I_f(\theta_0)\). In general, this can be approximated by
   \item \(- \frac{1}{n}\sum_{i = 1}^n \pdv[2]{\theta} 
     \log(f(x_i \mid \theta))\mid_{\theta = \hat{\theta}}\).
 \end{itemize}
+\proof (Sketch of the existence of consistent MLEs).
+  Let us denote \(L(\theta) := \prod_{i = 1}^n f_\theta(X_i)\) and 
+  \(S_n(\theta) = \frac{1}{n} \log L(\theta) = \frac{1}{n} \sum_{i = 1}^n \log f_\theta(X_i)\).
+  Since \(\log\) is strictly increasing, we see that \(\hat{\theta}\) maximises 
+  \(L(\theta)\) if and only if it maximises \(S(\theta)\). Then, by the weak 
+  law of large numbers, given iid. \(Z_1, \cdots, Z_n\) where \(Z_i = \log f_{\theta}(X_i)\), 
+  \(S_n(\theta) \to E_{\theta_0}(Z_1) = E_{\theta_0}(\log f_{\theta_0}(X_i))\) in 
+  probability. So, \(S_n\) is a consistent estimator for \(E_{\theta_0}(\log f_{\theta_0}(X_i))\).
+
+  Let us now define \(R(\theta) := E_{\theta_0}(\log f_\theta (X_1))\) and 
+  I claim that \(\theta_0\) maximises \(R\). Indeed, by considering 
+  \(z - 1 \ge \log z\) for all \(z \in \mathbb{R}^+\), we have for all \(\theta\),
+  \[R(\theta) - R(\theta_0) = 
+    E_{\theta_0} \left[\log \frac{f_\theta(X_1)}{f_{\theta_0}(X_1)}\right]
+    \le E_{\theta_0} \left[\frac{f_\theta(X_1)}{f_{\theta_0}(X_1)} - 1\right]
+    = \int \left[\frac{f_\theta(x)}{f_{\theta_0}(x)} - 1\right] f_{\theta_0}(x) \dd x.\]
+  But this is simply, 
+  \[\int f_{\theta}(x) - f_{\theta_0}(x) \dd x = 1 - 1 = 0,\]
+  and hence, \(R(\theta) \le R(\theta_0)\) for all \(\theta \in \Theta\).
+
+  With this in mind, we have \(S_n(\theta) \to R(\theta)\) pointwise and 
+  \(S_n(\hat{\theta}) \to R(\theta_0)\) in probability. Then, by using 
+  analysis techniques, we may show \(\hat{\theta} \to \theta_0\) in probability,
+  completing the proof of the first claim.
+\qed
+
+This particular sketch of the proof (which classically Wald used) requires 
+that the map \(\theta \to R(\theta)\) to be continuous for some compact set 
+\(K \subseteq \Theta\) in which for all \(\epsilon > 0\), 
+\(\mathbb{P}(|\hat{\theta} - \theta_0| > \epsilon, \hat{\theta} \in K) \to 0\).
+There is a modern approach in which one shows that 
+\[\sup_{\theta \in \Theta} |S_n(\theta) - R(\theta)| \to 0\]
+in probability. This approach relaxes the condition some what and will be examined 
+in the third year course *Statistical Theory*.
+
+\newpage
+# Confidence Regions
+
+So far, we have being considering point estimators for single values. This 
+does not reflect any uncertainty. Indeed, as this estimator is simply resulted 
+from a random sample, it does not tell us how variable this estimate would be if 
+we drew another sample. To account for this, we may, instead of estimating a 
+single value, we provide an interval of values that contains the true parameter 
+with a certain probability.
+
+As an example, let us recall an example from first years statistics. Given 
+a random sample \(Y_1, \cdots, Y_n \sim N(\mu, \sigma_0^2)\) with \(\sigma^2_0\) 
+known, we would like to find the confidence intervale \(I\) such that 
+\(\mathbb{P}(\mu \in I) = 1 - \alpha\) for some \(\alpha > 0\), e.g. \(\alpha = 0.05\).
+By using the sample mean, we have \(\bar{Y} = \frac{1}{n} \sum Y_i \sim N(\mu, \sigma_0^2 / n)\).
+So, by standardising, we have 
+\[\frac{\bar{Y} - \mu}{\sigma_0 / \sqrt{n}} \sim N(0, 1),\]
+and so, \(c_{\alpha / 2} = \Phi^{-1}(1 - \alpha / 2)\) where \(c_{\alpha / 2}\) is 
+the value such that,
+\[1 - \alpha =  \mathbb{P}\left(- c_{\alpha / 2} < 
+  \frac{\bar{Y} - \mu}{\sigma_0 / \sqrt{n}} \sim N(0, 1) < c_{\alpha / 2} \right).\]
+Hence, the \(1 - \alpha\) confidence interval of \(\mu\) is a realisation of the 
+**random** interval
+\[I(\mathbf{Y}) = (\bar{Y} - c_{\alpha / 2} \sigma_0 / \sqrt{n}, 
+  \bar{Y} + c_{\alpha / 2} \sigma_0 / \sqrt{n}).\]
+We note that, this does not mean that given a realisation of the random interval 
+\(I\), \(\mathbb{P}(\mu \in I) = 1 - \alpha\). Indeed, if \(I\) is realised, 
+either \(\mathbb{P}(\mu \in I) = 0\) or \(\mathbb{P}(\mu \in I) = 1\).
+
+\begin{definition}[\(1 - \alpha\) Confidence Interval]
+  A \(1 - \alpha\) confidence interval for \(\theta \in \Theta\) is a random 
+  interval \(I_\theta\) that contains \(\theta\) with probability \(\ge 1 - \alpha\), 
+  that is, 
+  \[\mathbb{P}_\theta(\theta \in I) \ge 1 - \alpha.\]
+\end{definition}
+
+A confidence interval can be any types of interval including unbounded ones. Indeed, 
+if the confidence interval is unbounded, we say the confidence interval is a 
+one-sided confidence interval. An application of such an confidence interval could 
+be that we would like to measure the pollutant in drinking water with a maximum 
+percentage. Then, given a random sample of measurements \(Y_1, \cdots, Y_n\), 
+we would like to find a confidence interval for such that 
+\[\mathbb{P}(\theta \le h(Y)) = 1 - \alpha.\]
+So, the confidence interval in this case would be in the form \((-\infty, h(y)]\).
+
+## Construction of Confidence Intervals
+
+\begin{definition}[Pivotal Quantity]
+  A pivotal quantity for \(\theta\) is a function \(t(Y, \theta)\) of the data 
+  \(\theta\) (and \textbf{not} any over parameters).
+\end{definition}
+
+With the pivotal quantity for \(\theta\), \(t(Y, \theta)\), we can find constants 
+\(a_1, a_2\) such that 
+\[\mathbb{P}(a_1 \le t(Y, \theta) \le a_2) \ge 1 - \alpha\]
+since we know the distribution of \(t\). In many cases, we may rearrange the terms 
+to give 
+\[\mathbb{P}(h_1(Y) \le \theta \le h_2(Y)) \ge 1 - \alpha\]
+where \([h_1(Y), h_2(Y)]\) is a random interval. This is a \(1 - \alpha\) confidence 
+interval for \(\theta\).
+
+As an example of a pivotal quantity, suppose we would like to construct an 
+confidence interval for the random sample \(Y_1, \cdots, Y_n \sim N(\mu, \sigma^2)\) 
+where both \(\mu\) and \(\sigma^2\) are unknown. Then, we may define the pivotal 
+quantity \((Y, \mu) \mapsto \frac{\bar{Y} - \mu}{S / \sqrt{n}}\) 
+where \(S\) is the sample standard deviation. This pivotal quantity follows the 
+Student-\(t\) distribution with \(n- 1\) degrees of freedom allowing us to 
+construct a confidence interval according the the method above.
+
+On the other hand, if we would like to construct an confidence interval for 
+\(\sigma^2\), we can use the pivotal quantity 
+\((Y, \sigma^2) \mapsto \frac{1}{\sigma^2} \sum(Y_i - \bar{Y})^2\) which has 
+\(\chi^2\)-distribution with \(n - 1\) degrees of freedom.
+
+However, we see that these constructions are rather specialised to normal distributions 
+and without justification, cannot be applied to other distributions. Nonetheless, 
+as we have discussed asymptotic behaviours of estimators, in which many 
+estimators are asymptotically normal, we can use this fact to extend our theory 
+of confidence intervals.
+
+\begin{definition}[Asymptotic Confidence Interval]
+  A sequence of random intervals \(I_n\) is called an asymptotic \(1 - \alpha\) 
+  confidence interval for \(\theta\) if 
+  \[\lim_{n \to \infty} \mathbb{P}_\theta(\theta \in I_n) \ge 1 - \alpha.\]
+\end{definition}
+
+Suppose \(\hat{\sigma}_n\) is consistent for \(\sigma(\theta)\) and thus, 
+\(\hat{\sigma}_n \to \sigma(\theta)\) in probability for all \(\theta\). By 
+Slutsky's lemma, we have 
+\[\sqrt{n} \frac{T_n - \theta}{\hat{\sigma}_n} \to N(0, 1)\]
+in distribution. Using the left hand side as the pivotal quantity leads 
+us to the approximate *confidence limits* 
+\[T \pm c_{\alpha / 2} \hat{\sigma}_n / \sqrt{n}\]
+where \(\Phi(c_{\alpha / 2}) = 1 - \alpha / 2\). In general, the easiest 
+choice for \(\hat{\sigma}_n\) is simply \(\text{SE}(T_n)\).
+
+Lastly, we might be interested in constructing a confidence region for more than 
+one parameters. 
+
+\begin{definition}[Simultaneous Confidence Interval]
+  Suppose \(\theta = (\theta_1, \cdots, \theta_k)^T \in \Theta \subseteq \mathbb{R}^k\) 
+  and we have \((L_i(Y), U_i(Y))\) such that for all \(\theta\), 
+  \[\mathbb{P}(L_i(Y) < \theta_i < U_i(Y) \mid i = 1, \cdots, k) \ge 1 - \alpha.\]
+  Then, \((L_i(y), U_i(y))\) is a \(1 - \alpha\) simultaneous confidence interval 
+  for \(\theta_1, \cdots, \theta_k\).
+\end{definition}
+
+\begin{theorem}[Bonferroni Correction for Simultaneous Confidence Intervals]
+  Suppose \([L_i, U_i]\) is a \(1 - \alpha / k\) confidence interval for 
+  \(\theta_i\). Then, \(\prod [L_i, U_i]\) is a \(1 - \alpha\) simultaneous 
+  confidence interval for \(\theta = (\theta_1, \cdots, \theta_k)^T\).
+\end{theorem}
+\proof
+  \[\mathbb{P}(\theta_i \in [L_i, U_i] \mid i = 1, \cdots, k) = 1 - 
+    \mathbb{P}\left(\bigcup_{i = 1}^k \{\theta_i \not\in [L_i, U_i]\}\right)
+    \ge 1 - \sum_{i = 1}^k \mathbb{P}(\theta_i \not\in [L_i, U_i]) \ge 1 - \alpha.\]
+\qed
+
+We note that the Bonferroni corrections are conservative and it is very possible 
+that the resulting simultaneous confidence interval has a higher coverage 
+probability that that is suggested by the Bonferroni correction. We see this 
+in the example where we attempt to find the simultaneous confidence interval 
+of two *independent* random samples \(X_1, \cdots, X_n \sim N(\mu, 1)\) and 
+\(Y_1, \cdots, Y_n \sim N(\theta, 1)\). Then by the usual method, we find \(I, J\) 
+the \(1 - \alpha\)-confidence intervals for \(\mu\) and \(\theta\) respectively. 
+By the Bonferroni correction, \(I \times J\) is a \(1 - 2\alpha\)-confidence 
+region for \((\mu, \theta)\) while in actuality, 
+\[\mathbb{P}_{\mu, \theta}((\mu, \theta) \in I \times J) = 
+  \mathbb{P}(\mu \in I) \mathbb{P}(\theta \in J) = (1 - \alpha)^2.\]
+Choosing \(\alpha = 0.1\), we see that Bonferroni guarantees the coverage 
+probability to be above \(0.8\) while the actual probability is \(0.9^2 = 0.81\).
