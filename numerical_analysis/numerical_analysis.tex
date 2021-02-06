@@ -791,4 +791,80 @@ permute the rows of \(A\) before hand such that for each \(k\), the
 maximum entry of \(A_{k:m, k}\) is swapped with \(A_{k, k}\) and then
 proceeding as usual.
 
+\hypertarget{cholesky-decomposition}{%
+\subsection{Cholesky Decomposition}\label{cholesky-decomposition}}
+
+The Cholesky decomposition is a decomposition that applies to a narrow
+but important type of matrices -- symmetric, positive definite matrices.
+
+\begin{definition}[Symmetric, Positive Definite Matrix]
+  A matrix \(A\) is symmetric and positive definite if \(A^T = A\) and 
+  for all \(\mathbf{x}\), \(\mathbf{x}^T A\mathbf{x} > 0\).
+\end{definition}
+
+Equivalently, we see that symmetric positive definite matrices are
+matrices whose induced bilinear form
+\(\langle \cdot, \cdot \rangle_A :  (\mathbf{x}, \mathbf{y}) \mapsto \mathbf{x}^T A\mathbf{y}\)
+is symmetric and positive definite.
+
+Symmetric positive definite matrices arise in many applications such as
+covariance matrices in statistics, as kernels in machine learning and as
+diffusion tensors in medical imaging and weighted norms, etc.
+
+The Cholesky decomposition can be though of as a symmetric
+LU-decomposition, applying a LU-step from the left and right while
+maintaining the symmetry of the resulting matrix. Starting with a
+symmetric, positive definite matrix \(A\) and we write
+\[A = \begin{pmatrix}
+  a_{11} & \mathbf{w}^T\\
+  \mathbf{w} & K
+  \end{pmatrix}\] assuming \(a_{11} > 0\). Then, by defining
+\[R_1^T := \begin{pmatrix}
+  \sqrt{a_{11}} & 0\\
+  \mathbf{w} / \sqrt{a_{11}} & I
+  \end{pmatrix}, \hspace{2mm} A^{(1)} := 
+  \begin{pmatrix}
+    1 & 0\\
+    0 & K - \mathbf{w}\mathbf{w}^T / a_{11}
+  \end{pmatrix}\] by multiplying \(A^{(1)}\) with \(R_1^T\) and \(R_1\)
+on each side, we obtain \[R_1^T A^{(1)} R_1 = 
+  \begin{pmatrix}
+  \sqrt{a_{11}} & 0\\
+  \mathbf{w} / \sqrt{a_{11}} & I
+  \end{pmatrix}
+  \begin{pmatrix}
+    1 & 0\\
+    0 & K - \mathbf{w}\mathbf{w}^T / a_{11}
+  \end{pmatrix}
+  \begin{pmatrix}
+  \sqrt{a_{11}} & \mathbf{w}^T / \sqrt{a_{11}}\\
+  0 & I
+  \end{pmatrix}
+  = 
+  \begin{pmatrix}
+  a_{11} & \mathbf{w}^T\\
+  \mathbf{w} & K
+  \end{pmatrix} = A.\] Now, by induction, we find that
+\(K - \mathbf{w}\mathbf{w}^T / a_{11}\) is also a symmetric, positive
+definite matrix, and so we can find \(R_2'\) and \(A^{(2)*}\), such that
+\(R_2'^T A^{(2)*} R_2' = K - \mathbf{w}\mathbf{w}^T / a_{11}\) and so,
+by letting \(R_2 = 1 \oplus R_2'\) and \(A^{(2)} = 1 \oplus A^{(2)*}\),
+we have \(R_2^T A^{(2)} R^2 = A^{(1)}\). Hence, by repeatedly applying
+the process, we have
+\[A = R_1^T R_2^T \cdots R_m^T I R_m \cdots R_2 R_1.\] So, by letting
+\(R := R_m \cdots R_2 R_1\), we have \(A = R^T R\) where \(R\) is upper
+triangular.
+
+Note that we assumed the upper-left element of each submatrix is
+positive. This must be true for a positive definite matrix since if
+\([A]_{11} = a_{11} < 0\), then \(e_1^T A e_1 = a_{11} < 0\);
+contradicting positive definiteness.
+
+Similar to the LU-decomposition, the Cholesky decomposition can be used
+to solve linear systems \(A\mathbf{x} = \mathbf{b}\) where \(A\) is
+symmetric, positive definite. Indeed, if \(A = R^T R\), then
+\(R^T R \mathbf{x} = \mathbf{b}\) and so, we may solve for
+\(R \mathbf{x}\) using a forward substitution, and then we may solve for
+\(\mathbf{x}\) with a backwards substitution.
+
 \end{document}
