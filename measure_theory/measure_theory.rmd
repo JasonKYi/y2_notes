@@ -951,3 +951,130 @@ is not necessarily the case (see motivation).
   and 
   \[\limsup_{n \to \infty} f_n = \inf_{l \ge 1}\left(\sup_{k \ge l} f_k\right).\]
 \qed
+
+## Sequences of Measurable Functions
+
+A nice method to determine whether or not a function is measurable is to show 
+that it is a limit of measurable simple functions. Simple functions are very 
+useful in many instances and we will later also see their applications in 
+Lebesgue integration.
+
+\begin{definition}[Simple Function]
+  Let \(X\) be a set. A function \(s : X \to \mathbb{R}\) is called a simple 
+  function (or a step function) if it takes on finitely many values. That is, 
+  the set \(\{y \in \mathbb{R} \mid \exists\hspace{1mm} x \in X, y = s(x)\}\) is finite.
+\end{definition}
+
+Writing the image of a simple function \(s\) as \(\{\alpha_1, \cdots, \alpha_l\}\),
+and by writing \(A_i = s^{-1}(\{\alpha_i\})\) for all \(1 \le i \le l\), we see 
+straight way that \(\{A_i \mid i\}\) forms a partition of \(X\) and for all 
+\(x \in X\),
+\[s(x) = \sum_{i = 1}^l \alpha_i \mathbf{1}_{A_i}(x).\]
+In particular, if \(\mathcal{A}\) is a \(\sigma\)-algebra over \(X\), by 
+recalling that a indicator function of the set \(A\) is measurable if and only if 
+\(A\) is measurable, we see that \(s\) is measurable if and only if \(A_i\) is 
+measurable for all \(i\).
+
+\begin{theorem}[Approximation by Simple Functions]
+  Let \((X, \mathcal{A})\) be a measurable space and let \(f : X \to [0, \infty]\) 
+  be a function. Then \(f\) is measurable if and only if there exists a sequence 
+  of measurable simple functions \(s_m : X \to [0, \infty)\), such that 
+  for all \(x \in X\),
+  \[0 \le s_1(x) \le s_2(x) \le \cdots \le f(x),\]
+  and furthermore, \(f(x) = \lim_{n \to \infty}s_n(x)\).
+\end{theorem}
+\proof
+  If such a sequence exits, then, by the fact that the \(\liminf\) of measurable 
+  functions is measurable, we have \(f\) is measurable.
+
+  Conversely, suppose \(f\) is measurable. Then, for \(n \ge 1\), we define 
+  \[\phi_n : [0, \infty] \to \mathbb{R} : t \mapsto 
+  \begin{cases}
+    k2^{-n}, & k2^{-n} \le t < (k + 1)2^{-n}, k = 0, 1, \cdots, n2^{-n};\\
+    n, & t \ge n.
+  \end{cases}\]
+  The functions \((\phi_n)\) are trivially measurable, increasing and for all 
+  \(t < n\), we have
+  \[t - 2^{-n} \le \phi_n(t) \le t.\]
+  Hence, we have \(\lim_{n \to \infty} \phi_n(t) = t\) for all \(t \in [0, \infty]\).
+  Then, by defining \(s_n = \phi_n \circ f\), we find that this satisfy our condition.
+\qed
+
+\begin{definition}[Almost Everywhere]
+  Let \((X, \mathcal{A}, \mu)\) be a measure space. A property \(P : X \to \text{Prop}\) 
+  of \(X\) is said to hold \(\mu\)-almost everywhere (abbreviated as \(\mu\)-a.e.) if 
+  the set \(\{x \in X \mid \neg P(x)\}\) is measurable and has \(\mu\)-measure 0.
+\end{definition}
+
+A commonly application of the above definition is the following notion of convergence.
+
+\begin{definition}[Convergence Almost Everywhere]
+  Let \((f_n : X \to \mathbb{R})_{n = 1}^\infty\) be a sequence of measurable functions. 
+  The sequence \((f_n)\) converges \(\mu\)-almost everywhere if 
+  \[\mu\left(\{x \in X \mid \lim_{n \to \infty} f_n(x) \not\exists\}\right) = 0.\]
+\end{definition}
+
+We note that we assumed that the set \(\{x \in X \mid \lim_{n \to \infty} f_n(x) \not\exists\}\) 
+is measurable. We shall prove this claim here.
+
+\proof
+  It suffices to show the measurable of the complement, so let us consider
+  \(S := \{x \in X \mid \lim_{n \to \infty} f_n(x) \exists\}\). We see that 
+  \(S\) is equivalent to the set of \(x\) such that \((f_n(x))\) is Cauchy, so 
+  we have
+  \[S = \bigcap_{K = 1}^\infty \bigcup_{N = 1}^\infty 
+  \{x \in X \mid \forall n, m \ge N, |f_n(x) - f_m(x)| < 1 / K\}.\]
+  Indeed, taking the for all outside, we have, 
+  \[S = \bigcap_{K = 1}^\infty \bigcup_{N = 1}^\infty 
+  \bigcap_{n \ge N}\bigcap_{m \ge N}
+  \{x \in X \mid |f_n(x) - f_m(x)| < 1 / K\},\]
+  and so, it suffices to show that \(\{x \in X \mid |f_n(x) - f_m(x)| < 1 / K\}\) 
+  is measurable for appropriate \(K, N, n, m\). Thus, as 
+  \[\{x \in X \mid |f_n(x) - f_m(x)| < 1 / K\} = (f_n - f_m)^{-1}(-1 / K, 1 / K),\]
+  since \(f_n\) and \(f_m\) are measurable, \((f_n - f_m)^{-1}(-1 / K, 1 / K)\) 
+  is a measurable set, and we are done!
+\qed
+
+Throughout the remainder of this section, we consider \(\Omega \subseteq \mathbb{R}^n\) 
+measurable with respect to the Lebesgue measure on the Borel \(\sigma\)-algebra 
+with \(\lambda(\Omega) < \infty\).
+
+\begin{theorem}[Ergorov]
+  Let \((f_n : \Omega \to \mathbb{R})_{n = 1}^\infty\) be a sequence of 
+  measurable functions and \(f : \Omega \to \mathbb{R}\) be a measurable 
+  function. Suppose that \(f_k \to f\) as \(k \to \infty\) almost everywhere 
+  on \(\Omega\). Then, for all \(\delta > 0\), there exists a compact set 
+  \(F \subseteq \Omega\) such that 
+  \[\lambda(\Omega \setminus F) < \delta, \hspace{1mm} \text{and} \hspace{1mm} 
+    \sup_{x \in F} |f_k(x) - f(x)| \to 0\]
+  as \(k \to \infty\).
+\end{theorem}
+
+Conceptually, the Ergorov theorem tells us that for any sequence of almost 
+convergent measurable functions, there exists a "large" set such that 
+the convergence is uniform.
+
+One cannot choose \(\delta = 0\) in general. Indeed, by considering the sequence 
+\(f_k(x) = x^k\) on \([0, 1]\), we see that \(f_k \to \mathbf{1}_{\{1\}}\) 
+pointwise. However, as we have see from first year's analysis, this function 
+does not uniformly converge on \([0, 1]\) and so, we may only choose \(F = [0, 1 - \delta]\) 
+for any \(\delta \in (0, 1)\).
+
+\proof (Ergorov).
+  Let \(\delta > 0\) and for \(i, j \ge 1\), define 
+  \[C_{ij} := \bigcup_{k = j}^\infty \{x \in \Omega \mid | f_k(x) - f(x)| > 2^{-i}\}.\]
+  We see that \(C_{ij}\) is measurable and \(C_{i, j + 1} \subseteq C_{i, j}\). 
+  So, by the continuity of measures from above, we have 
+  \[\lim_{j \to \infty} \lambda(C_{ij}) = 
+    \lambda\left(\bigcap_{j = 1}^\infty C_{ij}\right) = 0\]
+  since \(f_k\) converges to \(f\) almost everywhere. Hence, by the definition of 
+  the limit, there exists some \(J(i) \ge 1\) such that \(\lambda(C_{i, J(i)}) < 
+  \delta 2^{-i - 1}\). Then, by defining 
+  \[A := \Omega \setminus \bigcup_{i = 1}^\infty C_{i, J(i)},\]
+  we have 
+  \[\lambda(\Omega \setminus A) \le \sum_{i = 1}^\infty \lambda(C_{i, J(i)})
+    < \sum_{i = 1}^\infty \delta 2^{-i - 1} = \frac{\delta}{2}.\]
+  Thus, by recalling that for all \(\epsilon > 0\), there exists some \(F \subset A\) 
+  closed such that \(\lambda(A \setminus F) < \epsilon\), the result follows by 
+  taking \(\epsilon = \delta / 2\). 
+\qed
