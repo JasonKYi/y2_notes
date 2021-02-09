@@ -726,7 +726,7 @@ can simply take \(U = \overline{B_{\delta / 2}(x)}\)). Then, since
 \(f'\) is continuous, it is bounded by some \(M > 0\). Thus, for all
 \(x, y \in U\), by the mean value inequality, there exists some
 \(\xi \in [x, y]\) such that
-\[\|f(x) -f(y)\| \le \|f(\xi)\|_{\text{op}}\|x - y\| \le M \|x - y\|.\]
+\[\|f(x) -f(y)\| \le \|f'(\xi)\|_{\text{op}}\|x - y\| \le M \|x - y\|.\]
 Thus, \(f\) is locally Lipschitz at \(x\) on \(U\) with the Lipschitz
 constant \(M\). \qed
 
@@ -751,9 +751,6 @@ we have \(\lambda(\tilde t) = \mu(\tilde t)\). Then, by applying the
 local version of the Picard-Lindelöf theorem with the initial value
 \((\tilde t, \lambda(\tilde t) = \mu(\tilde t))\), we see that there
 exists two different solutions \#. \qed
-
-\hypertarget{maximal-solutions}{%
-\subsection{Maximal Solutions}\label{maximal-solutions}}
 
 As we have seen, the local version of Picard-Lindelöf provides us with a
 unique solution on some interval around the initial value. We would now
@@ -815,6 +812,130 @@ all \(n \in \mathbb{N}\).
 By assumption, we have \((t_n, \lambda_{\max}(t_n))\) is a bounded
 sequence, and so, by Bolzano-Weierstrass, it has a convergent
 subsequence \((t_{n_i}, \lambda_{\max}(t_{n_i}))\) which converges to
-\((t^*, x^*) \in D\)\ldots{} \qed
+\((t^*, x^*) \in D\). Now, on the problem sheet, we shall see that, the
+solution is uniform on a neighbourhood of \((t^*, x^*)\). But, this
+contradicts the maximal condition, so we are done! \qed
+
+\hypertarget{general-solution-and-flows}{%
+\subsection{General Solution and
+Flows}\label{general-solution-and-flows}}
+
+By the existence of the maximal solution, we find there to be a general
+solution for all initial pairs.
+
+\begin{prop}
+  Let \(f : D \subseteq \mathbb{R} \times \mathbb{R}^d \to \mathbb{R}^d\) be 
+  continuous and locally Lipschitz. Then there exists a maximal solution \(\lambda_{\max}\) 
+  to the IVP
+  \[\dot x = f(t, x), \hspace{2mm} x(t_0) = x_0\]
+  for every initial pair \((t_0, x_0) \in D\). 
+\end{prop}
+\proof
+
+Follows straight away from the existence of maximal solutions. \qed
+
+In the case as described in the proposition, we can define
+\(\lambda : D \times \mathbb{R} \to \mathbb{R}^d\) such that
+\(\lambda((t_0, x_0), t)\) is the maximal solution to
+\(\dot x = f(t, x)\) and \(x(t_0) = x_0\). This \(\lambda\) is called
+the general solution. Commonly, we shall flatten the arguments of
+\(\lambda\) such that \(\lambda = \lambda(t, t_0, x_0)\).
+
+\begin{prop}
+  Let \(\dot x = f(t, x)\) be a differential equation with the general solution 
+  \(\lambda\). Then, given \((t_0, x_0) \in D\),
+  \begin{itemize}
+    \item \(I_{\max}(s, \lambda(s, t_0, x_0)) = I_{\max}(t_0, x_0)\);
+    \item \(\lambda(t_0, t_0, x_0) = x_0\);
+    \item \(\lambda(t, s, \lambda(s, t_0, x_0)) = \lambda(t, t_0, x_0)\).
+  \end{itemize}
+\end{prop}
+\proof
+
+The second statement is immediate since the general solution satisfies
+the IVP so let us consider the two other claims.
+
+Consider the initial pair \((s. \lambda(s, t_0, x_0))\). Then, we see
+that both \(\lambda(\cdot, t_0, x_0)\) and
+\(\lambda(\cdot, s, \lambda(s, t_0, x_0))\) coincides at
+\((s, \lambda(s, t_0, x_0))\). Now, since the maximal solution is
+unique, the results follow. \qed
+
+In the case that the differential equation is autonomous, we find the
+the general solution contains redundancy due to translational invariant.
+So, this leads us to the concept of \emph{flow}.
+
+Let \(f : D \subseteq \mathbb{R}^d \to \mathbb{R}^d\) be continuous and
+locally Lipschitz and suppose \(\lambda\) is a general solution to the
+differential equation \(\dot x = f(x)\). Then, if \(t_0 \in \mathbb{R}\)
+and \(x_0 \in D\) is fixed, then \(\lambda(\cdot, t_0, x_0)\) solves the
+IVP \[\dot x = f(x), \hspace{2mm} x(t_0) = x_0.\] However, consider
+\(\lambda(\cdot, 0, x_0)\) is a solution to the IVP is initial condition
+\(x(0) = x_0\), we may translate the solution so that
+\[\lambda^*(t) = \lambda(t - t_0, 0, x_0),\] which is also a solution to
+the IVP with initial condition \(x(t_0) = x_0\). So, since the solution
+is unique, we see that
+\[\lambda(t - t_0, 0, x_0) = \lambda(t, t_0, x_0).\] So, since the left
+hand equation contains only two variable, we conclude that the general
+solution has redundant information.
+
+\begin{definition}[Flow]
+  Let \(\dot x = f(x)\) with \(f : D \subseteq \mathbb{R}^d \to \mathbb{R}^d\).
+  For all \(x_0 \in D\) let us define 
+  \[J_{\max}(x_0) := I_{\max}(0, x_0),\]
+  and 
+  \[\phi(t, x_0) := \lambda(t, 0, x_0),\]
+  then \(\phi\) is called the flow of the autonomous differential equation 
+  \(\cdot x = f(x)\).
+\end{definition}
+
+\begin{prop}
+  Let \(\phi\) be a flow of \(\dot x = f(x)\) where \(f : D \subseteq 
+  \mathbb{R}^d \to \mathbb{R}^d\) is continuous and locally Lipschitz. Then 
+  for \(x \in D\), we have 
+  \begin{itemize}
+    \item \(J_{\max}(\phi(t, x)) = J_{\max}(x) - t\);
+    \item \(\phi(0, x) = x\);
+    \item \(\phi(t, \phi(s, x)) = \phi(t + s, x)\);
+    \item \(\phi(-t, \phi(t, x)) = x\).
+  \end{itemize}
+\end{prop}
+\proof
+
+Easy as before. \qed
+
+\begin{definition}[Orbit]
+  Let \(\phi\) be a flow of \(\dot x = f(x)\) where \(f : D \subseteq \mathbb{R}^d 
+  \to \mathbb{R}^d\) is continuous and locally Lipschitz. Then, given \(x \in D\), 
+  the orbit (or trajectory) through \(x\) is 
+  \[\sigma(x) := \{\phi(t, x) \in D \mid t \in J_{\max}(x)\}.\]
+  Furthermore, the positive half-orbit and the negative half-orbit through \(x\) 
+  are 
+  \[\sigma^+(x) := \{\phi(t, x) \in D \mid t \in J_{\max}(x) \cap \mathbb{R}^+\},\]
+  \[\sigma^-(x) := \{\phi(t, x) \in D \mid t \in J_{\max}(x) \cap \mathbb{R}^-\},\]
+  respectively.
+\end{definition}
+
+We would like to classify the different possible orbits and it turns out
+there are three possible orbits.
+
+\begin{itemize}
+  \item \(\sigma(x)\) is a singleton. This occurs when \(f(x) = 0\) and 
+    \(J_{\max}(x) = \mathbb{R}\) and we call \(x\) an equilibrium of the equation;
+  \item \(\sigma(x)\) is a closed curve. That is there exists \(t > 0\) such that 
+    \(\phi(t, x) = x\) and \(f(x) \neq 0\). In this case \(J_{\max}(x) = \mathbb{R}\) 
+    and we call \(x\) is called a periodic orbit;
+  \item \(\sigma(x)\) is not a closed curve nor a singleton. In this case, the 
+    solution does not necessarily exist for all time, however, we see that the 
+    map \(t \mapsto \phi(t, x)\) is injective.
+\end{itemize}
+
+Lastly, let us consider the continuity and differentiability of general
+solutions and flows. Indeed, by construction, the general solution and
+flow must be differentiable and so, is continuous, however, we would
+like to also consider continuity with respect to the other arguments. In
+this course, we will state without proof that both the general solution
+and flow are continuous functions under the standard assumptions while
+this will be further investigated in more advanced modules.
 
 \end{document}
