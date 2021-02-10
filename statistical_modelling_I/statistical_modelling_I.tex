@@ -66,6 +66,7 @@
 \setcounter{secnumdepth}{5}
 \usepackage{tikz}
 \usepackage{amsthm}
+\usepackage{amssymb}
 \usepackage{mathtools}
 \usepackage{lipsum}
 \usepackage[ruled,vlined]{algorithm2e}
@@ -700,8 +701,9 @@ examined in the third year course \emph{Statistical Theory}.
 
 \newpage
 
-\hypertarget{confidence-regions}{%
-\section{Confidence Regions}\label{confidence-regions}}
+\hypertarget{confidence-regions-hypothesis-testing}{%
+\section{Confidence Regions \& Hypothesis
+Testing}\label{confidence-regions-hypothesis-testing}}
 
 So far, we have being considering point estimators for single values.
 This does not reflect any uncertainty. Indeed, as this estimator is
@@ -840,5 +842,113 @@ actuality, \[\mathbb{P}_{\mu, \theta}((\mu, \theta) \in I \times J) =
 Choosing \(\alpha = 0.1\), we see that Bonferroni guarantees the
 coverage probability to be above \(0.8\) while the actual probability is
 \(0.9^2 = 0.81\).
+
+\hypertarget{hypothesis-testing}{%
+\subsection{Hypothesis Testing}\label{hypothesis-testing}}
+
+\begin{definition}[Null and Alternative Hypothesis]
+  Given a model \(f_\theta\) where \(\theta \in \Theta \subseteq \mathbb{R}^d\), 
+  the null-hypothesis \(H_0\) and the alternative hypothesis \(H_1\) are propositions 
+  that \(\theta \in \Theta_0\) and \(\theta \in \Theta_1\) respectively for 
+  some \(\Theta_0, \Theta_1\) a partition of \(\Theta\) such that 
+  \(\Theta_0 \cap \Theta_1 = \varnothing\) and \(\Theta_0 \cup \Theta_1 = \Theta\). 
+\end{definition}
+
+The goal of an hypothesis test is to determine whether
+\(\theta \in \Theta_0\) or \(\theta \in \Theta_1\), or with other words,
+whether to accept \(H_0\) or reject \(H_0\) and hence accept \(H_1\).
+This is normally achieved through the observation of a particular subset
+of the sample space and we call this sample space for which \(H_0\) is
+rejected the rejection region (or critical region).
+
+In some literature, we might find some authors reframe from using the
+word \emph{accept} (such as we were told in year one). In practice
+however, since we are acting based on the result of these tests, it
+makes some practical meaning to say we accept the null-hypothesis
+\(H_0\) or we accept the alternative hypothesis \(H_1\).
+
+As the accuracy of the hypothesis tests is arbitrary, it is possible to
+make errors. The below table demonstrates the two types of errors.
+
+\begin{center}
+  \begin{tabular}{ c | c c }
+  & \(\theta \in \Theta_0 (H_0)\) & \(\theta \in \Theta_1 (H_1)\)\\
+  \hline
+  \(\neg\) reject \(H_0\) & \checkmark & Type II error\\
+  reject \(H_0\) & Type I error & \checkmark 
+  \end{tabular}
+\end{center}
+
+\begin{definition}[Level of a Test]
+  A hypothesis test is of level \(\alpha\) for \(0 < \alpha < 1\) if 
+  \[\mathbb{P}_\theta(\text{reject } H_0) \le \alpha\]
+  for all \(\theta \in \Theta\).
+\end{definition}
+
+Usually we choose \(\alpha << 1\) with common values being \(0.05\) and
+\(0.01\). However, it is not clear whether or not these values are
+optimal for general experiments and often times, \(\alpha\) is chosen to
+be much smaller, e.g.~ \(\alpha \sim 10^{-6}\).
+
+\begin{definition}[Power]
+  Let \(\Theta\) be a parameter space and \(\Theta_0 \subseteq \Theta\) 
+  and \(\Theta_1 = \Theta \setminus \Theta_0\) so \(H_0 : \theta \in \Theta_0\) 
+  and \(H_1 : \theta \in \Theta_1\) are null and alternative hypothesis'. Suppose 
+  we can constructed some test for this hypothesis, then, the power function is 
+  the mapping 
+  \[\beta : \Theta \to [0, 1] : \theta \mapsto P_\theta(\text{reject }H_0).\]
+\end{definition}
+
+Conceptually, if \(\theta \in \Theta_0\), we would like
+\(\beta(\theta)\) to be small while if \(\theta \in \Theta_1\), we would
+like \(\beta(\theta)\) to be large.
+
+\begin{definition}[\(p\)-Value]
+  The \(p\)-value of a particular hypothesis test is 
+  \[p = \sup_{\theta \in \Theta_0}\mathbb{P}_\theta(
+    \text{observing something "at least as extreme" as the observation}).\]
+  That is, if a test is based on the statistic \(T\) with rejection for 
+  large values of \(T\), then 
+  \[p = \sup_{\theta \in \Theta_0}\mathbb{P}_\theta(T \ge t)\]
+  where \(t\) is the observed value. 
+
+  In any case, we reject \(H_0\) if and only if \(p \le \alpha\) and this results 
+  a \(\alpha\)-level test.
+\end{definition}
+
+The hypothesis tests are related to confidence intervals in that we can
+construct a test from any confidence regions.
+
+Let \(Y\) be the random observation of the experiment and suppose
+\(A(Y)\) is the \(1 - \alpha\) confidence region for the parameter
+\(\theta \in \Theta\), i.e.
+\[\mathbb{P}_\theta(\theta \in A(Y)) \ge 1 - \alpha,\] for all
+\(\theta \in \Theta\). Then, by defining \(H_0 : \theta \in \Theta_0\)
+and \(H_0 = \theta \not\in \Theta_0\) where \(\Theta_0\) is some subset
+of \(\Theta\) with level \(\alpha\) such that we reject \(H_0\) if
+\(\Theta_0 \cap A(y) = \varnothing\). In this case, we see that
+\[\mathbb{P}_\theta(\text{Type I error}) = \mathbb{P}_\theta(\text{reject } H_0) 
+  = \mathbb{P}_\theta(\Theta_0 \cap A(Y) = \varnothing) \le 
+  \mathbb{P}_\theta(\theta \not\in A(Y)) \le \alpha.\] The reverse is
+also possible -- constructing a confidence region from a hypothesis
+test. Suppose that for all \(\theta_0 \in \Theta\), we have a level
+\(\alpha\) test \(\phi_{\theta_0}\) for
+\(H_0^{\theta_0} : \theta = \theta_0\) and
+\(H_1^{\theta_0} : \theta \neq \theta_0\) such that
+\[\mathbb{P}_{\theta_0}(\phi_{\theta_0}\text{ reject } H_0) \le \alpha.\]
+Then, by defining
+\[A := \{\theta_0 \in \Theta \mid \phi_{\theta_0} \text{ does not reject } H_0^{\theta_0}\},\]
+we find \(A\) to be a \(1 - \alpha\) confidence region for \(\theta\).
+Indeed, for all \(\theta \in \Theta\),
+\[\mathbb{P}_\theta(\theta \in A) = \mathbb{P}_\theta(\phi_\theta
+  \text{ does reject }) = 1 - P_{\theta}(\phi_\theta \text{ rejects}) 
+  \ge 1 - \alpha.\] Through this method, we may construct a test for
+multiple parameter test through the use of simultaneous confidence
+regions. Indeed, if \(I \times J\) is a \(1 - 2\alpha\) confidence
+region for \((\mu, \theta)\), a level \(2\alpha\) test of
+\(H_0 : (\mu, \theta) = (\mu_0, \theta_0)\) against
+\(H_1 : (\mu, \theta) \neq (\mu_0, \theta_0)\) is given by
+\[R = \{(\bar{X}, \bar{Y}) \mid (\mu_0, \theta_0) \not\in I \times J\},\]
+where \(E(X_i) = \mu\) and \(E(Y_i) = \theta\).
 
 \end{document}
