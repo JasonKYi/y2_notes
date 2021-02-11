@@ -17,6 +17,7 @@ header-includes:
   - \usepackage[ruled,vlined]{algorithm2e}
   - \theoremstyle{definition}
   - \newtheorem{theorem}{Theorem}
+  - \newtheorem{prop}{Proposition}
   - \newtheorem{alg}{Algorithm}
   - \newtheorem{corollary}{Corollary}[theorem]
   - \newtheorem*{remark}{Remark}
@@ -763,3 +764,140 @@ linear systems \(A\mathbf{x} = \mathbf{b}\) where \(A\) is symmetric, positive
 definite. Indeed, if \(A = R^T R\), then \(R^T R \mathbf{x} = \mathbf{b}\) and 
 so, we may solve for \(R \mathbf{x}\) using a forward substitution, and then 
 we may solve for \(\mathbf{x}\) with a backwards substitution.
+
+\newpage
+
+# Polynomial Interpolations
+
+Interpolation is a numerical technique to formulate a continuous representation 
+based on discrete data points. This is applied in many fields especially 
+data science. Interpolation requires a basis of functions that are tailored to the data 
+points and we will concentrate on the set of polynomials. This is because 
+polynomials are particularly practical as they can be easily differentiated and 
+integrated, and hence provide us with the foundations for numerically approximating 
+differential and integral expressions.
+
+\begin{definition}[Polynomial Interpolation]
+  Given the data points \((z_j, f_j)_{j = 0}^n\) where \(z_i \neq z_j\) for all 
+  \(i \neq j\), the polynomial \(p_n \in \mathbb{P}^n\) such that for all \(j = 0, \cdots, n\), 
+  \(p_n(z_j) = f_j\) is called the interpolating polynomial (or interpolant) 
+  of the data set.
+\end{definition}
+
+## Lagrange Interpolation
+
+It is not always clear that we can always find such an interpolating polynomial 
+for any given data sets so we shall present a proof the the existence by constructing 
+the interpolant.
+
+\begin{prop}
+  Given the data points \((z_j, f_j)_{j = 0}^n\) where \(z_i \neq z_j\) for all 
+  \(i \neq j\), there always exists a polynomial \(p_n \in \mathbb{P}^n\) such 
+  that for all \(j = 0, \cdots, n\), \(p_n(z_j) = f_j\).
+\end{prop}
+\proof
+  Define \(l_j(z) = \prod_{k = 0; k \neq j}^n \frac{z - z_k}{z_j - z_k}\) for all 
+  \(j = 0, \cdots, n\). Then, we see \(l_j \in \mathbb{P}^n\) and \(l_j(z_r) = \delta_{jr}\) 
+  for all \(j, r = 0, \cdots, n\). So, by defining 
+  \[p_n(z) = \sum_{j = 0}^n f_j l_j(z),\]
+  we see \(p_n(z_k) = \sum_{j = 0}^n f_j l_j(z_k) = \sum_{j = 0}^n f_j \delta_{jk} = f_k\) 
+  and so \(p_n\) is a interpolant of our data set and we call the set of polynomials
+  \[L := \{ l_j \mid j = 0, \cdots, n\},\]
+  the Lagrange basis functions.
+\qed
+
+Furthermore, it turns out that our construction is unique. 
+
+\begin{prop}
+  Given the data points \((z_j, f_j)_{j = 0}^n\) where \(z_i \neq z_j\) for all 
+  \(i \neq j\), there always exists a \textbf{unique} polynomial \(p_n \in \mathbb{P}^n\) 
+  such that for all \(j = 0, \cdots, n\), \(p_n(z_j) = f_j\).
+\end{prop}
+\proof
+  As we have already proven existence, it suffices to show uniqueness. Suppose 
+  \(p, q \in \mathbb{P}^n\) such that \(p(z_j) = q(z_j) = f_j\) for all \(j = 0, \cdots, n\).
+  Then, \((p - q)(z_j) = p(z_j) - q(z_j) = 0\) for all \(j\), that is \(z_j\) are 
+  the roots of \(p - q\). However, as \(p, q\) have degree \(n\), \(p - q\) can 
+  at most have degree \(n\), so if \(p - q \neq 0\), then \(p - q\) has at most 
+  \(n\) roots. This contradicts as we found \(n + 1\) roots, and thus \(p - q = 0\). 
+\qed
+
+However, while the construction of the interpolant through the Lagrange basis 
+is correct, it is not necessarily nice to compute since we are required to multiple 
+and add many terms. Instead, we ask if it is possible to solve the system directly 
+for the coefficients, i.e. can we find \(a_k\) directly such that
+\[p_n(z_j) = \sum_{k = 0}^n a_k z_j^k = f_j\] 
+for all \(j = 0, \cdots , n\). 
+
+By writing the question as a linear system of \(n + 1\) equations, we see that 
+the answer becomes obvious --
+\[\begin{pmatrix}
+  1 & z_0 & z_0^2 & \cdots & z_0^n\\
+  1 & z_1 & z_1^2 & \cdots & z_1^n\\
+  \vdots & \vdots & \vdots & & \vdots\\
+  1 & z_n & z_n^2 & \cdots & z_n^n
+\end{pmatrix}
+\begin{pmatrix}
+  a_0 \\ a_1 \\ \vdots \\ a_n
+\end{pmatrix}
+= 
+\begin{pmatrix}
+  f_0 \\ f_1 \\ \vdots \\ f_n
+\end{pmatrix}.\]
+By observing that the first matrix is simply the Vandemonde matrix \(V\), and 
+by assumption, we have \(z_i \neq z_j\) for all \(i \neq j\), \(V\) is invertible 
+and hence, 
+\[\begin{pmatrix}
+  a_0 \\ a_1 \\ \vdots \\ a_n
+\end{pmatrix} = V^{-1}
+\begin{pmatrix}
+  f_0 \\ f_1 \\ \vdots \\ f_n
+\end{pmatrix},\]
+solving our interpolation. Indeed, this also provide us with uniqueness as 
+the inverse is unique and all interpolants satisfies this equation.  
+
+While this is mathematically correct, inverting the Vandemonde matrix becomes 
+difficult as \(n\) increases and so, this method is ill-conditioned. 
+
+## Divided Differences 
+
+Alternative to the Lagrange interpolation, the divided differences method provide 
+us with a method to find the interpolant of a data set recursively. 
+
+Suppose we have found the interpolant \(p_{n - 1} \in \mathbb{P}^{n - 1}\) of 
+the data set \((z_j, f_k)_{j = 0}^{n - 1}\) and we are asked to find the interpolant 
+of \((z_j, f_k)_{j = 0}^n\), given the new data point \((z_n, f_n)\). If we are 
+using the Lagrange interpolation method, we are required to compute the entire 
+Lagrange basis again, and so, we look for an alternative construction that will 
+make use of \(p_{n - 1}\).
+
+Suppose there exists some \(q_n \in \mathbb{P}^n\), \(q_n(z_j) = 0\) for all 
+\(j = 0, \cdots, n - 1\) such that \(p_n = p_{n - 1} + q_n\). Since, be construction 
+\(q_n\) has roots \(z_j\) for all \(j = 0, \cdots, n - 1\), 
+\[q_n(z) = C\prod_{k = 0}^{n - 1}(z - z_k)\]
+for some \(C\). So, 
+\[p_n = p_{n - 1} + C\prod_{k = 0}^{n - 1}(z - z_k).\]
+Evaluating both sides at \(z_n\), we have 
+\[C = \frac{f_n - p_{n - 1}(z_n)}{\prod_{k = 0}^n(z_n - z_k)},\]
+and so, 
+\[p_n(z) = p_{n - 1}(z) + (f_n - p_{n - 1}(z_n))\prod_{k = 0}^n\frac{z - z_k}{z_n - z_k}.\]
+Classically, the following notation for \(C\) is used 
+\[f[z_0, z_1, \cdots, z_n] := C\]
+and is called the *divided difference* of order \(n\).
+
+We note that \(f[z_j] = f_j\) and \(f[z_{\pi_0}, z_{\pi_1}, \cdots, z_{\pi_n}]
+= f[z_0, z_1, \cdots, z_n]\), and for any data set, we have 
+\[f[z_0, \cdots, z_n] = \sum_{j = 0}^n\frac{f_j}{\prod_{k = 0; k \neq j}^n(z_k - z_k)}\]
+
+The divided differences method produce a hierarchy of interpolating polynomials, 
+and with recursion, this method is easy to implement and results in the interpolant 
+\[p_n(z) = \sum_{j = 0}^j f[z_0, \cdots, z_j] \prod_{k = 0}^{j - 1}(z - z_k)\]
+and is refereed to as the *Newton form* of the interpolating polynomial. 
+
+However, while this form is rather nice, it is not necessarily obvious 
+the speed at which we can generate the divided differences. It turns out that 
+for distinct \(z_0, \cdots, z_{n + 1}\), we have 
+\[f[z_0, \cdots, z_{n + 1}] = \frac{f[z_0, \cdots, z_n] - f[z_1, \cdots, z_{n + 1}]}
+  {z_0 - z_{n + 1}}\]
+(for proof see exercise), and so, we can use this recurrence relation to generate 
+a divided difference tableau (see slides).

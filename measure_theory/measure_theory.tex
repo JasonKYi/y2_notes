@@ -65,6 +65,7 @@
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \setcounter{secnumdepth}{5}
 \usepackage{tikz}
+\usepackage{physics}
 \usepackage{amsthm}
 \usepackage{mathtools}
 \usepackage{lipsum}
@@ -184,9 +185,9 @@ situations in several ways.
 \section{Measures and Measure
 Spaces}\label{measures-and-measure-spaces}}
 
-\hypertarget{measures-and-measure-spaces-1}{%
-\subsection{Measures and Measure
-Spaces}\label{measures-and-measure-spaces-1}}
+\hypertarget{algebra-sigma-algebra-and-measures}{%
+\subsection{\texorpdfstring{Algebra, \(\sigma\)-Algebra and
+Measures}{Algebra, \textbackslash sigma-Algebra and Measures}}\label{algebra-sigma-algebra-and-measures}}
 
 As we would like an adequate theory to assign a notion of ``size'' on
 sets, we need to construct a function from a set of sets to
@@ -903,8 +904,9 @@ So \(V \not\in \mathcal{B}(\mathbb{R})\) and hence
 
 \newpage
 
-\hypertarget{functions-and-integration}{%
-\section{Functions and Integration}\label{functions-and-integration}}
+\hypertarget{functions-and-integrals-on-measure-spaces}{%
+\section{Functions and Integrals on Measure
+Spaces}\label{functions-and-integrals-on-measure-spaces}}
 
 \hypertarget{measurable-functions}{%
 \subsection{Measurable Functions}\label{measurable-functions}}
@@ -1216,5 +1218,136 @@ of the limit, there exists some \(J(i) \ge 1\) such that
 by recalling that for all \(\epsilon > 0\), there exists some
 \(F \subset A\) closed such that \(\lambda(A \setminus F) < \epsilon\),
 the result follows by taking \(\epsilon = \delta / 2\). \qed
+
+The Ergorov theorem allows us to conclude a powerful result about
+measurable functions.
+
+\begin{theorem}
+  Let \(\Omega \subseteq \mathbb{R}^n\) with \(\lambda(\Omega) < \infty\).  
+  If the function \(f : \Omega \to \mathbb{R}\) is measurable, then, for all 
+  \(\delta > 0\), there exists \(F \subseteq \Omega\) compact such that 
+  \(\lambda(\Omega \setminus F) < \delta\) and \(f\mid_F : F \to \mathbb{R}\) 
+  is continuous.
+\end{theorem}
+\proof
+
+Suppose first that \(f = s\) for some \(s\) a simple function. Then, we
+can write \[s = \sum_{i = 1}^n \alpha_i \mathbf{1}_{A_i}\] for some
+partition of \(\Omega\) -- \(\{A_i\}\). Now, since for all \(A_i\), we
+may find \(F_i \subseteq A_i\) such that \(F_i\) is closed (and hence
+compact) and \(\lambda(A_i \setminus F_i) < \delta 2^{-i}\), we have
+\(F = \bigcup_{i = 1}^n F_i\) which suffices our condition.
+
+Now, for the general case for \(f\), we apply the approximation theorem
+for measurable functions. However, as the approximation theorem only
+works for non-negative functions, let us write \(f = f^+ - f^-\) where
+\(f^+\) and \(f^-\) are both non-negative. Now, by the approximation
+theorem, there exists \((s_n^\pm)\) a sequence of simple functions
+approximating \(f^\pm\), the sequence of function
+\(s_n := s_n^+ - s_n^-\) is a simply function such that
+\[\lim_{n \to \infty} s_n = \lim_{n \to \infty} s_n^+ - s_n^- = f^+ - f^- = f.\]
+As we have already proved the theorem for simple functions, there exists
+compact sets \(F_n\) such that
+\(\lambda(\Omega \setminus F_n) < \delta 2^{-n - 1}\) and
+\(s_n\mid_{F_n} : F_n \to \mathbb{R}\) is continuous. Furthermore, by
+Ergorov's theorem, there exists some compact \(F_0 \subseteq \Omega\)
+such that \(\lambda(\Omega \setminus F_0) < \delta / 2\) and
+\[\sup_{x \in F_0} |s_n(x) - f(x)| \to 0,\] as \(n \to \infty\). Then,
+by defining \[F := \bigcap_{i = 0}^\infty F_i,\] we have a compact set
+(as the intersection of closed sets is closed) on which \(s_n \mid_F\)
+is continuous and uniformly converge to \(f\mid_F\), and so \(f\mid_F\)
+is continuous. Furthermore, since
+\[\lambda(\Omega \setminus F) = \lambda\left(\Omega \setminus \bigcap F_i\right)
+    = \lambda\left(\bigcup \Omega \setminus F_i\right) 
+    \le \sum \lambda(\Omega \setminus F_i) < \delta / 2 + \delta / 2 = \delta,\]
+we have the result. \qed
+
+This is a powerful theorem that provides us with a necessary condition
+on measurable functions however, it does not mean that measurable
+function must be continuous at some point. Indeed, by recalling that
+\(\mathbf{1}_{\mathbb{Q} \cap [0, 1]}\) on \(\Omega = [0, 1]\) is
+measurable and nowhere continuous, we have a counterexample. This not
+contradict our theorem however, since we can simply choose
+\(F = [0, 1] \setminus \mathbb{Q}\) and so
+\(\mathbf{1}_{\mathbb{Q} \cap [0, 1]} \mid_F = 0\). Thus, by any
+sufficiently large compact subset of \(F\), the result follows.
+
+\hypertarget{the-integral}{%
+\subsection{The Integral}\label{the-integral}}
+
+We will finally construct the integral on some arbitrary measure space
+\((X, \mathcal{A}, \mu)\), in particular the case \(X = \mathbb{R}\),
+\(\mathcal{A} = \mathcal{B}(\mathbb{R})\) and \(\mu = \lambda\). This
+results in the Lebesgue integral and it turns out the Lebesgue integral
+extend the Darboux integral, i.e.~the Lebesgue integral and the Darboux
+integral agrees on Darboux integrable functions.
+
+We will introduct the integral of \emph{suitable} measurable functions
+in three steps:
+
+\begin{enumerate}
+  \item simple functions;
+  \item non-negative functions (by approximation theorem);
+  \item \textit{integrable} real-valued functions.
+\end{enumerate}
+
+As we shall see, while the first two definitions are applicable for all
+appropriate measurable functions, the third definition applies only to
+certain real-valued measurable functions in order to prevent cases such
+as \(\infty - \infty\).
+
+The integral of the simple functions is a one might expect.
+
+\begin{definition}[Integral of Simple Functions]
+  Let 
+  \[S^+ := \{s : X \to [0, \infty) \mid s \text{ is simple and measurable}\},\]
+  and for \(s \in S^+\), Wlog. we write \(s = \sum_{i = 1}^n \alpha_i \mathbf{1}_{A_i}\) 
+  with \(\alpha_i \in (0, \infty)\) as a representation of \(s\) (not unique). 
+  Then, for \(s \in S^+\) with representation \(s = \sum_{i = 1}^n \alpha_i \mathbf{1}_{A_i}\), 
+  the integral of \(s\) with respect to the measure \(\mu\) is 
+  \[\mu(s) \equiv \int_X s \dd \mu \equiv \int s \dd \mu := 
+    \sum_{i = 1}^n \alpha_i \mu(A_i) \in [0, \infty].\]
+\end{definition}
+
+While this definition seems reasonable, as the representation of \(s\)
+is not unique, we need to check whether or not it is well-defined.
+Indeed, if
+\(s = \sum_{i = 1}^n \alpha_i \mathbf{1}_{A_i} = \sum_{i = 1}^k \beta_i \mathbf{1}_{B_i}\),
+Wlog. we may assume \(\bigcup A_i = \bigcup B_i = X\) since if
+otherwise, we may add a term (without changing the value of the
+integral) \(\alpha_{n + 1} A_{n + 1}\) with \(\alpha_{n + 1} = 0\) and
+\(A_{n + 1} = X \setminus \bigcup A_i\). Then, by additivity,
+\[\sum_{i = 1}^n\alpha_i \mu(A_i) = \sum_{i = 1}^n \alpha_i \sum_{j = 1}^k \mu(A_i \cap B_j) 
+= \sum_{i = 1}^n \sum_{j = 1}^k \beta_j \mu(A_i \cap B_j) = \sum_{j = 1}^k \beta_j \mu(B_j),\]
+where the second equality is true since on \(A_i \cap B_j\),
+\(\alpha_i = \beta_j\), and so, the integral is well-defined.
+
+\begin{lemma}
+  Let \(f, g \in S^+\), then, for all \(\alpha, \beta \in [0, \infty)\), 
+  \[\int (\alpha f + \beta g) \dd \mu = \alpha \int f \dd \mu + \beta \int g \dd \mu.\]
+  Furthermore, if \(f \le g\), then 
+  \[\int f \dd \mu \le \int g \dd \mu.\]
+\end{lemma}
+\proof
+
+\(\int \alpha f \dd \mu = \alpha \int f \dd \mu\) immediately, so let us
+show Linearity of addition. Write
+\(f = \sum_{i = 1}^n \alpha_i \mathbf{1}_{A_i}\) and
+\(g = \sum_{i = 1}^k \beta_i \mathbf{1}_{B_i}\); then, again, Wlog. we
+may assume \(\bigcup A_i = \bigcup B_i = X\). Then,
+\[f + g = \sum_{i = 1}^n \sum_{j = 1}^k (\alpha_i + \beta_j) \mathbf{1}_{A_i \cap B_j},\]
+and hence, \[\begin{split}
+    \int (f + g) \dd \mu 
+      & = \sum_{i = 1}^n \sum_{j = 1}^k (\alpha_i + \beta_j) \mu(A_i \cap B_j)\\
+      & = \sum \alpha_i \sum \mu(A_i \cap B_j) + \sum \beta_j \sum \mu(A_i \cap B_j)\\
+      & = \sum \alpha_i \mu(A_i) + \sum \beta_j \mu(B_j)\\
+      & = \int f \dd \mu + \int g \dd \mu.
+  \end{split}\] (Monotonicity is left as an exercise.) \qed
+
+\begin{definition}[Integral of Non-negative Functions]
+  For \(f : X \to [0, \infty]\) a measurable function. Then the integral 
+  of \(f\) is 
+  \[\int f \dd \mu := \sup \left\{\int g \dd \mu \mid g \in S^+, g \le f\right\}.\]
+\end{definition}
 
 \end{document}
