@@ -938,4 +938,131 @@ this course, we will state without proof that both the general solution
 and flow are continuous functions under the standard assumptions while
 this will be further investigated in more advanced modules.
 
+\newpage
+
+\hypertarget{linear-systems}{%
+\section{Linear Systems}\label{linear-systems}}
+
+Linear differential equations are important models for certain
+applications, but the theory of linear differential equations is of
+utmost importance also for non-linear systems.
+
+Consider the differential equation \[\dot x = f(t, x),\] and assume
+\(\mu : I \to \mathbb{R}^d\) is a solution. As in perturbation theory,
+or the real world, there might be some small deviations from the
+theoretical solution and we would like to examine what happens if the
+initial condition is a small step away. This can be studied through the
+variational equation
+\[\dot y = \pdv{f}{x}\hspace{0mm}(t, \mu(t))y = A(t)y,\] which is a
+nonautonomous linear system (see problem sheet). In general, the
+nonautonomous case if difficult to solve exactly while the situation is
+more simple if
+
+\begin{itemize}
+  \item \(f\) is autonomous;
+  \item \(\mu\) is constant, i.e. \(\mu = x_0\) and \(f(x_0) = 0\).
+\end{itemize}
+
+Indeed, if the two conditions above are satisfied, then the variational
+equation becomes \(\dot y = Ay\) where \(A = f'(x_0)\).
+
+\hypertarget{autonomous-linear-differential-equations}{%
+\subsection{Autonomous Linear Differential
+Equations}\label{autonomous-linear-differential-equations}}
+
+For a matrix \(A \in \mathbb{R}^{d \times d}\), consider
+\[\dot x = A x.\] Indeed, by considering, for all
+\(x, y \in \mathbb{R}^d\),
+\[\|Ax - Ay\| = \|A(x - y)\| \le \|A\|_\text{op}\|x - y\|,\] we have
+\(x \mapsto A x\) is globally Lipschitz, and so, we may apply the global
+version of Picard-Lindelöf resulting in the unique existence of a
+globally defined flow
+\(\phi : \mathbb{R} \times \mathbb{R}^d \to \mathbb{R}^d\).
+
+To find this solution, we will again use the Picard iterates. For all
+\(t \in [-h, h]\) where \(h = 1 / 2\|A\|_\text{op}\), we define
+\(\lambda_0(t) = x_0\) and for \(n \in \mathbb{N}\),
+\[\lambda_{n + 1}(t) = x_0 + \int_0^t A \lambda_n(s) \dd s.\]
+Inductively, one finds that the closed form of the Picard iterates can
+be written as \[\lambda_n(t) = \sum_{k = 0}^n \frac{t^k A^k}{k!} x_0.\]
+So, by taking \(n \to \infty\), by the Picard-Lindelöf theorem, we have
+for all \(t \in [-h, h]\), the flow \(\phi\) of the differential
+equation is
+\[\phi(t, x_0) = \sum_{k = 0}^\infty\frac{t^k A^k}{k!}x_0 =: e^{At}\]
+and we call it the matrix exponential function. However, we note that we
+have not justified that \(e^{At}\) exists and hence well-defined. We
+shall prove this now.
+
+\begin{lemma}
+  For all \(B, C \in \mathbb{R}^{d \times d}\), \(\|BC\|_\text{op} \le 
+  \|B\|_\text{op}\|C\|_\text{op}\).
+\end{lemma}
+\proof
+
+Let \(x \in \mathbb{R}^d\setminus\{0\}\), then
+\[\|BC x \| \le \|B\|_\text{op}\|Cx\| \le \|B\|_\text{op}\|C\|_\text{op} \|x\|,\]
+and so, we have
+\[\frac{\|BCx\|}{\|x\|} \le \|B\|_\text{op}\|C\|_\text{op}.\] Thus, by
+taking the supremum on the left hand side, the inequality is
+established. \qed
+
+\begin{prop}
+  For \(B \in \mathbb{R}^{d \times d}\), the matrix exponential defined as 
+  \[e^{B} := \sum_{k = 0}^\infty \frac{1}{k!} B^l\]
+  exists.
+\end{prop}
+\proof
+
+By the above lemma, through induction, we have
+\(\|B^k\|_\text{op} \le \|B\|_\text{op}^k\) for all
+\(k \in \mathbb{N}\). Then, consider
+\[e^{\|B\|\text{op}} = \sum_{k = 0}^\infty \frac{\|B\|_\text{op}^k}{k!} \ge 
+    \sum_{k = 0}^\infty \frac{\|B^k\|_\text{op}}{k!},\] where the right
+hand side is a increasing bounded sequence. So,
+\[\sum_{k = 0}^\infty \frac{\|B^k\|_\text{op}}{k!}\] exists. Now, by
+considering for all \(n > m\), we have
+\[\left\|\sum_{k = 0}^n \frac{B^k}{k!} - \sum_{k = 0}^m \frac{B^k}{k!}\right\|_\text{op} 
+    = \left\|\sum_{k = m + 1}^n \frac{B^k}{k!}\right\|_\text{op}
+    \le \sum_{k = m + 1}^n \frac{\|B^k\|_\text{op}}{k!} \to 0\] by the
+trivial test. Thus, \(\sum_{k = 0}^n \frac{B^k}{k!}\) converges as
+required. \qed
+
+\begin{theorem}
+  Consider the linear differential equation 
+  \[\dot x = A x.\]
+  Then, the flow of this differential equation is give by 
+  \[\phi(t, x) = e^{At} x,\]
+  for all \(t \in \mathbb{R}, x \in \mathbb{R}^d\).
+\end{theorem}
+\proof
+
+As shown above, there exists some \(h > 0\) such that
+\(\phi(t, x) = e^{At} x\) for all \(x \in \mathbb{R}^d\) and
+\(t \in [-h, h]\). Then, for all \(t, s \in [-h/2, h/2]\),
+\(e^{A(t + s)}x = \phi(t + s, x) = \phi(t, \phi(s, x))  = e^{At}e^{As}x\).
+Indeed, by algebraic manipulation, we see that this property holds for
+all \(t, s \in \mathbb{R}\).
+
+Now, let \(t \in \mathbb{R}\) and some \(N \in \mathbb{N}\) such that
+\(t / N \in [-h, h]\). Furthermore, define
+\[\phi_{t / N} : \mathbb{R}^d \to \mathbb{R}^d\ : x \mapsto \phi\left(\frac{t}{N}, x\right),\]
+and so,
+\[\phi(t, x) = (\phi_{t / N} \circ \cdots \circ \phi_{t / N})(x) = 
+    \prod_{i = 1}^N e^{\frac{t}{N}A} x = e^{tA}x\] which is exactly what
+we wanted to show. \qed
+
+\begin{prop}
+  Let \(B, C, T \in \mathbb{R}^{d \times d}\) and suppose \(T\) is invertible. 
+  Then, 
+  \begin{itemize}
+    \item \(C = T^{-1}B T \implies e^C = T^{-1}e^B T\);
+    \item \(e^{-B} = (e^B)^{-1}\);
+    \item \(BC = CB \implies e^{B + C} = e^B e^C\);
+    \item \(B = \bigoplus B_i \implies e^B = \bigoplus e^{B_i}\).
+  \end{itemize}
+\end{prop}
+\proof
+
+See problem sheet. \qed
+
 \end{document}

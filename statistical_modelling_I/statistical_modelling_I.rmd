@@ -816,3 +816,68 @@ test of \(H_0 : (\mu, \theta) = (\mu_0, \theta_0)\) against \(H_1 : (\mu, \theta
 \neq (\mu_0, \theta_0)\) is given by 
 \[R = \{(\bar{X}, \bar{Y}) \mid (\mu_0, \theta_0) \not\in I \times J\},\]
 where \(E(X_i) = \mu\) and \(E(Y_i) = \theta\).
+
+## Likelihood Ratio Test
+
+For the maximum likelihood estimator, we choose the parameter with the highest 
+likelihood as our estimator. Using a similar idea, we can create the 
+likelihood ratio test.
+
+Consider the hypothesis \(H_0 : \theta \in \Theta_0\) again 
+\(H_1 : \theta \not\in \Theta_0\). Then, by comparing the likelihood 
+\(L\) under \(H_0\) to the unrestricted maximum likelihood, if the 
+unrestricted maximum likelihood is significantly larger than that under \(H_0\), 
+we have evidence for rejecting \(H_0\).
+
+\begin{definition}[Likelihood Ratio Test Statistic]
+  Suppose we observe the data \(y\). The likelihood ratio test statistic is 
+  \[t(y) = \frac{\sup_{\theta \in \Theta} L(\theta \mid y)}
+    {\sup_{\theta \in \Theta_0} L(\theta \mid y)} = 
+    \frac{\text{ml. under } H_0 + H_1}{\text{ml. under } H_0}.\]
+\end{definition}
+
+We see that if \(t(y)\) is "large", then this statistic will indicate suppose 
+for \(H_1\) since it is much more likely that we observed \(y\) without assuming 
+\(H_0\). Thus, we reject \(H_0\) when 
+\[t(y) \ge k,\]
+where \(k\) is chosen such that 
+\[\sup_{\theta \in \Theta_0} \mathbb{P}_\theta(t(Y) \ge k) \le \alpha.\]
+This choice of \(k\) ensures that the hypothesis constructed this way has 
+level \(\alpha\).
+
+In general however, it is not always easy to determine \(k\) analytically since 
+in order to do so, we will need to first determine the distribution of the 
+likelihood ratio statistic. Thus, rather than computing \(k\) exactly, 
+we can approximate \(k\) whenever the sample size is large.
+
+\begin{theorem}
+  Under certain regularity conditions (in particular the subspace closure 
+  of \(\Theta_0\) has a smaller dimension than \(\Theta\)), 
+  \[2\log t(Y) \to \chi_r^2\]
+  in distribution as \(n \to \infty\) under \(H_0\), where 
+  \(r\) is the number of independent restrictions on \(\theta\) needed to 
+  define \(H_0\). Alternatively, \(r\) is the number of independent parameters 
+  under the full model minus the number of independent parameters under \(H_0\).
+\end{theorem}
+\proof
+  We will prove the univariate case and the multivariate case generalises easily. 
+
+  Consider \(2\log t(Y) = 2 (\log L(\hat{\theta}) - \log L(\theta_0)) = 
+    2(l(\hat{\theta} - l(\theta_0))\). By Taylor expanding, we have 
+  \[l(\theta_0) = l(\hat{\theta}) + l'(\hat{\theta})(\theta_0 - \hat{\theta}) + 
+    \frac{1}{2} l''(\tilde{\theta})(\theta_0 - \hat{\theta})^2,\]
+  for some \(\tilde \theta \in (\theta_0, \hat{\theta})\). Now, for the maximum 
+  likelihood estimator, we have \(l'(\hat{\theta}) = 0\) and so, 
+  \[\begin{split}
+    2(l(\hat{\theta}) - l(\theta_0)) & = -l''(\tilde{\theta})(\theta_0 - \hat{\theta})^2 \\
+    & = - \frac{1}{n}l''(\tilde \theta)(\sqrt{n}(\hat{\theta} - \theta_0))^2\\
+    & = I(\theta_0)(\sqrt{n}(\hat{\theta} - \theta_0))^2 +
+      (\sqrt{n}(\hat{\theta} - \theta_0))^2\left(-\frac{1}{n}l''(\tilde \theta) - I(\theta_0)\right)
+  \end{split}\]
+  Now, assuming \(-\frac{1}{n}l''(\tilde \theta) - I(\theta_0) \to 0\) in 
+  probability, it suffices to show 
+  \(I(\theta_0)(\sqrt{n}(\hat{\theta} - \theta_0))^2 \to \chi_1^2\) in distribution.
+  But this is obvious as \(\sqrt{n}(\hat\theta - \theta_0) \to N(0, I(\theta_0)^{-1})\) 
+  in distribution, we have 
+  \[I(\theta_0)(\sqrt{n}(\hat{\theta} - \theta_0))^2 \to N(0, 1)^2 = \chi_1^2\]
+\qed
