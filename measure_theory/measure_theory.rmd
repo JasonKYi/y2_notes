@@ -718,7 +718,32 @@ following.
   \(\mu\left(\bigcup A_n \setminus A\right) < \epsilon\).
 \end{prop}
 \proof
-  See problem sheet 4.
+  Since \(\mu\) is \(\sigma\)-finite on \(\mathcal{A}\), there exists a sequence of 
+  sets \((S_n) \subseteq \mathcal{A}\) such that \(X \subseteq \bigcup S_n\) and 
+  \(\mu(S_n) < \infty\) for all \(n\).
+
+  By restricting 
+  \(\mu\) on \(\mathcal{A}\), we have a pre-measure on \(\mathcal{A}\) whose 
+  extended outer-measure \(\mu^*\) agrees with \(\mu\) on \(\sigma(\mathcal{A})\)
+  by the uniqueness of the Hahn-Carathéodory extension. Thus, 
+  \[\mu(A) = \mu^*(A) = \inf \left\{ \sum \mu\mid_\mathcal{A}(K_i) \mid (K_i) \subseteq \mathcal{A} 
+  \wedge A \subseteq \bigcup K_j\right\}.\]
+  Now, since \(\mu(A)\) is the least lower bound of \(B := 
+  \left\{ \sum \mu\mid_\mathcal{A}(K_i) \mid (K_i) \subseteq \mathcal{A} 
+  \wedge A \subseteq \bigcup K_j\right\}\), there exists some \((K_{n, m}) \subseteq A_i\)
+  such that for all \(n \in \mathbb{N}\), \(A \cap S_n \subseteq \bigcup_{m = 1}^\infty K_{n, m}\) 
+  and, 
+  \[\mu(A \cap S_n) \ge \sum_{m = 1}^\infty \mu(K_{n, m}) - 2^{-n}\epsilon.\]
+  Then, by defining \(\bigcup_{k = 1}^\infty A_k = \bigcup_{n = 1}^\infty 
+  \bigcup_{m = 1}^\infty K_{n ,m}\) where \(A_k = K_{i, j}\) for some \((i, j) \in \mathbb{N}\),
+  we have a disjoint sequence of sets and, 
+  \[\begin{split}
+    \mu\left(\bigcup_{n = 1}^\infty (A_n \setminus A)\right)
+    & = \mu\left(\bigcup_{n = 1}^\infty 
+      \bigcup_{m = 1}^\infty (K_{n, m} \setminus (A \cap S_n))\right)\\
+    & \le \sum_{n = 1}^\infty \left(\sum_{m = 1}^\infty \mu(K_{n, m}) - \mu(A \cap S_n)\right) 
+    \le \epsilon.
+  \end{split}\]
 \qed
 
 Furthermore, by applying proposition \ref{exist_open_near} to \(A^c\) for 
