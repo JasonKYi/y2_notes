@@ -1065,4 +1065,110 @@ we wanted to show. \qed
 
 See problem sheet. \qed
 
+\hypertarget{planar-linear-systems}{%
+\subsection{Planar Linear Systems}\label{planar-linear-systems}}
+
+Consider the linear system \(\dot x = A x\). By decomposing \(A\)
+through Jordan normal decomposition, we have \(A = T^{-1} J T\) where
+\(J\) is in Jordan normal form. Furthermore, we see that
+\(e^{At} = T e^{Jt} T^{-1}\) and so, if we have a explicit form for the
+matrix exponential of matrices in Jordan normal form, we would also
+obtain a method for calculating \(e^A\) explicitly.
+
+We shall in particular consider the case where
+\(A \in \mathbb{R}^{2 \times 2}\). In this case, there are 4 possible
+Jordan forms which are
+
+\begin{itemize}
+  \item \(J = \begin{pmatrix}
+      a & 0 \\ 0 & b
+    \end{pmatrix}\) if \(A\) has two distinct eigenvalue \(a, b \in \mathbb{R}\);
+  \item \(J = \begin{pmatrix}
+      a & 0 \\ 0 & a
+    \end{pmatrix}\) if \(A\) has one eigenvalue \(a \in \mathbb{R}\) and \(\dim E_a = 2\);
+  \item \(J = \begin{pmatrix}
+      a & 1 \\ 0 & a
+    \end{pmatrix}\) if \(A\) has one eigenvalue \(a \in \mathbb{R}\) and \(\dim E_a = 1\);
+  \item \(J = \begin{pmatrix}
+      a & b \\ -b & a
+    \end{pmatrix}\) if \(A\) has one eigenvalue \(a + ib \in \mathbb{C}\) and \(b \neq 0\).
+\end{itemize}
+
+We remark the last case is the real-version of the Jordan form for
+complex eigenvalues. We shall justify this later on.
+
+Suppose \(A\) is not singular, i.e.~0 is not an eigenvalue of \(A\) and
+we shall consider the four cases individually.
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\tightlist
+\item
+  \(J = \begin{pmatrix}  a & 0 \\ 0 & b \end{pmatrix}\) for some
+  distinct \(a, b \in \mathbb{R}\setminus \{0\}\). In this case, since
+  \(J\) is diagonal, we see straight away that
+  \[e^{Jt} = \begin{pmatrix}
+    e^{at} & 0 \\ 0 & e^{bt}
+  \end{pmatrix}.\] By considering the phase portrait (union of all
+  orbits) of this system, we have
+  \[\gamma(x_0, y_0) := \{\phi(t, (x_0, y_0)) \mid t \in \mathbb{R}\} 
+  = e^{Jt}(x_0, y_0)^T = \{(x_0 e^{at}, y_0 e^{bt} \mid t \in \mathbb{R}\}.\]
+  By defining \(x := x_0e^{at}\) assuming \(x_0 \neq 0\), we see that
+  \(t = \frac{\log(x / x_0)}{a}\) and so, the trajectory becomes,
+  \[\gamma(x_0, y_0) = \left\{\left(x, y_0\left(\frac{x}{x_0}\right)^{\frac{b}{a}}
+  \right) \mid \frac{x}{x_0} > 0 \right\}.\]
+\item
+  \(J = \begin{pmatrix}  a & 0 \\ 0 & a \end{pmatrix}\) for some
+  \(a \in \mathbb{R}\setminus \{0\}\). This case follows from the first
+  resulting in \[e^{Jt} = \begin{pmatrix}
+    e^{at} & 0 \\ 0 & e^{at}
+  \end{pmatrix},\] and so the phase portrait is, \[\gamma(x_0, y_0) 
+  = \left\{\left(x, x\frac{y_0}{x_0}\right) \mid \frac{x}{x_0} > 0\right\}.\]
+\item
+  \(J = \begin{pmatrix}  a & 1 \\ 0 & a \end{pmatrix}\) for some
+  \(a \in \mathbb{R} \setminus\{0\}\). One can check that in this case
+  \[e^{Jt} = \begin{pmatrix}
+    e^{at} & te^{at} \\ 0 & e^{at}
+  \end{pmatrix},\] (see problem sheet). In this case, we have the orbit
+  \[\sigma(x_0, y_0) = \left\{
+    \left(\frac{x_0}{y_0}y + \frac{y}{a}\log\frac{y}{y_0}, y\right)
+    \mid \frac{y}{y_0} > 0 \right\}.\]
+\item
+  \(J = \begin{pmatrix}  a & b \\ -b & a \end{pmatrix}\) where
+  \(a, b \in \mathbb{R}\setminus\{0\}\). In this case, one see that
+  \[e^{Jt} = e^{at}\begin{pmatrix}
+    \cos(bt) & \sin(bt) \\ -\sin(bt) & \cos(bt)
+  \end{pmatrix},\] (see problem sheet). In this case, the motion is
+  circular and more details is provided on the lecture slides.
+\end{enumerate}
+
+In the case that \(A\) is singular, we have
+\(J = \begin{pmatrix}  a & 0 \\ 0 & 0 \end{pmatrix}\) and so,
+\[e^{Jt} = \begin{pmatrix}
+  e^{at} & 0 \\ 0 & 1
+\end{pmatrix},\] resulting in no movements in the \(y\) direction.
+
+By investigating the trajectories qualitatively, we see that for all
+linear system \(\dot x = A x\) where \(\rho = a + ib\) is an eigenvalue
+of \(A\), we have \(b\) characterises rotation and \(a\) characterises
+exponential growth with the growth rate obtained by
+\[a = \lim_{t \to \infty} \frac{1}{t} \log \mu(t).\] In this case where
+\(\mu(t) = e^{at}\) we have what is known as a pure exponential growth.
+There are also non-pure exponential growths such as
+\(\mu(t) = t^n e^{at}\), and in this case, we also have the growth rate
+\(a\).
+
+\begin{definition}[Lyapunov Exponent]
+  Let \(\lambda : \mathbb{R} \to \mathbb{R}^d\) be a non-zero solution to 
+  \(\dot x = A x\) where \(A \in \mathbb{R}^{d \times d}\). Then the Lyapunov 
+  exponent of \(\lambda\) is given by 
+  \[\sigma_\text{Lyap}(\lambda) := \lim_{t \to \infty} \frac{1}{t} \log \|\lambda(t)\|,\]
+  if the limit exists. Indeed, one can show that, for a linear system the limit 
+  will always exist and equal the real part of one of the eigenvalues.
+\end{definition}
+
+We say that \(\lambda\) is exponentially decaying if
+\(\sigma_\text{Lyap}(\lambda) < 0\) and exponentially growing if
+\(\sigma_\text{Lyap}(\lambda) > 0\).
+
 \end{document}
