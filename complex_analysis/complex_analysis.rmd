@@ -512,6 +512,15 @@ With these definitions in place, we may finally define complex powers.
   Let \(z, \alpha_1, \alpha_2 \in \mathbb{C}\), then 
   \(z^{\alpha_1 + \alpha_2} = z^{\alpha_1}z^{\alpha_2}\).
 \end{prop}
+\proof
+  Easy.
+\qed
+
+We remark that the extension of the principle logarithm is rather arbitrary 
+as we strict \(- \pi < \Arg z \le \pi\) such that we have restricted the 
+domain of \(\text{Log}\) to \(\mathbb{C} \setminus (-\infty, 0]\). Indeed, this 
+is simply one of a family of "branches" of the logarithm, and we shall discuss 
+this family later on. 
 
 \newpage
 # Integration Along Curves
@@ -1636,4 +1645,122 @@ principle which allows one to extend a holomorphic function to a larger domain.
   Suppose that \(f\) is a holomorphic function in \(\Omega^+\) that extends 
   continuously to \(I\) such that \(f\) is real-valued on \(I\). Then, there exists 
   a function \(F\) holomorphic on \(\Omega\) such that \(F \mid_{\Omega^+} = f\).
+\end{theorem}
+\proof
+  Define \(F\) on \(\Omega^-\) by \(F(z) = \overline{f(\bar z)}\) for all 
+  \(z \in \Omega^-\). Then to show that \(F\)is holomorphic in \(\Omega^-\), we 
+  note that for all \(z, z_0 \in \Omega^-\), the \(\bar z, \bar z_0 \in \Omega^+\),
+  and hence, by Taylor expansion, we have 
+  \[f(\bar z) = \sum_{n = 0}^\infty a_n (\bar z - \bar z_0)^n.\]
+  Thus, 
+  \[F(z) = \overline{f(\bar z)} = \sum_{n = 0}^\infty \bar a_n(z - z_0)^n,\]
+  so \(F\) is holomorphic on \(\Omega^-\). With that, the result follows by the 
+  symmetry principle.
+\qed
+
+## Complex Logarithm
+
+We return to consider the logarithm as a single-valued function. As we have 
+seen, to define the complex logarithm, we had to restrict the set which it is defined. 
+Indeed, the definition we have seen thus far -- the principle logarithm, restricted 
+the domain to \(\mathbb{C} \setminus (-\infty, 0]\). This is choice of restriction, 
+however, is rather arbitrary, and as we shall see now, the principle logarithm is 
+simply one of many choices of a *branch* of the logarithm.
+
+\begin{theorem}
+  Suppose \(\Omega\) is simply connected with \(1 \in \Omega\) and \(0 \not\in \Omega\). 
+  Then, in \(\Omega\) there is a branch of the logarithm \(F(z) = \log_\Omega(z)\) 
+  so that,
+  \begin{itemize}
+    \item \(F\) is holomorphic in \(\Omega\);
+    \item \(e^{F(z)} = z\) for all \(z \in \Omega\);
+    \item \(F(r) = \log r\) whenever \(r \in \mathbb{R}\) and sufficiently close 
+      to \(1\).
+  \end{itemize}
+\end{theorem}
+
+In other words, each branch \(\log_\Omega\) is an extension of the standard logarithm 
+defined for positive numbers.
+
+\proof
+  We construct \(F\) as a primitive of the function \(z \mapsto \frac{1}{z}\). 
+  Since \(0 \not\in \Omega\), the function \(f(z) = 1 / z\) is holomorphic 
+  in \(\Omega\) and so, we may define
+  \[\log_\Omega(z) = F(z) = \int_\gamma f(z) \dd z,\]
+  where \(\gamma\) is any curve connecting \(1\) to \(z\). Since \(\Omega\) 
+  is simply connected, this definition does not depend on the path chosen and 
+  thus, this definition is well-defined. Now, \(F\) is holomorphic on \(\Omega\) as 
+  it is the integral of a holomorphic function, and so, part 1 is established.
+
+  For part 2, by rearranging, we see that it suffices to show \(ze^{-F(z)} = 1\) 
+  for all \(z \in \Omega\). Consider, 
+  \[\dv{z}(ze^{-F(z)}) = e^{-F(z)} - z F'(z)e^{-F(z)} = 
+    (1 - z 1 / z) e^{-F(z)} = 0,\]
+  and so \(ze^{-F(z)}\) is a constant. Thus, as \(F(1) = 0\), we have 
+  \(ze^{-F(z)}\mid_{z = 1} = 1\), and so \(ze^{-F(z)} = 1\) for all \(z\).
+\qed
+
+\newpage 
+# Meromorphic Functions
+
+A meromorphic function on some domain \(\Omega\) is a holomorphic function 
+except at some isolated points in \(\Omega\). Meromorphic functions are useful 
+in that they are nicely behaved as, it turns out, they can be written as a ratio 
+between two holomorphic functions.
+
+\begin{definition}[Zeros]
+  We say a holomorphic function \(f : \Omega \to \mathbb{C}\) 
+  has a zero of order \(m\) at \(z_0 \in \mathbb{C}\) is 
+  \[f^{(k)}(z_0) = 0,\]
+  for all \(k = 0, 1, \cdots, m - 1\), and \(f^{(m)}(z_0) \neq 0\).
+\end{definition}
+
+\begin{prop}
+  A holomorphic function \(f\) has a zero of order \(m\) at \(z_0\) if and only 
+  if it can be written in the form 
+  \[f(z) = (z - z_0)^mg(z),\]
+  for some \(g\) holomorphic at \(z_0\) and \(g(z_0) \neq 0\).
+\end{prop}
+\proof
+  We see that the reverse direction is true straight away, so let us consider 
+  the forward direction. Suppose \(f\) has a zero of order \(m\) at \(z_0\), then,
+  since \(f\) is holomorphic, we may write \(f\) as a Taylor expansion centred at 
+  \(z_0\). Indeed, by the definition of zeros, we have the first \(m\) 
+  Taylor expansion terms vanishing while the remaining terms all contain 
+  \((z - z_0)^m\). By factoring this outside the sum, we have the required 
+  decomposition.
+\qed
+
+While this proposition seems to be rather obvious, it has some striking consequences.
+
+\begin{corollary}
+  The zeros of a non-constant holomorphic function are isolated, i.e. every 
+  zero has a neighbourhood inside of which it is the only zero.
+\end{corollary}
+\proof
+  If \(z_0\) is a zero of order \(m\) of \(f\), then \(f(z) = (z - z_0)^m g(z)\) 
+  where \(g\) is holomorphic at \(z_0\) and \(g(z_0) \neq 0\). Then, \(g\) is 
+  continuous at \(z_0\) and therefore, there exists a neighbourhood around \(z_0\) 
+  in which \(g(z) \neq 0\). Thus, on this neighbourhood \(f(z) = (z - z_0)^m g(z) \neq 0\) 
+  except at \(z_0\).
+\qed
+
+## Laurent Series
+
+\begin{definition}[Laurent Series]
+  A series 
+  \[f(z) := \sum_{-\infty}^\infty a_n(z - z_0)^n\]
+  is called a Laurent series for \(f\) at \(z_0\) whenever the series converges.
+\end{definition}
+
+\begin{theorem}[Laurent Expansion Theorem]
+  Let \(f\) be holomorphic in the annulus \(D := \{z \mid r < |z - z_0| < R\}\) 
+  for some \(z_0 \in \mathbb{C}\), \(r, R \in \mathbb{R}^+\). Then, \(f\) 
+  can be expressed as 
+  \[f(z) = \sum_{-\infty}^\infty a_n(z - z_0)^n,\]
+  where
+  \[a_n := \frac{1}{2\pi i} \ointctrclockwise_\gamma 
+    \frac{f(\eta)}{(\eta - z_0)^{n + 1}} \dd \eta,\]
+  and \(\gamma\) is any simple, closed, piecewise-smooth curve in \(D\) that 
+  contains \(z_0\) in its interior.
 \end{theorem}
