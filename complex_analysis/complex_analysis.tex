@@ -1648,7 +1648,7 @@ and so \[\oint_T f(z) \dd z  = 0,\] hence, by Morera's theorem, we find
 that \(f\) is holomorphic in \(D\). Since \(D\) was chosen arbitrarily,
 \(f\) is holomorphic on \(\Omega\). \qed
 
-\begin{corollary}
+\begin{corollary}\label{sum_hol}
   If  \((f_n)_{n = 1}^\infty\) is a sequence of holomorphic functions on \(\Omega\) 
   such that 
   \[F(z) = \sum_{n = 1}^\infty f_n(z)\]
@@ -1676,5 +1676,110 @@ Then, by the previous theorem, it suffices to show
     \frac{1}{\delta}\max_{\eta \in U}|F(\eta)|,\] by the generalised
 Cauchy's integral formula. Applying this inequality to \(F = f_n - f\)
 completes the proof. \qed
+
+Using corollary \ref{sum_hol}, we may consider the integral of a
+holomorphic function as the limit of its Riemann sums, and so show that
+the integral of a holomorphic function is holomorphic.
+
+\begin{theorem}
+  Let \(F(z, s)\) be a function defined for \((z, s) \in \Omega \times [0, 1]\) 
+  where \(\Omega \subseteq \mathbb{C}\) is open. Suppose \(F\) is holomorphic 
+  in \(\Omega\) with respect to \(s\) and is continuous on \(\Omega \times [0, 1]\).
+  Then, the function \(f\) defined on \(\Omega\) by 
+  \[f(z) = \int_0^1 F(z, s) \dd s,\]
+  is holomorphic.
+\end{theorem}
+\proof
+
+Define \(f_n\) for the \(n\)-th Riemann sum of \(f\), that is
+\[f_n(z) := \frac{1}{n}\sum_{k = 1}^n F(z, k / n).\] By the construction
+\(f_n\) is holomorphic in \(\Omega\) and so, it suffices to show that
+\(f_n \to f\) uniformly on any compact \(D \subseteq \Omega\). Since
+\(F(z, s)\) is continuous, it is uniformly continuous on \(D\) and so,
+\(f_n\) is uniformly continuous on \(D\). Thus, for all
+\(\epsilon > 0\), there exists some \(\delta > 0\), for all
+\(a, b \in D\), if \(|a - b| < \delta\) then
+\[\sup_{z \in D}| F(z, a) - F(z, b) | < \epsilon.\] So, choosing
+\(n > 1 / \delta\), for all \(z \in D\), we have \[\begin{split}
+    |f_n(z) - f(z)| 
+      & = \left| \sum_{k = 1}^n \int_{(k - 1) / n}^{k / n} F(z, k / n) - F(z, s) \dd s\right|\\
+      & \le \sum_{k = 1}^n \int_{(k - 1) / n}^{k / n} |F(z, k / n) - F(z, s)| \dd s
+        < \sum_{k = 1}^n \frac{\epsilon}{n} = \epsilon.
+  \end{split}\] Thus, \(f_n \to f\) uniformly on \(D\) and so, \(f\) is
+holomorphic. \qed
+
+\hypertarget{schwarz-reflection-principle}{%
+\subsection{Schwarz Reflection
+Principle}\label{schwarz-reflection-principle}}
+
+Before moving on, we will in this short section deal with a simple
+extension problem for holomorphic functions. From this, we discover the
+Schwarz Reflection principle which allows one to extend a holomorphic
+function to a larger domain.
+
+\begin{definition}[Symmetric Domain]
+  A complex set \(\Omega \subseteq \mathbb{C}\) is a symmetric domain if 
+  \[z \in \Omega \iff \bar{z} \in \Omega,\]
+  and we denote \(\Omega^+ := \{z \in \Omega \mid \text{Im} z > 0\}\),
+  \(\Omega^- :=  \{z \in \Omega \mid \text{Im} z < 0\}\) and 
+  \(I := \{z \in \Omega \mid \text{Im} z = 0\} = \Omega \cap \mathbb{R}\) so that 
+  \[\Omega = \Omega^+ \sqcup \Omega^- \sqcup I.\]
+\end{definition}
+
+\begin{theorem}[Symmetry Principle]
+  If \(f^+\) and \(f^-\) are holomorphic functions in \(\Omega^+\) and \(\Omega^-\) 
+  respectively and both functions extends continuously to \(I\) such that 
+  \[f^+(x) = f^-(x),\]
+  for all \(x \in I\), then the function defined as 
+  \[f(z) = 
+    \begin{cases}
+      f^+(z), & z \in \Omega^+ \sqcup I,\\
+      f^-(z), & z \in \Omega^-,
+    \end{cases}\]
+  is holomorphic in \(\Omega\).
+\end{theorem}
+\proof
+
+It suffices to show that \(f\) is holomorphic on \(I\) since, by
+construction, it is holomorphic on \(\Omega^+ \cup \Omega^-\). For any
+\(x \in I\), let \(D\) be a disc centred at \(x\) contained in
+\(\Omega\), then, by Morera's theorem, it suffices to show
+\[\oint_T f(z) \dd z = 0,\] for any triangle \(T\) contained in \(D\).
+If \(T \cap I = \varnothing\), then the result is trivial, and so,
+suppose first that one side of \(T\) is contained in \(I\) while the
+rest is contained in (Wlog.) \(\Omega^+\). Now, by defining
+\(T_\epsilon := T + \epsilon\) for some \(\epsilon > 0\), we have
+\(T_\epsilon \subseteq \Omega^+\), and so,
+\[\oint_{T_\epsilon} f(z) \dd z = 0.\] Thus, by taking
+\(\epsilon \to 0\), by continuity, we have \[\oint_T f(z) \dd z = 0.\]
+By consulting the following diagram,
+
+\begin{center}
+    \tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+    \begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+    %uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
+    %Straight Lines [id:da13049536652521132] 
+    \draw    (111,120) -- (220,120) ;
+    %Shape: Triangle [id:dp8829480866210793] 
+    \draw   (169.14,78.09) -- (200.16,153.35) -- (126.32,95.31) -- cycle ;
+    %Straight Lines [id:da19237153262125406] 
+    \draw    (169.14,78.09) -- (158,120) ;
+    % Text Node
+    \draw (177,63.4) node [anchor=north west][inner sep=0.75pt]    {$T$};
+    % Text Node
+    \draw (98,110.4) node [anchor=north west][inner sep=0.75pt]    {$I$};
+    \end{tikzpicture}
+  \end{center}
+
+we see that every triangle \(T\) which \(T \cap I \neq \varnothing\) can
+be decomposed as the three smaller triangles which is covered by the
+previous cases. We conclude that \(f\) is holomorphic in \(D\) by
+Morera's theorem. \qed
+
+\begin{theorem}[Schwarz Reflection Principle]
+  Suppose that \(f\) is a holomorphic function in \(\Omega^+\) that extends 
+  continuously to \(I\) such that \(f\) is real-valued on \(I\). Then, there exists 
+  a function \(F\) holomorphic on \(\Omega\) such that \(F \mid_{\Omega^+} = f\).
+\end{theorem}
 
 \end{document}
