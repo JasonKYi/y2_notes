@@ -895,7 +895,7 @@ now.
 
 \begin{prop}
   For \(B \in \mathbb{R}^{d \times d}\), the matrix exponential defined as 
-  \[e^{B} := \sum_{k = 0}^\infty \frac{1}{k!} B^l\]
+  \[e^{B} := \sum_{k = 0}^\infty \frac{1}{k!} B^k\]
   exists.
 \end{prop}
 \proof
@@ -1053,3 +1053,117 @@ exponential growth. There are also non-pure exponential growths such as
 
 We say that \(\lambda\) is exponentially decaying if \(\sigma_\text{Lyap}(\lambda) < 0\) 
 and exponentially growing if \(\sigma_\text{Lyap}(\lambda) > 0\).
+
+### Real Jordan Normal Form for Complex Eigenvalues
+
+As our aim is to find an explicit representation of the flow \(\phi(t, x) = e^{At}x\). 
+While, we know how to find Jordan normal forms for general matrices, we shall now 
+establish a method for finding the real Jordan normal form for complex eigenvalues.
+
+Suppose \(A \in \mathbb{R}^{d \times d}\) with real-JCF \(J\). Then we would like 
+to find invertible \(T \in \mathbb{R}^{d \times d}\) such that 
+\[J = T^{-1}A T.\]
+This is useful for us since then 
+\[e^{At} = T e^{Jt} T^{-1},\]
+where the right hand side is explicitly computable.
+
+\begin{definition}[Real Jordan Block]
+  A matrix \(J\) is a real Jordan block if either it is a Jordan block consisting 
+  of real entries of in the form 
+  \[J = \begin{pmatrix}
+    C_j & I_{2} & \cdots & 0\\
+    0 & C_j & \cdots & 0\\
+    \vdots & \vdots & \ddots & \vdots\\
+    0 & 0 & \cdots & I_2\\
+    0 & 0 & \cdots & C_j
+  \end{pmatrix}\]
+  where \(C_j\) is in the form 
+  \[C_j = \begin{pmatrix}
+    a_j & b_J \\ -b_j & a_j
+  \end{pmatrix}\]
+  for some real \(a_j, b_j\).
+\end{definition}
+
+We see that the real Jordan block corresponds directly to the case where a 
+matrix contains complex eigenvalues. Indeed, if we write the imaginary numbers 
+in complex form, we have the desired form.
+
+\begin{theorem}
+  Let \(A \in \mathbb{R}^{d \times d}\). Then, there exists some invertible \(T\) 
+  such that \(J := T^{-1}AT\) is in the real Jordan normal form, i.e. there exists 
+  \((J_i)_{i = 1}^r\) where \(J_i\) are real Jordan blocks such that 
+  \[J = \bigoplus_{i = 1}^r J_i.\]
+\end{theorem}
+
+We shall not prove this theorem here however, let us consider the case that \(d = 2\). 
+Suppose \(A \in \mathbb{R}^{2 \times 2}\) has eigenvalues \(\rho = a + ib, 
+\bar \rho \in \mathbb{C}\) such that \(\text{Im} \rho \neq 0\). Then, the 
+corresponding Jordan form of \(A\) is 
+\[J = \begin{pmatrix}
+  \rho & 0 \\ 0 & \bar \rho
+\end{pmatrix}.\]
+Suppose we denote \(u + iv\) as the eigenvector corresponding to \(\rho\) such 
+that \(A(u + iv) = \rho(u + iv)\). Now, if \(u, v\) are linearly dependent, then 
+there exists some \(\lambda \in \mathbb{R}\) such that \(u = \lambda v\) and so 
+\(u + iv = (\lambda + i)v\), resulting in \(\rho(\lambda + i)v = 
+  \rho(u + iv) = A(u + iv) = (\lambda + i)Av\) and so, \(\rho v = Av\) 
+implying either \(\rho \in \mathbb{R}\) \#, so \(u, v\) are linearly independent 
+and hence, \(B := \{u, v\}\) forms a basis of \(\mathbb{R}^2\). Thus, choosing the
+transformation with respect to this basis, we have
+\[[J]_B = \begin{pmatrix}
+  a & b \\ -b & a
+\end{pmatrix},\]
+as required. 
+
+This argument can be easily extended to higher dimensions and so, we have a method 
+for finding the real Jordan normal forms and we may continue to find the explicit 
+representation of the matrix exponential function.
+
+By recalling that \(e^{\bigoplus_i J_i} = \bigoplus_i e^{J_i}\), we may obtain 
+the explicit form of any matrix exponential function \(e^{Jt}\) given the 
+explicitly representation of the individual exponential blocks. 
+
+\begin{prop}
+  Let \(J_i\) be a Jordan block to the corresponding eigenvalue \(\rho_i\). If 
+  \(\rho_i\) is real, then 
+  \[e^{J_i t} = e^{\rho_i t} 
+    \begin{pmatrix}
+      1 & t & \frac{1}{2}t^2 & \cdots & \frac{t^{d_i - 1}}{(d_i - 1)!}\\
+        & \ddots & \ddots    & & \vdots\\
+        &   & \ddots & \ddots & \frac{1}{2}t^2\\
+        &   &   & \ddots & t\\
+        &   &   &   & 1\\
+    \end{pmatrix}.\]
+\end{prop}
+\proof
+  We approach this similarly to that we had done for linear algebra -- writing 
+  the Jordan block as \(J_i = D + N\) where \(D = \text{diag}(\rho_i, \cdots, \rho_i)\)
+  and \(N\) is the matrix with 1 above the diagonal. Since 
+  \[e^{J_1} = e^{D + N} = e^D e^N\]
+  (as \(DN = ND\)) 
+  it suffices to find \(e^D\) and \(e^N\) respectively. As \(D\) is a diagonal 
+  matrix, we have \(e^D = \text{diag}(e^\rho_i, \cdots, e^\rho_i)\). On the other hand, 
+  by noticing \(N\) is a nilpotent matrix, we have 
+  \[e^N = \sum_{k = 0}^\infty \frac{N^k}{k!} = \sum_{k = 0}^{d - 1} \frac{N^k}{k!}.\]
+  With that, by induction, the result follows.
+\qed
+
+\begin{prop}
+  Let \(J_i\) be a real Jordan block to the corresponding eigenvalue \(\rho_i\). If 
+  \(\rho_i = a_i + ib_i\) is , then 
+  \[e^{J_i t} = e^{\rho_i t} 
+    \begin{pmatrix}
+      G(t) & tG(t) & \frac{1}{2}t^2G(t) & \cdots & \frac{t^{d_i - 1}}{(d_i - 1)!}G(t)\\
+        & \ddots & \ddots    & & \vdots\\
+        &   & \ddots & \ddots & \frac{1}{2}t^2G(t)\\
+        &   &   & \ddots & tG(t)\\
+        &   &   &   & G(t)\\
+    \end{pmatrix},\]
+  where 
+  \[G(t) = \begin{pmatrix}
+    \cos(b_i t) & \sin(b_i t)\\ -\sin(b_i t) & \cos(b_i t)
+  \end{pmatrix}.\]
+\end{prop}
+\proof
+  Same argument as above.
+\qed
