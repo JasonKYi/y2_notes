@@ -881,3 +881,139 @@ we can approximate \(k\) whenever the sample size is large.
   in distribution, we have 
   \[I(\theta_0)(\sqrt{n}(\hat{\theta} - \theta_0))^2 \to N(0, 1)^2 = \chi_1^2\]
 \qed
+
+
+\newpage
+# Linear Models
+
+From last year, we saw simple linear regression where we were able to inference 
+in random samples. We shall review this process and extend this method.
+
+## Review
+
+\begin{definition}[Simple Linear Model]
+  A simple linear model \((Y_i)_{i = 1}^n\) is a sequence of random variables such that 
+  \[Y_i = \beta_1 + a_i \beta_2 + \epsilon_i,\]
+  where 
+  \begin{itemize}
+    \item \(a_i\) are the observable constant -- "covariate";
+    \item \(\beta_1, \beta_2\) unknown parameters;
+    \item \((\epsilon_i)_{i = 1}^n\) a sequence of iid. random variables (errors)
+      with \(E(\epsilon_i) = 0\) and \(\text{Var}(\epsilon_i) = \sigma^2\);
+    \item \(\sigma^2 > 0\) is another unknown parameter;
+    \item \(\epsilon_i\) is not observable.
+  \end{itemize}
+  We call \(Y_i\) the "outcome" or "response" and they are observable random 
+  variables.
+\end{definition}
+
+As \(\beta_1, \beta_2\) are unknown, given that we observed \(a_i\) and \(y_i\), 
+we need to construct estimators for \(\beta_1, \beta_2\). This is done through 
+the least square estimators.
+
+\begin{definition}[Least Squares Estimators]
+  The least squares estimators \(\hat \beta_1, \hat \beta_2\) of \(\beta_1, \beta_2\) 
+  are defined as the minimisers of 
+  \[S(\beta_1, \beta_2) = \sum_{i = 1}^n (y_i - \beta_1 - a_i \beta_2)^2.\]
+\end{definition}
+
+The observables \(e_i = y_i - \hat \beta_1 - a_i \hat \beta_2\) are called the 
+residuals and they are **not** iid. as dependence is introduces throught 
+\(\hat \beta_1\) and \(\hat \beta_2\).
+
+We remark that in linear regression models \(Y_1, \cdots, Y_n\) are generally not 
+iid. observations. independence however, will still hold if the errors 
+\(\epsilon_1, \cdots, \epsilon_n\) are independent. The distribution of \(Y_i\) 
+need not to have the same distribution as \(\epsilon_i\) since it is dependent on 
+\(a_i\).
+
+As linear regression naturally leads to a connection between statistics and linear 
+algebra, we shall also quickly review some useful results from linear algebra, 
+especially matrix properties.
+
+\begin{prop}
+  Let \(X \in M_{n, p}\), then \(\text{rank}(X^T X) = \text{rank}(X)\).
+\end{prop}
+\proof
+  By recalling the rank-nullity theorem, we have \(p = \text{rank}(X) + \dim \ker(X)\).
+  Similarly, we have \(p = \text{rank} (X^T X) + \dim \ker (X^T X)\). So, it suffices 
+  to show that \(\ker X = \ker X^T X\). Trivially, \(\ker X \subseteq \ker X^T X\) so 
+  we will show \(\ker X^T X \subseteq \ker X\). Let \(x \in \ker X^T X\), then 
+  by definition \(X^T X x = 0\) and so 
+  \[0 = x^T 0 = x^T X^T X x = (X x)^T(X x) = \|X x\|^2.\]
+  So, by positive-definiteness, \(X x = 0\) and hence \(x \in \ker X\).
+\qed
+
+\begin{definition}[Positive-Definite]
+  A matrix \(A \in \mathbb{R}^{n \times n}\) is positive-definite if 
+  for all \(x \in \mathbb{R}^n \setminus \{0\}\), \(x^T A x > 0\). With other 
+  words, the quadratic form induced by \(A\) is positive-definite.
+\end{definition}
+
+\begin{lemma}
+  If \(A \in \mathbb{R}^{n \times n}\) is symmetric, then there exists some orthogonal 
+  matrix \(P\) such that \(P^T A P\) is diagonal, i.e. \(A\) is congruent to a 
+  diagonal matrix by a orthogonal transformation.
+
+  Furthermore, if \(A\) is positive-definite, then there exists a non-singular 
+  matrix \(Q\) such that \(Q^T A Q = I_n\).
+\end{lemma}
+\proof
+  Standard result.
+\qed
+
+## Random Vectors 
+
+Linear regression models construct an inference based on the realisations 
+of random variables. This can be modelled using random vectors and we shall talk 
+about methods on how to work with random vectors here. 
+
+\begin{definition}[Expectation of Random Vector]
+  Let \(X = (X_1, \cdots, X_n)^T\) be a random vector. Then the expectation of 
+  \(X\) is simply the vector of component expectations, i.e. 
+  \[E(X) = (EX_1, \cdots, EX_n)^T.\] 
+  Similarly, the expectation of matrices is also defined component-wise.
+\end{definition}
+
+This definition allows us to easily generalise the properties of expectation to 
+random vectors.
+
+\begin{prop}
+  Let \(X, Y\) be \(n\)-variate random vectors. Then 
+  \begin{itemize}
+    \item \(E(X + Y) = EX + EY\);
+    \item for al \(a \in \mathbb{R}\), \(E(aX) = aE(X)\);
+    \item if \(A, B\) are deterministic matrices of suitable dimensions, 
+      \(E(AX) = A(EX)\) and \(E(X^T B) = (EX)^TB\).
+  \end{itemize}
+\end{prop}
+\proof
+  Easy.
+\qed
+
+\begin{definition}[Covariance of Random Vectors]
+  If \(X, Y\) are random vectors (not necessarily with same dimension), then 
+  the covariance between \(X, Y\) is 
+  \[\text{Cov}(X, Y) = (\text{Cov}(X_i, Y_i))_{i, j}.\]
+  Furthermore, we define \(\text{Cov}(X)\) to be \(\text{Cov}(X, X)\).
+\end{definition}
+
+We also find this definition satisfies out usual properties for covariance.
+
+\begin{prop}
+  If \(X, Y\) are random vectors, then 
+  \[\text{Cov}(X, Y) = E[(X - EX)(Y - EY)^T] = E[XY^T] - EX (EY)^T.\]
+  Furthermore, 
+  \begin{itemize}
+    \item \(\text{Cov}(X, Y) = \text{Cov}(Y, X)^T\);
+    \item \(\text{Cov}(aX + bY, Z) = a\text{Cov}(X, Z) + b\text{Cov}(Y, Z)\);
+    \item \(\text{Cov}(AX, BY) = A\text{Cov}(X, Y)B^T\);
+    \item \(\text{Cov}(AX) = A\text{Cov}(X)A^T\);
+    \item \(\text{Cov}(X)\) is positive-semidefinite and symmetric;
+    \item \(\text{Cov}(X, Y) = 0\) if \(X, Y\) are independent.
+  \end{itemize}
+\end{prop}
+\proof
+  Easy.
+\qed
+
