@@ -1408,3 +1408,4 @@ Lastly, returning to our example of applications of measure theory, if
 then one usually writes 
 \[\mathbb{E}[f] := \int_\Omega f \dd \mathbb{P},\]
 the expectation of \(f\) with respect to \(\mathbb{P}\).
+

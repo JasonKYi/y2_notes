@@ -1288,4 +1288,79 @@ With that, by induction, the result follows. \qed
 
 Same argument as above. \qed
 
+\begin{definition}[Invariant]
+  A subset \(E \subseteq \mathbb{R}^2\) is called invariant if for all \(x \in E\), 
+  the flow, \(\phi(t, x) \in E\) for all \(t \in \mathbb{R}\).
+\end{definition}
+
+\begin{definition}[Spectrum]
+  Suppose \(\dot x = A x\), then the spectrum of \(A\) is 
+  \[\Sigma(A) := \{ \text{Re}(\rho_i) \mid \rho \text{ is a eigenvalue of } A\}.\]
+\end{definition}
+
+By the spectral theorem from linear algebra, we see that we can
+decompose \(\mathbb{R}^d\) into eigenspaces of \(A\), i.e.~
+\[A = E_{\rho_1} \oplus E_{\rho_2} \oplus \cdots \oplus E_{\rho_q},\]
+and furthermore, the Lyapunov exponents are the \(\rho_i\).
+
+\begin{definition}[Semi-Simple]
+  An eigenvalue of a matrix \(A\) is called semi-simple if its algebraic multiplicity 
+  equals its geometric multiplicity.
+\end{definition}
+\begin{prop}
+  Consider \(\dot x = A x\) where \(A \in \mathbb{R}^{d \times d}\). Then, there 
+  exists some \(\gamma \in \mathbb{R}\) such that \(\gamma > \max \Sigma(A)\) and
+  there exists some \(K > 0\) such that 
+  \[\|e^{At}\| \le Ke^{\gamma t},\]
+  for all \(t \ge 0\). Furthermore, If all 
+  eigenvalues \(\rho\) with \(\text{Re} \rho = \max \Sigma(A)\) are semi-simple, 
+  then, we can choose \(\gamma = \max \Sigma(A)\). 
+\end{prop}
+\proof
+
+By writing \(A\) in Jordan normal form, we have, there exists some
+invertible \(T \in \mathbb{R}^{d \times d}\) such that \(J = T^{-1}A T\)
+is in Jordan normal form. Now, since all norms on finite dimensional
+spaces are equivalent, it suffices to show there exists some
+\(\tilde K > 0\) such that
+\[\|e^{Jt}\|_\infty \le \tilde K e^{\gamma t},\] where
+\(\|\cdot\|_\infty\) is the supremum norm. Now, by recalling our
+classification of the matrix exponential by a Jordan block, we have
+write \[e^{J t} = g(t)t^n e^{\rho t},\] where \(g\) is bounded where
+\(n = 0\) if and only if \(A\) is semi-simple. Since, \(e^{\gamma t}\)
+increases faster than \(t^n\), the result follows. \qed
+
+\hypertarget{variation-of-constants}{%
+\subsection{Variation of Constants}\label{variation-of-constants}}
+
+We are interested in the general solution of the inhomogeneous linear
+differential equation \[\dot x = A x + g(t)\] for some
+\(g : I \to \mathbb{R}^d\) which is continuous.
+
+\begin{prop}
+  The general solution to \(\dot x = A x + g(t)\) is given by 
+  \[\lambda(t, t_0, x_0) = e^{A(t - t_0)}x_0 + \int_{t_0}^t e^{A(t - s)}g(s) \dd s,\]
+  for all \(t, t_0 \in I\), \(x_0 \in \mathbb{R}^d\).
+\end{prop}
+\proof
+
+Let
+\(\mu_g(t) := \int_{t_0}^t e^{A(t - s)}g(s) \dd s = e^{At} \int_{t_0}^t e^{-As}g(s) \dd s\).
+Then, \(mu_g\) is a solution to \(\dot x = A x + g(t)\) since
+\[\dot \mu_g(t) = Ae^{At} \int_{t_0}^t e^{-As} g(s) \dd s + e^{At} e^{-At} g(t) 
+    = A \mu g + g(t).\] Now, let \(\lambda_h(t)\) be the general
+solution to the homogeneous system \(\dot x = A x\), and so
+\(\lambda_h(t, t_0, x_0) = e^{A(t - t_0)}x_0\). Then the general
+solution \(\nu\) for some fixed \((t_0, x_0)\) is
+\[\nu(t) = \lambda_h (t, t_0, x_0) + \mu_g(t) 
+    = e^{A(t - t_0)}x_0 + \int_{t_0}^t e^{A(t - s)}g(s) \dd s.\] \qed
+
+The homogeneous linear system \(\dot x = A(t)x\) where
+\(A : I \to \mathbb{R}^{d \times d}\) is not solvable exactly in
+general. Thus, inhomogeneous systems in the form of
+\[\dot x = A(t)x + g(t),\] is also in general not solvable. However,
+solutions can be obtained for \(d = 1\), with
+\[\lambda(t, t_0, x_0) = e^{\int_{t_0}^t A(s) \dd s} x_0 + 
+  \int_{t_0}^t e^{\int_s^t A(\tau) \dd \tau} g(s)\dd s.\]
+
 \end{document}
