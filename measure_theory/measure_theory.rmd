@@ -1409,3 +1409,61 @@ then one usually writes
 \[\mathbb{E}[f] := \int_\Omega f \dd \mathbb{P},\]
 the expectation of \(f\) with respect to \(\mathbb{P}\).
 
+## Convergence Theorems
+
+As before, let \((X, \mathcal{A}, \mu)\) be a measure space. The convergence 
+theorems regard the interchange of limits and integrals. In fact, we have already 
+seen on of such theorems -- the monotone convergence theorem, and as an 
+application, we obtain the following lemma.
+
+\begin{prop}[Fatou's Lemma]
+  Let \(f_n : X \to [0, \infty]\) for all \(n \in \mathbb{N}\) be a sequence 
+  of measurable functions. Then 
+  \[\int \liminf_{n \to \infty} f_n \dd \mu \le \liminf_{n \to \infty} \int f_n \dd \mu.\]
+\end{prop}
+\proof
+  For \(n \in \mathbb{N}\), define \(g_n : X \to [0, \infty]\) by 
+  \[g_n(x) := \inf_{k \ge n} f_k(x).\]
+  We see that \(g_n\) is measurable and \(g_n \le f_k\) for all \(k \ge n\) and 
+  hence, by monotonicity, 
+  \[\int g_n \dd \mu \le \inf_{k \ge n} \int f_k \dd \mu.\]
+  Now, since \(g_n\) is monotonically increasing, by the monotone convergence 
+  theorem, we have 
+  \[\int \liminf_{n \to \infty} f_n \dd \mu 
+    = \int \lim_{n \to \infty} g_n \dd \mu 
+    = \lim_{n \to \infty} \int g_n \dd \mu 
+    \le \lim_{n \to \infty} \inf_{k \ge n} \int f_k \dd \mu.\]
+\qed
+
+We note that we have not assumed that \(f_n\) is convergent, and so, Fatou's lemma 
+is useful in that it can apply to a wide range of sequences of functions.
+
+\begin{theorem}[Lebesgue Dominated Convergence Theorem]
+  Let \(g : X \to [0, \infty]\) be integrable, i.e. \(g \in \mathcal{L}^1(\mu)\), 
+  and \(f, f_n : X \to [- \infty, \infty]\) for \(n \ge 1\) be measurable functions 
+  such that \(f_n \to f\) \(\mu\)-almost everywhere and 
+  \[| f_n(x) | < g(x)\]
+  for all \(x \in X\). Then, 
+  \[\left| \int f_n \dd \mu - \int f \dd \mu \right| \le \int |f_n - f| \dd \mu \to 0,\]
+  as \(n \to \infty\).
+\end{theorem}
+\proof
+  Straight, we have \(f_n\) and \(f\) are integrable since both are bounded by 
+  \(g\), \(\mu\)-a.e. and so, their integral are finite (so the theorem is 
+  well-defined). The inequality is simply the triangle-inequality for integrals, 
+  and so, it suffices to show \(\int |f_n - f| \dd \mu \to 0\) as \(n \to \infty\).
+
+  Thus, by applying Fatou's lemma on \(2g - |f_n - f|\) (which is a 
+  increasing sequence of non-negative measurable functions), we have 
+  \[\int 2g \dd \mu = \int \liminf_{n \to \infty} \{2g - |f_n - f|\} \dd \mu \le \liminf_{n \to \infty} 
+    \int 2g - |f_n - f| \dd \mu, \]
+  since \(2g - |f_n - f| \to 2g\), \(\mu\)-a.e. Thus, by applying linearity, we have 
+  \[\int 2g \dd \mu \le \int 2g \dd \mu - \liminf_{n \to \infty} \int |f_n - f| \dd \mu.\]
+  So, 
+  \[0 \le \limsup_{n \to \infty} \int |f_n - f| \dd \mu \le 0\]
+  and the result follows.
+\qed
+
+Straight away we see that the dominated convergence theorem shows that, for 
+appropriate sequences of functions \(f_n \to f\), 
+\[\lim_{n \to \infty} \int f_n \dd \mu = \int f \dd \mu.\]
