@@ -1163,4 +1163,91 @@ covariance.
 
 Easy. \qed
 
+\hypertarget{linear-model}{%
+\subsection{Linear Model}\label{linear-model}}
+
+\begin{definition}[General Linear Model]
+  A linear model is a model in the form 
+  \[Y = X \beta + \epsilon\]
+  where 
+  \begin{itemize}
+    \item \(Y\) is an \(n\)-dimensional random vector;
+    \item \(X \in \mathbb{R}^{n \times p}\) is a known matrix (design matrix);
+    \item \(\beta \in \mathbb{R}^p\) is an unknown parameter;
+    \item \(\epsilon\) is an \(n\)-variate random vector (not observable) with 
+      \(E(\epsilon) = 0\).
+  \end{itemize}
+\end{definition}
+
+We in general assume \(n > p\), that is, the sample size is larger than
+the number of parameter. While in general this is true,
+``high-dimensional'' cases where \(p > n\) can occur in situations such
+as genetic data, finance and electronics. In these cases we may use the
+ridge regression or LASSO, etc\ldots{}
+
+Straight away, we have the general linear model is more general than the
+simple linear regression. Indeed, described as a general model, the
+simple model becomes \[Y = \begin{pmatrix}
+  1 & X_1 \\ 1 & X_2 \\ \vdots & \vdots \\ 1 & X_n
+\end{pmatrix}\begin{pmatrix}
+  \beta_0 \\ \beta_1
+\end{pmatrix} + 
+\begin{pmatrix}
+  \epsilon_1, \\ \epsilon_2 \\ \vdots \\ \epsilon_n
+\end{pmatrix}.\]
+
+We shall introduce some commonly seen assumptions.
+
+\begin{definition}[Second Order Assumption]
+  The second order assumption is the assumption that the covariance matrix 
+  of \(\epsilon\) is \(\text{Cov}(\epsilon) = \text{Cov}(\epsilon_i, \epsilon_j)_{i, j} 
+  = \sigma^2 I_n\) for some \(\sigma^2 > 0\).
+\end{definition}
+
+This assumption is equivalent to saying that the errors of two different
+observation are uncorrelated and the variance of all errors is
+identical.
+
+\begin{definition}[Normal Theory Assumption]
+  The normal theory assumption assumes that \(\epsilon \sim N(0, \sigma^2 I_n)\) 
+  for some \(\sigma^2 > 0\). That is the error follows the the multivariate 
+  normal distribution with mean \(0\) and the covariance matrix \(\sigma^2 I_n\).
+\end{definition}
+
+We see that NTA implies SOA and we will commonly use NTA to construct
+tests and confidence intervals.
+
+\begin{definition}[Full Rank Assumption]
+  The full rank assumption assumes the matrix \(X\) has full rank.
+\end{definition}
+
+The full rank assumption is normally assumed implicitly since if this is
+not the case, we can reduce \(X\) till FR is satisfied. We will in the
+section denote \(r = \text{rank}(X)\).
+
+\begin{definition}[Identifiable]
+  Suppose we have a statistical model with unknown parameter \(\theta\). We call 
+  \(\theta\) identifiable if no two different value of \(\theta\) lead to the 
+  same distribution of the observed data.
+\end{definition}
+
+For a linear model, if \(r < p\) then the parameter \(\beta\) is not
+identifiable. An easy example for this statement is to consider a linear
+model with only one observation.
+
+Now that we have established the assumptions, let us take a look at the
+methods to obtain these estimators for the parameters. As seen from year
+one, a common way to do this is through minimising the mean square
+error, that is the minimizing least square problem,
+\[S(\beta) = \sum_{i = 1}^n \left(Y_i - \sum_{j = 1}^p X_{ij} \beta_j\right)^2
+  = (Y - X\beta)^T(Y - X\beta) = \|Y - X\beta\|^2.\] Using calculus, by
+differentiating \(S\) with respect to \(\beta_j\), we have
+\[\pdv{S(\beta)}{\beta_j} = - 2 \sum_{i = 1}^n
+  \left(Y_i - \sum_{j = 1}^pX_{ij} \beta_j\right) X_{ij} = -2 X^T Y + 2 X^T X \beta.\]
+Setting the derivative to 0, we have \[X^TX \hat{\beta} = X^T Y.\] Thus,
+by linear algebra, \(\text{rank}(X^T X) = r\) and so, \(\hat{\beta}\)
+has a unique solution if and only if \(r = p\) with
+\(\hat \beta = (X^TX)^{-1} X^T Y\). Furthermore, by matrix algebra, we
+find that \(S\) indeed achieves a minimum at \(\hat \beta\).
+
 \end{document}

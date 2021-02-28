@@ -1794,7 +1794,7 @@ Morera's theorem. \qed
 \proof
 
 Define \(F\) on \(\Omega^-\) by \(F(z) = \overline{f(\bar z)}\) for all
-\(z \in \Omega^-\). Then to show that \(F\)is holomorphic in
+\(z \in \Omega^-\). Then to show that \(F\) is holomorphic in
 \(\Omega^-\), we note that for all \(z, z_0 \in \Omega^-\), the
 \(\bar z, \bar z_0 \in \Omega^+\), and hence, by Taylor expansion, we
 have \[f(\bar z) = \sum_{n = 0}^\infty a_n (\bar z - \bar z_0)^n.\]
@@ -1859,6 +1859,73 @@ function except at some isolated points in \(\Omega\). Meromorphic
 functions are useful in that they are nicely behaved as, it turns out,
 they can be written as a ratio between two holomorphic functions.
 
+\hypertarget{laurent-series}{%
+\subsection{Laurent Series}\label{laurent-series}}
+
+Let us first consider an important expansion which shall aid us
+throughout this chapter.
+
+\begin{definition}[Laurent Series]
+  A series 
+  \[f(z) := \sum_{-\infty}^\infty a_n(z - z_0)^n\]
+  is called a Laurent series for \(f\) at \(z_0\) whenever the series converges.
+\end{definition}
+
+\begin{theorem}[Laurent Expansion Theorem]
+  Let \(f\) be holomorphic in the annulus \(D := \{z \mid r < |z - z_0| < R\}\) 
+  for some \(z_0 \in \mathbb{C}\), \(r, R \in \mathbb{R}^+\). Then, \(f\) 
+  can be expressed as 
+  \[f(z) = \sum_{-\infty}^\infty a_n(z - z_0)^n,\]
+  where
+  \[a_n := \frac{1}{2\pi i} \ointctrclockwise_\gamma 
+    \frac{f(\eta)}{(\eta - z_0)^{n + 1}} \dd \eta,\]
+  and \(\gamma\) is any simple, closed, piecewise-smooth curve in \(D\) that 
+  contains \(z_0\) in its interior.
+\end{theorem}
+
+We note that we consider a annulus rather a disk since as \(z \to z_0\),
+the negative terms diverges to \(+\infty\). This allow us to consider
+the Laurent expansion despite the presence of singularities since we can
+simply centre the expansion such that the singularity is contained in
+\(\{z \mid |z - z_0| < r\}\).
+
+\proof
+
+Wlog. assume \(z_0 = 0\) and define
+\[\gamma_1 := \{z \mid |z| < R' < R\} \text{ and } 
+    \gamma_2 := \{z \mid |z| > r' > r\}\] such that
+\(z \in D' := \{ z \mid r' < |z| < R\}\). Then,
+\[f(z) = \frac{1}{2\pi i} \ointctrclockwise_{\gamma_1} \frac{f(\eta)}{\eta - z} \dd \eta
+    - \ointctrclockwise_{\gamma_2} \frac{f(\eta)}{\eta - z} \dd \eta := I_1 - I_2.\]
+(This is the case since we may appropriate cuts between \(\gamma_1\) and
+\(\gamma_2\)) Furthermore, if \(\eta \in \gamma_1\), then
+\(|\eta| > |z|\) and so \(|z / \eta| < 1\), hence,
+\[I_1 = \frac{1}{2\pi i}\ointctrclockwise_{\gamma_1} \frac{f(\eta)}{\eta - z} \dd \eta = 
+    \frac{1}{2\pi i}\ointctrclockwise_{\gamma_1} \frac{f(\eta)}{\eta(1 - z / \eta)} \dd \eta 
+    = \frac{1}{2\pi i}\sum_{n = 0}^\infty \ointctrclockwise_{\gamma_1} 
+    \frac{f(\eta)}{\eta^{n + 1}} \dd \eta z^n \] where the last equality
+is due to the geometric series.
+
+On the other hand, for all \(\eta \in \gamma_2\) , \(|\eta| < |z|\) and
+so
+\[- I_2 = -\frac{1}{2\pi i}\ointctrclockwise_{\gamma_2} \frac{f(\eta)}{\eta - z} \dd \eta 
+    = \frac{1}{2\pi i}\ointctrclockwise_{\gamma_2} \frac{f(\eta)}{z(1 - \eta / z)} \dd \eta
+    = \frac{1}{2\pi i} \sum_{n = 0}^\infty \frac{1}{z^{n}} 
+      \ointctrclockwise_{\gamma_2} f(\eta)  \eta^n \dd \eta.\] Thus, by
+replacing parameters with \(- k := n + 1\), we have
+\[- I_2 = \frac{1}{2\pi i} \sum_{k = - \infty}^{-1} 
+    \ointctrclockwise_{\gamma_2} \frac{f(\eta)}{\eta^{k + 1}} \dd \eta z^k.\]
+With that, putting these two integrals we have
+\[f(z) = \sum_{-\infty}^\infty a_n z^n,\] with
+\[a_n = \frac{1}{2\pi i} \ointctrclockwise_{\gamma_1} \frac{f(\eta)}{\eta^{n + 1}} \dd \eta,\]
+for non-negative \(n\) and
+\[a_n = \frac{1}{2\pi i} \ointctrclockwise_{\gamma_2} \frac{f(\eta)}{\eta^{n + 1}} \dd \eta,\]
+for negative \(n\). Hence, the result follows by the deformation
+theorem. \qed
+
+\hypertarget{poles-and-zeros}{%
+\subsection{Poles and Zeros}\label{poles-and-zeros}}
+
 \begin{definition}[Zeros]
   We say a holomorphic function \(f : \Omega \to \mathbb{C}\) 
   has a zero of order \(m\) at \(z_0 \in \mathbb{C}\) is 
@@ -1898,25 +1965,36 @@ there exists a neighbourhood around \(z_0\) in which \(g(z) \neq 0\).
 Thus, on this neighbourhood \(f(z) = (z - z_0)^m g(z) \neq 0\) except at
 \(z_0\). \qed
 
-\hypertarget{laurent-series}{%
-\subsection{Laurent Series}\label{laurent-series}}
-
-\begin{definition}[Laurent Series]
-  A series 
-  \[f(z) := \sum_{-\infty}^\infty a_n(z - z_0)^n\]
-  is called a Laurent series for \(f\) at \(z_0\) whenever the series converges.
+\begin{definition}[Singularity]
+  A point \(z_0\) is called a singularity of a complex function \(f\) if 
+  \(f\) is not holomorphic at \(z_0\) but for every neighbourhood of \(z_0\) -- \(U\), 
+  there exists some \(z \in U\) such that \(f\) is holomorphic at \(z\).
 \end{definition}
 
-\begin{theorem}[Laurent Expansion Theorem]
-  Let \(f\) be holomorphic in the annulus \(D := \{z \mid r < |z - z_0| < R\}\) 
-  for some \(z_0 \in \mathbb{C}\), \(r, R \in \mathbb{R}^+\). Then, \(f\) 
-  can be expressed as 
-  \[f(z) = \sum_{-\infty}^\infty a_n(z - z_0)^n,\]
-  where
-  \[a_n := \frac{1}{2\pi i} \ointctrclockwise_\gamma 
-    \frac{f(\eta)}{(\eta - z_0)^{n + 1}} \dd \eta,\]
-  and \(\gamma\) is any simple, closed, piecewise-smooth curve in \(D\) that 
-  contains \(z_0\) in its interior.
-\end{theorem}
+\begin{definition}[Isolated]
+  A singularity \(z_0\) of \(f\) is said to be isolated if there exists a neighbourhood 
+  of \(z_0\) on which \(z_0\) is the only singularity of \(f\).
+\end{definition}
+
+\begin{definition}
+  Let \(z_0\) be an isolated singularity of the holomorphic function \(f\) on some 
+  domain. Then, if
+  \[f(z) = \sum_{-\infty}^\infty a_n (z - z_0)^n\]
+  is the Laurent expansion of \(f\) which is valid in some annulus \(0 < |z - z_0| < R\), 
+  \begin{itemize}
+    \item if \(a_n = 0\) for all \(n < 0\), then \(z_0\) is called a removable singularity;
+    \item if \(a_n = 0\) for all \(n < -m\) where \(m \in \mathbb{Z}^+\) is fixed with 
+      \(a_{-m} \neq 0\), then \(z_0\) is called a pole of order \(m\);
+    \item if \(a_n \neq 0\) for infinitely many \(n \in \mathbb{Z}^-\), \(z_0\) is 
+      called an essential singularity.
+  \end{itemize}
+\end{definition}
+
+\begin{prop}
+  A function \(f\) has a pole of order \(m\) at \(z_0\) if and only if it can be 
+  written in the form 
+  \[f(z) = \frac{g(z)}{(z - z_0)^m}\]
+  where \(g\) is holomorphic at \(z_0\) and \(g(z_0) \neq 0\).
+\end{prop}
 
 \end{document}
