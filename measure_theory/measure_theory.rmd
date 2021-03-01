@@ -1121,7 +1121,8 @@ for any \(\delta \in (0, 1)\).
 \qed
 
 The Ergorov theorem allows us to conclude a powerful result about measurable 
-functions.
+functions. Indeed, by removing the compactness requirement for \(F\), this 
+theorem can be easily generalised to arbitrary measure spaces by the same proof.
 
 \begin{theorem}
   Let \(\Omega \subseteq \mathbb{R}^n\) with \(\lambda(\Omega) < \infty\).  
@@ -1467,3 +1468,130 @@ is useful in that it can apply to a wide range of sequences of functions.
 Straight away we see that the dominated convergence theorem shows that, for 
 appropriate sequences of functions \(f_n \to f\), 
 \[\lim_{n \to \infty} \int f_n \dd \mu = \int f \dd \mu.\]
+
+\begin{definition}[Convergence in Measure]
+  Let \(f : X \to \mathbb{R}\), \(f_n : X \to [-\infty, \infty]\) for all \(n \in \mathbb{N}\)
+  be measurable. Then \(f_n\) converges to \(f\) is measure if for all \(\epsilon > 0\), 
+  \[\mu(\{x \in X \mid | f_n(x) - f(x) | > \epsilon\}) \to 0\]
+  as \(n \to \infty\).
+\end{definition}
+
+\begin{prop}
+  Let \(f, f_n : X \to \mathbb{R}\) for \(n \in \mathbb{N}\) be measurable with 
+  \(\mu(X) < \infty\). Then, 
+  \begin{itemize}
+    \item if \(\int |f_n - f| \dd \mu \to 0\), then \(f_n \to f\) in measure;
+    \item if \(f_n \to f\) \(\mu\)-a.e. then \(f_n \to f\) in measure;
+    \item if \(f_n \to f\) in measure, then there exists a subsequence 
+    \(\Lambda \subseteq \mathbb{N}\) such that \(f_n \to f\) \(\mu\)-a.e. as 
+    \(n \in \Lambda \to \infty\).
+  \end{itemize}
+\end{prop}
+\proof
+  See problem sheet 4 and 6.
+\qed
+
+\begin{definition}[Density]
+  Let \(f : X \to [0, \infty)\) be measurable and \(\mu\) is a measure on 
+  \((X, \mathcal{A})\). Then, we can construct a new measure \(\nu\) where 
+  \[\nu(A) := \int_A f \dd \mu,\]
+  for all \(A \in \mathcal{A}\) (easy proof). This measure \(\nu\) is said to have a 
+  density with respect to \(\mu\) and \(f\) is a density. For shorthand, we often 
+  write \(\nu = f \mu\) and \(f = \dv{\nu}{\mu}\).
+\end{definition}
+
+\begin{definition}[Absolutely Continuous]
+  Let \(\mu, \nu\) be two measures on \((X, \mathcal{A})\). Then \(\nu\) is 
+  absolutely continuous with respect to \(\mu\) (denoted \(\nu \ll \mu\)) if 
+  \(\nu(A) = 0\) for all \(A \in \mathcal{A}\) with \(\mu(A) = 0\).
+\end{definition}
+
+The reason for this definition is the following.
+
+\begin{prop}
+  Let \(f \in \mathcal{L}^1(\mu)\), then for all \(\epsilon > 0\), there exists 
+  some \(\delta > 0\) such that for all \(A \in \mathcal{A}\), \(\mu(A) < \delta\), 
+  we have \(\int_A |f| \dd \mu < \epsilon\).
+\end{prop}
+\proof
+  See problem sheet 5.
+\qed
+
+Clearly \(\nu = f\mu\) implies \(\nu \ll \mu\) since for all \(A \in \mathcal{A}\), 
+\(\mu(A) = 0\) implies that \(\nu (A) = \int_A |f| \dd \mu < \epsilon\) for all 
+\(\epsilon > 0\) and so, a measure is absolutely continuous if it has a measure. 
+Indeed, as we shall see later (in the Radon - Nikodym theorem), the reverse is 
+also true -- every absolutely continuous measure has a density. Thus, in light 
+of this, we see that a measure \(\nu\) is absolutely continuous is equivalent to saying that 
+there exists some \(\mu\) such that for all \(\epsilon > 0\) there exists a \(\delta > 0\) 
+such that for all \(A \in \mathcal{A}\), \(\mu(A) < \delta\), we have 
+\(\nu(A) < \epsilon\) (provided \(X\) has finite measure).
+
+\begin{definition}[Uniformly Absolutely Continuous Integrals]
+  Let \(\mathcal{F} \subseteq \mathcal{L}^1(\mu)\). The family \(\mathcal{F}\) is 
+  said to have uniformly absolutely continuous integrals if for all \(\epsilon > 0\), 
+  there exists some \(\delta > 0\), such that for all \(f \in \mathcal{F}\), 
+  \(A \in \mathcal{A}\) such that \(\mu(A) < \delta\), we have 
+  \[\int_A |f| \dd \mu < \epsilon.\]
+\end{definition}
+
+Straight away, we see that any singleton \(\mathcal{F} = \{f\}\) has uniformly 
+absolutely continuous integrals. Indeed, by induction, this is also true for any 
+finite families \(\mathcal{F}\) by induction.
+
+\begin{theorem}[Vitali]
+  Let \(\mu(X) < \infty\), \(f, f_n : X \to \mathbb{R}\) be measurable for all 
+  \(n \in \mathbb{N}\). Then, the following are equivalent:
+  \begin{itemize}
+    \item \(f_n \to f\) in measure and \(\mathcal{F} := \{f_n \mid n \in \mathbb{N}\}\) 
+      has uniformly absolutely continuous integrals;
+    \item \(\int |f_n - f| \dd \mu \to 0\) as \(n \to \infty\).
+  \end{itemize}
+\end{theorem}
+
+We see that the requirements for the dominated convergence theorem implies 
+Vitali's theorem since if there exists such a dominating \(g\), for all 
+\(\epsilon > 0\), we can choose \(\delta > 0\) to be that of \(g\)'s. So, for all 
+\(A \in \mathcal{A}\), if \(\mu(A) < \delta\), 
+\[\int_A |f_n| \dd \mu \le \int_A g \dd \mu < \epsilon,\]
+for all \(n \in \mathbb{N}\).
+
+\proof (Vitali).
+
+  (\(\impliedby\)) \(f_n \to f\) in measure by proposition above and so, it suffices 
+  to show that \(\mathcal{F}\) has uniformly absolutely continuous integrals. 
+  
+  For all \(\epsilon > 0\), choose \(n_0 \in \mathbb{N}\) such that 
+  \[\int |f_n - f| \dd\mu < \frac{\epsilon}{2}\]
+  for all \(n \ge n_0\). Then, by defining \(\mathcal{F}' := \{f, f_1, \cdots, f_{n_0}\}\), 
+  since \(\mathcal{F}'\) is finite, it has uniformly absolutely continuous integrals. 
+  Thus, there exists some \(\delta > 0\) such that for all \(A \in \mathcal{A}\) 
+  with \(\mu(A) < \delta\), 
+  \[\int_A |f| \dd \mu < \frac{\epsilon}{2}, \text{ and } 
+    \max_{n \le n_0} \int_A |f_n| \dd\mu < \frac{\epsilon}{2}.\]
+  Hence, by choosing this to be our \(\delta\), for \(n > n_0\), 
+  \[\int_A |f_n| \dd \mu = \int_A |f_n - f + f| \dd \mu 
+    \le \int_A |f_n - f| \dd \mu + \int_A |f| \dd \mu < \frac{\epsilon}{2} 
+    + \frac{\epsilon}{2} = \epsilon,\]
+  and we have \(\mathcal{F}\) has uniformly absolutely continuous integrals.
+
+  (\(\implies\)) By contradiction, assume \(\limsup_{n \to \infty} \int |f_n - f| \dd\mu > 0\).
+  Then, there exists some subsequence \(\Lambda \subseteq \mathbb{N}\), such that 
+  \[\lim_{n \in \Lambda \to \infty}\int |f_n - f| \dd \mu > 0,\]
+  and \(f_n \to f\) \(\mu\)-a.e. as \(n \in \Lambda \to \infty\). Now, since 
+  \(\mathcal{F} \cup \{f\}\) has uniformly absolutely continuous integrals, 
+  for all \(\epsilon > 0\), there exists some \(\delta > 0\) such that 
+  for all \(A \in \mathcal{A}\), \(\mu(A) < \delta\), we have 
+  \[\int_A |f| \dd\mu < \frac{\epsilon}{3}, \text{ and } \int_A |f_n| \dd\mu < \frac{\epsilon}{3}\]
+  for all \(n \in \mathbb{N}\). Applying Ergorov's theorem to \((f_n)_{n \in \Lambda}\), 
+  one finds a measurable set \(F\) such that \(\mu(X \setminus F) < \delta\) and 
+  \[\sup_{x \in F} |f_n(x) - f(x)| \to 0,\]
+  as \(n \in \Lambda \to \infty\). Thus, choosing \(n_0\) such that 
+  \[\sup_{x \in F} |f_n(x) - f(x)| < \frac{\epsilon}{3 \mu(X)},\]
+  for all \(n \in \lambda_{\ge n_0}\), it follows that for all \(n \in \lambda_{\ge n_0}\), 
+  \[\int |f_n - f| \dd \mu = \int |f_n - f| \mathbf{1}_F \dd \mu + 
+    \int |f_n - f| \mathbf{1}_{X \setminus F} \dd\mu \le 
+    \frac{\epsilon}{3\mu(X)} \mu(F) + 
+    \frac{\epsilon}{3} + \frac{\epsilon}{3} \le \epsilon,\]
+  which contradicts our assumption.
+\qed
