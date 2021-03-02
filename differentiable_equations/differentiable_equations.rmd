@@ -1240,3 +1240,103 @@ is also in general not solvable. However, solutions can be obtained for \(d = 1\
 with 
 \[\lambda(t, t_0, x_0) = e^{\int_{t_0}^t A(s) \dd s} x_0 + 
   \int_{t_0}^t e^{\int_s^t A(\tau) \dd \tau} g(s)\dd s.\]
+
+\newpage
+# Nonlinear Systems
+
+## Stability 
+
+\begin{definition}[Types of Stability]
+  Consider the autonomous differential equation 
+  \[\dot x = f(x)\]
+  when \(f : D \subseteq \mathbb{R}^d \to \mathbb{R}^d\) is locally Lipschitz and 
+  let \(\phi(t, x)\) be the induced flow. Then, given the equilibrium \(x^*\), i.e.
+  \(f(x^*) = 0\), 
+  \begin{itemize}
+    \item \(x^*\) is stable if for all \(\epsilon > 0\), there exists some \(\delta > 0\), 
+      such that \(\|\phi(t, x) - x^*\| < \epsilon\) for all \(x \in B_\delta(x^*)\), 
+      \(t \ge 0\);
+    \item \(x^*\) is unstable if \(x^*\) is not stable;
+    \item \(x^*\) is attractive if there exists some \(\delta > 0\), such that 
+      \[\lim_{t \to \infty} \phi(t, x) = x^*,\]
+      for all \(x \in B_\delta(x^*)\);
+    \item \(x^*\) is asymptotically stable if \(x^*\) is stable and attractive;
+    \item \(x^*\) is exponentially stable if there exists some \(\delta > 0\), 
+      \(K \ge 1\), \(\gamma < 0\) such that 
+        \[\| \phi(t, x) - x^*\| \le Ke^{\gamma t}\|x - x^*\|\]
+      for all \(x \in B_\delta(x^*)\) and \(t \ge 0\).
+    \item \(x^*\) is repulsive if there exists some \(\delta > 0\) such that 
+      \[\lim_{t \to -\infty} \phi(t, x) = x^*,\]
+      for all \(x \in B_\delta(x^*)\).
+  \end{itemize}
+\end{definition}
+
+We remark that the conditions for stable equilibrium is similar but stronger 
+than to continuity. Indeed, we see that \(x^*\) is stable requires \(\delta\) 
+to be independent from \(t\) while continuity does not.
+
+In general, stability and attractive are not related. To see this, consider the 
+example \(\dot x = 0\). In this case every point \(x^* \in \mathbb{R}^d\) is a 
+equilibrium that is stable since we can simply choose \(\delta = \epsilon\). 
+However, \(x^*\) is not attractive since there is no movement. Similarly, 
+attractive does not imply stability (as we shall see on the problem sheet, 
+attractive does in fact imply stability in one dimension) by the following 
+example,
+\[\begin{cases}
+  \dot x = x + xy - (x + y)\sqrt{x^2 + y^2},\\
+  \dot y = y - x^2 + (x - y)\sqrt{x^2 + y^2}.
+\end{cases}\]
+This system written in polar coordinates becomes \(\dot r = r(1 - r)\); 
+\(\dot \phi = r(1 - \cos \phi)\). By considering the equilibrium \(x^* = (1, 0)\), 
+we have a attractive equilibrium that is not stable.
+
+\begin{definition}
+  Consider the differential equation \(\dot x = f(x)\), with flow \(\phi\). 
+  The orbit \(\sigma(x)\) is 
+  \begin{itemize}
+    \item called homoclinic if there exists an equilibrium \(x^* \in D \setminus \{x\}\) 
+      such that 
+      \[\lim_{t \to \infty} \phi(t, x) = x^* \text{ and } 
+        \lim_{t \to -\infty} \phi(t, x) = x^*;\]
+    \item called heteroclinic if there exists two equilibria \(x_1^* \neq x_2^*\) 
+      such that
+      \[\lim_{t \to \infty} \phi(t, x) = x_1^* \text{ and } 
+        \lim_{t \to -\infty} \phi(t, x) = x_2^*.\]
+  \end{itemize}
+\end{definition}
+
+Let us now consider the stability of linear systems. 
+
+\begin{theorem}[Stability of Linear Systems]
+  Consider the autonomous linear system 
+  \[\dot x = Ax,\]
+  where \(A \in \mathbb{R}^{d \times d}\). Then the trivial equilibrium \(x^* = 0\) 
+  of this system is 
+  \begin{itemize}
+    \item stable if and only if the real part of all eigenvalues \(\rho\) of \(A\) is 
+      non-positive and if \(\text{Re } \rho = 0\), then \(\rho\) is semi-simple;
+    \item exponentially stable if and only if \(\text{Re } \rho < 0\) for all 
+      eigenvalues \(\rho\) of \(A\).
+  \end{itemize}
+\end{theorem}
+
+\proof
+  We shall prove the first part of the theorem with the second part found on the 
+  exercise sheet.
+
+  Let \(J\) be the Jordan normal form of \(A\) such that there exists some 
+  \(T \in GL_d(\mathbb{R})\) such that \(J = T^{-1}A T\) and so, the flow of the 
+  system is 
+  \[\phi(t, x) = e^{At}x = T e^{Jt} T^{-1}x.\]
+
+  (\(\implies\)) We show the contrapositive. Suppose first that \(A\) has a 
+  eigenvalue \(\rho\) with a positive real part. Then, \(e^{Jt}\) is not bounded 
+  implying \(e^{At}\) is unbounded \# Similar for the case where \(\rho\) is not 
+  semi-simple.
+
+  (\(\impliedby\)) If both assumption holds then there exists some \(K > 0\)
+  such that \(\|e^{At}\| \le K\) for all \(t \ge 0\). So, for all \(\epsilon > 0\),
+  choose \(\delta := \epsilon / K\). Then, for all \(x \in B_\delta(0)\), we get 
+  \[\|\phi(t, x)\| = \|e^{At}x\| \le \|e^{At}\| \|x\| < K \delta = \epsilon.\]
+  Hence, \(x^* = 0\) is stable.
+\qed

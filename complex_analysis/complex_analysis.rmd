@@ -1839,3 +1839,80 @@ While this proposition seems to be rather obvious, it has some striking conseque
   \[f(z) = \frac{g(z)}{(z - z_0)^m}\]
   where \(g\) is holomorphic at \(z_0\) and \(g(z_0) \neq 0\).
 \end{prop}
+\proof
+  If \(g\) is holomorphic at \(z_0\) and \(g(z_0) \neq 0\), then for some \(R > 0\), 
+  \[g(z) = a_0 + a_1(z_1 - z_0) + \cdots,\]
+  for all \(z \in B_R(z_0)\) by Taylor expansion where \(a_0 = g(z_0) \neq 0\). Then 
+  \[f(z) = \frac{a_0}{(z - z_0)^m} + \frac{a_1}{(z - z_0)^{m - 1}} + \cdots,\]
+  for all \(z \in B_R(z_0) \setminus \{z_0\}\) and so \(z_0\) is a pole of order \(m\).
+
+  Conversely, if \(f\) has a pole of order \(m\) at \(z_0\), then the Laurent 
+  expansion of \(f\) is 
+  \[f(z) = \frac{a_{- m}}{(z - z_0)^m} + \frac{a_{- m + 1}}{(z - z_0)^{m - 1}} + \cdots
+    = \frac{1}{(z - z_0)^m}(a_{- m} + a_{- m + 1}(z - z_0) + \cdots),\]
+  which is a power series. Thus by defining 
+  \[g(z) = a_{- m} + a_{- m + 1}(z - z_0) + \cdots,\]
+  we have the required function.
+\qed
+
+## Residue Theory
+
+\begin{definition}[Residue]
+  Let \(f\) be some complex function with the Laurent expansion at \(z_0\) 
+  \[f(z) = \sum_{- \infty}^\infty a_n(z - z_0)^n,\]
+  for \(z \in B_R(z_0) \setminus \{z_0\}\). Then, the residue of \(f\) at \(z_0\) 
+  is 
+  \[\text{Res}[f, z_0] = a_{-1}.\]
+\end{definition}
+
+\begin{prop}
+  Let \(\gamma \subseteq \{z \mid 0 < |z - z_0| < R\}\) be a simple, closed, 
+  piecewise-smooth curve such that \(z_0 \in \gamma^\circ\). Then 
+  \[\text{Res}[f, z_0] = \frac{1}{2\pi i} \ointctrclockwise_\gamma f(z) \dd z.\] 
+\end{prop}
+\proof
+  Let \(0 < r < R\). Then, by the deformation theorem, we obtain
+  \[\begin{split}
+    \frac{1}{2\pi i} \ointctrclockwise_\gamma f(z) \dd z 
+    & = \frac{1}{2\pi i} \ointctrclockwise_{|z - z_0| = r} f(z) \dd z
+      = \frac{1}{2\pi i} \ointctrclockwise_{|z - z_0| = r} 
+        \sum_{- \infty}^\infty a_n(z - z_0)^n \dd z \\
+    & = \frac{1}{2\pi i} \sum_{- \infty}^\infty 
+        \int_0^{2 \pi} a_n r^n e^{i n \theta} i r e^{i \theta} \dd \theta
+      = a_{-1},
+  \end{split}\]
+  where we parametrised \(z = re^{i \theta} + z_0\).
+\qed
+
+\begin{prop}
+  Let \(f\) be a holomorphic function inside and on a simple, closed piecewise-smooth 
+  curve \(\gamma\) except at the singularities \(z_1, \cdots z_n\) in its interior. 
+  Then 
+  \[\ointctrclockwise_\gamma f(z) \dd z = 2\pi i \sum_{j = 1}^n \text{Res}[f, z_j].\]
+\end{prop}
+\proof
+  By the deformation theorem, the integral equals to the sum of curves surrounded 
+  each of the singularities. Thus, 
+  \[\ointctrclockwise_\gamma f(z) \dd z = \sum_{j = 1}^n \ointctrclockwise_{\gamma_j} f(z) \dd z,\]
+  for appropriate \(\gamma_j\). Hence, the result follows by the previous proposition.
+\qed
+
+This result allows us to evaluate complicated integrals. As an example, consider the 
+following integral, 
+\[\ointctrclockwise_{|z| = 1} e^{1 / z} \dd z.\]
+Clearly, 
+\[e^{1 / z} = 1 + \frac{1}{z} + \frac{1}{2!z^2} + \frac{1}{3!z^3} + \cdots,\]
+and so, \(\text{Res}[e^{1 / z}, 0] = 1\) and hence, 
+\(2\pi i = \ointctrclockwise_{|z| = 1} e^{1 / z} \dd z\).
+
+While this result is powerful, it is not always easy to compute the Laurent 
+coefficients explicitly. In this case, we may employ the following method. Suppose 
+\(f\) has a pole of order \(m\) at \(z_0\) and let \(g(z) = (z - z_0)^m f(z)\). 
+Then if \(m = 1\), we have 
+\[g(z) = a_{-1} + a_0(z - z_0) + \cdots,\]
+and so, 
+\[\text{Res}[f, z_0] = a_{- 1} = \lim_{z \to z_0} g(z) = \lim_{z \to z_0} (z - z_0)f(z).\]
+Similarly, if \(m > 1\), we may simple derivate \(g\), \(m - 1\)-times resulting in 
+\(a_{- 1}\) being the first coefficient, allowing us to apply the same argument, 
+i.e.
+\[\text{Res}[f, z_0] = \lim_{z \to z_0} \frac{1}{(m - 1)!} \dv[m - 1]{z}((z - z_0)^m f(z)).\]

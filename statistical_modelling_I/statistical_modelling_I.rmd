@@ -962,8 +962,6 @@ especially matrix properties.
   Standard result.
 \qed
 
-## Random Vectors 
-
 Linear regression models construct an inference based on the realisations 
 of random variables. This can be modelled using random vectors and we shall talk 
 about methods on how to work with random vectors here. 
@@ -1017,7 +1015,7 @@ We also find this definition satisfies out usual properties for covariance.
   Easy.
 \qed
 
-## Linear Model
+## Introduction to Linear Model
 
 \begin{definition}[General Linear Model]
   A linear model is a model in the form 
@@ -1101,3 +1099,124 @@ Thus, by linear algebra, \(\text{rank}(X^T X) = r\) and so, \(\hat{\beta}\) has
 a unique solution if and only if \(r = p\) with \(\hat \beta = (X^TX)^{-1} X^T Y\).
 Furthermore, by matrix algebra, we find that \(S\) indeed achieves a minimum at 
 \(\hat \beta\).
+
+Geometrically, we see that \(X \hat \beta\) is orthogonal to its distance to \(Y\). 
+Indeed, by computing their inner product, we find, 
+\[(X\hat \beta)^T (Y - X \hat \beta) = \hat\beta^T X^T = 
+  \hat \beta^T (X^T Y - X^T X \hat \beta) = 0.\]
+This is intuitive since we would like \(X \hat \beta\) to be as close as possible 
+to \(Y\) and this is achieved if the difference is orthogonal.
+
+\begin{prop}
+  Assuming full rank and the second order assumption, the linear model has 
+  the least square estimator 
+  \[\hat \beta = (X^T X)^{-1} X^T Y,\]
+  and 
+  \begin{itemize}
+    \item \(\hat \beta\) is linear in \(Y\), i.e. the function 
+      \(y \mapsto (X^T X)^{-1} X^T y : \mathbb{R}^n \to \mathbb{R}^p\) is a linear mapping;
+    \item \(\hat \beta\) is an unbiased estimator for \(\beta\);
+    \item \(\text{Cov}(\hat \beta) = \sigma^2 (X^T X)^{-1}\).
+  \end{itemize}
+\end{prop}
+\proof\hspace{2mm}
+
+  \begin{itemize}
+    \item Trivial.
+    \item \(E(\hat \beta) = (X^TX)^{-1} X^T E(Y) = (X^TX)^{-1} X^T X \beta = \beta\).
+    \item Letting \(A := (X^T X)^{-1} X^T\), we have 
+      \[\begin{split}
+        \text{Cov}(\hat \beta) & = \text{Cov}(A Y, A Y) = A \text{Cov}(Y) A^T\\
+          & = \sigma^2A A^T = \sigma^2 (X^T X)^{-1} X^T X (X^T X)^{-1} = \sigma^2 (X^T X)^{-1}.
+      \end{split}\]
+  \end{itemize}
+\qed
+
+Consider the special case of the simple linear regression \(Y = X \beta + \epsilon\), where,
+\[
+Y = \begin{pmatrix}
+      Y_1 \\ \vdots \\ Y_n
+    \end{pmatrix},
+\beta = \begin{pmatrix}
+      \beta_1 \\ \beta_2
+    \end{pmatrix},
+X = \begin{pmatrix}
+      1 & a_1 \\ \vdots & \vdots \\ 1 & a_n
+    \end{pmatrix},\]
+assuming \(n \ge 2\). Assuming the second order assumption and not all \(a_i\) are 
+equal (ensuring full rank), we have 
+\[X^T X = \begin{pmatrix}
+  n & n \bar a \\ n \bar a & \sum a_i^2
+\end{pmatrix},\]
+and so, 
+\[(X^T X)^{-1} = \frac{1}{n \sum a_i^2 - n^2 \bar a^2}
+\begin{pmatrix}
+  \sum a_i^2 & -n \bar a \\ - n \bar a & n
+\end{pmatrix},\]
+and 
+\[X^T Y = \begin{pmatrix}
+  n \bar Y \\ \sum a_i Y_i
+\end{pmatrix}.\] 
+Thus, we find the least square estimators for \(\beta\), 
+\[\hat \beta = (X^T X)^{-1}X^T Y = 
+\frac{1}{\sum a_i^2 - n \bar a^2}
+\begin{pmatrix}
+  \bar Y \sum a_i^2 - \bar a \sum a_i Y_i\\
+  \sum a_i Y_i - n \bar a \bar Y
+\end{pmatrix}.\]
+Also, by the above proposition, we have found the covariance matrix of \(\hat \beta\), 
+\[\text{Cov}(\hat \beta) = \sigma^2 (X^T X)^{-1} = 
+  \frac{\sigma^2}{n \sum a_i^2 - n^2 \bar a^2}
+\begin{pmatrix}
+  \sum a_i^2 & -n \bar a \\ - n \bar a & n
+\end{pmatrix}.\]
+We note that in the case which \(\bar a = 0\), the covariance matrix is diagonal 
+and \(\hat \beta_1 = \bar Y\). To achieve this, we may re-parametrise the model 
+by letting \(\gamma_1 = \beta_1 + \bar a \beta_2\) and \(\gamma_2 = \beta_2\); so,
+\[E(Y) = X \beta = 
+\begin{pmatrix}
+  \beta_1 + a_1 \beta_2 \\ \vdots \\ \beta_1 + a_n \beta_2
+\end{pmatrix}
+=
+\begin{pmatrix}
+  \gamma_1 + (a_1 - \bar a) \gamma_2\\ \vdots \\
+  \gamma_1 + (a_n - \bar a) \gamma_2
+\end{pmatrix} 
+= 
+\begin{pmatrix}
+  1 & (a_1 - \bar a)\\ \vdots & \vdots \\ 1 & (a_n - \bar a)
+\end{pmatrix} 
+\begin{pmatrix}
+  \gamma_1 \\ \gamma_2
+\end{pmatrix},\]
+resulting in \(\sum (a_i - \bar a) = 0\) and so, \(\hat \gamma_1 = \bar Y\) 
+and \(\hat \gamma_2 = \hat \beta_2\).
+
+\begin{definition}[Linear Estimator]
+  An estimator \(\hat \gamma\) is called linear if there exists some 
+  \(L \in \mathbb{R}\) such that \(\hat{\gamma} = L^T Y\).
+\end{definition}
+
+\begin{theorem}[The Gauss-Markov Theorem for Full-rank Linear Models]
+  Assume (FR) and (SOA), then for all \(c \in \mathbb{R}^p\), the estimator 
+  \(c^T \hat \beta\) has the smallest variance among all linear unbiased estimators 
+  for \(c^T \beta\) where \(\hat \beta\) is the least squares estimator for \(\beta\).
+\end{theorem}
+\proof
+  Let \(\hat \gamma = L^T Y\) be any linear unbiased estimator of \(c^T \beta\).
+  Then, 
+  \[\text{Var}(\hat \gamma) = \text{Var}(L^T Y) = \text{Var}(c^T \hat \beta 
+      + (L^T - c^T(X^T X)^{-1}X^T) Y),\]
+  so, by writing \(D^T := L^T - c^T(X^T X)^{-1}X^T\), we have 
+  \[\text{Var}(\hat \gamma) = \text{Cov}(c^T \hat \beta + D^T Y)
+    = \text{Var}(c^T \hat \beta) 
+    + \text{Var}(D^T Y)
+    + 2 \text{Cov}(c^T \hat \beta, D^T Y).\]
+  Now, since 
+  \[\text{Cov}(c^T \hat \beta, D^T Y) = c^T(X^T X)^{-1} X^T \text{Cov}(Y)D = 
+    c^T(X^T X)^{-1}(D^T X)^T \sigma^2 = 0,\]
+  as \(D^T X = 0\) because \(0 = E(\hat \gamma) - E(c^T \hat \beta) = E(D^T Y) = D^T X \beta\) 
+  for all \(\beta\). So, finally
+  \[\text{Var}(\hat \gamma) = \text{Var}(c^T \hat \beta) + 
+    \text{Var}(D^T Y) \ge \text{Var}(c^T \beta).\]
+\qed
