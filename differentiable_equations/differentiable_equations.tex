@@ -1467,4 +1467,34 @@ all \(\epsilon > 0\), choose \(\delta := \epsilon / K\). Then, for all
 \[\|\phi(t, x)\| = \|e^{At}x\| \le \|e^{At}\| \|x\| < K \delta = \epsilon.\]
 Hence, \(x^* = 0\) is stable. \qed
 
+Now that we understand the stability of linear systems, we would like to
+consider the same for nonlinear systems. As it is in general very
+difficult to solve a nonlinear system explicitly, we consider the system
+locally in a neighbour hood of a reference solution, e.g.~given the
+nonlinear system \[\dot x = f(x),\] with the equilibrium \(x^*\), we
+consider the linear system \[\dot y = f'(x^*) y.\]
+
+\begin{definition}[Hyperbolicity]
+  A matrix \(A \in \mathbb{R}^{d \times d}\) is called hyperbolic if all eigenvalues 
+  \(\lambda\) of \(A\) has a non-zero real part, i.e. \(\Sigma(A) \cap \{0\} = \varnothing\). 
+  An equilibrium \(x^*\) of a differential equation 
+  \[\dot x = f(x),\]
+  where \(f : D \subseteq \mathbb{R}^d \to \mathbb{R}^d\) is continuously differentiable, 
+  is called hyperbolic if the matrix \(f'(x^*) \in \mathbb{R}^{d \times d}\) is 
+  hyperbolic.
+\end{definition}
+
+Hyperbolicity provide us with a powerful result about the neighbourhood
+of the equilibrium point of a nonlinear system. Indeed, by the Hartman
+-- Grobman theorem, there exists a homomorphism between the system and
+the linearisation.
+
+\begin{theorem}[Hartman -- Grobman Theorem]
+  In a neighbourhood of an hyperbolic equilibrium, there exists a homomorphism 
+  between the phase portraits of the nonlinear system and the linearisation.
+\end{theorem}
+\proof
+
+Beyond this course. \qed
+
 \end{document}

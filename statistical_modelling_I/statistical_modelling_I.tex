@@ -1362,4 +1362,152 @@ all \(\beta\). So, finally
 \[\text{Var}(\hat \gamma) = \text{Var}(c^T \hat \beta) + 
     \text{Var}(D^T Y) \ge \text{Var}(c^T \beta).\] \qed
 
+\hypertarget{projection-matrices}{%
+\subsection{Projection matrices}\label{projection-matrices}}
+
+We shall in this section let \(L\) be a subspace of \(\mathbb{R}^n\)
+with \(\dim L = r \le n\).
+
+\begin{definition}[Projection Matrix]
+  \(P \in \mathbb{R}^{n \times n}\) is a projection matrix onto \(L\) if 
+  \begin{itemize}
+    \item for all \(x \in L\), \(Px = x\);
+    \item for all \(x \in L^\perp\), \(Px = 0\).
+  \end{itemize}
+\end{definition}
+
+By definition, we have \(\text{rank} P = \dim L = r\) since
+\(L \oplus L^\perp = \mathbb{R}^n\).
+
+\begin{lemma}
+  \(P\) is a projection matrix (of the subspace \(\text{Im} P)\) if and only if 
+  \(P^T = P\) and \(P^2 = P\), i.e. \(P\) is symmetric and idempotent.
+\end{lemma}
+\proof \hspace{0mm}
+
+(\(\implies\)) By the definition of projection matrices, for all
+\(Px \in \text{Im}P\), \(P^2 x = P(Px) = Px\) and so, \(P^2 = P\) by
+choosing \(x\) to be the standard basis. For symmetry, consider that,
+for all \(x, y \in \mathbb{R}^n\), there exists unique decompositions
+\(x = P x + x_1\) and \(y = P y + y_1\) such that
+\(x_1, y_1 \in \text{Im}P^\perp\) and so,
+\[x^T P^T y = (P x)^T y = (P x)^T(P y + y_1) = (P x)^T P y
+    = (x - x_1)^T P y = x^T P y.\] Hence, \(P = P^T\) as \(x, y\) are
+arbitrary.
+
+(\(\impliedby\)) For all \(P x \in \text{Im} P\), by idempotent,
+\(P(P x) =  P^2 x = P x\) and hence, the first condition is satisfied.
+Now, let \(x \in \text{Im}P^\perp\), then for all
+\(y \in \mathbb{R}^n\), \[0 =(Py)^T x = y P^T x = y P x.\] Hence,
+\(P x = 0\) since \(y\) we arbitrary and so, \(P\) is a projection
+matrix. \qed
+
+\begin{prop}
+  The projection matrix of a subspace \(L\) is unique.
+\end{prop}
+\proof
+
+Since \(L \oplus L^\perp\), for each of the standard basis \(e_i\),
+\(e_i\) can be uniquely written as the sum \(e_i = x_i + y_i\) where
+\(x_i \in L\) and \(y_i \in L^\perp\). But we know that \(x_i = P e_i\)
+where \(P\) is some projection matrix onto \(L\), we have that \(P\) is
+uniquely determined. \qed
+
+\begin{prop}
+  If \(X = (x_1, \cdots, x_r)\) forms a basis of \(L\), then, projection 
+  matrix \(P\) onto \(L\) is
+  \[P = X(X^T X)^{-1} X^T.\]
+\end{prop}
+\proof
+
+We can easily check that \(P\) is symmetric and idempotent. \qed
+
+In the case that \(X\) is an orthonormal basis, we see that the above
+proposition implies that \(P = X X^T\).
+
+\begin{prop}
+  If \(P\) is the projection matrix onto \(L\), then \(I_n - P\) is the projection 
+  matrix onto \(L^\perp\).
+\end{prop}
+\proof
+
+For all \(x \in L\), we have \((I_n - P) x = x - Px = 0\) since
+\(x \in L \implies P x = x\) and hence the second condition is satisfied
+by the fact that \(L^{\perp^\perp} = L\). Now, let \(x \in L^\perp\),
+then, \((I_n - P) x = x - Px = x\) since \(Px = 0\) and hence the result
+follows. \qed
+
+\begin{lemma}
+  If \(A\) is an \(n \times n\) projection matrix of rank \(r\), then 
+  \begin{itemize}
+    \item \(r\) of the eigenvalues of \(A\) are 1 and the rest are 0;
+    \item \(\text{rank} A = \text{tr} A\).
+  \end{itemize}
+\end{lemma}
+\proof
+
+Let \(v\) be an eigenvector of \(A\) with eigenvalue \(\lambda\). Then
+\(\lambda x = A x = A^2 x = \lambda^2 x\). Thus, \(\lambda = \lambda^2\)
+and so, \(\lambda = 0\) or \(\lambda = 1\). Now since \(A\) is
+symmetric, \(A\) is
+diagonalisable\footnote{Consider the triangularisation theorem.}, and so
+\(A\) is similar to \(I_r \oplus 0_{n - r}\). Thus, as the trace is
+preserved by similarity, the second result also hold. \qed
+
+\hypertarget{residuals-estimation-of-the-variance}{%
+\subsection{Residuals, Estimation of the
+Variance}\label{residuals-estimation-of-the-variance}}
+
+\begin{definition}[Vector of Fitted Values]
+  \(\hat Y = X \hat \beta\) where \(\hat \beta\) is a least squares estimations, 
+  is called the vector of fitted values.
+\end{definition}
+
+In the full rank case, the vector of fitted values is simply
+\(\hat Y = X(X^T X)^{-1}X^T Y\).
+
+\begin{lemma}
+  \(\hat Y\) is unique and 
+  \[\hat Y = P Y,\]
+  where \(P\) is the projection matrix onto the column space of \(X\).
+\end{lemma}
+
+Because of this, \(P\) is sometimes called the hat matrix since it
+``puts'' the hat on \(Y\).
+
+\proof
+
+It suffices to show \(\hat Y = P Y\) since the projection matrix is
+unique.
+
+Since \(P Y \in \text{Im} X\), there exists some \(\gamma\) such that
+\(X \gamma = P Y\) and so,
+\[S(\hat \beta) = \|Y - P Y + P Y - X \hat \beta\|^2 = 
+    \|Y - P Y\|^2 + \|P Y + X \hat \beta\|^2 + 2(Y - PY)^T(PY - X\hat \beta).\]
+Since \(Y - PY = (I - P)Y\) which is the projector onto
+\(\text{Im} X^\perp\), and \(PY - X\hat \beta \in \text{Im} X\),
+\[2(Y - PY)^T(PY - X\hat \beta) = 0,\] and so,
+\[S(\hat \beta) = S(\gamma) + \|P Y - X\hat\beta\|^2 \ge 
+    S(\hat \beta) + \|P Y - X\hat\beta\|^2.\] Thus
+\(\|P Y - X\hat\beta\| = 0\) which means \(P X = X \hat \beta\). \qed
+
+\begin{definition}[Residuals]
+  \(e = Y - \hat Y\) is called the vector of residuals.
+\end{definition}
+
+By using the above lemma, we see that \(e = Y - PY = (I - P) Y = Q Y\)
+and so, the residual is simply the image of \(Y\) under the projector
+onto \(\text{Im}P^\perp\). Furthermore, we see that
+\[E(e) = E(QY) = Q E(Y) = Q X \beta = 0,\] since \(QX = 0\).
+
+Suppose we have data from the model
+\[Y = X \beta + Z \gamma + \epsilon,\] where \(E(\epsilon) = 0\),
+\(Z \in \mathbb{R}^n \setminus \text{Im}X\) and \(\gamma\) is
+deterministic. Suppose now that we erroneously worked with the model
+\[Y = X\beta + \epsilon,\] instead, i.e.~assumed \(\gamma = 0\). Then
+\[E(e) = E(QY) = E(Q(X \beta + Z \gamma + \epsilon)) = QZ \gamma.\]
+Thus, by plotting \(QZ\) against the residuals, we can consider the
+importance of \(Z\) and thus, perhaps include it in our model if the
+slope of the plot differs from 0.
+
 \end{document}
