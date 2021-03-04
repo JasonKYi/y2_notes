@@ -1760,4 +1760,146 @@ for all \(n \in \mathbb{N}\). Applying Ergorov's theorem to
     \frac{\epsilon}{3} + \frac{\epsilon}{3} \le \epsilon,\] which
 contradicts our assumption. \qed
 
+\hypertarget{lp-spaces}{%
+\subsection{\texorpdfstring{\(L^p\)
+Spaces}{L\^{}p Spaces}}\label{lp-spaces}}
+
+\(L^p\) spaces are amongst the most important vector spaces of functions
+in analysis and we shall in this section look at some of their
+properties.
+
+\begin{definition}
+  Let \((X, \mathcal{A}, \mu)\) be a measure space and \(1 \le p \le \infty\).  
+  Then, for \(f : X \to [- \infty, \infty]\) measurable, define 
+  \[\|f\|_{L^p(\mu)} := \left(\int |f|^p \dd \mu\right)^{1 / p}\]
+  if \(p < \infty\), and
+  \[\|f\|_{L^\infty(\mu)} := \inf \{ C \in \mathbb{R} \mid |f| \le C, \mu-\text{a.e.}\},\]
+  if \(p = \infty\). With that, we define \(\mathcal{L}^p\) to be the space
+  \[\mathcal{L}^p := \{f : X \to [-\infty, \infty] \mid f \text{ measurable}, 
+    \|f\|_{L^p(\mu)} < \infty\}.\]
+\end{definition}
+
+For shorthand, whenever the measure is clear from the context, we denote
+the \(L^p\) norm as \(\| \cdot \|_p\).
+
+Sometimes, the norm \(\| \cdot \|_{L^\infty(\mu)}\) is refereed to as
+the essential supremum norm.
+
+Clearly, for all \(f \in \mathcal{L}^\infty(\mu)\), we have
+\[|f(x)| \le \|f\|_{L^\infty(\mu)}\] \(\mu\)-a.e. Indeed, by definition
+of the infimum, we can construct the sequence
+\((C_k)_{k = 0}^\infty \subseteq \{ C \in \mathbb{R} \mid |f| \le C, \mu-\text{a.e.}\}\)
+such that \(C_k \downarrow \|f\|_{L^\infty(\mu)}\). Hence, we have
+\(\{x \mid |f(x)| > C_k\} \uparrow \{x \mid |f(x)| > \|f\|_{L^\infty(\mu)}\}\),
+and so, by continuity of measures,
+\[\mu(\{x \mid |f(x)| > \|f\|_{L^\infty(\mu)}\}) = 
+  \lim_{k \to \infty}\mu(\{x \mid |f(x)| > C_k\}) = 0.\] We would like
+to turn \(\mathcal{L}^p(\mu)\) into a normed vector space but the
+obvious choice for the norm -- \(\| \cdot \|_{L^p(\mu)}\) is problematic
+since \(\| \cdot \|_{L^p(\mu)}\) is not
+positive-definite\footnote{\(\| f \|_{L^p(\mu)} > 0\) for
+all \(f \neq 0\)} as if \(f = g\) \(\mu\)-a.e. then \(\|f - g\|_p = 0\)
+but \(f - g \neq 0\). To fix this, we quotient \(\mathcal{L}^p(\mu)\) by
+the equivalence relation by \(f \sim g \iff f = g\) \(\mu\)-a.e. With
+that, we may define the \(L^p\) space.
+
+\begin{definition}[\(L^p(\mu)\) Space]
+  Let \((X, \mathcal{A}, \mu)\) be a measure space and \(1 \le p \le \infty\). 
+  Then, the \(L^p\) space if defined to be the vector space
+  \[L^p(\mu) := \{[f] \mid f \in \mathcal{L}^p(\mu)\}\]
+  equipped with the norm \(\|[f]\|_{L^p(\mu)} := \inf_{g \in [f]} \|g\|_{L^p(\mu)} 
+  = \|f\|_{L^p(\mu)}\).
+\end{definition}
+
+As a convention, we often identify the equivalent class \([f]\) by some
+choice \(f \in [f]\), thus writing \(f \in L^p(\mu)\). This is justified
+as long as any manipulations we apply on this equivalence class
+traverses across equality \(\mu\)-a.e.
+
+\begin{lemma}[Young's Inequality]
+  Let \(1 < p, q < \infty\) be conjugate, i.e. \(1 / p + 1 / q = 1\). Then 
+  \[ab \le \frac{a^p}{p} + \frac{b^q}{q},\]
+  for all \(a, b \ge 0\).
+\end{lemma}
+\proof
+
+See exercises. \qed
+
+\begin{corollary}[Hölder's Inequality]
+  Let \(1 \le p, q \le \infty\) be conjugate and \(f \in L^p(\mu)\) and \(g \in L^q(\mu)\). 
+  Then \(fg \in L^1(\mu)\) and 
+  \[\|fg\|_{L^1(\mu)} \le \|f\|_{L^p(\mu)} \|g\|_{L^q(\mu)}.\]
+\end{corollary}
+\proof
+
+Wlog. assume \(p \le q\). If \(p = 1\) and \(q = \infty\), then the
+inequality follows as \(|fg| = |f| |g| \le |f|\|g\|_\infty\)
+\(\mu\)-a.e. so let us suppose \(p, q < \infty\).
+
+In the case that \(\|f\|_p = \|g\|_p = 1\), we have
+\[\int |fg| \dd \mu \le \int \frac{|f|^p}{p} + \frac{|g|^q}{q} \dd \mu
+    = \frac{1}{p} \|f\|^p_p + \frac{1}{q} \|g\|^q_q = \frac{1}{p} + \frac{1}{q} = 1.\]
+For the general case, we can simply reduce the inequality to the
+previous case by normalising the functions, i.e.~consider the inequality
+on \(\tilde f = f / \|f\|_p\) and \(\tilde g = g / \|g\|_q\). \qed
+
+\begin{corollary}[Minkowski's Inequality]
+  Let \(1 \le p \le \infty\) and \(f, g \in L^p(\mu)\). Then 
+  \[f + g \in L^p(\mu) \text{ and } \|f + g\|_{L^p(\mu)} \le 
+    \|f\|_{L^p(\mu)} + \|g\|_{L^p(\mu)}.\]
+\end{corollary}
+\proof
+
+See exercises. \qed
+
+\begin{theorem}
+  The space \(L^p(\mu)\) is a complete, normed vector space (\(\equiv\) a Banach space) 
+  for all \(1 \le p \le \infty\).
+\end{theorem}
+\proof
+
+Clearly, we have positive definiteness since
+\(\|f\|_p = 0 \iff f \in [0] \iff  [f] = [0]\). Furthermore, linearity
+of the norm is also clear by linearity of the integrals. Thus, as the
+triangle inequality is simple Minkowski's inequality, we have
+\(L^p(\mu)\) forms a normed vector space.
+
+Let \((f_n)_{n = 1}^\infty\) be a Cauchy sequence in \(L^p\) where
+\(p < \infty\), then, it suffices to show that \((f_n)\) converges in
+\(L^p\). Let \(1 \le p < \infty\) and choose a subsequence \((f_{n_k})\)
+such that \(\|f_n - f_m\|_p < 2^{-k}\) for all \(k \ge 1\),
+\(m, n \ge n_k\). Define
+\(g_l = \sum_{k = 1}^l |f_{n_{k + 1}} - f_{n_k}|\) and \(g = g_\infty\),
+then, since \(0 \ge g_l \uparrow g\), by the monotone convergence
+theorem,
+\[\|g\|_p = \left(\int |g|^p \dd\mu\right)^{1 / p} = \lim_{l \to \infty}
+   \left(\int |g_l|^p \dd\mu\right)^{1 / p} \le 
+   \lim_{l \to \infty} \sum_{k = 1}^l \|f_{n_{k + 1}} - f_{n_k}\| < \infty,\]
+and hence, \(g \in L^p(\mu)\). It follows that
+\[f(x) := f_{n_1}(x) + \sum_{k = 1}^\infty(f_{n_{k + 1}}(x) - f_{n_k}(x))\]
+whenever \(g(x) < \infty\) and 0 otherwise is well-defined. By observing
+that the definition of \(f(x)\) is a telescoping sum for finitely many
+terms, we have
+\[f(x) = f_{n_j}(x) + \sum_{k = j}^\infty(f_{n_{k + 1}}(x) - f_{n_k}(x))\]
+for all \(j \in \mathbb{N}\). Thus, for all \(k \in \mathbb{N}\), we
+have
+\[|f(x) - f_{n_k}(x)| = \left| \sum_{l = k}^\infty f_{n_{k + 1}}(x) - f_{n_k}(x)\right| 
+    \le g(x).\] \(\mu\)-a.e. Thus, by the (convergence in measure
+version) dominated convergence theorem, we have \(f \in L^p\) and
+\[\int|f - f_{n_k}|^p \dd \mu \to 0.\] Then \(f_n \to f\) in general by
+Minkowski's inequality as
+\[\|f - f_n\|_p \le \|f - f_{n_k}\|_p + \|f_{n_k} - f_n\| \le 2^{-k} + \|f - f_{n_k}\|_p,\]
+for some appropriate \(n_k > n\). Thus, by taking \(n \to \infty\), the
+result follows.
+
+For the case that \(p = \infty\), the result follows easily from the
+definition (exercise). \qed
+
+The \(L^p\) space might appear ``vast'' but for instance, we have (proof
+omitted) that the space of continuous functions with compact support
+\(C^\circ_c(\mathbb{R}^n)\) is dense in \(L^p(\mathbb{R}^n)\) and so, we
+may approximate every function in \(L^p\) by a sequence of continuous
+functions with compact support, providing us with a easier mental image
+to work with.
+
 \end{document}
