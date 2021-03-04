@@ -14,6 +14,7 @@ header-includes:
   - \usepackage{amsthm}
   - \usepackage{mathtools}
   - \usepackage{lipsum}
+  - \usepackage{physics}
   - \usepackage[ruled,vlined]{algorithm2e}
   - \theoremstyle{definition}
   - \newtheorem{theorem}{Theorem}
@@ -767,7 +768,9 @@ we may solve for \(\mathbf{x}\) with a backwards substitution.
 
 \newpage
 
-# Polynomial Interpolations
+# Polynomials
+
+## Lagrange Interpolation
 
 Interpolation is a numerical technique to formulate a continuous representation 
 based on discrete data points. This is applied in many fields especially 
@@ -783,8 +786,6 @@ differential and integral expressions.
   \(p_n(z_j) = f_j\) is called the interpolating polynomial (or interpolant) 
   of the data set.
 \end{definition}
-
-## Lagrange Interpolation
 
 It is not always clear that we can always find such an interpolating polynomial 
 for any given data sets so we shall present a proof the the existence by constructing 
@@ -901,3 +902,159 @@ for distinct \(z_0, \cdots, z_{n + 1}\), we have
   {z_0 - z_{n + 1}}\]
 (for proof see exercise), and so, we can use this recurrence relation to generate 
 a divided difference tableau (see slides).
+
+## Orthogonal Polynomials
+
+Orthogonal polynomials play an important role in numerical analysis. They are key 
+in approximation theory and feature in the solutions of differential equations 
+by high-order, spectral methods. 
+
+\begin{definition}
+  Consider the vector space \(V = C([a, b])\) and suppose \(w : [a, b] \to \mathbb{R}^+\)
+  is some weigh function such that \(w\) is integrable and 
+  \(\int_a^b w(x) \dd x < \infty\). Then \(\langle \cdot, \cdot \rangle : V \times V \to \mathbb{R}\) 
+  defined by 
+  \[\langle f, g \rangle := \int_a^b w(x) f(x) g(x) \dd x,\]
+  is an inner product on \(V\).
+\end{definition}
+
+We see that this inner product is well defined since 
+\[|\langle f, g \rangle| = \left| \int_a^b w f g \right| 
+      \le \int_a^b |w f g| \le 
+      \max_{a \le x \le b}|f(x)| \max_{a \le x \le b}|g(x)|\int_a^b w < \infty.\]
+Furthermore, we easily see that it forms an inner product by checking the axioms.
+
+Orthogonal polynomials satisfy a three-term recurrence relation. Suppose 
+\(U = \mathbb{P}_n\), that is the set of polynomials of degree less than or equal 
+to \(n\). Furthermore, let \(\{\Phi_i\}_{i = 0}^n\) be the canonical polynomial 
+basis of \(U\) and we wish to consider orthogonal monic polynomials with 
+\(\langle p_i, p_j \rangle = 0\) whenever \(i \neq j\). 
+
+\begin{prop}
+  If \(\{p_i\}_{i = 0}^{n}\) is a sequence of monic orthogonal polynomials where 
+  \(\deg p_i = i\). Then it satisfies 
+  \[p_{j + i}(x) = (x - a_j) p_j(x) - b_j p_{j - 1}(x),\]
+  where \(a_j = \langle xp_j, p_j \rangle / \|p_j\|^2\) and 
+  \(b_j = \|p_j\|^2 / \|p_{j - 1}\|^2\) for \(j > 1\).
+\end{prop}
+\proof
+  Consider that \(\deg p_{j + 1} - xp_j = j\) since the polynomials are monic. 
+  Then \(p_{j + 1} - xp_j \in \mathbb{P}_j\) and so there exists \(c_k \in \mathbb{R}\) 
+  such that 
+  \[p_{j + 1} - xp_j = \sum_{k = 0}^j c_k p_k,\]
+  since \(\{p_i\}_{i = 0}^j\) forms a basis of \(\mathbb{P}_j\) as orthogonal 
+  polynomials are linearly independent.
+
+  Now, consider 
+  \[\begin{split}
+    \left\langle \sum_{k = 0}^j c_k p_k, p_i \right\rangle 
+      & = \langle p_{j + 1} - xp_j, p_i \rangle 
+        = \langle p_{j + 1}, p_i \rangle - \langle xp_j, p_i \rangle
+        = - \langle xp_j, p_i \rangle.
+  \end{split}\]
+  On the other hand, 
+  \[\left\langle \sum_{k = 0}^j c_k p_k, p_i \right\rangle 
+    = \sum_{k = 0}^j c_k \langle p_k, p_i \rangle 
+    = \sum_{k = 0}^j c_k \delta_{ki} \langle p_i, p_i \rangle = c_k \|p_i\|^2, \]
+  so \(c_k\|p_i\|^2 = - \langle xp_j, p_i \rangle\) and hence, 
+  \(c_k = - \langle xp_j, p_i \rangle / \|p_i\|^2\). Now, by considering 
+  \(\langle xp_j, p_i \rangle = \langle p_j, xp_i \rangle\), we see that, if 
+  \(xp_i \in \mathbb{P}_{j - 1}\), then it can be written as \(\sum_l \alpha_l p_l\) 
+  and so \(\langle p_j, xp_i \rangle = \left\langle p_j, \sum_l \alpha_l p_l \right\rangle = 0\).
+  Thus, the only non-vanishing \(i\) is \(i = j - 1, j\) and, hence we have,
+  \[p_{j + 1} = xp_j + \sum_{k = 0}^j c_k p_k = 
+    xp_j + c_{j - 1}p_{j - 1} + c_j p_j = (x - a_j) p_j - b_j p_{j - 1}\]
+  as required.
+\qed
+
+By directly checking, its not hard to see that this condition is also sufficient 
+and thus, we have found an exhaustive method for constructing orthogonal 
+monic polynomials by using the aforementioned recurrence relation.
+
+Let us now consider some commonly occurring inner products.
+In the case that \(w = 1\) and \([a, b] = [-1, 1]\), we have the unweighted inner 
+production where 
+\[\langle f, g \rangle = \int_{-1}^1 fg.\]
+Starting with \(p_0(x) = 1\) and \(p_1(x) = x - a_0\) we have 
+\(a_0 = \langle xp_0, p_0 \rangle / \|p_0\|^2 = 0\) and so \(p_1(x) = x\). Using 
+the recurrence relation, we have \(p_2(x) = x^2 - a_1 x - b_1\), and by calculating 
+we find \(a_1 = 0\) and \(b_1 = 1 / 3\) and so \(p_2(x) = x^2 - 1 / 3\). Repeating 
+this process, we can find higher terms. However, this is rather tedious and so, it 
+might be appropriate to write a computer programme for this.
+
+From this, we find the orthogonal polynomials of the unweighted inner product: 
+\[p_0(x) = 1,\hspace{1mm} p_1(x) = x,\hspace{1mm} p_2(x) = x^2 - \frac{1}{3},\hspace{1mm} 
+  p_3(x) = x^3 - \frac{3}{5}x,\hspace{1mm} \cdots\]
+and these are known as the *Legendre polynomials* which are important expansion 
+functions for problems in spherical coordinates.
+
+Another well-known set of orthogonal polynomials are the Chebyshev polynomials. 
+
+\begin{definition}[Chebyshev Polynomial]
+  Given \(k \in \mathbb{N}\), the \(k\)-th Chebyshev polynomial is defined to be 
+  the function 
+  \[T_k(x) := \cos(k \arccos (x)),\]
+  for \(x \in [-1, 1]\).
+\end{definition}
+
+By computing, we find that the Chebyshev polynomials are orthogonal under the 
+inner product 
+\[\langle f, g \rangle = \int_{-1}^1 \frac{f(x)g(x)}{\sqrt{1 - x^2}} \dd x,\]
+and 
+\[\|T_k\|^2 = 
+  \begin{cases}
+    \pi, & k = 0;\\
+    \pi / 2, & k \neq 0.
+  \end{cases}\]
+This inner product is well defined since 
+\[\int_{-1}^1 \frac{1}{\sqrt{1 - x^2}} \dd x = \pi < \infty.\]
+Furthermore, as the name suggests, the Chebyshev polynomials are in fact polynomials; 
+Indeed, we have \(T_0(x) = 1\), \(T_1(x) = x\), and for higher \(k\), by substituting 
+\(\theta = \arccos(x)\), we have \(T_k(x) = \cos(k \theta)\). Thus, by using 
+the identity 
+\[\cos((k + 1) \theta) + \cos((k - 1)\theta) = 2\cos(k\theta)\cos(\theta),\]
+we have 
+\[T_{k + 1}(x) + T_{k - 1}(x) = 2T_k(x)x.\]
+Hence, by induction, we have \(T_k\) is a polynomial of degree \(k\) for 
+all \(k \in \mathbb{N}\). We note that these polynomials are not necessarily 
+monic.
+
+Lastly, let us consider the domain \([a, b] = [0, \infty)\) with the weight function 
+\(w(x) = e^{-x}\) and the resulting polynomials are known as the *Laguerre polynomials*.
+Going through the recurrence relation we find 
+\[L_0(x) = 1, \hspace{1mm} L_1(x) = -x + 1, \hspace{1mm} 
+  L_2(x) = \frac{1}{2}(x^2 - 4 x +2), \hspace{1mm} \cdots.\]
+This set of orthogonal polynomials is often applied for representing energy states 
+of the hydrogen atom in spherical coordinates.
+
+## Sturm -- Liouville Theory
+
+In the small section we shall quickly explore other function classes that have 
+orthogonality properties. 
+
+Consider the real, second order linear ordinary differential equation 
+\[\dv{x}\left[p(x) \dv{y}{x}\right] + q(x) y = -\lambda w(x)y,\]
+where \(x \in [a, b]\), \(p(x), w(x) > 0\), \(p'(x), q(x)\) continuous with the 
+boundary conditions 
+\[\begin{split}
+  \alpha_1 y(a) + \alpha_2 y'(a) & = 0;\\
+  \beta_1 y(b) + \beta_2 y'(b) & = 0.
+\end{split}\]
+By considering \((\dv{x}\left[p(x) \dv{x}\right] + q(x)) / w(x)\) as an operator acting 
+on \(y\), we see the question becomes an eigenvalue problem for the eigenfunction 
+\(y\). Thus, all eigenvalues are real and simple with the eigenfunction 
+\(y_i\) having \(i - 1\) zeros in the interval \([a, b]\).
+
+Furthermore, the eigenfunction form an orthogonal basis under 
+\(w\)-weighted inner product, i.e. 
+\[\langle y_i, y_j \rangle = \int_a^b y_i(x) y_j(x) w(x) \dd x = C \delta_{ij},\]
+for some \(C\) a constant.
+
+With this, the Sturm -- Liouville problem produces classes of orthogonal classes 
+of functions as solutions to a differential equation. Indeed, we may find a 
+corresponding Sturm Liouville problem for each of our previous examples. 
+However, this problem does not necessarily produce polynomials. As we have 
+seen on the midterm project, an example of this is the solution to the particular 
+Sturm -- Liouville problem 
+\[\dv{x}\left[x \dv{y}{x}\right] + \left[x - \frac{\nu^2}{x}\right] y = 0,\]
+which are the Bessel functions \(J_{\nu}(x)\) which are not polynomials.
