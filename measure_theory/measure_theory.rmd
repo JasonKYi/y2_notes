@@ -1469,6 +1469,10 @@ Straight away we see that the dominated convergence theorem shows that, for
 appropriate sequences of functions \(f_n \to f\), 
 \[\lim_{n \to \infty} \int f_n \dd \mu = \int f \dd \mu.\]
 
+Convergence in measure is a weaker condition than convergence almost everywhere. 
+However, as we shall see on the problem sheet, the dominated convergence theorem 
+holds for this weaker condition of convergence.
+
 \begin{definition}[Convergence in Measure]
   Let \(f : X \to \mathbb{R}\), \(f_n : X \to [-\infty, \infty]\) for all \(n \in \mathbb{N}\)
   be measurable. Then \(f_n\) converges to \(f\) is measure if for all \(\epsilon > 0\), 

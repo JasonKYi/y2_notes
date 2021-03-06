@@ -2075,4 +2075,18 @@ resulting in \(a_{- 1}\) being the first coefficient, allowing us to
 apply the same argument, i.e.
 \[\text{Res}[f, z_0] = \lim_{z \to z_0} \frac{1}{(m - 1)!} \dv[m - 1]{z}((z - z_0)^m f(z)).\]
 
+\begin{theorem}[Principle of the Argument]
+  Let \(f\) be holomorphic in an open set \(\Omega\) for a finite number of poles 
+  and let \(\gamma\) be simple, closed, piecewise-smooth curve in \(\Omega\) 
+  that does not pass through any poles or zeros of \(f\). Then 
+  \[\ointctrclockwise_\gamma \frac{f'(z)}{f(z)} \dd z = 2 \pi i (N - P),\]
+  where \(N\) and \(P\) are the sums of the orders of the zeros and poles of 
+  \(f\) inside \(\gamma\) respectively.
+\end{theorem}
+
+The name of this theorem follows from the fact that
+\[\frac{f'(z)}{f(z)} = \dv{z} \log(f(z)),\] and so,
+\[\ointctrclockwise_\gamma \frac{f'(z)}{f(z)} \dd z = 
+  \ointctrclockwise_\gamma \dv{z} \log(f(z)) \dd z = i\Delta \arg f(z).\]
+
 \end{document}
