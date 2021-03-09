@@ -1349,6 +1349,8 @@ solution, e.g. given the nonlinear system
 with the equilibrium \(x^*\), we consider the linear system 
 \[\dot y = f'(x^*) y.\]
 
+## Linearised Stability
+
 \begin{definition}[Hyperbolicity]
   A matrix \(A \in \mathbb{R}^{d \times d}\) is called hyperbolic if all eigenvalues 
   \(\lambda\) of \(A\) has a non-zero real part, i.e. \(\Sigma(A) \cap \{0\} = \varnothing\). 
@@ -1363,7 +1365,7 @@ Hyperbolicity provide us with a powerful result about the neighbourhood of
 the equilibrium point of a nonlinear system. Indeed, by the Hartman -- Grobman theorem, 
 there exists a homomorphism between the system and the linearisation.
 
-\begin{theorem}[Hartman -- Grobman Theorem]
+\begin{theorem}[Hartman-Grobman Theorem]
   In a neighbourhood of an hyperbolic equilibrium, there exists a homomorphism 
   between the phase portraits of the nonlinear system and the linearisation.
 \end{theorem}
@@ -1371,3 +1373,124 @@ there exists a homomorphism between the system and the linearisation.
   Beyond this course.
 \qed
 
+Instead of proving the whole theorem which is beyond this course, we shall consider a 
+special case, where \(\Sigma(f'(x^*)) \subseteq (0, \infty)\) or 
+\(\Sigma(f'(x^*)) \subseteq (-\infty, 0)\).
+
+\begin{lemma}[Gronwall Lemma]
+  Let \(u : [a, b] \to \mathbb{R}\) be continuous and \(c, d \ge 0\). Suppose 
+  \[0 \le u(t) \le c + d \int_a^t u(s) \dd s,\]
+  for all \(t \in [a, b]\). Then, we have the explicit estimate 
+  \[u(t) \le c e^{d(t - a)},\]
+  for all \(t \in [a, b]\).
+\end{lemma}
+\proof
+  Since \(u\) is continuous on a compact interval, it is bounded by some \(M > 0\) 
+  such that \(u(t) \le M\) for all \(t \in [a, b]\). Then, 
+  \[u(t) \le c + d \int_a^t M \dd s = c + dM(t - a).\] 
+  Iterating this, we obtain the sequence 
+  \[u(t) \le s_n := c\sum_{k = 0}^{n - 1} \frac{d^k(t - a)^k}{k!} + \frac{Md^n(t - a)^n}{n!},\]
+  for all \(n \in \mathbb{N}\). Thus, by taking \(n \to \infty\), the second term 
+  converges to 0 and we have 
+  \[u(t) \le c e^{d(t - a)},\]
+  for all \(t \in [a, b]\).
+\qed
+
+\begin{theorem}[Linearised Stability]
+  Suppose \(f : D \to \mathbb{R}^d\) is continuously differentiable where 
+  \(D \subseteq \mathbb{R}^d\) is open. Consider the differential equation 
+  \[\dot x = f(x),\]
+  with an equilibrium at \(x^* \in D\) such that \(\Sigma(f'(x^*)) \subseteq (-\infty, 0)\).
+  Then the equilibrium is exponentially stable.
+\end{theorem}
+\proof
+  By changing the variable to \(x - x^*\), we may Wlog. assume that \(x^* = 0\).
+
+  Consider 
+  \[\dot x = f(x) = f'(0)x + r(x),\]
+  where 
+  \[r(x) := f(x) - f'(0)x = o(\|x\|),\]
+  that is, we separate \(x\) into a linear and a nonlinear term. Clearly, we have 
+  \(r(0) = 0 = r'(0)\). Suppose we now denote the flow of the differential equation 
+  by \(\phi\). Now, since the real part of the eigenvalues of \(f'(0)\) are negative, 
+  there exists some \(K > 0\) and \(\gamma < 0\) such that 
+  \[\|e^{f'(0)t}\| \le Ke^{\gamma t},\]
+  for all \(t \ge 0\).
+
+  Choose \(M \in (0, - \gamma / K)\) and we estimate \(r\). Since \(r\) is continuously 
+  differentiable, there exists \(\rho > 0\) such that \(\|r'(x)\| \le M\) for all 
+  \(x \in \overline{B_\rho(0)}\). Then, by the mean value inequality, we have 
+  \[\|r(x)\| \le M \|x\|,\]
+  for all \(x \in \overline{B_\rho(0)}\). 
+
+  Furthermore, we define for each initial value \(x \in B_\rho(0)\) the escape time,
+  \[T_e(x) := \sup\{ T > 0 \mid \|\phi(t, x)\| \le \rho, t \in [0, T)\}.\] 
+  We note that \(T_e\) can be \(\infty\) implying the trajectory never escapes the 
+  neighbourhood. This is desirable and as we shall see, this is true for small 
+  enough \(x\).
+
+  Now, I claim that for \(x_0 \in B_\rho(0)\), 
+  \[\|\phi(t, x_0)\| \le K e^{(KM + \gamma)t}\|x_0\|,\]
+  for all \(t \in [0, T_e(x_0))\). Indeed, since \(t \mapsto \phi(t, x_0)\) is a 
+  solution to the differentiable equation, we have 
+  \[\dot x = f'(0)x + r(\phi(t, x_0)).\]
+  Then, by the variation of constant formula, we have 
+  \[\phi(t, x_0) = e^{f'(0)t}x_0 + \int_0^t e^{f'(0)(t - s)}r(\phi(s, x_0)) \dd s.\]
+  Hence, for all \(t \in [0, T_e(x_0))\), 
+  \[\begin{split}
+    \|\phi(t, x_0)\| 
+      & \le \|e^{f'(0)t}\| \|x_0\| + \int_0^t \|e^{f'(0)(t - s)}\| \|r(\phi(s, x_0))\| \dd s\\
+      & \le K e^{\gamma t}\|x_0\| + \int_0^t K e^{\gamma t(t - s)} \|r(\phi(s, x_0))\| \dd s\\
+      & \le K e^{\gamma t}\|x_0\| + \int_0^t K e^{\gamma t(t - s)} M \|\phi(s, x_0)\| \dd s.
+  \end{split}\]
+  Thus, by defining \(u(t) := e^{-\gamma t}\|\phi(s, x_0)\|\), we apply the 
+  Gronwall lemma, resulting in the bound 
+  \[u(t) \le K\|x_0\| + KM \int_0^t u(s) \dd s \implies 
+    u(t) = e^{-\gamma t}\|\phi(s, x_0)\| \le K\|x_0\| e^{KMt},\]
+  for all \(t \in [0, T_e(x_0))\) as claimed.
+
+  With this inequality at our disposal, by considering the fact that 
+  \(t \mapsto e^{(KM + \gamma)t}\) is monotonically decreasing, we get 
+  \[\|\phi(t, x_0)\| \le Ke^{(KM + \gamma)t}\|x_0\| \le K\|x_0\| \le \rho,\]
+  for all \(t \ge 0\), and \(x_0 \in B_{\rho / K}(0)\). With that, we conclude 
+  \(T_e(x_0) = \infty\) and the differential equation is exponentially stable.
+\qed
+
+\begin{definition}[Stable and Unstable Sets]
+  Consider the differential equation \(\dot x = f(x)\) with the associated 
+  flow \(\phi\) and let \(x^*\) be an equilibrium. Then we define the 
+  stable set of \(x^*\) as 
+  \[W^s(x^*) := \left\{x \in D \mid \lim_{t \to \infty} \phi(t, x) = x^*\right\},\]
+  and the unstable set of \(x^*\) as 
+  \[W^u(x^*) := \left\{x \in D \mid \lim_{t \to -\infty} \phi(t, x) = x^*\right\}.\]
+\end{definition}
+Due to Hartman-Grobman, we see that in many cases, the resulting stable and 
+unstable sets are locally Euclidean, and hence, they are also refereed to as 
+stable and unstable manifolds.
+
+In the situation that \(x^*\) is an attractive equilibrium, \(W^s(x^*)\) is called 
+the domain of attraction and in this case \(W^s(x^*)\) is open (see problem sheet).
+
+Consider the linear system \(\dot x = A x\) where \(A\) is hyperbolic. Then, 
+assuming \(A\) is diagonalisable, we have 
+\[\mathbb{R}^d = E_1 \oplus \cdots \oplus E_q,\]
+where \(E_i\) are the eigenspace corresponding to the eigenvalue \(s_i\). Then, 
+we find 
+\[W^s(0) = \bigoplus_{i = 1, \cdots q,\\ s_i < 0} E_i 
+  \hspace{2mm} \text{ and } \hspace{2mm}
+  W^u(0) = \bigoplus_{i = 1, \cdots q,\\ s_i > 0} E_i,\]
+and hence, we have \(\mathbb{R}^d = W^s(0) \oplus W^u(0)\).
+
+\begin{definition}[Invariant]
+  A set \(M \subseteq D\) is called 
+  \begin{itemize}
+    \item positively invariant if for all \(x \in M\), \(\sigma^+(x) \subseteq M\);
+    \item negatively invariant if for all \(x \in M\), \(\sigma^-(x) \subseteq M\);
+    \item invariant if \(M\) is both positively and negatively invariant.
+  \end{itemize}
+\end{definition}
+
+Straight away, we see that the stable and unstable manifolds are positively and 
+negatively invariant respectively. Other examples of invariant manifolds are 
+the singleton set \(\{x^*\}\) where \(x^*\) is an equilibrium; periodic orbits; 
+homoclinic/heteroclinic orbits, or just orbits in general.
