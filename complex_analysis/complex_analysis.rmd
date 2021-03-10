@@ -1931,3 +1931,62 @@ The name of this theorem follows from the fact that
 and so, 
 \[\ointctrclockwise_\gamma \frac{f'(z)}{f(z)} \dd z = 
   \ointctrclockwise_\gamma \dv{z} \log(f(z)) \dd z = i\Delta \arg f(z).\]
+
+\proof
+  If \(z_1\) is a zero of order \(n\), then \(f(z) = (z - z_1)^n g(z)\) for some 
+  \(g\) holomorphic at \(z_1\) and \(g(z_1) \neq 0\). Consequently, 
+  \[f'(z) = n(z - z_1)^{n - 1}g(z) + (z - z_1)^n g(z)\]
+  and 
+  \[\frac{f'(z)}{f(z)} = \frac{n}{z - z_1} + \frac{g'(z)}{g(z)}.\]
+  Since \(g(z_1) \neq 0\), there exists some neighbourhood \(B_r(0)\), such that 
+  on which \(g \neq 0\) and hence, \(g'(z) / g(z)\) is holomorphic on 
+  \(\{z \mid |z - z_1| < r\}\) and we have 
+  \[\ointctrclockwise_{|z -z_1| < r}\frac{f'(z)}{f(z)} \dd z 
+    = \ointctrclockwise_{|z -z_1| < r}\frac{n}{z - z_1} \dd z + 
+      \ointctrclockwise_{|z -z_1| < r}\frac{g'(z)}{g(z)} \dd z = 2\pi i n.\]
+  Now, if \(z_2\) is a pole of order \(p\), then \(f(z) = g(z) / (z - z_2)^p\) 
+  for some \(g\) holomorphic at \(z_2\) and \(g(z_2) \neq 0\). Consequently, 
+  \[f'(z) = \frac{-pg(z)}{(z - z_2)^{p + 1}} + \frac{g'(z)}{(z - z_2)^p},\]
+  and 
+  \[\frac{f'(z)}{f(z)} = \frac{-p}{z - z_2} + \frac{g'(z)}{g(z)}.\]
+  By the same argument, \(g' / g\) is holomorphic in a neighbourhood of \(z_2\), and 
+  thus, again, 
+  \[\ointctrclockwise_{|z -z_2| < r}\frac{f'(z)}{f(z)} \dd z 
+    = \ointctrclockwise_{|z -z_2| < r}\frac{-p}{z - z_2} \dd z + 
+      \ointctrclockwise_{|z -z_2| < r}\frac{g'(z)}{g(z)} \dd z = - 2\pi i p.\]
+  Thus, by the deformation theorem, the result follows.
+\qed
+
+\begin{theorem}[Roche's Theorem]
+  Let \(f, g\) be holomorphic in an open set \(\Omega\) and let \(\gamma \subseteq \Omega\) 
+  be a simple, closed, piecewise-smooth curve. If \(|g(z)| < |f(z)|\) for all 
+  \(z \in \gamma\), then the sums of the orders of the zeros of \(f + g\) and 
+  \(f\) inside \(\gamma\) are the same.
+\end{theorem}
+\proof
+  Consider the homotopy \(f_t(z) = f(z) + tg(z)\) for \(t \in [0, 1]\). Suppose 
+  we let \(n(t)\) be the number of zeros of \(f_t\) inside \(\gamma\) counted 
+  with multiplicities. Then inequality \(|f| > |g|\) implies that, \(f_t\) has 
+  no zeros on \(\gamma\) and hence, 
+  \[F_t(z) := \frac{f_t'(z)}{f_t(z)}\]
+  has no poles on \(\gamma\). Therefore, the argument principle implies 
+  \[n(t) = \frac{1}{2\pi i}\ointctrclockwise_\gamma F_t(z) \dd z = 
+    \ointctrclockwise_\gamma \frac{f_t'(z)}{f_t(z)} \dd z.\]
+  Thus, since \(n(t) \in \mathbb{Z}\), it suffices to show that \(n\) is continuous. 
+  Indeed, since \(|f| > |g|\), we obtain that there exists some \(\delta > 0\) 
+  such that \(|f_t| = |f + tg| \ge |f| - t|g| > \delta\) for all \(t \in [0, 1]\). 
+  So, for any \(t_1, t_2 \in [0, 1]\), we have 
+  \[\begin{split}
+    |n(t_2) - n(t_1)| 
+      & = \left| \frac{1}{2\pi i} \ointctrclockwise_\gamma \left(
+            \frac{f'(z) + t_2 g'(z)}{f(z) + t_2 g(z)} - 
+            \frac{f'(z) + t_1 g'(z)}{f(z) + t_1 g(z)}
+          \right) \right|\\
+      & \le \frac{1}{2\pi} \max_{z \in \gamma} \left| 
+        \frac{(t_2 - t_1)(f(z)g'(z) - f'(z)g(z))}{(f(z) + t_2 g(z))(f(z) + t_1 g(z))}
+        \right| \cdot \text{length } \gamma\\
+      & \le \frac{C}{\delta^2}|t_2 - t_1|
+  \end{split},\]
+  where \(C = \max_{z \in \gamma} f(z)g'(z) - f'(z)g(z)\). Thus, \(n\) is continuous 
+  (in fact Lipschitz continuous) and the result follows by the intermediate value theorem.
+\qed
