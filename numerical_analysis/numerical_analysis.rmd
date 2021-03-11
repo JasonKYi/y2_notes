@@ -1058,3 +1058,107 @@ seen on the midterm project, an example of this is the solution to the particula
 Sturm -- Liouville problem 
 \[\dv{x}\left[x \dv{y}{x}\right] + \left[x - \frac{\nu^2}{x}\right] y = 0,\]
 which are the Bessel functions \(J_{\nu}(x)\) which are not polynomials.
+
+\newpage 
+
+# Numerical Integration
+
+Numerical integration (or numerical quadrature) is concerned with with approximation 
+of the definite integral 
+\[\int_a^b f(x) \dd x,\]
+or more generally, the weighted definite integral 
+\[\int_a^b f(x)w(x) \dd x,\]
+for some weight function \(w\) which we assume is continuous and positive with 
+\[\int_a^b w(x) \dd x < \infty.\]
+
+A method of achieving this is to replace the function \(f\) with the \(n\)-th 
+order interpolating polynomial. That is 
+\[I_n(f) = I(p_n) := \int_a^b w(x) p_n(x) \dd x,\]
+where \(p_n\) is the \(n\)-th interpolating polynomial of \(f\). Thus, 
+\[I_n(f) = \int_a^b w(x) \sum_{k = 0}^n f(x_k)l_k(x) \dd x = 
+  \sum_{k = 0}^n f(x_k) \int_a^b w(x)l_k(x) \dd x.\]
+Hence, by defining the integration weights 
+\[w_k := \int_a^b w(x) l_k(x) \dd x,\]
+which is independent of \(f\), we can approximate the integral of \(f\) with 
+\[I_n(f) = \sum_{k = 0}^n w_k f(x_k).\]
+Indeed, this is exactly the same process we have seen in the mid term project 
+where we approximated the derivative instead where the weights is obtained by 
+taking the derivative rather than the integral. 
+
+This method results in approximating the integral by trapezoids. Indeed, by computing, 
+we find 
+\[I_n(f) = \sum_{i = 0}^{n - 1}\frac{f(x_i) + f(x_{i + 1})}{2}\Delta_i,\]
+where \(\Delta_i = x_{i + 1} - x_i\). Geometrically, we are partitioning the 
+interval \([a, b]\) into \(n - 1\) subintervals and applying the trapezoidal 
+rule on each. In the case where we have equispaced sampling points, the equation 
+simplifies to 
+\[I_n(f) = \frac{b - a}{n}\left(\frac{1}{2}f(a) + \sum_{i = 1}^{n - 1}f(x_i) 
+  + \frac{1}{2}f(b)\right).\]
+We can also obtain higher-order approximations by increasing the order of the 
+interpolating polynomial. Using a quadratic polynomial through \(x = a, b, \frac{a + b}{2}\), 
+we obtain *Simpson's rule*,
+\[\int_a^b p(x) \dd x = \frac{h}{3}\left(f(a) + 4f\left(\frac{a + b}{2}\right) + f(b)\right),\]
+where \(h = \frac{b - a}{2}\). Again, compositing Simpson's rule over subintervals 
+on \([a, b]\), we obtain 
+\[\int_a^b f(x) \dd x \approx \frac{h}{3}(f(a) + 4f(x_1) + 2f(x_2) + 4f(x_3) + \cdots + 
+  f(x_n)).\]
+Consider now the error, 
+\[|I(f) - I_n(f)| = \left|\int_a^b w(x)(f(x) - p_n(x))\right| 
+  \le \|f(x) - p_n(x)\|_{\sup} \int_a^b w(x) \dd x.\]
+We see that \(f \in \mathbb{P}_n\) the error term is zero. This observation is 
+independent of the sampling points and forms the foundation of *Gaussian quadrature*.
+
+\begin{prop}
+Consider the inner product 
+\[\langle g_1, g_2 \rangle := \int_a^b w(x)g_1(x)g_2(x) \dd x,\]
+and let \(\Phi_{n + 1}(x) \in \mathbb{P}_{n + 1}\) be some polynomial with 
+degree \(n + 1\) such that \(\langle \Phi_{n + 1}, q_n \rangle = 0\) for all 
+\(q_n \in \mathbb{P}_n\). Now, let \(\{x_i^*\}_{i = 0}^n \subseteq (a, b)\) 
+be the \(n + 1\) distinct zeros of \(\Phi_{n + 1}\) and define \(I_n^*(f) = I(p_n)\) 
+where \(p_n\) is the unique polynomial of \(n\)-th degree such that \(p_n(x_i^*) = f(x_i^*)\), 
+and so 
+\[I_n^*(f) = \sum_{i = 0}^n w_i^*f(x_i^*).\]
+Then, \(I_n^*(f) = I(f)\) for all \(f \in \mathbb{P}_{2n + 1}\). 
+\end{prop}
+
+In other words, by choosing the sampling points as the roots of the orthogonal 
+polynomial, we achieve higher-order accuracy and exactness for polynomials up to 
+degree \(2n + 1\). This type of numerical integration is known as *Gaussian quadrature*.
+
+\proof
+  Let \(f \in \mathbb{P}_{2n + 1}\), then by construction \(f - p_n \in \mathbb{P}_{2n + 1}\) 
+  has zeros \(\{x_i^*\}_{i = 0}^n\). Then, there exists some \(q_n \in \mathbb{P}_n\), 
+  such that
+  \[f - p_n = q_n \Phi_{n + 1}.\]
+  Thus, the error becomes 
+  \[\begin{split}
+    I(f) - I_n^*(f) & = I(f) - I(p_n) = \int_a^b w(x)(f(x) - p_n(x)) \dd x \\
+    & = \int_a^b w(x) q_n(x) \Phi_{n + 1}(x) \dd x = 
+    \langle q_n(x), \Phi_{n + 1}(x) \rangle = 0,
+  \end{split}\]
+  since \(q_n \in \mathbb{P}_n\). Thus, \(I(f) - I_n^*(f) = 0\).
+\qed 
+
+We also consider the *Clenshaw-Curtis* integration method. In contrast to the 
+Gaussian quadrature, the Clenshaw-Curtis integration seeks an integration formula 
+of optimal order based on the fixed set of Chebyshev nodes. 
+
+Given a function \(f(x)\) on \([-1, 1]\), we consider \(f(z)\) defined on the 
+unit circle with \(|z| = 1\) in the complex plane where \(x = \text{Re}(z) = \cos \theta\).
+If \(p(x) = \sum_{n = 0}^N a_n T_n(x)\) is our polynomial interpolant to \(f(x)\) 
+in the Chebyshev points and \(T_n(x) = \cos(n\theta) = \frac{1}{2}(z^n + z^{-n})\), 
+we have the interpolating polynomial 
+\[P(z) = \frac{1}{2} \sum_{n = 0}^N a_n(z^n + z^{- n}),\]
+which interpolates \(f(z)\) in the roots of unity.
+
+With this, we may integrate the Chebyshev expansion to obtain the integration 
+weights. That is, 
+\[\begin{split}
+  \int_{-1}^1 f(x) \dd x & \approx \int_{-1}^1 p(x) \dd x = \int_{-1}^1 P(z) \dv{x}{z} \dd z
+  = \frac{1}{4} \sum_{n = 0}^N a_n \int_{-1}^1 (z^n + z^{-n})(1 - z^{-2}) \dd z\\
+  & = \frac{1}{4}\sum_{n = 0 \in 2\mathbb{N}}^N a_n\left(\frac{1}{n + 1} - \frac{1}{n - 1}\right)
+  = \sum_{n = 0 \in 2\mathbb{N}}^N \frac{2a_n}{1 - n^2}
+\end{split}\]
+
+The Clenshaw-Curtis integration can be very efficiently implemented using 
+Fourier analysis and we shall implement this during the tutorial.

@@ -1850,3 +1850,124 @@ is the \(i\)-th projection map such that for all \(J \subseteq I\), \(|J| < \inf
 \(A_j \in \mathcal{A}_j\), \(j \in J\), we have 
 \[\bigotimes_{i \in I}\mu_i(\{(x_j \mid j \in J) \mid x_j \in A_j\}) 
   = \prod_{j \in J} \mu_j(A_j).\]
+
+## Fubini's Theorem
+
+We now discuss Fubini's theorem which under suitable assumptions, justifies 
+the exchange of order of integrals. 
+
+\begin{theorem}[Fubini's Theorem]
+  Let \((X_i, \mathcal{A}_i, \mu_i), i = 1, 2\) be \(\sigma\)-finite measure spaces 
+  and let \(f : X_1 \times X_2 \to [-\infty, \infty]\) be measurable with respect 
+  to \(\mathcal{A}_1 \otimes \mathcal{A}_2\). If \(f \ge 0\) or 
+  \(f \in \mathcal{L}^{1}(\mu_1 \otimes \mu_2)\), then 
+  \[x_1 \mapsto \int f(x_1, x_2) \dd \mu_2(x_2)\]
+  is \(\mathcal{A}_1\)-measurable,
+  \[x_2 \mapsto \int f(x_1, x_2) \dd \mu_1(x_1)\]
+  is \(\mathcal{A}_2\)-measurable and,
+  \[\int f \dd (\mu_1 \otimes \mu_2) = 
+    \int \left(\int f \dd \mu_2\right) \dd \mu_1 = 
+    \int \left(\int f \dd \mu_1\right) \dd \mu_2.\]
+\end{theorem}
+
+Towards proving Fubini's theorem, let us first prove the following lemma.
+
+\begin{lemma}
+  If \(Q \in \mathcal{A} := \mathcal{A}_1 \otimes \mathcal{A}_2\) and 
+  \(f : X_1 \times X_2 \to [-\infty, \infty]\) is \(\mathcal{A}\)-measurable. Then, 
+  \[Q_{x_1} := \{x_2 \in X_2 \mid (x_1, x_2) \in Q\},\]
+  and 
+  \[f_{x_1} : X_2 \to [-\infty, \infty] : x_2 \mapsto f(x_1, x_2),\]
+  are both \(\mathcal{A}_2\)-measurable for every \(x_1\). The symmetric statement 
+  is also true.
+\end{lemma}
+\proof
+  Let \(\mathcal{F} := \{Q \subseteq X_1 \times X_2 \mid Q_{x_1} \in \mathcal{A}_2, x_1 \in X_1\}\), 
+  and it is not difficult to see that \(\mathcal{F}\) is a \(\sigma\)-algebra on 
+  \(X_1 \times X_2\). Clearly \(A_1 \times A_2 \in \mathcal{F}\) for all 
+  \(A_1 \in \mathcal{A}_1\) and \(A_2 \in \mathcal{A}_2\) and thus, 
+  \(\mathcal{A} \subseteq \mathcal{F}\) and the first result follows. 
+  Furthermore, by fixing \(x_1 \in X\), \(U \subseteq \mathbb{R}\) open, we have 
+  \(f^{-1}(U) \in \mathcal{A}\) and so \(f_{x_1}^{-1}(U) = \{x_2 \mid f(x_1, x_2) \in U\} 
+  = f^{-1}(U)_{x_1} \in \mathcal{A}_2\) and hence \(f_{x_1}\) is \(\mathcal{A}_2\)-measurable.
+\qed
+
+Next we show a special case of Fubini's theorem.
+
+\begin{prop}\label{spe_fubini}
+  If \(Q \in \mathcal{A}\), then \(x_1 \mapsto \mu_2(Q_{x_2})\) is 
+  \(\mathcal{A}_1\)-measurable, \(x_2 \mapsto \mu_1(Q_{x_1})\) is 
+  \(\mathcal{A}_2\)-measurable and 
+  \[(\mu_1 \otimes \mu_2)(Q) = \int \mu_2(Q_{x_1}) \dd \mu_1(x_1) =  
+    \int \mu_1(Q_{x_2}) \dd \mu_2(x_2).\]
+\end{prop}
+
+This proposition can be shown through a similar argument as above but, 
+instead of repeating ourselves, we shall introduce a useful result that helps 
+us with these types of proofs.
+
+\begin{theorem}[Dynkin's \(\pi-\lambda\) Theorem]
+  Let \(X\) be a set, \(P \subseteq \mathcal{P}(X)\) be closed under intersection, 
+  (known as a \(\pi\)-system) and \(L \subseteq \mathcal{P}(X)\) contains 
+  \(X\), closed under complements and closed under countable disjoint 
+  unions (known as a \(\lambda\) system), then,
+  \[P \subseteq L \implies \sigma(P) \subseteq L.\] 
+\end{theorem}
+\proof
+  Omitted.
+\qed
+
+\proof (Proposition \ref{spe_fubini}).
+
+  First assume \(\mu_1, \mu_2\) are \(\sigma\)-finite and let 
+  \[L := \{Q \in \mathcal{A} \mid \text{ the proposition holds.}\}\] 
+  and 
+  \[P := \{ A_1 \times A_2 \mid A_1 \in \mathcal{A}_1, A_2 \in \mathcal{A}_2\}.\] 
+  Clearly, \(P\) is a \(\pi\)-system, and so, it suffices to show that \(L\) is 
+  a \(\lambda\)-system and \(P \subseteq L\). Indeed, \(P \subseteq L\) since 
+  for all \(A_1 \times A_2 \in P\), we have 
+  \[x_1 \mapsto \mu_2((A_1 \times A_2)_{x_1}) = \mu_2(A_2)\mathbf{1}_{A_1}(x),\]
+  and so, is measurable since \(A_1\) is. Furthermore, 
+  \[(\mu_1 \otimes \mu_2)(A_1 \times A_2) = \mu_1(A_1) \mu_2(A_2) = 
+    \int \mu_2(A_2)\mathbf{1}_{A_1} \dd \mu_1 = \int \mu_2(Q_{x_1}) \dd \mu_1(x_1),\]
+  and thus, \(P \subseteq L\).
+
+  Straight away \(X \in L\) since \(X = X_1 \times X_2 \in P\) so let us show closure 
+  under complement and countable disjoint unions. Let \(Q \in L\), then we have 
+  \((Q^c)_{x_1} = (Q_{x_1})^c\) we have \(x_1 \mapsto \mu_2((Q^c)_{x_1}) = \mu_2(X_2) - \mu(Q_{x_1})\) 
+  which is measurable and that 
+  \[\begin{split}
+    \int \mu_2((Q^c)_{x_1}) \dd \mu_1(x_1) 
+      & = \mu_1(X_1)\mu_2(X_2) - \int \mu_2(Q_{x_1}) \dd \mu_1(x_1)\\
+      & = \mu_1(X_1)\mu_2(X_2) - (\mu_1 \otimes \mu_2)(Q) = (\mu_1 \otimes \mu_2)(Q^c).
+  \end{split}\]
+  Lastly, if \((Q_i) \subseteq L\) are disjoint, then \(\bigcup Q_i \in \mathcal{A}\) 
+  follows using that \((\bigcup Q_i)_{x_1} = \bigcup (Q_i)_{x_1}\) and \(\sigma\)-additivity 
+  of \(\mu_1, \mu_2\) and \(\mu_1 \otimes \mu_2\).
+
+  In the case that \(\mu_1, \mu_2\) are \(\sigma\)-finite, one considers an increasing 
+  sequence \(A_n^1 \times A_n^2 \in \mathcal{A}\) with \(\mu_i(A_n^i) < \infty\). Then, 
+  the conclusion holds for \((A_n^1 \times A_n^2) \cap Q\) by the above argument. 
+  Hence, the claim follows by taking \(n \to \infty\) and using monotone convergence.
+\qed
+
+\proof (Fubini's Theorem).
+  
+  Let \(f = \mathbf{1}_Q\) for some \(Q \in \mathcal{A}\). Then 
+  \(\mathbf{1}_Q(x_1, x_2) = \mathbf{1}_{Q_{x_1}}(x_2)\) for all \(x_1, x_2\). 
+  Hence, 
+  \[x_1 \mapsto \int f(x_1, x_2) \dd\mu_2(x_2) = \mu_2(Q_{x_1}),\]
+  is \(\mathcal{A}_1\)-measurable and the result follows by proposition \ref{spe_fubini}.
+  For \(f \ge 0\), we consider \(s_n \in S^+\) with \(s_n \uparrow f\) which 
+  existence is provided by the approximation of non-negative functions by 
+  simple functions. So, by monotone convergence with respect to \(\mu_1\), 
+  \[\int s_n(x_1, x_2) \dd \mu_2(x_2) \uparrow \int f(x_1, x_2) \dd \mu_2(x_2)\]
+  for all \(x_1 \in X_1\) and measurability follows by the measurability of limits.
+  Thus, 
+  \[\begin{split}
+    \int f \dd (\mu_1 \otimes \mu_2) & = \lim_{n \to \infty} \int s_n \dd (\mu_1 \otimes \mu_2)\\
+      & = \lim_{n \to \infty} \int \left(\int s_n(x_1, x_2 \dd\mu_2(x_2)) \right) \dd \mu_1(x_1)\\
+      & = \int\left(\int f(x_1, x_2) \dd\mu_2(x_2)\right)\dd \mu_1(x_1).
+  \end{split}\]
+  Similar conclusion holds for \(f \in \mathcal{L}^1\) by simply writing \(f = f^+ - f^-\).
+\qed
