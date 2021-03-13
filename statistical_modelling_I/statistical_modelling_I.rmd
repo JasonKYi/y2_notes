@@ -884,7 +884,7 @@ we can approximate \(k\) whenever the sample size is large.
 
 
 \newpage
-# Linear Models
+# General Linear Models
 
 From last year, we saw simple linear regression where we were able to inference 
 in random samples. We shall review this process and extend this method.
@@ -1364,3 +1364,152 @@ instead, i.e. assumed \(\gamma = 0\). Then
 Thus, by plotting \(QZ\) against the residuals, we can consider the importance 
 of \(Z\) and thus, perhaps include it in our model if the slope of the plot differs 
 from 0.
+
+\begin{definition}[Residual Sum of Squares]
+  \(\text{RSS} = e^T e\) is called the residual sum of squares.
+\end{definition}
+
+The residual sum of squares quantified the departure of the data from the modal 
+and it is the minimum of \(S(\beta)\). The residual sum of squares has many 
+equivalent forms. 
+\begin{itemize}
+  \item \(\text{RSS} = \sum_{i = 1}^n e_i^2\);
+  \item \(\text{RSS} = S(\hat \beta) = \| Y - X \hat \beta\|^2\);
+  \item \(\text{RSS} = (QY)^T QY = Y^T Q Y\);
+  \item \(\text{RSS} = Y^T Y - \hat Y^T \hat Y\).
+\end{itemize}
+
+\begin{prop}
+  \(\hat \sigma^2 := \frac{\text{RSS}}{n - r}\) is an unbiased estimator of \(\sigma^2\) 
+  where \(r\) is the rank of \(X\).
+\end{prop}
+\proof
+  Let \(Q = I - P\). Since \(P\) is a projection matrix, so is \(Q\), and hence, 
+  \(\text{RSS} = Y^T Q Y\). So, 
+  \[\begin{split}
+    E(\text{RSS}) & = E(\text{tr}(Y^T Q Y)) = E(\text{tr}(QYY^T)) = \text{tr}(QE(YY^T))\\
+    & = \text{tr}(Q(\text{cov}(Y) + E(Y)E(Y)^T)) = 
+      \text{tr}(Q \sigma^2) + \text{tr}(QX\beta (X\beta)^2)\\
+    & = \sigma^2\text{tr}(I - P) = \sigma^2 (n - \text{tr}(P)) = \sigma^2(n - r).
+  \end{split}\]
+\qed
+
+This is a generalisation of the result that the sample variance \(s^2\) is an 
+unbiased estimator for \(\sigma^2\) when \(Y_1, \cdots Y_n\) are i.i.d with
+unknown mean \(\mu\) and unknown variance \(\sigma^2\). Indeed, by writing this 
+as the linear model 
+\[Y = \begin{pmatrix}
+  1 \\ \vdots \\ 1
+\end{pmatrix}\mu + \epsilon = \mathbf{1} \mu + \epsilon,\]
+with \(E(\epsilon) = 0\), and \(\text{cov}(\epsilon) = \sigma^2 I\), then 
+\(P = X(X^T X)^{-1}X^T = \frac{1}{n}XX^T\) and thus, 
+\[e = Y - \hat Y = Y - PY = Y - \begin{pmatrix}
+  \bar Y \\ \vdots\\ \bar Y
+\end{pmatrix},\]
+and hence, \(\frac{\text{RSS}}{n - r} = \frac{\sum(Y_i - \bar Y)^2}{n - 1} = s^2\).
+
+\begin{definition}[Coefficient of Determination]
+  The coefficient of determination of the simplest model 
+  \[Y = \mathbf{1}\mu + \epsilon,\]
+  is the statistic 
+  \[R^2 = 1 - \frac{\text{RSS}}{\sum_{i = 1}^n (Y_i - \bar Y)^2}.\]
+\end{definition}
+
+Since we would like to minimise \(\text{RSS}\), we would like large \(R^2\) for 
+our model. Intuitively, since \(\text{RSS} / n\) is an estimator of \(\sigma^2\) 
+while \(\frac{1}{n}\sum(Y_i - \bar Y^2)^2\) is an estimator of \(\sigma^2\) is the 
+model with only the intercept term. Thus, \(R^2\) provide us with a coefficient 
+comparing the variance from the model to the variance observed in the data.
+
+We remark that adding columns to \(X\), i.e. adding parameters will never decrease 
+\(R^2\), and so the coefficient of determination should not be used directly for 
+model comparisons. As we shall see, one should penalise models with a larger 
+number of parameters. 
+
+\newpage 
+# Linear Model with Normal Theory Assumptions 
+
+Previously, we have considered general linear models sometimes with second 
+order assumptions. We shall in this section strengthen this assumption with 
+the normal theory assumption (NTA), i.e. given the model 
+\[Y = X \beta + \epsilon,\]
+where \(E(\epsilon) = 0\), we assume \(\epsilon \sim N(0, \sigma^2 I_n)\).
+
+## Distribution Results 
+
+We define the multivariate normal distribution. Note the difference in definition 
+in comparison to the definition found in *probability for statistics*, in particular, 
+we had defined the multivariate normal distribution using the joint probability 
+density function 
+\[f_Z(z) = \frac{1}{(\sqrt{2\pi})^n \sqrt{|\Sigma|}} \exp\left(-\frac{1}{2} 
+  (z - \mu)^T \Sigma^{-1}(z - \mu)\right),\]
+for some vector \(\mu\) and positive definite matrix \(\Sigma\). Furthermore, it 
+was found that \(Z\) has the mean \(\mu\) and the covariance matrix \(\Sigma\).
+
+In the case that we impose the NTA, we have \(\Sigma = \sigma^2 I_n\), and so, we 
+find 
+\[f_Z(z) = \prod_{i = 1}^n \frac{1}{\sqrt{2\pi\sigma^2}} 
+  \exp \left(- \frac{(z_i - \mu_i)^2}{2\sigma^2}\right),\]
+and so, \(Z_1, \cdots, Z_n\) are independent with \(Z_i \sim N(\mu_i, \sigma^2)\) 
+for \(i = 1, \cdots, n\).
+
+We may generalise the multivariate normal distribution such that \(\Sigma\) is 
+permitted to be only positive semidefinite.
+
+\begin{definition}[Multivariate Normal Distribution]
+  An \(n\)-variate random vector \(Z\) follows a multivariate normal distribution 
+  if for \(a \in \mathbb{R}^n\), the random variable \(a^T Z\) follows a univariate 
+  normal distribution (the degenerate case \(N(\cdots, 0)\) is allowed). 
+\end{definition}
+
+\begin{prop}
+  Let \(X_1, \cdots, X_r \sim N(0, 1)\) be i.i.d. and let \(\mu \in \mathbb{R}^n\) 
+  and \(A \in \mathbb{R}^{n \times r}\). Then \(Z = A X + \mu \sim N(\mu, A A^T)\).
+\end{prop}
+\proof
+  Let \(a \in \mathbb{R}^n\), then \(a^T Z = a^T A X + a^T \mu\). Since 
+  \(a^T A\) is simply a row vector, \(a^T A X\) is a linear combination of 
+  \(X_i\) and so, is an univariate normal random variable. Furthermore, as \(a^T \mu\) 
+  is simply a constant, the result follows.
+\qed
+
+One may also define the multivariate normal distribution using the characteristic 
+function where we say, \(Z \sim N(\mu, \Sigma)\) if its characteristic function 
+\[\phi : \mathbb{R}^n \to \mathbb{C} : t \mapsto E(\exp(i Z^T t))\]
+satisfies 
+\[\phi(t) = \exp \left(i \mu^T t - \frac{1}{2}t^T \Sigma t\right),\]
+for all \(t \in \mathbb{R}^n\), where \(\mu \in \mathbb{R}^n\) and 
+\(\Sigma \in \mathbb{R}^{n \times n}\) is a positive semidefinite matrix.
+
+\begin{prop}
+  Let \(Z \sim N(\mu, \Sigma)\), then 
+  \begin{itemize}
+    \item \(E(Z) = \mu\);
+    \item \(\text{Cov}(Z) = \Sigma\);
+    \item if \(A\) is a deterministic matrix and \(b\) is a deterministic vector 
+      of appropriate dimensions, then 
+      \[A Z + b \sim N(A\mu + b, A \Sigma A^T).\]
+  \end{itemize}
+\end{prop}
+\proof
+  Easy.
+\qed
+
+As demonstrated above, it turns out under normal distribution, uncorrelated implies 
+independent. We note that this is in general not true.
+
+\begin{lemma}
+  For \(i = 1, \cdots, k\), let \(A_i \in \mathbb{R}^{n_i \times n_i}\) be 
+  positive semidefinite, and symmetric and let \(Z_i\) be an \(n_i\)-variate 
+  random vector. If \(Z \sim N(\mu, \Sigma)\) for some \(\mu \in \mathbb{R}^{\sum n_i}\), 
+  \(\Sigma = \bigoplus_{i = 1}^k A_i\), then \(Z_1, \cdots, Z_k\) are independent.
+\end{lemma}
+\proof
+  In the special case that all of the \(A_i\) are positive definite, the 
+  result follows as \(\Sigma^{-1} = \text{diag}(A_1^{-1}, \cdots, A_k^{-1})\) and 
+  thus, the pdf of \(Z\) can be easily factored into the respective partial pdfs. 
+  
+  In the general case, we may use the characteristic polynomial and show that the 
+  characteristic polynomial can be factored into the individual partial characteristic 
+  polynomials.
+\qed
