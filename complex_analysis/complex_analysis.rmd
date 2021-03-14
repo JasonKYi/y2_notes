@@ -1990,3 +1990,49 @@ and so,
   where \(C = \max_{z \in \gamma} f(z)g'(z) - f'(z)g(z)\). Thus, \(n\) is continuous 
   (in fact Lipschitz continuous) and the result follows by the intermediate value theorem.
 \qed
+
+\begin{definition}[Open Mapping]
+  A mapping is said to be open if it maps open sets to open sets.
+\end{definition}
+
+\begin{theorem}[Open Mapping Theorem]
+  If \(f\) is holomorphic and non-constant in an open set \(\Omega \subseteq \mathbb{C}\), 
+  then \(f\) open.
+\end{theorem}
+\proof
+  Since a set is open if and only if it is locally open, we shall show that 
+  for all \(w_0 \in \text{Im}f\), there exists a neighbourhood of \(w_0\) 
+  also contained in \(\text{Im}f\).
+  
+  Let \(w_0\) belong to the image of \(f\) such that \(f(z_0) = w_0\) and 
+  suppose \(w\) is some number near \(w_0\). Defining \(g(z) := f(z) - w\) we 
+  can write
+  \[g(z) = (f(z) - w_0) + (w_0 - w) = F(z) + G(z).\]
+  Choosing \(\delta > 0\) such that \(\{z \mid | z - z_0 | \le \delta\}\) is contained 
+  in \(\Omega\) and \(f(z) \neq w_0\) for \(|z - z_0| = \delta\). Then, by selecting 
+  \(\epsilon > 0\) such that \(|f(z) - w_0| \ge \epsilon\) on the circle 
+  \(|z - z_0| = \delta\), for all \(|w - w_0| < \epsilon\), we have \(|F(z)| > |G(z)|\), 
+  and hence, by Rouche's theorem, we conclude that \(g = F + G\) has only one 
+  zero inside \(C_\delta\) since \(F\) has only one. Thus, there exists uniquely 
+  \(z \in \Omega\) such that \(g(z) = f(z) - w = 0\), and so \(w \in f(\Omega)\).
+\qed
+
+\begin{theorem}[Maximum Modulus Principle]
+  If \(f\) is a non-constant holomorphic function on an open set \(\Omega \subseteq \mathbb{C}\), 
+  then \(|f|\) cannot attain a maximum in \(\Omega\).
+\end{theorem}
+\proof
+  Suppose \(f\) attained a maximum at \(z_0 \subseteq \Omega\). Since 
+  \(f\) is holomorphic and non-constant, it is an open mapping, and thus, if 
+  \(z_0 \in D \subseteq \Omega\) is open, \(f(D)\) is an open set containing 
+  \(f(z_0)\). But then, there exists \(z \in D\) such that \(|f(z)| > |f(z_0)|\), 
+  contradicting the maximality of \(f(z_0)\).
+\qed
+
+\begin{corollary}
+  Suppose \(f : \bar \Omega \to \mathbb{C}\) is continuous on \(\bar \Omega\) 
+  and holomorphic on \(\Omega\) where \(\Omega \subseteq \mathbb{C}\) is open 
+  and \(\bar \Omega\) is compact (equivalently, it is bounded). 
+  Then, 
+  \[\sup_{z \in \Omega}|f(z)| \le \sup_{z \in \bar \Omega \setminus \Omega} |f(z)|.\]
+\end{corollary}
