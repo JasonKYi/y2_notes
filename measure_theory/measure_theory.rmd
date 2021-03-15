@@ -14,7 +14,7 @@ header-includes:
   - \usepackage{physics}
   - \usepackage{amsthm}
   - \usepackage{mathtools}
-  - \usepackage{lipsum}
+  - \usepackage{esint}
   - \usepackage[ruled,vlined]{algorithm2e}
   - \theoremstyle{definition}
   - \newtheorem{theorem}{Theorem}
@@ -1971,3 +1971,114 @@ us with these types of proofs.
   \end{split}\]
   Similar conclusion holds for \(f \in \mathcal{L}^1\) by simply writing \(f = f^+ - f^-\).
 \qed
+
+\newpage
+# Differentiation of Measures
+
+## Differentiability of the Lebesgue Integral
+
+We shall in this section let \(\lambda\) be the Lebesgue measure on 
+\((\mathbb{R}^n, \mathcal{B}(\mathbb{R}^n))\) for \(n \ge 1\) and write 
+\(L^p(\mathbb{R}^n), p \ge 1\) for the corresponding \(L^p\)-spaces.
+
+Suppose \(f : \mathbb{R} \to \mathbb{R}\) be continuous, \(x_0 \in \mathbb{R}\) 
+and \(F(x) := \int_{[x_0, x]} f \dd \lambda\). Then, by the fundamental theorem 
+of calculus (see problem sheet 5) we have \(F\) is continuously differentiable 
+and \(F'(x) = \lim_{\epsilon \to 0} \epsilon^{-1} \int_{[x, x + \epsilon]} f \dd \lambda 
+= f(x)\) for all \(x \in \mathbb{R}\). Extending this into \(\mathbb{R}^n\), 
+we have if \(f \in C^\circ(\mathbb{R}^n)\), then 
+\[f(x) = \lim_{\epsilon \to 0} \frac{1}{\lambda(B_\epsilon(x))} \int_{B_\epsilon(x)} f \dd \lambda,\]
+for all \(x \in \mathbb{R}^n\).
+
+We ask whether this remains true in \(\mathbb{R}^n\) (\(\lambda\)-a.e.) if 
+we only assume \(f \in L_{loc}^1(\mathbb{R}^n)\) (i.e. \(f \in L^1(\Omega)\) for 
+every bounded open set \(\Omega \subseteq \mathbb{R}^n\)). This result turns out 
+to be true and the result is known as the Lebesgue's differentiation theorem. 
+
+\begin{theorem}[Lebesgue's differentiation theorem]
+  Let \(f \in L_{loc}^1(\mathbb{R}^n)\). Then 
+  \[f(x) = \lim_{r \to 0} \frac{1}{\lambda(B_r(x))} \int_{B_r(x)} f \dd \lambda,\]
+  \(\lambda\)-a.e. \(x \in \mathbb{R}^n\).
+\end{theorem}
+
+In order to prove Lebesgue's differentiation theorem, let us introduce the 
+following function function.
+
+\begin{definition}[Hardy-Littlewood Maximal Function]
+  Given \(f \in L_{loc}^1(\mathbb{R}^n)\), the Hardy-Littlewood maximal function 
+  of \(f\) is
+  \[f^*(x) := \sup_{r > 0} \frac{1}{\lambda(B_r(x))} \int_{B_r(x)}|f| \dd\lambda.\]
+\end{definition}
+
+Since for each \(r > 0\), the function 
+\[x \mapsto \frac{1}{\lambda(B_r(x))} \int_{B_r(x)}|f| \dd\lambda,\]
+is continuous, and hence measurable, we have the Hardy-Littlewood maximal function 
+is also measurable. On the other hand, \(f^* \not\in L^1(\mathbb{R}^n)\) 
+(unless \(\|f\|_{L^1} = 0\)). Indeed, by choosing \(r_0 > 0\) such that 
+\(\int_{B_{r_0}} |f| \dd \lambda\), one obtains for \(|x| > r_0\), 
+\[f^*(x) \ge \frac{1}{B_{|x| + \epsilon}(x)} |f \dd \lambda \ge 
+  \frac{1}{c(|x| + r_0)^n} \ge c' |x|^{-n}.\]
+But \(|x|^{-n} \not\in L^1(\mathbb{R}^n)\), the result follows.
+
+\begin{prop}[Maximal Inequality]
+  Let \(f \in L^1(\mathbb{R}^n)\). Then, for all \(a > 0\), 
+  \[\lambda(\{x \in \mathbb{R}^n \mid f^*(x) > a\}) \le \frac{5^n}{a} \|f\|_{L^1}.\]
+\end{prop}
+\proof
+  TODO.
+\qed
+
+\begin{lemma}
+  Let \(C_c^\circ(\mathbb{R}^n) := \{f : \mathbb{R}^n \to \mathbb{R} \mid f 
+    \text{ continuous and } \overline{\{x \mid f(x) \neq 0\}} \text{ is compact}\}\). 
+  Then \(C_c^\circ(\mathbb{R}^n)\) is dense in \(L^1(\mathbb{R}^n)\), i.e. 
+  for all \(f \in L^1(\mathbb{R}^n)\), there exists \((f_n) \subseteq C_c^\circ(\mathbb{R}^n)\) 
+  such that \(f_n \to f\) in \(L^1\).
+\end{lemma}
+\proof
+  TODO.
+\qed
+
+With that, we may prove Lebesgue's differentiation theorem.
+
+\proof
+  Wlog. assume \(f \in L^1(\mathbb{R}^n)\) (else consider \(f \mathbf{1}_{B_1(x)}\)).
+  By the above lemma, there exists a sequence \(C_c^\circ(\mathbb{R}^n)\), 
+  such that \(\|f_n - f\|_{L^1} \to 0\) as \(n \to \infty\). 
+
+  For shorthand, write \(\fint_{B_r(x)} = \frac{1}{\lambda(B_r(x))} 
+  \int_{B_r(x)}\) and we by bound,
+  \[\begin{split}
+    & \limsup_{r \to 0} \left| \fint_{B_r(x)} f \dd \lambda - f(x) \right| \le 
+      \limsup_{r \to 0} \fint_{B_r(x)} |f - f(x)| \dd \lambda\\
+    & \le \limsup_{r \to 0} \fint_{B_r(x)} |f - f_n| \dd \lambda + 
+      \limsup_{r \to 0} \fint_{B_r(x)} |f_n - f_n(x)| \dd \lambda + |f_n(x) - f(x)|\\
+    & \le (f - f_n)^*(x) + |f_n(x) - f(x)|,
+  \end{split}\]
+  for all \(n \in \mathbb{N}\) and \(x \in \mathbb{R}^n\), where the second 
+  term in the second line vanishes since \(f_n\) is continuous. Thus, for all 
+  \(\epsilon > 0\), we obtain 
+  \[\begin{split}
+    A_\epsilon & := \left\{x \in \mathbb{R}^n \mid \limsup_{r \to 0} 
+      \fint_{B_r(x)} |f - f(x)| \dd \lambda > 2 \epsilon\right\} \\
+      & \subseteq \{x \in \mathbb{R}^n \mid (f - f_n)^*(x) > \epsilon\} 
+        \cup \{x \in \mathbb{R}^n \mid |f_n(x) - f(x)| > \epsilon\}
+  \end{split}\]
+  for all \(n \in \mathbb{N}\). Hence, by applying the maximal inequality 
+  and Markov's inequality, it follows that 
+  \[\lambda(A_\epsilon) \le \frac{c}{\epsilon} \|f - f_n\|_{L^1} 
+    + \frac{1}{\epsilon} \|f - f_n\|_{L^1} \to 0,\]
+  as \(n \to \infty\). Thus, \(\lambda(A_\epsilon) = 0\) and the set 
+  \[A := \left\{x \in \mathbb{R}^n \mid \limsup_{r \to 0} \fint_{B_r(x)} |f - f(x)| > 0 \right\} 
+    = \bigcup_{k = 1}^\infty A_{\frac{1}{k}},\]
+  is also a \(\lambda\)-null-set, i.e. \(\lambda(A) = 0\). Finally, 
+  \[\left| f(x) - \lim_{r \to 0} \fint_{B_r(x)} f \dd \lambda \right|
+    \le \lim_{r \to 0} \fint_{B_r(x)} |f - f(x)| \dd \lambda = 0\]
+  holds for \(\lambda\)-a.e. \(x \in \mathbb{R}^n\).
+\qed
+
+We note that we have actually proved the following stronger statement in which 
+the Lebesgue's differentiation theorem follows by simple application of the triangle 
+inequality. If \(f \in L_{loc}^1(\mathbb{R}^n)\), then for \(\lambda\)-a.e. \(x \in \mathbb{R}^n\), 
+\[\lim_{r \to 0} \fint_{B_r(x)} |f - f(x)| \dd \lambda = 0,\]
+and points satisfying this equality are called **Lebesgue-points** of \(f\).

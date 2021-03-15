@@ -1494,3 +1494,94 @@ Straight away, we see that the stable and unstable manifolds are positively and
 negatively invariant respectively. Other examples of invariant manifolds are 
 the singleton set \(\{x^*\}\) where \(x^*\) is an equilibrium; periodic orbits; 
 homoclinic/heteroclinic orbits, or just orbits in general.
+
+## Limit Sets
+
+Consider the differential equation 
+\[\dot x = f(x),\]
+where \(f : D \to \mathbb{R}^d\) is locally Lipschitz continuous. Let us denote 
+its flow by \(\phi\).
+
+\begin{definition}[Limit Set]
+  Fix \(x \in D\), a point \(x_\omega \in D\) is called an \(\omega\)-limit point 
+  of \(x\) if there exists a sequence \((t_n)_{n \in \mathbb{N}} \to \infty\) such that 
+  \[x_\omega = \lim_{n \to \infty}\phi(t_n, x),\]
+  and we call \(\omega(x)\) for the set of all \(\omega\)-limit points.
+
+  On the other hand, a point \(x_\alpha \in D\) is called an \(\alpha\)-limit point 
+  of \(x\) if there exists a sequence \((t_n)_{n \in \mathbb{N}} \to -\infty\) such that 
+  \[x_\alpha = \lim_{n \to \infty}\phi(t_n, x),\]
+  and we call \(\alpha(x)\) for the set of all \(\alpha\)-limit points.
+\end{definition} 
+
+Straight away, if \(D\) is bounded, we have \(\alpha(x) = \omega(x) = \varnothing\)
+for all \(x \in D\).
+
+\begin{prop}
+  For \(x \in D\), we have 
+  \[\omega(x) = \bigcap_{t \ge 0} \overline{\sigma^+(\phi(t, x))} \text{ and } 
+    \alpha(x) = \bigcap_{t \le 0} \overline{\sigma^-(\phi(t, x))}.\]
+\end{prop}
+
+Intuitively, this characterisation of the limit set is the intersection of a sequence 
+of nested orbits. Indeed, of an element to be an \(\omega\)-limit point, it must 
+remain in the orbit regardless of the starting time. However, as we may approach 
+a limit point without ever reaching it, we take the closure of each orbit.
+
+\proof
+  By symmetry, it suffices to prove the first statement.
+
+  Let \(y \in \omega(x)\), then there exists some \(t_n \to \infty\) such that 
+  \(\lim_{n \to \infty} \phi(t_n, x) = y\). Since \(t_n \to \infty\), for all 
+  \(t \ge 0\), we have \(t_n\) restricted onto \([t, \infty)\) is a sequence 
+  such that \(t_n \mid_{[t, \infty)} \to \infty\). Thus, as 
+  \(\lim_{n \to \infty} \phi(t_n \mid_{[t, \infty)}, x) = y,\) we have 
+  \(y \in \overline{\sigma^+(\phi(t, x))}\) for all \(t \ge 0\). Thus, 
+  \(y \in \bigcap_{t \ge 0} \overline{\sigma^+(\phi(t, x))}\) and 
+  \(\omega(x) \subseteq \bigcap_{t \ge 0} \overline{\sigma^+(\phi(t, x))}\).
+
+  On the other hand, if \(y \in \bigcap_{t \ge 0} \overline{\sigma^+(\phi(t, x))}\), 
+  for all \(t \ge 0\), \(y \in \overline{\sigma^+(\phi(t, x))}\), and so, 
+  there exists some sequence \(s_{t, n} \ge t\) such that \(\lim_{n \to \infty} \phi(s_{t, n}, x) = y\).
+  Thus, by choosing \(t := n\), \(s_n := s_{n, n} \to \infty\) since \(s_n \ge n\), 
+  and \(\lim_{n \to \infty} s_n = y\). With that, the equality is established.
+\qed
+
+\begin{prop}
+  Fix \(x \in D\), then 
+  \begin{itemize}
+    \item the \(\omega\)-limit set \(\omega(x)\) is invariant. In addition, if 
+      \(\sigma^+(x)\) is bounded and \(\overline{\sigma^+(x)} \subseteq D\), then 
+      \(\omega(x)\) is non-empty and compact.
+    \item the \(\alpha\)-limit set \(\alpha(x)\) is invariant. In addition, if 
+      \(\sigma^+(x)\) is bounded and \(\overline{\sigma^-(x)} \subseteq D\), then 
+      \(\alpha(x)\) is non-empty and compact.
+  \end{itemize}
+\end{prop}
+\proof
+  By symmetry, it suffices to prove the first statement.
+
+  Suppose \(\sigma^+(x)\) is bounded and \(\overline{\sigma^+(x))} \subseteq D\),
+  then, any sequence \((\phi(n, x))\) is bounded, and so, by Bolzanno-Weierstrass, 
+  there exists some \((n_k)\), such that \(\phi(n_k, x) \to x_\omega\) as \(k \to \infty\).
+  Hence, \(x_\omega \in \omega(x)\) and thus, its nonempty.
+
+  By the above proposition, we have 
+  \[\omega(x) = \bigcap_{t \ge 0} \overline{\sigma^+(\phi(t, x))},\]
+  which is closed, and so, by Heine-Borel, it suffices to show boundedness. 
+  However, as we have assumed \(\sigma^+(x)\) is bounded, we have 
+  \(\overline{\sigma^+(x)}\) is bounded and thus \(\omega(x)\) is bounded 
+  and hence compact.
+
+  Lastly, we show that \(\omega(x)\) is invariant. Let \(x_0 \in \omega(x)\), 
+  and it suffices to prove \(\sigma(x_0) \subseteq \omega(x)\). Since \(x_0 \in 
+  \omega(x)\), there exists some \(t_n \to \infty\) such that \(\phi(t_n, x) \to x_0\)
+  as \(n \to \infty\). Then, for all \(\tau \in J_{\max}(x_0)\), we can define 
+  \(s_n = t_n + \tau\) and so, 
+  \[\begin{split}
+    \lim_{n \to \infty} \phi(x_n, a) & = \lim_{n \to \infty} \phi(t_n + \tau, x) = 
+      \lim_{n \to \infty} \phi(\tau, \phi(t_n, x))\\
+      & = \phi(\tau, \lim_{n \to \infty} \phi(t_n, x)) = \phi(\tau, x_0),
+  \end{split}\]
+  and hence, \(\omega(x)\) is invariant.
+\qed
