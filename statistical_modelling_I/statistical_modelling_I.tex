@@ -1667,4 +1667,129 @@ In the general case, we may use the characteristic polynomial and show
 that the characteristic polynomial can be factored into the individual
 partial characteristic polynomials. \qed
 
+\begin{definition}[Non-Central \(\chi^2\)-Distribution]
+  Let \(Z \sim N(\mu, I_n)\) where \(\mu \in \mathbb{R}^n\). Then, 
+  \(U = Z^T Z = \sum_{i = 1}^n Z_i^2\) is said to have a non-central \(\chi^2\)-distribution 
+  with \(n\) degrees of freedom and non-centrality parameter 
+  \[\delta = \sqrt{\mu^T \mu},\]
+  and we denote this by \(U \sim \chi_n^2(\delta)\).
+\end{definition}
+
+In order for this to be a proper definition we need to show that the
+distribution of \(U\) to depend on \(\mu\) only through \(\mu^T \mu\).
+One approach is to show that the moment generating function of \(U\) is
+\[M_U(t) = \frac{1}{(1 - 2t)^{n / 2}} \exp \left(\frac{t\delta^2}{1 - 2t}\right).\]
+See the problem sheet for the full detail.
+
+\begin{lemma}
+  Let \(U \sim \chi_n^2(\delta)\), then \(E(U) = n + \delta^2\) and 
+  \(\text{Var}(U) = 2n + 4 \delta^2\). Furthermore, if \(U_i \sim X_n^2(\delta_i),\) 
+  are independent for \(i = 1, \cdots, k\). Then \(\sum{i = 1}^k U_i \sim 
+  \chi_{\sum n_i \sqrt{\sum \delta^2}}^2\).
+\end{lemma}
+\proof
+
+Problem sheet. \qed
+
+\begin{definition}[Non-Central \(t\)-Distribution]
+  Let \(X\) and \(U\) be independent random variables with \(X \sim N(\delta, 1)\) 
+  and \(U \sim \chi_n^2\). The distribution of 
+  \[Y = \frac{X}{\sqrt{U / n}},\]
+  is called the non-central \(t\)-distribution with \(n\) degrees of freedom and 
+  non-centrality parameter \(\delta\) and we denote this by 
+  \(Y \sim t_n(\delta)\).
+\end{definition}
+
+If \(Y_n \sim t_n\) for all \(n \in \mathbb{N}\); then,
+\[Y_n \to N(0, 1) \text{ in distribution as } n \to \infty.\] Indeed, if
+\(X \sim N(0, 1)\) and \(U_n = \sum Z_i^2\) for \(Z_i \sim N(0, 1)\)
+independent, by the weak law of large numbers,
+\(U_n / n \to E(Z_i^2) = 1\) in probability. As \(x \mapsto \sqrt{x}\)
+is continuous, we have \(\sqrt{U_n / n} \to 1\) in probability. Thus, by
+Slutsky's lemma, \[Y_n = \frac{X}{U_n / n} \to X \sim N(0, 1).\]
+
+Lastly, there is also the \(F\)-distribution.
+
+\begin{definition}[Non-Central \(F\)-Distribution]
+  If \(W_1 \sim \chi_{n_1}^2(\delta)\) and \(W_2 \sim\chi_{n_2}^2\) are independent, 
+  then 
+  \[F = \frac{W_1 / n_1}{W_2 / n_2},\]
+  is said to have non-central \(F\)-distribution and we write \(F \sim F_{n_1, n_2}(\delta)\).
+\end{definition}
+
+\hypertarget{independence-results}{%
+\subsection{Independence Results}\label{independence-results}}
+
+\begin{lemma}
+  Let \(A \in \mathbb{R}^{n \times n}\) be a positive semidefinite symmetric matrix 
+  with rank \(r\). THen there exists some \(L \in \mathbb{R}^{n \times r}\) such 
+  that \(L\) also has rank \(r\), \(A = L L^T\) and \(L^TL\) is the diagonal matrix 
+  of the nonzero eigenvalues of \(A\).
+\end{lemma}
+\proof
+
+Revision. \qed
+
+\begin{lemma}
+  Let \(X \sim N(\mu, I)\), \(A \in \mathbb{R}^{n \times n}\) be a positive 
+  semidefinite symmetric matrix and let \(B\) be some matrix such that \(BA = 0\). 
+  Then, \(X^T A X = BX\) are independent.
+\end{lemma}
+\proof
+
+Lert \(r = \text{rank}(A)\). By the lemma above, there exists some
+\(L \in \mathbb{R}^{n \times r}\) such that \(\text{rank} L = r\) and
+\(A = LL^T\). Then
+\[\text{cov}(BX, L^TX) = B\text{cov}(X)L = BL = BLL^TL(L^TL)^{-1} = 
+  BAL(L^TL)^{-1} = 0,\] which implies independence since they are
+jointly normally distributed. \qed
+
+\begin{lemma}
+  If \(Z \sim N(\mu, I_n)\), and \(A\) is an \(n \times n\) projection matrix of 
+  rank \(r\), then 
+  \[Z^T A Z \sim \chi_r^2(\delta) \text{ with } \delta^2 = \mu^T \mu.\]
+\end{lemma}
+\proof
+
+All nonzero eigenvalues of \(A\) are equal to 1 and so, there exists
+some \(L \in \mathbb{R}^{n \times r}\) such that \(A = LL^T\) and
+\(L^T L = I_r\). Let \(V = L^T Z\), then \(V \sim N(L^T \mu, I)\) and
+\[Z^T A Z = Z^T LL^T Z = V^T V \sim \chi_r^2(\delta),\] where
+\(\delta = (L^T \mu)^T L^T \mu = \mu^T LL^T \mu = \mu^T A \mu\). \qed
+
+\begin{lemma}
+  If \(Z \sim N(\mu, I_n)\) and \(A_1, A_2 \in \mathbb{R}^{n \times n}\) are projection 
+  matrices and \(A_1A_2 = 0\). Then, \(Z^TA_1 Z\) and \(Z^TA_2 Z\) are independent.
+\end{lemma}
+\proof
+
+\[\text{cov}(A_1 Z, A_2 Z) = A_1 \text{cov}(Z) A_2 = A_1 A_2 = 0.\] \qed
+
+This result extends to the \(Z^T A_1 Z, \cdots, Z^T A_k Z\) where
+\(A_i A_j = 0\) for all \(i \neq j\).
+
+\begin{lemma}
+  If \(A_1, \cdots, A_k\) are symmetric \(n \times n\) matrices such that \(\sum A_i = I_n\) 
+  and if \(\text{rank} A_i = r_i\), then the following are equivalent:
+  \begin{itemize}
+    \item \(\sum r_i = n\);
+    \item \(A_i A_j = 0\) for all \(i \neq j\);
+    \item \(A_i\) is idempotent for all \(i = 1, \cdots, k\).
+  \end{itemize}
+\end{lemma}
+\proof
+
+Exercise. \qed
+
+\begin{theorem}[Fisher-Chochran Theorem]
+  If \(A_1, \cdots, A_k\) are \(n \times n\) projection matrices such that 
+  \(\sum A_i = I_n\), and if \(Z \sim N(\mu, I_n)\). Then \(Z^T A_1 Z, \cdots, Z^T A_k Z\)
+  are independent and 
+  \[Z^T A_i Z \sim \chi_{r_i}^2(\delta_i) \text{ where } r_i = \text{rank} A_i \text{ and } 
+  \delta_i^2 = \mu^T A_i \mu.\]
+\end{theorem}
+\proof
+
+Direct consequence of the above lemmas. \qed
+
 \end{document}

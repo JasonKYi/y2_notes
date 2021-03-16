@@ -1719,4 +1719,56 @@ define \(s_n = t_n + \tau\) and so, \[\begin{split}
       & = \phi(\tau, \lim_{n \to \infty} \phi(t_n, x)) = \phi(\tau, x_0),
   \end{split}\] and hence, \(\omega(x)\) is invariant. \qed
 
+\hypertarget{lyapunov-functions}{%
+\subsection{Lyapunov Functions}\label{lyapunov-functions}}
+
+As we have previously seen, we may analyse the properties of an
+equilibrium without solving the differential equation. Indeed, if the
+equilibrium \(x^*\) is hyperbolic, then we understand local stability of
+\(x^*\). However, we might like to understand a more global property,
+motivating us to study the Lyapunov functions.
+
+Consider the differential equation \(\dot x = f(x)\) and
+\(f : D \to \mathbb{R}^d\) is locally Lipschitz (note we are not
+assuming continuous differentiability). Let \(V : D \to \mathbb{R}\) be
+continuously differentiable and consider a solution \(\mu : I \to D\) of
+\(\dot x = f(x)\), then the derivative of \(V\) along \(\mu\) is defined
+to be
+\[\dv{t} V(\mu(t)) = V'(\mu(t)) \cdot \dot \mu(t) = V'(\mu(t)) \cdot f(\mu(t)).\]
+
+\begin{definition}[Orbital Derivative]
+  The orbital derivative of \(V\) is given by 
+  \[\dot V(x) = V'(x) \cdot f(x) = \sum_{i = 1}^d \pdv{V}{x_i} f_i(x).\]
+  Here, the row vector \(V'(x) \in \mathbb{R}^{1 \times d}\) is the gradient of 
+  \(V\) at \(x\).
+\end{definition}
+
+\begin{definition}[Lyapunov Function]
+  Consider the differential equation \(\dot x = f(x)\) where \(f : D \to \mathbb{R}^d\) 
+  is locally Lipschitz and let \(V : D \to \mathbb{R}\) be a continuous differentiable 
+  function. Then, \(V\) is called a Lyapunov function if 
+  \[\dot V(x) \le 0, \text{ for all } x \in D.\]
+\end{definition}
+
+We see that any Lyapunov function decreases along solutions,
+i.e.~\(V(\phi(t, x)) \le V(x),\) for all
+\(t \in [0, \sup J_{\max}(x))\). Indeed, for all
+\(t \in [0, \sup J_{\max}(x))\), we have
+\[V(\phi(t, x)) - V(\phi(0, x)) = \int_0^t \dot V(\phi(s, x)) \dd s.\]
+Since \(\dot V \le 0\), the integral is non-positive and so \(V\) is
+decreasing on \(\phi\).
+
+\begin{prop}
+  If \(V\) is a Lyapunov function, then the sublevel set of the form 
+  \[S_C := \{x \in D \mid V(x) \le c\}\]
+  is positively invariant.
+\end{prop}
+\proof
+
+Assume \(S_c\) is not positively invariant. Then there exists an
+\(x \in S_c\) and \(t > 0\) such that
+\(\phi(t, s) \not\in S_c \implies V(\phi(t, x)) > c\). However, by the
+fact that the Lyapunov function decreases along functions, and
+\(x \in S_c\), \(c \ge V(x) \ge V(\phi(t, x))\) \#. \qed
+
 \end{document}
