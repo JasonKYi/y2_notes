@@ -1781,7 +1781,7 @@ This result extends to the \(Z^T A_1 Z, \cdots, Z^T A_k Z\) where
 
 Exercise. \qed
 
-\begin{theorem}[Fisher-Chochran Theorem]
+\begin{theorem}[Fisher-Cochran Theorem]
   If \(A_1, \cdots, A_k\) are \(n \times n\) projection matrices such that 
   \(\sum A_i = I_n\), and if \(Z \sim N(\mu, I_n)\). Then \(Z^T A_1 Z, \cdots, Z^T A_k Z\)
   are independent and 
@@ -1791,5 +1791,128 @@ Exercise. \qed
 \proof
 
 Direct consequence of the above lemmas. \qed
+
+\hypertarget{linear-model-with-nta-results}{%
+\subsection{Linear Model with NTA
+Results}\label{linear-model-with-nta-results}}
+
+Recall that the NTA states \(\epsilon \sim N(0, \sigma^2 I_n)\) and in
+particular \(Y \sim N(X\beta, \sigma^2 I_n)\) in the linear model
+\(Y = X\beta + \epsilon\).
+
+By consulting the joint distribution of a multivariate normal
+distribution, the \(\log\)-likelihood of the data is simply,
+\[\log L(\beta, \sigma^2) = -\frac{n}{2} \log(2\pi \sigma^2) 
+  - \frac{1}{2\sigma^2}(Y - X\beta)^T(Y - X\beta) = 
+  -\frac{n}{2} \log(2\pi \sigma^2) - \frac{1}{2\sigma^2} S(\beta).\] By
+noticing the first term is a constant while the second term is
+proportional to \(S(\beta)\) - the least squares, we maximize the
+likelihood by minimising the least squares of \(\beta\).
+
+\begin{lemma}[Distribution of RSS]
+  Assuming NTA; 
+  \[\frac{\text{RSS}}{\sigma^2} \sim \chi_{n - r}^2,\]
+  where \(r = \text{rank} X\).
+\end{lemma}
+\proof
+
+Let \(P\) be the projection matrix onto \(\text{span}X\). Then,
+\[\text{RSS} = e^T e = ((I - P) Y)^T(I - P)Y = Y^T Q^T Q Y = Y^T Q Y,\]
+where \(Q := I - P\). Hence,
+\[\frac{\text{RSS}}{\sigma^2} = \frac{Y^T}{\sigma} Q \frac{Y}{\sigma} = Z^T Q Z,\]
+where \(ZY / \sigma \sim N(X\beta / \sigma, I)\) and \(Q\) is a
+projection matrix. Furthermore, \(Q + P = I\), we have
+\(\text{rank} Q + \text{rank} P = n\) implying
+\(\text{rank} Q = n - r\). Hence,
+\[\frac{\text{RSS}}{\sigma^2} \sim \chi_{n - r}^2,\] since
+\((X\beta / \sigma)^T QX \beta / \sigma = 0\). \qed
+
+\begin{lemma}
+  Assuming FR and NTA in a linear model, and let \(c \in \mathbb{R}^p\), then 
+  \[\frac{c^T \hat \beta - c^T \beta}{\sqrt{c^T (X^T X)^{-1} c \frac{\text{RSS}}{n - p}}} \sim t_{n - p}.\]
+\end{lemma}
+\proof
+
+See official notes. \qed
+
+Thus far, we have derived pivotal quantities for one-dimensional
+parameters. If we were interested in the behaviour of more than one
+components of the parameters, we can uses the Bonferroni correction to
+obtain new tests based on these to obtain the higher dimensional
+confidence intervals. The \(F\)-test however, is a more complicated test
+about \(\beta\).
+
+Let \(\text{RSS} =\) the residual sum of squares in the full model
+\(E(Y) = X \beta\) and let \(\text{RSS}_0 =\) the residual sum of
+squares in the sub-model \(E(Y) = X_0 \tilde \beta\).
+
+\begin{lemma}
+  Under \(H_0 : E(Y) \in \text{span}(X_0)\), 
+  \[F = \frac{\text{RSS}_0 - \text{RSS}}{\text{RSS}} \frac{n - r}{r - s} \sim F_{r - s, n - r},\]
+  where \(r = \text{rank} X\) and \(s = \text{rank} X_0\).
+\end{lemma}
+
+Let \(P\) be the projection matrix onto the span of \(X\), and
+\(Q = I - P\). Likewise, let \(P_0\) be the projection onto the span of
+\(X_0\) and \(Q_0 = I - P_0\), then \(\text{RSS} = Y^T Q Y\) and
+\(\text{RSS}_0 = Y^T Q_0 Y\). Substituting this into the above equation,
+we have
+\[F = \frac{Y^T(P - P_0) Y / \sigma^2}{Y^T(I - P) Y / \sigma^2} \frac{n - r}{r - s}.\]
+Hence, the result follows if the numerator follows \(\chi_{r - s}^2\)
+and the denominator follows \(\chi_{n - r}^2\) and they are independent.
+
+\proof
+
+Let \(Z = Y / \sigma\), \(A_1 = I - P\), \(A_2 = P - P_0\),
+\(A_3 = P_0\) and we will use the Fisher-Cochran theorem.
+
+Clearly \(A_1 + A_2 + A_3 = I\) and we know that \(A_1, A_3\) are
+projection matrices. Now, as \(P - P_0\) is symmetric and
+\[(P - P_0)^2 = P^2 + P_0^2 - PP_0 - P_0P\] as every column \(y\) of
+\(P_0\) is an element of \(\text{span} X_0\), and thus an element of
+\(\text{span} X\), we have \(P y = y\). Hence, \(P P_0 = P\). Thus,
+\(P_0 P = (P^T P_0^T)^T = (PP_0)^T = P_0^T = P_0\). Hence,
+\[(P - P_0)^2 = P + P_0 - P_0 - P_0 = P - P_0,\] and is idempotent. With
+that we see \(A_2\) is also a projection matrix. So, by the
+Fisher-Cochran theorem we have
+
+\begin{itemize}
+    \item \(Z^T(P - P_0)Z\) and \(Z^T(I - P) Z\) are independent;
+    \item \(Z^T(P - P_0)Z \sim \chi_{\text{rank}(P - P_0)}^2(EZ^T(P - P_0)EZ)\);
+    \item \(Z^T(I - P)Z \sim \chi_{\text{rank}(I - P)}^2(EZ^T(I - P)EZ)\).
+  \end{itemize}
+
+Under \(H_0\), we know that
+\(EZ = \frac{1}{sigma} EY \in \text{span}X_0 \subseteq \text{span}X\),
+and thus, \[(P - P_0) EZ = EZ - EZ = 0.\] So, we have the centrality
+requirement. Clearly, the ranks corresponds to the appropriate degrees
+of freedom, and hence, the result follows. \qed
+
+In the case \(H_0\) is not true, the proof remains valid without the
+centrality condition. Indeed, in all cases, the \(F\)-test applies in
+which the resulting distribution follows the \(F\)-distribution.
+
+Suppose \(EY = X \beta\) is a linear model satisfying FR and NTA. We are
+interested in finding a confidence region for \(\beta\). It turns out
+the following quantity is a pivotal quantity for \(\beta\),
+\[A := \frac{(\hat \beta - \beta)^T X^T X (\hat \beta - \beta)}{\text{RSS}} 
+  \frac{n - p}{p},\] in the case that we can work out the distribution
+of \(A\).
+
+Indeed the numerator of the first fraction can be written as
+\[(Y - X\beta)^T P(Y - X\beta).(\] By using \(P = X(X^T X)^{-1} X^T\),
+this is equal to \[X(\hat \beta - \beta)^T X(\hat \beta - \beta)).\]
+Furthermore, \(\text{RSS}\) can be written as
+\[\text{RSS} = Y^T Q Y = (Y - X\beta)^T Q(Y - X \beta).\] Thus, letting
+\(Z := \frac{1}{\sigma}(Y - X \beta)\), we have
+\[A = \frac{Z^T P Z}{Z^T Q Z} \frac{n - p}{p}\] where
+\(Z \sim N(0, 1)\), \(P + Q = I\), and so, by the Fisher-Cochran
+theorem, \(A \sim F_{p, n - p}\). Hence, a \(1 - \alpha\) confidence
+region \(R\) for \(\beta\) is defined by all \(\gamma \in \mathbb{R}^p\)
+such that
+\[\frac{(\hat \beta - \gamma)^T X^T X (\hat \beta - \gamma)}{\text{RSS}} \frac{n - p}{p} \le F_{p, n- p, \alpha}\]
+where \(P(Z \ge F_{p, n - p, \alpha}) = \alpha\) for
+\(Z \sim F_{p, n - p}\). The region \(R\) is an ellipsoid centred at
+\(\hat \beta\).
 
 \end{document}
