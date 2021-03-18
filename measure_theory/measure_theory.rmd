@@ -1523,7 +1523,7 @@ The reason for this definition is the following.
 
 Clearly \(\nu = f\mu\) implies \(\nu \ll \mu\) since for all \(A \in \mathcal{A}\), 
 \(\mu(A) = 0\) implies that \(\nu (A) = \int_A |f| \dd \mu < \epsilon\) for all 
-\(\epsilon > 0\) and so, a measure is absolutely continuous if it has a measure. 
+\(\epsilon > 0\) and so, a measure is absolutely continuous if it has a density. 
 Indeed, as we shall see later (in the Radon - Nikodym theorem), the reverse is 
 also true -- every absolutely continuous measure has a density. Thus, in light 
 of this, we see that a measure \(\nu\) is absolutely continuous is equivalent to saying that 
