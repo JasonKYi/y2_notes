@@ -2210,13 +2210,68 @@ one obtains for \(|x| > r_0\),
   \frac{1}{c(|x| + r_0)^n} \ge c' |x|^{-n}.\] But
 \(|x|^{-n} \not\in L^1(\mathbb{R}^n)\), the result follows.
 
+\begin{lemma}[Vitali's Covering Lemma]
+  Let \(\mathcal{F}\) is a family of (Euclidean) balls in \(\mathbb{R}^n\) and 
+  \[d_0 := \sup_{B \in \mathcal{F}} \text{diam} B < \infty.\]
+  Then, there exists a countable family \(\mathcal{G} \subseteq \mathcal{F}\) 
+  of disjoint balls such that 
+  \[\bigcup_{B in \mathcal{F}} B \subseteq \bigcup_{B \in \mathcal{G}} \hat B,\]
+  where we denote \(\hat B\) for the ball centred equal to \(B\) with 5 times the 
+  diameter.
+\end{lemma}
+\proof
+
+We define inductively maximal disjoint families
+\(\mathcal{G}_i \subseteq \mathcal{F}\) as follows. For \(i = 1\) choose
+\[\mathcal{G}_1 \subseteq \{B \in \mathcal{F} \mid \text{diam} > d_0 / 2 =: d_1\}\]
+to be the maximal of such sets such that all balls in \(\mathcal{G}_i\)
+are disjoint. Then, define
+\[\mathcal{G}_{i + 1} \subseteq \{B \in \mathcal{F} \mid d_i \ge \text{diam} B > d_i / 2 
+    =: d_{i + 1}, B \cap B' = \varnothing, \forall B' \in \mathcal{G}_1 \cup \cdots \cup 
+    \mathcal{G}_i\},\] be the maximal. Then, define
+\(\mathcal{G} := \bigcup_{i = 1}^\infty \mathcal{G}_i\). By
+construction, \(\mathcal{G}\) consists of countably many pointwise
+disjoint balls in \(\mathcal{F}\) so it remains to show that it covers.
+Let \(B_0 \in \mathcal{F}\) and choose \(i \in \mathbb{N}\) such that
+\(d_i < \text{diam} \le d_{i - 1}\). By maximality of \(\mathcal{G}_i\),
+there exists \(B \in \mathcal{G}_1 \cup \cdots \cup  \mathcal{G}_i\)
+with \(B \cap B_0 \neq \varnothing\). In particular,
+\(\text{diam} B > d_i\) and since
+\(\text{diam} B_0 \le d_{i - 1} = 2d_i\), it follows
+\(\hat B \supseteq B\). \qed
+
 \begin{prop}[Maximal Inequality]
   Let \(f \in L^1(\mathbb{R}^n)\). Then, for all \(a > 0\), 
   \[\lambda(\{x \in \mathbb{R}^n \mid f^*(x) > a\}) \le \frac{5^n}{a} \|f\|_{L^1}.\]
 \end{prop}
 \proof
 
-TODO. \qed
+Let \(A := \{x \in \mathbb{R}^n \mid f^*(x) > a\}\) for some given
+\(a > 0\). By the definition of \(f^*\), for every \(x \in A\), there
+exists \(r(x) > 0\), such that
+\[\fint_{B_{r(x)}(x)} |f| \dd \lambda > a.\] In particular, letting
+\(\omega_n = \lambda(B_1(0))\), we obtain for all \(x \in A\),
+\[a \omega_n r(x)^n < a \lambda(B_{r(x)}(x)) < \int_{B_{r(x)}(x)} |f| \dd \lambda 
+    \le \|f\|_{L^1},\] which implies a uniform upper bound on
+\(\{r(x) \mid x \in A\}\),
+\[\sup_{x \in A} r(x) \le (a^{-1} w_n^{-1} \|f\|_{L^1})^{1 / n} =: \frac{d_0}{2}.\]
+Consider the family \(\mathcal{F} := \{B_{r(x)}(x) \mid x \in A\}\).
+Clearly, \(A \subseteq \bigcup_{B \in \mathcal{F}} B\) and so, by
+Vitali's covering lemma, there exists a countable family of pairwise
+disjoint balls \(\mathcal{G} \subseteq \mathcal{F}\), such that
+\(\bigcup_{B \in \mathcal{F}} B \subseteq \bigcup_{B \in \mathcal{G}} \hat B\).
+Thus, we have
+\[\lambda(A) \le \lambda \left(\bigcup_{B \in \mathcal{F}} B\right) 
+  \le \lambda\left(\bigcup_{B \in \mathcal{G}} \hat B\right) \le 
+  \sum_{B \in \mathcal{G}} \lambda(\hat B) = 5^n  \sum_{B \in \mathcal{G}} \lambda(B) 
+  < 5^n \|f\|_{L^1}.\] \qed
+
+This lemma can be generalised to any Radon measures \(\mu\) on
+\(\mathbb{R}^n\) (\(\mu(K) < \infty\) for all compact
+\(K \subseteq \mathbb{R}^n\)) satisfying a volume-doubling property,
+i.e.~there exists some \(c \in (0, \infty)\) such that
+\[\mu(B_{2r}(x)) \le c \mu(B_r(x)),\] for all
+\(x \in \mathbb{R}^n, r > 0\).
 
 \begin{lemma}
   Let \(C_c^\circ(\mathbb{R}^n) := \{f : \mathbb{R}^n \to \mathbb{R} \mid f 
@@ -2227,7 +2282,46 @@ TODO. \qed
 \end{lemma}
 \proof
 
-TODO. \qed
+Consider the countable set of cubes \(C\), consisting of all dyadic
+cubes \(Q = x + [0, 2^{-l})^n\) for some \(x \in 2^{-l} \mathbb{Z}^n\)
+and \(l \in \mathbb{N}\). Define the set of functions
+\[E := \left\{f = \sum_{k = 1}^N a_k \mathbf{1}_{Q_k} \mid 
+    N \in \mathbb{N}, a_k \in \mathbb{Q}, Q_k \in C, \forall k = 1,\cdots, N\right\} 
+    \subseteq L^1,\] and we will show that \(E\) is dense in
+\(L^1(\mathbb{R}^n)\), i.e.~ for all \(f \in L^1(\mathbb{R}^n)\), there
+exists a sequence \((f_k) \subseteq E\), such that
+\(\|f - f_k\|_{L^1} \to 0\) as \(k \to \infty\) (in fact, since \(E\) is
+countable, this would also mean that \(L^1(\mathbb{R}^n)\) is
+separable). Indeed, if this is the case, for any cube \(Q \in C\), there
+exist functions \(g_k \in C^\circ_c(\mathbb{R}^n)\) such that
+\(g_k \to \mathbf{1}_Q\) in \(L^1\) and so, the result follows.
+
+Wlog. we may assume that \(f \ge 0\) since we may simply write
+\(f = f^+ - f^-\), resulting in our claim. Then, there exists a sequence
+of measurable \((f_k) \subseteq S^+\) such that \(f_k \to f\) in
+\(L^1\), and hence, it suffices to show the statement for simple
+functions, that is,
+\[\forall \epsilon > 0, A \in \mathcal{B}(\mathbb{R}^n), \lambda(A) < \infty, 
+    \exists f \in E, \|f - \mathbf{1}_A\|_{L^1} < \epsilon.\] Let
+\(\epsilon > 0\) and
+\(A \in \mathcal{B}(\mathbb{R}^n), \lambda(A) < \infty\), applying the
+approximation theorem, there exists some open set \(G \supseteq A\),
+such that \(\lambda(G \setminus A) < \epsilon / 2\), whence,
+\[\|\mathbf{1}_G - \mathbf{1}_A\|_{L^1} = \int |\mathbf{1}_G - \mathbf{1}_A| \dd \lambda 
+  = \lambda(G \setminus A) < \frac{\epsilon}{2}.\] By a previous
+construction, there exists a sequence \((Q_k) \subseteq C\), of disjoint
+cubes such that \(G = \bigcup Q_k\). In particular,
+\(f_k := \sum_{l = 1}^k \mathbf{1}_{Q_l} \in E\), and so by monotone
+convergence,
+\[\|\mathbf{1}_G - f_k\|_{L^1} \to 0 \text{ as } k \to \infty.\]
+Finally, choosing \(k_0\) such that
+\(\|\mathbf{1}_G - f_{k_0}\|_{L^1} < \epsilon / 2\), the result follows.
+\qed
+
+We note that we could in the proof also choose to approximate
+\(\mathbf{1}_Q\) using functions in the space
+\(C^\infty_c(\mathbb{R}^n)\) or other similar spaces resulting us to
+find these spaces to also be dense in \(L^1(\mathbb{R}^n)\).
 
 With that, we may prove Lebesgue's differentiation theorem.
 
