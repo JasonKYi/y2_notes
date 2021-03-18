@@ -2015,9 +2015,9 @@ Since for each \(r > 0\), the function
 is continuous, and hence measurable, we have the Hardy-Littlewood maximal function 
 is also measurable. On the other hand, \(f^* \not\in L^1(\mathbb{R}^n)\) 
 (unless \(\|f\|_{L^1} = 0\)). Indeed, by choosing \(r_0 > 0\) such that 
-\(\int_{B_{r_0}} |f| \dd \lambda\), one obtains for \(|x| > r_0\), 
-\[f^*(x) \ge \frac{1}{B_{|x| + \epsilon}(x)} |f \dd \lambda \ge 
-  \frac{1}{c(|x| + r_0)^n} \ge c' |x|^{-n}.\]
+\(\int_{B_{r_0}} |f| \dd \lambda > c_1 > 0\), one obtains for \(|x| > r_0\), 
+\[f^*(x) \ge \frac{1}{\lambda(B_{|x| + \epsilon}(x))}\int_{B_{|x| + \epsilon}(x)} |f| \dd \lambda \ge 
+  \frac{1}{c(|x| + r_0)^n}c_1 \ge c' |x|^{-n}.\]
 But \(|x|^{-n} \not\in L^1(\mathbb{R}^n)\), the result follows.
 
 \begin{lemma}[Vitali's Covering Lemma]
