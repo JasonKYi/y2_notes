@@ -2195,4 +2195,72 @@ containing \(f(z_0)\). But then, there exists \(z \in D\) such that
   \[\sup_{z \in \Omega}|f(z)| \le \sup_{z \in \bar \Omega \setminus \Omega} |f(z)|.\]
 \end{corollary}
 
+\newpage
+
+\hypertarget{harmonic-functions}{%
+\section{Harmonic Functions}\label{harmonic-functions}}
+
+\hypertarget{basic-properties}{%
+\subsection{Basic Properties}\label{basic-properties}}
+
+\begin{definition}[Harmonic Function]
+  Let \(\phi = \phi(x, y)\), \(x, y \in \mathbb{R}^2\) be a real function of two 
+  variables. It is said to be harmonic in an open set \(\Omega \subseteq \mathbb{R}^n\) 
+  if 
+  \[\Delta \phi(x, y) := \pdv[2]{\phi}{x} + \pdv[2]{\phi}{y} = 
+    \phi''_{xx} + \phi''_{yy} = 0.\]
+  We usually refer \(\Delta\) as the Laplace operator.
+\end{definition}
+
+\begin{prop}
+  Let \(f(x) = u(x, y) + iv(x, y)\) be holomorphic in an open set \(\Omega\). 
+  Then \(u, v\) are harmonic function in \(\Omega\).
+\end{prop}
+\proof
+
+Since \(f = u + iv\) is holomorphic it is infinitely differentiable. In
+particular, the functions \(u, v\) have continuous second derivatives
+that allows us to change the order of the second derivatives. Thus, by
+the Cauchy-Riemann equations to obtain,
+\[u''_{xx} = (u'_x)'_x = (v'_y)'_x = (v'_x)'_y = (-u'_y)'_y = -u''_{yy}.\]
+Therefore, \[u''_{xx} + u''_{yy} = 0,\] and hence \(\Delta u = 0\) and
+so, its harmonic. Similar argument shows that \(v\) is also harmonic.
+\qed
+
+\begin{theorem}[Harmonic Conjugate]
+  Let \(u\) be harmonic in an open disc \(D \subseteq \mathbb{C}\). Then, there 
+  exists some harmonic function \(v\), such that \(f := u + iv\) is holomorphic. 
+  In this case, \(v\) is called a harmonic conjugate of \(u\).
+\end{theorem}
+\proof
+
+Fix \(R > 0\) such that \(D = D_R\) and let \((x, y) \in D_R\),
+\(\gamma = \gamma_1 \cup \gamma_2\) where
+\[\gamma_1 := \{(t, s) \mid t \in (0, x), s = 0\},\]
+\[\gamma_2 := \{(t, s) \mid t = x, s = (0, y)\}.\] Then, we construct
+\(v\) such that
+\[v(x, y) = \int_\gamma \left( - \pdv{u}{y} \dd t + \pdv{u}{x} \dd s\right).\]
+Using \(u''_{xx} = -u''_{y}\), we obtain
+\[v'_x(x, y) = - u'_y(x, 0) + \int_0^y \pdv[2]{u(x, s)}{x} \dd s 
+    = - u'_y(x, 0) + \int_0^y \pdv[2]{u(x, s)}{s} \dd s.\] So, by FTC,
+we have the above equals \(-u'_y(x, y)\). Now, differentiating with
+respect to \(x\), we find
+\[v'(x, y) = \pdv{y}\left(\int_\gamma \left( - \pdv{u}{y} \dd t + \pdv{u}{x} \dd s\right)\right) 
+    = u_x'(x, y).\] Hence, by the Cauchy-Riemann equations are satisfied
+and \(f\) is holomorphic. \qed
+
+\begin{prop}
+  Let \(f = u + iv\) be holomorphic on an open connected set \(\Omega \subseteq \mathbb{C}\). 
+  Consider the two curves
+  \[u(x, y) = C \text{ and } v(x, y) = K,\]
+  where \(C, K\) are constants. Assuming the curves intercept at \((x_0, y_0)\) 
+  and \(f'(z_0) \neq 0\) at \(z_0 = x_0 + iy_0\). Then, the curves are orthogonal 
+  with respect to one another, i.e. \(\nabla u \cdot \nabla v = 0\).
+\end{prop}
+\proof
+
+Clearly, \(u, v\) satisfies the Cauchy-Riemann equations, and so
+\[\nabla u \cdot \nabla v = u'_x v'_x + u'_y v'_y = v'_yv'_x - v'_y v'_x = 0.\]
+\qed
+
 \end{document}
