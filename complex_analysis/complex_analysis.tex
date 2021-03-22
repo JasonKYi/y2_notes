@@ -2113,7 +2113,7 @@ the same argument, \(g' / g\) is holomorphic in a neighbourhood of
       \ointctrclockwise_{|z -z_2| < r}\frac{g'(z)}{g(z)} \dd z = - 2\pi i p.\]
 Thus, by the deformation theorem, the result follows. \qed
 
-\begin{theorem}[Roche's Theorem]
+\begin{theorem}[Rouche's Theorem]
   Let \(f, g\) be holomorphic in an open set \(\Omega\) and let \(\gamma \subseteq \Omega\) 
   be a simple, closed, piecewise-smooth curve. If \(|g(z)| < |f(z)|\) for all 
   \(z \in \gamma\), then the sums of the orders of the zeros of \(f + g\) and 
@@ -2197,11 +2197,12 @@ containing \(f(z_0)\). But then, there exists \(z \in D\) such that
 
 \newpage
 
-\hypertarget{harmonic-functions}{%
-\section{Harmonic Functions}\label{harmonic-functions}}
+\hypertarget{more-on-complex-valued-functions}{%
+\section{More on Complex Valued
+Functions}\label{more-on-complex-valued-functions}}
 
-\hypertarget{basic-properties}{%
-\subsection{Basic Properties}\label{basic-properties}}
+\hypertarget{harmonic-functions}{%
+\subsection{Harmonic Functions}\label{harmonic-functions}}
 
 \begin{definition}[Harmonic Function]
   Let \(\phi = \phi(x, y)\), \(x, y \in \mathbb{R}^2\) be a real function of two 
@@ -2262,5 +2263,137 @@ and \(f\) is holomorphic. \qed
 Clearly, \(u, v\) satisfies the Cauchy-Riemann equations, and so
 \[\nabla u \cdot \nabla v = u'_x v'_x + u'_y v'_y = v'_yv'_x - v'_y v'_x = 0.\]
 \qed
+
+\hypertarget{conformal-mappings}{%
+\subsection{Conformal Mappings}\label{conformal-mappings}}
+
+Let us consider a smooth curve \(\gamma \subseteq \mathbb{C}\)
+parametrised by \(z(t) = x(t) + iy(t)\) for \(t \in [a, b]\). For each
+\(t_0 \in [a, b]\), we define the direction vector
+\[L_{t_0} = \{(z(t_0) + tz'(t_0)) \mid t \in \mathbb{R}\}.\] Consider
+now two curves \(\gamma_1\) and \(\gamma_2\) parametrised by the
+functions \(z_1, z_2\) intersecting at \(t = 0\), namely
+\(z_1(0) = z_2(0)\). Then we define the angle between the two curves to
+be the angle between the tangents, that is
+\[\arg z_2'(0) - \arg z_1'(0).\] We have the following result.
+
+\begin{theorem}[Angle Preservation Theorem]
+  Let \(f\) be holomorphic on an open subset \(\Omega \subseteq \mathbb{C}\). 
+  Suppose that two curves \(\gamma_1\), \(\gamma_2\) are lying in \(\Omega\) 
+  parametrised by \(z_1, z_2\) respectively. Assuming \(z_0 = z_1(0) = z_2(0)\) 
+  is their intersection point and \(z_1'(0), z_2'(0)\) and \(f'(z_0)\) are all 
+  non-zero. Then, the angle between the curves \((z_1, z_2)\) and \((f(z_1), f(z_2))\) 
+  at \(t = 0\) satisfy, 
+  \[\arg z_2'(t) - \arg z_1'(t) \mid_{t = 0} = 
+    \arg (f(z_2(t)))' - \arg (f(z_1(t)))' \mid_{t = 0} \mod 2\pi.\]
+\end{theorem}
+
+\proof
+
+The proof of this is rather straight forward. Indeed, we have
+\[\frac{(f(z_1(t)))'}{(f(z_2(t)))'} \mid_{t = 0} = 
+    \frac{f'(z_1(0))z_1'(0)}{f'(z_2(0))z_2'(0)} = 
+    \frac{f'(z_0)z_1'(0)}{f'(z_0)z_2'(0)} = \frac{z_1'(0)}{z_2'(0)}.\]
+Thus, the result follows by writing \(z = re^{i \theta}\). \qed
+
+We remark that the condition \(f'(z_0) \neq 0\) is essential. By
+considering the holomorphic function \(z \mapsto z^2\) and let
+\(z_0 = 0\). Then, clearly, \(f(z_0) = 0\) while any other complex
+number with non-zero argument doubles their argument under the function.
+Thus, in the case the angle is not preserved.
+
+Furthermore, we see that this theorem implies that the orientation is
+also preserved. In general, preservation of angle does not imply the
+orientation is preserved. Ineed, if we consider \(z \mapsto \bar z\), we
+have a (nonholomorphic) function which preserves angle but not
+orientation.
+
+\begin{definition}[Conformal Mapping]
+  We say a complex function \(f\) is conformal in an open set \(\Omega \subseteq \mathbb{C}\) 
+  if it is holomophic in \(\Omega\) and if \(f'(z) \neq 0\) for all \(z \in \Omega\).
+\end{definition}
+
+\begin{definition}[Local Injection]
+  A holomorphic function \(f\) is a local injection on an open set \(\Omega \subseteq \mathbb{C}\) 
+  if for any \(z_0 \in \Omega\), there exists some 
+  \[D := \{z \mid |z - z_0| < r\} \subseteq \Omega,\]
+  such that \(f\mid_D\) is injective.
+\end{definition}
+
+\begin{prop}
+  Let \(f : \Omega \to \mathbb{C}\) be holomorphic and a local injection, then 
+  \(f'(0) \neq 0\) for all \(z \in \Omega\). 
+\end{prop}
+\proof
+
+Suppose there exists some \(z_0 \in \Omega\) such that \(f'(z_0) = 0\).
+Then, for some sufficiently small \(r > 0\), there is
+\(\overline{D_r(z_0)} \subseteq \Omega\) such that
+\[f(z) - f(z_0) = a(z - z_0)^k + g(z),\] for some \(a \neq 0\),
+\(k \ge 2\), \(g = O(|z - z_0|^{k + 1})\), for all \(z \in D_r\). For
+sufficiently small \(w_r \neq 0\), let us write
+\[f(z) - f(z_0) - w = F(z) + G(z),\] where \(F(z) = a(z - z_0)^k - w\)
+and \(G(z) = g(z)\). If \(r > 0\) and \(|w|\) small enough, then we have
+\(|G(z)| < |F(z)|\) for all \(z \in C_r(z_0)\), and so, by Rouche's
+theorem implies that \(f(z) - f(z_0) - w\) has at least two zeros in
+\(D_r(z_0)\).
+
+Now since the zeros of the holomorphic function are isolated and
+\(f'(z_0) = 0\), then for a sufficiently small \(r\), it follows
+\(f'(0) \neq 0\) for \(z \neq z_0\). Therefore the roots of
+\(f(z) - f(z_0) - w\) are distinct. But this violates the injective
+assumption. Hence \(f'\neq 0\). \qed
+
+\begin{prop}
+  The inverse of a conformal mapping is holomorphic.
+\end{prop}
+\proof
+
+Let \(g := f^{-1}\) denote the inverse of \(f\) on its range \(V\).
+Suppose \(w_0 \in V\) and \(w\) is sufficiently close to \(w_0\).
+Assuming \(w = f(z)\) and \(w_0 = f(z_0)\) with \(w \neq w_0\), we find
+\[\frac{g(w) - g(w_0)}{w - w_0} = \frac{1}{\frac{w - w_0}{g(w) - g(w_0)}} = 
+    \frac{1}{\frac{f(z) - f(z_0)}{z - z_0}}.\] Since \(f'(z_0) \neq 0\),
+letting \(z \to z_0\) allows us to conclude \(g\) is holomorphic at
+\(w_0\) and \(g'(w_0) = 1 / f'(g(w_0))\). \qed
+
+\begin{definition}[Möbius Transformation]
+  A Möbius transformation (also known as a bilinear transformation) is a map 
+  \[f(z) = \frac{a z + b}{cz + d},\]
+  for some \(a, b, c, d \in \mathbb{C}\) and \(ad - bc \neq 0\).
+\end{definition}
+
+The condition \(ad - bc = 0\) is necessary since if otherwise, the
+transformation is a constant, and hence is no longer a conformal
+mapping.
+
+It is clear that a Möbius transformation is holomorphic except at the
+simple pole \(z = - d / c\) and it has derivative
+\[f'(z) = \frac{ad - bc}{(cz + d)^2}.\] Clearly, \(f' \neq 0\), we have
+\(f\) is conformal throughout \(\mathbb{C} \setminus \{- d / c\}\).
+
+\begin{prop}
+  The inverse of a Möbius transformation is a Möbius transformation and the composition 
+  of Möbius transformations is also a Möbius transformation.
+\end{prop}
+\proof
+
+Easy check. \qed
+
+The Möbius transformations can be classified.
+
+\begin{definition}
+  A Möbius transformation is of type 
+  \begin{itemize}
+    \item (M1) if it is in the form \(z \mapsto az\);
+    \item (M2) if it is in the form \(z \mapsto z + b\);
+    \item (M3) if it is in the form \(z \mapsto z^{-1}\).
+  \end{itemize}
+\end{definition}
+
+\begin{prop}
+  Every Möbius transformation is a composition of transformations of type 
+  (M1), (M2), and (M3).
+\end{prop}
 
 \end{document}
