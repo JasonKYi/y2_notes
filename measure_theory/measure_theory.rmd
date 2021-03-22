@@ -1973,7 +1973,7 @@ us with these types of proofs.
 \qed
 
 \newpage
-# Differentiation of Measures
+# Results in Measure Theory
 
 ## Differentiability of the Lebesgue Integral
 
@@ -2171,3 +2171,119 @@ inequality. If \(f \in L_{loc}^1(\mathbb{R}^n)\), then for \(\lambda\)-a.e. \(x 
 \[\lim_{r \to 0} \fint_{B_r(x)} |f - f(x)| \dd \lambda = 0,\]
 and points satisfying this equality are called **Lebesgue-points** of \(f\).
 
+## Decomposition of Measures
+
+Let \((X, \mathcal{A}, \mu)\) be a \(\sigma\)-finite measure space, \(f : X \to [0, \infty]\) 
+measurable. As we have seen \(\nu := f\mu\), i.e. \(\nu(A) = \int_A f \dd \mu\), 
+defines a measure on \((X, \mathcal{A})\). As a consequence, \(\nu \ll \mu\), 
+that is, \(\nu\) is absolutely continuous with respect to \(\mu\). In this section 
+we investigate to which extent every absolutely continuous measure \(\nu \ll \mu\) 
+is in the form \(\nu = f \mu\).
+
+\begin{definition}
+  A map \(\alpha : \mathcal{A} \to (-\infty, \infty]\) is called a signed measure if 
+  \(\alpha(\varnothing) = 0\) and for all \((A_n) \subseteq \mathcal{A}\), 
+  \(A_i \cap A_j = \varnothing\) for all \(i \neq j\), then 
+  \[\alpha\left(\bigcup_{n = 1}^\infty A_n\right) = \sum_{n = 1}^\infty \alpha(A_n).\]
+\end{definition}
+
+By noting that we have excluded \(-\infty\) from our codomain, we are allowed to 
+continue with our arithmetic on the extended reals as normal.
+
+If we were to have \(\mu_1, \mu_2\) measures on \((X, \mathcal{A})\) with 
+\(\mu_2(X) < \infty\). Then, we may define 
+\[\mu(A) := \mu_1(A) - \mu_2(A),\]
+for all \(A \in \mathcal{A}\). It is not difficult to see that \(mu\) is 
+a signed measure, and as we shall see, it turns out every signed measure can be
+written in this form.
+
+\begin{definition}
+  Let \(\alpha\) be a signed measure on \((X, \mathcal{A})\). A set \(A \in \mathcal{A}\) 
+  is called positive of for all \(B \subseteq A\), \(B \in \mathcal{A}\), we have 
+  \(\alpha(B) \ge 0\). Similarly, \(A \in \mathcal{A}\) is negative if, for all 
+  \(B \subseteq A\), \(B \in \mathcal{A}\), we have \(\alpha(B) \le 0\).
+\end{definition}
+
+\begin{prop}
+  Let \(\alpha\) be a signed measure on \((X, \mathcal{A})\) and let \(A_1, A_2\) 
+  be two positive sets. Then \(A_1 \cup A_2\) is also positive. The statement is 
+  similarly true for negative sets.
+\end{prop}
+\proof
+  Let \(B \subseteq A_1 \cup A_2\). Then \(B = (B \cap A_1) \sqcup (B \cap A_1^c)\), 
+  and so \(\alpha(B) = \alpha(B \cap A_1) + \alpha(B \cap A_1^c)\). Clearly, 
+  \(B \cap A_1 \subseteq A_1\) and \(B \cap A_1^c = B \setminus A_1 \subseteq A_2\). 
+  Hence, we have 
+  \[\alpha(B) = \alpha(B \cap A_1) + \alpha(B \cap A_1^c) \ge 0 + 0 = 0.\]
+  Similar proof for negative sets.
+\qed
+
+It is not difficult to generalise this proposition 
+to countable unions of positive sets which proof is left as an exercise.
+
+\begin{theorem}[Hahn Decomposition]
+  Let \(\alpha\) be a signed measure on \((X, \mathcal{A})\). Then there exists a 
+  a positive set \(A\) and a negative set \(B\) such that \(X = A \cup B\) and 
+  \(A \cap B = \varnothing\).
+\end{theorem}
+
+We note that the Hahn decomposition is not unique. Furthermore, if 
+\((A_1, B_1)\) and \((A_2, B_2)\) are two Hahn decompositions for the signed 
+measure \(\alpha\), then the symmetric difference between \(A_1\) and \(A_2\) 
+is a null-set. Indeed, we have 
+\[A_1 \Delta A_2 = (A_1 \cap A_2^c) \cup (A_2 \cap A_1^c) = 
+  (B_1^c \cap B_2) \cup (B_2^c \cap B_1) = B_1 \Delta B_2.\]
+Now, since \(A_1 \Delta A_2 \subseteq A_1 \cup A_2\) which is positive, 
+we have \(\alpha(A_1 \Delta A_2) \ge 0\). On the other hand, \(A_1 \Delta A_2 
+= B_1 \Delta B_2 \subseteq B_1 \cup B_2\) which is negative, we have 
+\(\alpha(A_1 \Delta A_2) \le 0\). Hence \(\alpha(A_1 \Delta A_2) = 0\).
+
+Before proving the Hahn decomposition theorem, let us first introduce 
+the following lemma.
+
+\begin{lemma}
+  Let \(\alpha\) be a signed measure on \((X, \mathcal{A})\) and \(B \in \mathcal{A}\) 
+  such that \(\alpha(B) < 0\). Then, there exists a negative measurable set \(B' \subseteq B\) 
+  such that \(\alpha(B') < 0\).
+\end{lemma}
+\proof
+  Let \(\epsilon_1 := \sup \{\alpha(A) \mid A \subseteq B, A \in \mathcal{A}\}\).
+  By properties of the supremum, there exists some \(A_1\) such that \(\alpha(A_1) \ge \epsilon_1 / 2 \wedge 1\).
+  Proceeding inductively, assuming \(\epsilon_1, A_1, \cdots, \epsilon_{n - 1}, A_{n - 1}\), 
+  then we define 
+  \[\epsilon_n := \sup \left\{\alpha(A) \mid A \subseteq B \setminus \bigcup_{i = 1}^{n - 1} A_i, 
+    A \in \mathcal{A} \right\},\]
+  and choose \(A_n \subseteq B \setminus \bigcup_{i = 1}^{n - 1} A_i\) so 
+  \(\alpha(A_n) \ge \epsilon_n / 2 \wedge 1\). Clearly, by construction, \((A_n)\) 
+  is a disjoint sequence and \(\alpha(A_n) \ge \epsilon_n / 2 \wedge 1\). Now, define 
+  \[B' := B \setminus \bigcup_{i = 1}^\infty A_n,\]
+  and so, we have 
+  \[0 > \alpha(B) = \alpha(B') + \alpha\left(\bigcup A_n\right) 
+    = \alpha(B') + \sum \alpha(A_n) \ge \alpha(B').\]
+  Moreover, since \(\alpha(B') > -\infty\), we have \(\sum \alpha(A_n) < \infty\), and so 
+  \(\epsilon_n \le 2\alpha(A_n) \to 0\) as \(n \to \infty\). Now, let \(A \subseteq B'\), 
+  for all \(n \in \mathbb{N}\), we have \(A \subseteq B \setminus \bigcup_{k = 1}^{n - 1} A_k\) 
+  and so, \(\alpha(A) \le \epsilon_n\). Thus taking \(n \to \infty\) we have 
+  \(\alpha(A) \le 0\) and hence, \(B'\) is negative.
+\qed
+
+Finally, we may move to prove the Hahn decomposition theorem.
+
+\proof (Hahn decomposition).
+Let \(b := \inf\{ \alpha(B) \mid B \in \mathcal{A}, B \text{ negative.}\}\). By 
+definition, there exists some \(B_n\) negative sets, \(n \ge 1\) such that 
+\(\alpha(B_n) \downarrow b\). Then, taking the union of these sets, we found a 
+negative set \(B := \bigcup B_n\), and in particular \(b \le \alpha(B)\). Moreover, 
+for every \(n\), 
+\[\alpha(B) = \alpha(B_n) + \alpha(B \setminus B_n) \le \alpha(B_n).\]
+Thus, by letting \(n \to \infty\), we have \(\alpha(B) \le b\) and so, we have 
+\(b = \alpha(B)\) and in particular, \(b > -\infty\). 
+
+Now, let \(A := B^c\) and we will show \(A\) is positive. If \(A' \subseteq A\), 
+\(A \in \mathcal{A}\) with \(\alpha(A') < 0\), by the above lemma, there exists 
+a subset \(A'' \subseteq A'\) that is negative. But then \(B \sqcup A''\) is 
+negative and so, 
+\[\alpha(B \sqcup A'') = \alpha(B) + \alpha(A'') < \alpha(B) = b,\]
+which contradicts the minimality of \(b\). Thus, such an \(A'\) 
+does not exist and \(A\) is positive.
+\qed
