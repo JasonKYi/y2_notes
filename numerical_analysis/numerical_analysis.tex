@@ -1277,4 +1277,66 @@ integration weights. That is, \[\begin{split}
 The Clenshaw-Curtis integration can be very efficiently implemented
 using Fourier analysis and we shall implement this during the tutorial.
 
+\newpage
+
+\hypertarget{fourier-series}{%
+\section{Fourier Series}\label{fourier-series}}
+
+As we have seen from year one calculus, the Fourier series are an useful
+series expansion for periodic functions in terms of trigonometric
+functions. We will now look at numerical methods in computing the
+Fourier series of some function. Consider the vector space \(V\) of
+functions \(f : (-d, d) \to \mathbb{R}\) where
+\[\int_{-d}^d f(x)^2 \dd x < \infty,\] and we equip \(V\) with the inner
+product \[\langle f, g \rangle := \int_{-d}^d f(x)g(x) \dd x.\] We
+introduce the subspace of \(V\),
+\[V_n := \text{span} \{(\cos(m\pi x/ d)_{m = 0}^n, (\sin (m\pi x / d))_{m = 0}^n \}.\]
+and it turns out this set is orthogonal (exercise), and so the
+individual functions are linearly independent and \(V_n\) has dimension
+\(2n + 2\). Using the standard projection approch, we obtain
+\[f_n^* (x) = \frac{\langle f, 1 \rangle}{\|1\|^2} + \sum_{m = 1}^n 
+  \frac{\langle f, \cos(m\pi x / d) \rangle}{\|\cos (m\pi x / d)\|^2} \cos \frac{m \pi x}{d} 
+  +
+  \sum_{m = 1}^n \frac{\langle f, \sin(m\pi x / d) \rangle}{\|\sin (m\pi x / d)\|^2} \sin \frac{m \pi x}{d}.
+\] That is, we project functions of \(V\) onto the subspace \(V_n\).
+This simplifies, and we find
+\[f_n^*(x) = \frac{a_0}{2} \sum_{m = 1}^n \left(a_n \cos \frac{m\pi x}{d} + 
+  b_m \sin \frac{m \pi x}{d}\right),\] where
+\(a_m = \frac{1}{d} \langle f, \cos (m \pi x / d) \rangle\) and
+\(b_m = \frac{1}{d} \langle f, \sin(m \pi x / d) \rangle\). Clearly, by
+orthogonality, we have \(\langle f - f_n^*, v_n \rangle = 0\) for all
+\(v_n \in V_n\). By expanding, we obtain \[
+\left\langle f_n^*, \cos \frac{p \pi x}{d} \right\rangle = 
+\begin{cases}
+  \frac{a_0}{2} \langle 1, 1 \rangle = da_0, & p = 0\\
+  a_p\langle \cos (p \pi x / d), \cos (p \pi x / d) \rangle = da_p, & p \neq 0
+\end{cases} = \left\langle f, \cos \frac{p \pi x}{d} \right\rangle.\]
+Similarly, we have \[
+  \left\langle f_n^*, \sin \frac{p \pi x}{d} \right\rangle = 
+  db_p = \left\langle f_n^*, \sin \frac{p \pi x}{d} \right\rangle,\] for
+all \(p = 1, \cdots, n\).
+
+Choosing \(v_n = f_n^*\), we find
+\(\langle f, f_n^* \rangle = \|f_n^*\|^2\), and thus, \[\begin{split}
+  \| f - f_n^* \|^2 & = \|f\|^2 - 2 \langle f_n^*, f \rangle + \|f_n^*\|^2\\
+  & = \|f\|^2 - 2 \|f_n^*\|^2 + \|f_n^*\|^2\\
+  & = \|f\|^2 - \|f_n^*\|^2.
+\end{split}\] or with other words,
+\(\|f_n^*\|^2 = \|f\|^2 - \|f - f_n^*\|^2\). Expanding this final
+expression, we find
+\[\langle f_n^*, f_n^* \rangle = d \left(\frac{a_0^2}{2} + \sum_{m = 1}^n a_m^2 + b_m^2\right).\]
+So,
+\[d \left(\frac{a_0^2}{2} + \sum_{m = 1}^n a_m^2 + b_m^2\right) = \|f_n^*\|^2 = 
+\|f\|^2 - \|f - f_n^*\|^2 \le \|f\|^2 < \infty.\] This inequality is
+known as the Bessel's inequality.
+
+Furthermore, by forming the sequence of partial sums by defining
+\[S_n := \frac{a_0^2}{2} + \sum_{m = 1}^n a_m^2 + b_m^2.\] Since
+\((S_n)\) is monotonically increasing and bounded, there exists some
+\(S\), \(S_n \to S\). Then we have \(\|f - f_n^*\| \to 0\) and
+\(S = \|f\|^2\) which leads to
+\[\lim_{n \to \infty} S_n = d\left(\frac{a_0^2}{2} + \sum_{m = 1}^\infty a_m^2 + b_m^2 \right) 
+ = \|f\|^2 = \int_{-d}^d f(x)^2 \dd x < \infty.\] We recall from first
+year that this is known as Parseval's identity.
+
 \end{document}
