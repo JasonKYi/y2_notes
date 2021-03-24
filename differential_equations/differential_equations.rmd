@@ -1656,7 +1656,7 @@ Since \(\dot V \le 0\), the integral is non-positive and so \(V\) is decreasing 
 
 \begin{prop}
   If \(V\) is a Lyapunov function, then the sublevel set of the form 
-  \[S_C := \{x \in D \mid V(x) \le c\}\]
+  \[S_c := \{x \in D \mid V(x) \le c\}\]
   is positively invariant.
 \end{prop}
 \proof
