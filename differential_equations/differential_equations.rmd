@@ -1586,6 +1586,39 @@ a limit point without ever reaching it, we take the closure of each orbit.
   and hence, \(\omega(x)\) is invariant.
 \qed
 
+\begin{theorem}[Poincaré-Bendixson Theorem]
+  Consider the two-dimensional differential equation \(\dot x = f(x)\), where 
+  \(f : D \to \mathbb{R}^2\) is continuously differentiable on the open domain \(D\). 
+  Now, if there exists some \(x \in D\) such that \(\sigma^+(x) \subseteq K \subseteq D\) 
+  where \(K\) is compact which contains finitely many equilibrium. Then, one of the following 
+  three statements hold of the \(\omega\)-limit set \(\omega(x)\):
+  \begin{itemize}
+    \item \(\omega(x)\) is a singleton consisting of an equilibrium;
+    \item \(\omega(x)\) is a periodic orbit;
+    \item \(\omega(x)\) consists of equilibria and non-closed orbits. In particular, 
+      the non-closed orbits in \(\omega(x)\) converge forward and backward in time 
+      to equilibria in \(\omega(x)\), i.e. they are either homoclinic or heteroclinic 
+      orbits.
+  \end{itemize}
+\end{theorem}
+\proof
+  See extra material.
+\qed
+
+We note that an analogous statement is also true for \(\alpha\)-limit sets. The 
+Poincaré-Bendixson theorem tells us that the limit sets are regular in two-dimensional 
+differential equations (also regular in the one-dimensional case). This is not 
+the case for higher dimensions, and in fact, for three-dimensions, chaotic differential 
+equations can occur, e.g. the Lorenz system.
+
+The following corollary is often used to prove the existence of a periodic orbit.
+
+\begin{corollary}
+  Suppose that for some \(x \in D\), the positive half-orbit \(\sigma^+(x)\) lies in 
+  a compact subset \(K \subseteq D\) that does not contain an equilibrium. Then \(\omega(x)\) 
+  is a periodic orbit. 
+\end{corollary}
+
 ## Lyapunov Functions
 
 As we have previously seen, we may analyse the properties of an equilibrium without 
@@ -1631,4 +1664,112 @@ Since \(\dot V \le 0\), the integral is non-positive and so \(V\) is decreasing 
   and \(t > 0\) such that \(\phi(t, s) \not\in S_c \implies V(\phi(t, x)) > c\). 
   However, by the fact that the Lyapunov function decreases along functions, 
   and \(x \in S_c\), \(c \ge V(x) \ge V(\phi(t, x))\) \#.
+\qed
+
+\begin{theorem}[Lyapunov's Direct Method for Stability]
+  Consider an equilibrium \(x^* \in D\) and let \(V : D \to \mathbb{R}\) be a 
+  Lyapunov function. If \(V(x^*) = 0\) and \(V(x) > 0\) for all \(x \in D \setminus \{x^*\}\), 
+  then, \(x^*\) is stable.
+\end{theorem}
+\proof
+  Let \(\epsilon > 0\), then we will find some \(\delta > 0\) such that for all 
+  \(x_0 \in B_\delta(x^*)\), \(\phi(t, x_0) \in B_\epsilon(x^*)\) for all \(t \ge 0\). 
+  Wlog. since \(D\) is open, we may assume \(\overline{B_\epsilon(x^*)} \subseteq D\).
+  Then, we may define 
+  \[m := \min \{V(x) \mid \|x - x^*\| = \epsilon\} > 0,\]
+  which is positive since the set \(S := \{x \mid \|x - x^*\| = \epsilon\}\) is compact, 
+  and so, since \(V\) is continuous it achieves a minimum on \(S\) which is positive. 
+  Furthermore, by continuity of \(V\), there exists a \(\delta \in (0, \epsilon)\) 
+  such that 
+  \[0 \le V(x) \le \frac{m}{2},\]
+  for all \(x \in B_\delta(x^*)\). Since, a Lyapunov function is invariant forward 
+  in time, we have, 
+  \[V(\phi(t, x)) \le V(x) \le \frac{m}{2},\]
+  for all \(x \in B_\delta(x^*)\) and \(t \ge 0\). But this implies that the orbit 
+  forward in time will never cross \(S\) since if that is the case, there exists 
+  some \(t \ge 0\), \(x \in B_\delta(x^*)\), such that \(V(\phi(t, x)) \ge m\). 
+  So, we have established the stability of \(x^*\). 
+\qed
+
+The existence of Lyapunov functions also provides us with information about the 
+location of \(\omega\)-limit sets.
+
+\begin{theorem}[La Salle's Invariance Principle]
+  Let \(V : D \to \mathbb{R}\) be a Lyapunov function. Then, 
+  \[\omega(x) \subseteq \{y \in D \mid \dot V(y) = 0\},\]
+  for all \(x \in D\).
+\end{theorem}
+Intuitively, since \(\dot V \le 0\), if \(y \in \omega(x)\) and \(\dot V(y) < 0\),
+then once we leave \(y\), we may never approach it again. However, \(y \in \omega(x)\) 
+implies that there is a sequence of times such that the orbit approaches \(y\), 
+hence, \(\dot V(y)\) must equal \(0\).
+
+\proof
+  Assume to the contrary that \(z \in \omega(x)\) such that \(\dot V(z) < 0\). Then 
+  for some \(\tau > 0\), we have \(V(\phi(\tau, z)) < V(z)\). Since \(z \in \omega(x)\), 
+  there exists a sequence \((t_n)_{n = 1}^\infty \to \infty\) such that 
+  \[\lim_{n \to \infty} \phi(t_n, x) = z.\]
+  Wlog. since \(t_n \to \infty\) we may assume that, for all \(n\), 
+  \(t_{n + 1} - t_n > \tau\). Due to the fact that \(\dot V(y) \le 0\), we have 
+  \[V(\phi(t_{n + 1}, x)) \le V(\phi(t_n + \tau, x)) = V(\phi(\tau, \phi(t_n, x))),\]
+  for all \(n \in \mathbb{N}\). Hence, taking \(n \to \infty\) we have 
+  \(V(z) \le V(\phi(\tau, z))\) which contradicts \(V(\phi(\tau, z)) < V(z)\) 
+  and hence, our claim holdes.
+\qed
+
+To see why this theorem is called an invariance principle, consider the following 
+reformulation.
+
+\begin{corollary}
+  Let \(V : D \to \mathbb{R}\) be a Lyapunov function. Thus, for any \(x \in D\), 
+  \(\omega(x)\) is contained in the largest invariant subset of \(\{y \in D\ mid \dot V(y) = 0\}\). 
+  Here the largest invariant subset is obtained by taking the union of all 
+  invariant subsets.
+\end{corollary}
+\proof
+  Follows straight away since \(\omega(x)\) is invariant.
+\qed
+
+\begin{theorem}[Lyapunov's Direct Method for Asymptotic Stability]
+  Consider the differential equation with an equilibrium \(x^* \in D\) and 
+  let \(V : D \to \mathbb{R}\) be a Lyapunov function such That 
+  \begin{itemize}
+    \item \(V(x^*) = 0\) and \(V(x) > 0\) for all \(x \in D \setminus \{x^*\}\);
+    \item \(\dot V(x^*) = 0\) and \(\dot V(x) < 0\) for all \(x \in D \setminus \{x^*\}\).
+  \end{itemize}
+  Then, the equilibrium \(x^*\) is asymptotically stable.
+\end{theorem}
+\proof
+  The first condition ensures \(x^*\) is stable and so, if \(\epsilon > 0\) 
+  such that \(B_{2 \epsilon}(x^*) \subseteq D\), there exists some \(\delta > 0\) 
+  such that for all \(x \in B_\delta(x^*)\) we have \(\phi(t, x) \in B_\epsilon(x^*)\) 
+  where \(t \ge 0\). Let us now fix \(x \in B_\delta(x^*)\), and since \(\phi(t, x) \in 
+  \overline{B_\epsilon(x^*)} \subseteq D\) for all \(t \ge 0\), we obtain 
+  \(\overline{\sigma^+(x)} \subseteq D\). Thus, by the properties of \(\omega\)-limit 
+  sets, \(\omega(x)\) is compact and non-empty. Now, by La Salle's principle, we have 
+  \(\omega(x) \subseteq \{x^*\}\) and hence, \(\omega(x) = \{x^*\}\).
+
+  We will now show attractivity in the \(\delta\)-neighbourhood of \(x^*\). 
+  Suppose otherwise, then there exists some \(x \in B_\delta(x^*)\), such that 
+  \(\phi(t, x) \not \to x^*\) as \(t \to \infty\). Then, there exists some \(\eta > 0\), 
+  \((t_n)_{n \in \mathbb{N}} \to \infty\), such that \(\|\phi(t_n, x) - x^*\| \ge \eta\) 
+  for all \(n \in \mathbb{N}\). Clearly, since \(\phi(t_n, x)\) bounded insider \(\partial D\),
+  it contains a limit point in \(D\). This limit point is thus an \(\omega\)-limit point 
+  of \(x\) which contradicts the fact that \(\omega(x) = \{x^*\}\).
+\qed
+
+\begin{corollary}
+  Assuming the conditions for the above theorem is satisfied for the Lyapunov 
+  function \(V\). Considering the sublevel sets of the Lyapunov function, which 
+  are in the Form\[S_c := \{x \in D \mid V(x) \le c\},\]
+  where \(c > 0\). Then, \(S_c\) is a subset of the domain of attraction \(W^s(x^*)\) 
+  if \(S_c\) is compact.
+\end{corollary}
+\proof
+  Let \(S_c\) be compact and \(x \in S_c\) and we need to show that 
+  \(\lim_{t \to \infty} \phi(t, x) = x^*\). Since \(S_c\) is compact, we have 
+  \(\overline{\sigma^+(x)} \subseteq D\) and \(\omega(x) \neq \varnothing\). 
+  By La Salle's principle, we have \(\omega(x) \subseteq \{x \in D \mid \dot V(x) = 0\} = \{x^*\}\),
+  and so, \(\omega(x) = \{x^*\}\). Then, the argument in the second part of the 
+  above theorem finishes the proof.
 \qed
