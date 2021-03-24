@@ -1761,7 +1761,8 @@ reformulation.
 \begin{corollary}
   Assuming the conditions for the above theorem is satisfied for the Lyapunov 
   function \(V\). Considering the sublevel sets of the Lyapunov function, which 
-  are in the Form\[S_c := \{x \in D \mid V(x) \le c\},\]
+  are in the form
+  \[S_c := \{x \in D \mid V(x) \le c\},\]
   where \(c > 0\). Then, \(S_c\) is a subset of the domain of attraction \(W^s(x^*)\) 
   if \(S_c\) is compact.
 \end{corollary}
