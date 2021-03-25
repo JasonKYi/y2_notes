@@ -2193,7 +2193,7 @@ continue with our arithmetic on the extended reals as normal.
 If we were to have \(\mu_1, \mu_2\) measures on \((X, \mathcal{A})\) with 
 \(\mu_2(X) < \infty\). Then, we may define 
 \[\mu(A) := \mu_1(A) - \mu_2(A),\]
-for all \(A \in \mathcal{A}\). It is not difficult to see that \(mu\) is 
+for all \(A \in \mathcal{A}\). It is not difficult to see that \(\mu\) is 
 a signed measure, and as we shall see, it turns out every signed measure can be
 written in this form.
 
