@@ -2287,3 +2287,145 @@ negative and so,
 which contradicts the minimality of \(b\). Thus, such an \(A'\) 
 does not exist and \(A\) is positive.
 \qed
+
+\begin{definition}[Mutually Singular]
+  Two measures \(\mu, \nu\) on \((X, \mathcal{A})\) are mutually singular if there 
+  exists some \(A \in \mathcal{A}\) such that \(\mu(A^c) = 0\) and \(\nu(A) = 0\). 
+  Often, one also say that in this case \(\mu\) 
+  is singular with respect to \(\nu\) (and vice versa) and writes \(\mu \bot \nu\).
+\end{definition}
+
+\begin{theorem}[Jordan Decomoposition]
+  Let \(\alpha\) be a signed measure on \((X, \mathcal{A})\). Then, there exists 
+  an unique pair \((\alpha_+, \alpha_-)\) of mutually singular measures on \((X, \mathcal{A})\) 
+  such that \(\alpha = \alpha_+ - \alpha_-\).
+\end{theorem}
+\proof
+  Let \((A, B)\) be the Hahn-decomposition for \(\alpha\) and define 
+  \(\alpha_+(E) := \alpha(E \cap A)\) and \(\alpha_-(E) := -\alpha(E \cap B)\) 
+  for all \(E \in \mathcal{A}\). Since \(A \cup B = X\) and \(A, B\) are disjoint, 
+  it follows that \(\alpha_+ - \alpha_- = \alpha\). Moreover, since \(A, B\) are 
+  positive, negative respectively, \(\alpha_{\pm}\) are measures, and \(\alpha_+(A^c) = 0\) 
+  whereas \(\alpha_-(A) = - \alpha(B \cap B^c) = 0\). Thus, \(\alpha_+ \bot \alpha_-\).
+
+  It remains to show uniqueness. Suppose \(\alpha = \beta_+ - \beta_-\) with 
+  \(\beta_{\pm}\) are mutually singular. Let \(D\) be the set such that 
+  \(\beta_+(D) = 0 = \beta_-(D^c)\). So, for all subsets of \(D\), \(\tilde D\), 
+  we have \(\alpha(\tilde D) = \beta_+(\tilde D) - \beta_-(\tilde D) = - \beta_-(\tilde D) \le 0\),
+  and so, \(D\) is negative. Similarly, \(D^c\) is positive. So, we have 
+  \(A \Delta D\) is a null-set. So, for all \(E \in \mathcal{A}\),  
+  \[\alpha_+(E) = \alpha(E \cap A) = \alpha(E \cap (A \cup D^c)) 
+    = \alpha(E \cap D^c) = \beta_+(E),\]
+  and hence, \(\alpha_+ = \beta_+\). Similarly, we have \(\alpha_- = \beta_-\).
+\qed
+
+## Radon-Nikodym Theorem
+
+\begin{theorem}[Lebesgue Decomposition]
+  Let \(\mu, \nu\) be \(\sigma\)-finite measures on \((X, \mathcal{A})\). Then 
+  there exists a unique pair of measures \((\nu, \nu_{ac})\), the Lebesgue decomposition 
+  of \(\nu\) with respect to \(\mu\), such that 
+  \begin{itemize}
+    \item \(\nu = \nu_s + \nu_{ac}\) and,
+    \item \(\nu_s \bot \mu\), \(\nu_{ac}(A) = \int_A f \dd \mu\) for some function 
+      \(f : X \to [0, \infty]\) measurable.
+  \end{itemize}
+\end{theorem}
+
+\(\nu_s\) is refereed to as the singular part of the decomposition and \(\nu_{ac}\) is 
+the absolutely continuous part. Indeed, we see that \(\nu_{ac} \ll \mu\).
+
+\begin{lemma}
+  Let \(\mu, \nu\) be finite measures on \((X, \mathcal{A})\). Then, 
+  either \(\nu \bot \mu\), or there exists some \(\epsilon > 0\) 
+  and \(E \in \mathcal{A}\) such that \(\nu(E) > 0\) and \(E\) is positive for \(\mu - \epsilon \nu\).
+\end{lemma}
+\proof
+  For \(n \in \mathbb{N}\), let \((A_n, B_n)\) be the Hahn-decomposition for 
+  \(\mu - \frac{1}{n}\nu\). Set \(A = \bigcup A_n\) and \(B = \bigcap B_n\), and 
+  then, since \(B \subseteq B_n\), \(B\) is a negative set for \(\mu - \frac{1}{n}\nu\), 
+  i.e. 
+  \[\mu(B) \le \frac{1}{n}\nu(B), \text{for all } n \in \mathbb{N}.\]
+  Since \(\nu\) is finite, taking \(n \to \infty\), we have \(\mu(B) = 0\). 
+  If \(\mu\) is not mutually singular with \(nu\), then \(\nu(B^c) = \nu(A) > 0\), 
+  whence \(\nu(A_{n_0}) > 0\) for some \(n_0\) and so, the result follows by 
+  choosing \(\epsilon = \frac{1}{n_0}\) and \(E = A_{n_0}\).
+\qed
+
+\proof (Lebesgue Decomposition).
+  We first show existence. We may assume \(\mu\) and \(\nu\) are finite. Indeed, 
+  in the general case, writing \(X = \bigcup S_i\) for disjoint sets \(S_i \in \mathcal{A}\), 
+  with \(\mu(S_i), \nu(S_i) < \infty\), we can define \(\mu_i(\cdot) = \mu(\cdot \cap S_i)\) 
+  and \(\nu_i(\cdot) = \nu(\cdot \cap S_i)\), and decomposing \(\nu_i = \nu_{i, s} + \nu_i{i, ac}\),
+  one obtain that \(\nu_s := \sum \nu_{i, s}\) and \(\nu_{ac} := \sum \nu_{i, ac}\) 
+  forms the required decomposition.
+
+  So, assuming \(\mu\) and \(\nu\) are finite, we define 
+  \[\mathcal{G} := \left\{g : X \to [0, \infty] \mid g \text{ measurable}, 
+    \int_A g \dd \mu \le \nu(A) \text{ for all } A \in \mathcal{A}\right\}.\]
+  Clearly \(\mathcal{G} \neq \varnothing\) since \(0 in \mathcal{G}\). Furthermore, 
+  it is closed under maximum. Indeed, if \(g, h \in \mathcal{G}\), 
+  then, for all \(A \in \mathcal{G}\), 
+  \[\int_A(g \vee h) \dd \mu = \int_{A \cap \{g > h\}} g \dd \mu 
+    + \int_{A \cap \{g \le h\}} h \dd \mu \le \nu(A \cap \{g > h\}) + 
+    \nu(A \cap \{g \le h\}) = \nu(A),\]
+  and, hence, \(g \vee h \in \mathcal{G}\). Furthermore, we define 
+  \[M := \sup \left\{\int g \dd \mu \mid g \in \mathcal{G}\right\} \in [0, \infty).\]
+  By the definition of \(M\), there exists some \((g_n) \subseteq \mathcal{G}\) 
+  such that, 
+  \[\lim_{n \to \infty} \int g_n \dd \mu = M.\]
+  So, setting \(f_n := \bigvee_{i = 1}^n g_i\) for all \(n \in \mathbb{N}\), 
+  we have a monotonically increasing sequence of \(\mathcal{G}\), \((f_n)\), 
+  and \(f := \lim_{n \to \infty} f_n\) exists. By monotone convergence, we have 
+  \[\int_A f \dd \mu = \lim_{n \to \infty} \int_A f_n \dd \mu \le \nu(A),\]
+  for all \(A \in \mathcal{A}\) and hence, \(f \in \mathcal{G}\). Thus, we have 
+  the chain of inequalities, 
+  \[M \ge \int f \dd \mu \ge \int f_n \dd \mu \ge \int g_n \dd \mu \to M,\]
+  as \(n \to \infty\). Hence, by squeeze, \(\int f \dd \mu = M\). 
+
+  Now, defining \(\nu_s := \nu - f \mu \ge 0\) and so, we show that 
+  \(\nu_s \bot \mu\). By the above lemma, if the two measures are not mutually 
+  singular, then there exists some \(\epsilon > 0\), \(E \in \mathcal{A}\), 
+  such that \(\nu_s(E) > 0\) and \(E\) is positive for \(\nu - f \dd \mu - \epsilon \mathbf{1}_E \dd \mu\).
+  Hence, 
+  \[\int_{E \cap A} (f + \epsilon) \dd \mu \le \nu(A \cap E).\]
+  But this implies that for all \(A \in \mathcal{A}\), 
+  \[\int_A (f + \epsilon \mathbf{1}_E) \dd \mu = \int_{A \cap E} (f + \epsilon) \dd \mu + 
+    \int_{A \cap E^c} f \dd \mu \le \nu(A),\]
+  and so, \(f + \epsilon \mathbf{1}_E \in \mathcal{G}\), contradicting the maximality 
+  of \(\int f \dd \mu = M\). Hence, \(\nu_s \bot \mu\).
+
+  Lastly, it remains to show uniqueness. Assume \(\nu = \nu_s' + \nu_{ac}'\) be 
+  a Lebesgue decomposition, then \(\nu_s - \nu_s' = \nu_{ac}' - \nu_{ac}\). 
+  Since, \(\nu_s \bot \mu\) and \(\nu_s' \bot \mu\), there exists some \(B \in \mathcal{A}\) 
+  such that \(\nu_s(B^c) = \nu_s'(B^c) = 0\) and \(\mu(B) = 0\). Thus, 
+  \[(\nu_s - \nu_s')(A) = (\nu_s - \nu_s')(A \cap B) = (\nu_{ac}' - \nu_{ac})(A \cap B) = 0,\]
+  where the last equality follows since \(\mu(A \cap B) = 0\) and so, 
+  \(\nu_{ac}(A \cap B) = \nu_{ac}'(A \cap B) = 0\) as both are absoultely continuous 
+  with resepct to \(\mu\).
+\qed
+
+\begin{corollary}[Radon-Nikodym Theorem]
+  Let \(\mu\), \(\nu\) be two \(\sigma\)-finite measures on \((X, \mathcal{A})\).
+  Then, the following are equivalent,
+  \begin{itemize}
+    \item \(\nu \ll \mu\);
+    \item \(\nu = f \mu\) for some \(f : X \to [0, \infty]\) measurable.
+  \end{itemize}
+  Moreover, if \(g \ge 0\) is another function such that \(\nu = g \mu\). Then, 
+  \(f = g\) \(\mu\)-a.e. One writes \(f = \dv{\nu}{\mu}\) which is called the 
+  Radon-Nikodym derivative of \(\nu\) with respect to \(\mu\).
+\end{corollary}
+\proof
+We have already shown the reverse implication so let us consider the forward 
+implication. 
+
+Suppose \(\nu \ll \mu\) and write \(\nu = \nu_s + \nu_{ac}\) for the Lebesgue 
+decomposition of \(\nu\). Since \(\nu_s \bot \mu\), there exists some 
+\(E \in \mathcal{A}\) such that \(\nu_s(E) = 0\) and \(\mu(E^c) = 0\). However, 
+since \(\nu \ll \mu\), this implies that \(\nu(E^c) = 0\), and so, 
+\[\nu_s(E^c) = \nu(E^c) - \int_E f \dd \mu \le 0.\]
+As, \(\nu_s\) is a measure, this means that \(\nu_s(E^c) = 0\) and hence, 
+\(\nu_s(A) = \nu_s(A \cap E) + \nu_s(A \cap E^c) = 0\) for al \(A \in \mathcal{A}\). 
+Thus, \(\nu = \nu_s + \nu_{ac} = \nu_{ac} = f \mu\).
+\qed
