@@ -1188,7 +1188,7 @@ discrete time, that is, the index set \(\mathcal{T} = \mathbb{N}\).
   Let \((X_n)_{n \in \mathbb{N}}\) be a discrete time stochastic process on 
   the state space \(\mathcal{E}\). Then, we say \((X_n)\) is a Markov chain if 
   and only if 
-  \[\mathbb{P}(X_n = x_n \mid \bigcap_{i \le n} \{X_i = x_i\}) = 
+  \[\mathbb{P}\left(X_n = x_n \mid \bigcap_{i \le n} \{X_i = x_i\}\right) = 
     \mathbb{P}(X_n = x_n \mid X_{n - 1} = x_{n - 1}).\]
   That is, the stochastic process is memoryless.
 \end{definition}
@@ -1429,7 +1429,7 @@ if and only if \(f_{ii} < 1\).
     \mathbb{P}(T_j = l \mid X_0 = i) = \sum p_{jj}(n - l)f_{ij}(l).\]
 \qed
 
-Consider the following notation, \(N_i := \sum_{i = 1}^\infty I_{\{X_n = i\}}\). 
+Consider the following notation, \(N_i := \sum_{n = 1}^\infty I_{\{X_n = i\}}\). 
 We are interested in finding the expectation of \(N_i\) given the \(X_0 = i\),
 that is, the number of times the chain is expected to return back to \(i\). 
 By the linearity of expectation, we find that 
@@ -1477,7 +1477,7 @@ distributed with parameter \(1 - f_{ii}\), and so \(E(N_i \mid X_0 = i) < \infty
 \qed
 
 With that, we can conclude that a state space is uniquely partitioned into 
-transient communicating classes and the closed irreducible sets.
+transient communicating classes and closed irreducible sets.
 
 ## Hitting Probabilities
 

@@ -1329,7 +1329,7 @@ processes on discrete time, that is, the index set
   Let \((X_n)_{n \in \mathbb{N}}\) be a discrete time stochastic process on 
   the state space \(\mathcal{E}\). Then, we say \((X_n)\) is a Markov chain if 
   and only if 
-  \[\mathbb{P}(X_n = x_n \mid \bigcap_{i \le n} \{X_i = x_i\}) = 
+  \[\mathbb{P}\left(X_n = x_n \mid \bigcap_{i \le n} \{X_i = x_i\}\right) = 
     \mathbb{P}(X_n = x_n \mid X_{n - 1} = x_{n - 1}).\]
   That is, the stochastic process is memoryless.
 \end{definition}
@@ -1583,7 +1583,7 @@ by the Markov property, we have
 \qed
 
 Consider the following notation,
-\(N_i := \sum_{i = 1}^\infty I_{\{X_n = i\}}\). We are interested in
+\(N_i := \sum_{n = 1}^\infty I_{\{X_n = i\}}\). We are interested in
 finding the expectation of \(N_i\) given the \(X_0 = i\), that is, the
 number of times the chain is expected to return back to \(i\). By the
 linearity of expectation, we find that
@@ -1632,7 +1632,7 @@ we have
 \#. \qed
 
 With that, we can conclude that a state space is uniquely partitioned
-into transient communicating classes and the closed irreducible sets.
+into transient communicating classes and closed irreducible sets.
 
 \hypertarget{hitting-probabilities}{%
 \subsection{Hitting Probabilities}\label{hitting-probabilities}}
