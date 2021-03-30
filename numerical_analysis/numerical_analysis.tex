@@ -1142,6 +1142,57 @@ relation we find
 orthogonal polynomials is often applied for representing energy states
 of the hydrogen atom in spherical coordinates.
 
+\hypertarget{least-square-problems-again}{%
+\subsection{Least Square Problems
+Again}\label{least-square-problems-again}}
+
+Let us now consider the least squares problem again with the focus on
+abstract vector spaces.
+
+Let \(V\) be a real vector space equipped with the inner produce
+\(\langle \cdot, \cdot \rangle\). If \(U \le V\) is a finite dimensional
+subspace with the basis \(\{\phi_i\}_{i = 1}^n\), given \(v \in V\), the
+least square problem asks us to find the vector \(u^* \in U\) such that,
+for all \(u\) in \(U\), \[\|v - u^*\| \le \|v - u\|,\] where
+\(\| \cdot \|\) is the induced norm from
+\(\langle \cdot, \cdot \rangle\).
+
+\begin{prop}
+  Under the above conditions, define \(E(\lambda) = 
+  \left\| v - \sum_{i = 1}^n \lambda_i \phi_i \right\|\) where \([\lambda]_i = \lambda_i\). 
+  Then, \(\lambda^*\) minimises \(E\) locally if
+  \[G \lambda^* = \mu,\]
+  where \([\lambda^*]_i = \lambda^*_i\), \(G_{ij} = \langle \phi_i, \phi_h \rangle\) and 
+  \([\mu]_i = \langle \phi_i, v \rangle\). The equation \(G \lambda = \mu\) is 
+  refereed to as the \textit{normal equation}.
+\end{prop}
+\proof
+
+Expanding \(E\) we have, \[\begin{split}
+    E(\lambda) & = \left\langle v - \sum \lambda \phi, v - \sum \lambda \phi \right\rangle \\ 
+      & = \|v\|^2 - 2 \sum \lambda \langle \phi, v \rangle + 
+        \sum_i \sum_j \lambda_i \lambda_j \langle \phi_i, \phi_j \rangle\\
+      & = \|v\|^2 - 2 \mu^T \lambda + \lambda^T G \lambda.
+  \end{split}\] Thus, taking the gradient, we find
+\[\nabla E(\lambda) = -2 \mu + 2 G \lambda = 0 \iff G \lambda = \mu.\]
+Furthermore, we have \[D^2 E(\lambda) = 2 G,\] which is positive
+definite. Hence, \(G \lambda = \mu\) implies \(\lambda\) locally
+minimises \(E\). \qed
+
+\begin{prop}
+  \(\lambda^*\) minimises \(E\) if and only if for all \(u \in U\), 
+  \[\left\langle v - \sum_{i = 1}^n \lambda^*_i \phi_i, u \right\rangle = 0.\]
+\end{prop}
+\proof
+
+We have the following chain of if and only ifs, \[\begin{split}
+    G \lambda^* = \mu & \iff (G \lambda^*)_i = \mu_i, i = 1 \cdots, n\\
+      & \iff \sum_{j = 1}^n \lambda^*_j \langle \phi_i, \phi_j \rangle = 
+        \langle v, \phi_i \rangle, i = 1 \cdots, n\\
+      & \iff \left\langle v - \sum_j \lambda^*_j \phi_j, \phi_i \right\rangle = 0, 
+        i = 1 \cdots, n.\\
+  \end{split}\] Thus, the result follows. \qed
+
 \hypertarget{sturm-liouville-theory}{%
 \subsection{Sturm -- Liouville Theory}\label{sturm-liouville-theory}}
 
