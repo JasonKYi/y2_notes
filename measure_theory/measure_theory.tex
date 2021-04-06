@@ -2215,7 +2215,7 @@ by choosing \(r_0 > 0\) such that
   \[d_0 := \sup_{B \in \mathcal{F}} \text{diam} B < \infty.\]
   Then, there exists a countable family \(\mathcal{G} \subseteq \mathcal{F}\) 
   of disjoint balls such that 
-  \[\bigcup_{B in \mathcal{F}} B \subseteq \bigcup_{B \in \mathcal{G}} \hat B,\]
+  \[\bigcup_{B \in \mathcal{F}} B \subseteq \bigcup_{B \in \mathcal{G}} \hat B,\]
   where we denote \(\hat B\) for the ball centred equal to \(B\) with 5 times the 
   diameter.
 \end{lemma}
@@ -2223,21 +2223,21 @@ by choosing \(r_0 > 0\) such that
 
 We define inductively maximal disjoint families
 \(\mathcal{G}_i \subseteq \mathcal{F}\) as follows. For \(i = 1\) choose
-\[\mathcal{G}_1 \subseteq \{B \in \mathcal{F} \mid \text{diam} > d_0 / 2 =: d_1\}\]
+\[\mathcal{G}_1 \subseteq \{B \in \mathcal{F} \mid \text{diam } B > d_0 / 2 =: d_1\}\]
 to be the maximal of such sets such that all balls in \(\mathcal{G}_i\)
 are disjoint. Then, define
-\[\mathcal{G}_{i + 1} \subseteq \{B \in \mathcal{F} \mid d_i \ge \text{diam} B > d_i / 2 
+\[\mathcal{G}_{i + 1} \subseteq \{B \in \mathcal{F} \mid d_i \ge \text{diam } B > d_i / 2 
     =: d_{i + 1}, B \cap B' = \varnothing, \forall B' \in \mathcal{G}_1 \cup \cdots \cup 
     \mathcal{G}_i\},\] be the maximal. Then, define
 \(\mathcal{G} := \bigcup_{i = 1}^\infty \mathcal{G}_i\). By
 construction, \(\mathcal{G}\) consists of countably many pointwise
 disjoint balls in \(\mathcal{F}\) so it remains to show that it covers.
 Let \(B_0 \in \mathcal{F}\) and choose \(i \in \mathbb{N}\) such that
-\(d_i < \text{diam} \le d_{i - 1}\). By maximality of \(\mathcal{G}_i\),
-there exists \(B \in \mathcal{G}_1 \cup \cdots \cup  \mathcal{G}_i\)
-with \(B \cap B_0 \neq \varnothing\). In particular,
-\(\text{diam} B > d_i\) and since
-\(\text{diam} B_0 \le d_{i - 1} = 2d_i\), it follows
+\(d_i < \text{diam } B_0 \le d_{i - 1}\). By maximality of
+\(\mathcal{G}_i\), there exists
+\(B \in \mathcal{G}_1 \cup \cdots \cup  \mathcal{G}_i\) with
+\(B \cap B_0 \neq \varnothing\). In particular, \(\text{diam} B > d_i\)
+and since \(\text{diam } B_0 \le d_{i - 1} = 2d_i\), it follows
 \(\hat B \supseteq B\). \qed
 
 \begin{prop}[Maximal Inequality]
